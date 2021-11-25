@@ -1,15 +1,12 @@
 <template>
- <HeaderStartPage />
- 
+  <router-view></router-view>
 </template>
 
 <script>
-import HeaderStartPage from "./components/HeaderStartPage.vue";
 
 export default {
   name: "App",
   components: {
-    HeaderStartPage,
   },
 };
 </script>
