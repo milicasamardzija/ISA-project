@@ -57,8 +57,6 @@
                                 <option>Korisnik</option>
                             </select>
                       </div>
-                    <label for="usrname"><span class="glyphicon glyphicon-user"></span> Korisnicko ime</label>
-                    <input type="text" class="form-control" id="usrname" placeholder="Unesite korisnicko ime" >
                 </div>
                 <div class="form-group">
                   <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Lozinka</label>
