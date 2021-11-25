@@ -1,0 +1,81 @@
+<template>
+<div  > 
+    <nav class="navbar navbar-expand-sm navbar-light bg-light"> 
+        
+        <div class="collapse navbar-collapse"> 
+            <a class="navbar-brand"> <h4 style="color:#0B4025; " class="font-italic">  Vikendice & avanture </h4> </a>
+        <ul class="navbar-nav ml-auto"> 
+            <li class="nav-item" style="margin-right: 15px;"> <button  type="button" class="btn btn-outline-success"  >Prijavi se </button></li>
+         
+            <li class="nav-item"> <button  type="button" class="btn btn-success" data-target="#registracija" data-toggle="modal"  > Registruj se </button> </li> 
+         </ul>
+        </div>
+    </nav>
+
+ <!-- Modal registracija-->
+ <div class="modal fade" id="registracija" role="dialog" >
+    <div class="modal-dialog" >
+        <!-- Modal content -->
+      <div class="modal-content">
+        <div class="modal-header" >
+          <h5 class="modal-title" id="exampleModalLabel" style="color:#0B4025; padding: 5px 35px">Registracija</h5>
+        </div>
+        <div class="modal-body" style="padding:15px 50px;" >
+            <form role="form">
+                <div class="form-group">
+                    <label for="name">Ime</label>
+                    <input type="text" class="form-control" placeholder="Unesite Vase ime" >
+                    <label for="name">Prezime</label>
+                    <input type="text" class="form-control"  placeholder="Unesite Vase prezime" >
+                            <label for="name">Email </label>
+                    <input type="text" class="form-control"  placeholder="Unesite Vas mejl" >
+                    
+                    <label for="text" >Adresa</label>
+                    <div class="form-group">
+                      <table>
+                         <tr>
+                      <td><input type="text"  class="form-control" placeholder="Ulica" ></td>
+                    
+                        <td><input type="text" class="form-control" placeholder="Broj" ></td>
+                         </tr>
+                     <tr>
+                        <td> <input type="text" class="form-control" placeholder="Grad" ></td>
+                      <td><input type="text" class="form-control"  placeholder="Drzava" ></td>
+                     </tr>
+                      </table>
+                     
+                    </div>
+                    <label for="name">Broj telefona</label>
+                    <input type="text" class="form-control"  placeholder="Unesite Vas telefon" >
+
+                       <div class="form-group">
+                            <label >Izaberite odgovarajuci tip registracije</label>
+                            <select  class="form-control">
+                                <option>Vlasnik vikendice</option>
+                                <option>Vlasnik broda</option>
+                                <option>Instruktor </option>
+                                <option>Korisnik</option>
+                            </select>
+                      </div>
+                </div>
+                <div class="form-group">
+                  <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Lozinka</label>
+                  <input type="password" class="form-control"  id="psw" placeholder="Unesite lozinku" >
+                </div>
+                  <div class="form-group">
+                  <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Ponovite unos lozinke</label>
+                  <input type="password" class="form-control"  id="psw" placeholder="Potvrdite lozinku" >
+                </div>
+                <button type="submit" class="btn btn-success btn-block"><span ></span> Registruj se</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary  pull-left"  data-dismiss="modal">Odustani</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+ 
+ </template>
