@@ -1,15 +1,16 @@
 <template>
+    <div style="">
     <div>
     <HeaderLogAndRegister/>
     <HeaderStartPage />
-    <NavBarClient />
-    <BoatSearch />
+    <NavBarStartPage />
+    <AdventureSearch />
     </div>
     <div class="containerInfo" >
-        <div class=" tab-pane container active">
+        <div class=" tab-pane container active b">
             <div class="row-boats">
-                <div class = "col-with-picture">
-                        <div><img src="../assets/boatStart.jpg"  style="height:250px !important; width:300px !important"></div>
+                 <div class = "col-with-picture">
+                    <div><img src="../../assets/fishingStart.jpg"  style="height:250px !important; width:300px !important"></div>
                 </div>
                 <div class="col-info">
                     <h4 style="width: 600px;" class="text">Promotivni opis: </h4>
@@ -20,21 +21,24 @@
             </div>
         </div>
     </div>
+    </div>
 </template>
 
+
+
 <script>
-import HeaderStartPage from '../components/HeaderStartPage.vue'
-import NavBarClient from '../components/NavBarClient.vue'
-import HeaderLogAndRegister from '../components/HeaderLogAndRegister.vue'
-import BoatSearch from '../components/BoatSearch.vue'
+import HeaderStartPage from '../../components/startPage/HeaderStartPage.vue'
+import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue'
+import HeaderLogAndRegister from '../../components/startPage/HeaderLogAndRegister.vue'
+import AdventureSearch from '../../components/client/cottages,boats,adventures/AdventureSearch.vue'
 
 export default {
   name: "AdventuresStartPage",
   components: {
       HeaderStartPage,
-      NavBarClient,
+      NavBarStartPage,
       HeaderLogAndRegister,
-      BoatSearch
+      AdventureSearch
   },
 };
 
@@ -81,12 +85,14 @@ export default {
     border-radius: 10px;
     align-content: center;
     position: relative;
-    background-color: fff;
+    background-color: #FDFBEC;
     box-shadow: 0 19px 40px rgb(0 0 0 / 30%), 0 15px 12px rgb(0 0 0 / 22%);
     }
     .col-with-picture{
     margin-top: 1%;
     margin-bottom: 1%;
     }
-
+    .b{
+    background-color: #FDFBEC;
+    }
 </style>

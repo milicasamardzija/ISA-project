@@ -1,16 +1,15 @@
 <template>
-    <div style="">
     <div>
-    <HeaderLogAndRegister/>
+    <NavBarLogOut/>
     <HeaderStartPage />
     <NavBarStartPage />
-    <AdventureSearch />
+    <BoatSearch />
     </div>
     <div class="containerInfo" >
-        <div class=" tab-pane container active b">
+        <div class=" tab-pane container active">
             <div class="row-boats">
                  <div class = "col-with-picture">
-                    <div><img src="../assets/fishingStart.jpg"  style="height:250px !important; width:300px !important"></div>
+                    <div><img src="../../assets/boatStart.jpg"  style="height:250px !important; width:300px !important"></div>
                 </div>
                 <div class="col-info">
                     <h4 style="width: 600px;" class="text">Promotivni opis: </h4>
@@ -21,24 +20,21 @@
             </div>
         </div>
     </div>
-    </div>
 </template>
 
-
-
 <script>
-import HeaderStartPage from '../components/HeaderStartPage.vue'
-import NavBarStartPage from '../components/NavBarStartPage.vue'
-import HeaderLogAndRegister from '../components/HeaderLogAndRegister.vue'
-import AdventureSearch from '../components/AdventureSearch.vue'
+import HeaderStartPage from '../../components/startPage/HeaderStartPage.vue'
+import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue'
+import BoatSearch from '../../components/client/cottages,boats,adventures/BoatSearch.vue'
+import NavBarLogOut from '../../components/client/NavBarLogOut.vue'
 
 export default {
-  name: "AdventuresStartPage",
+  name: "BoatsStartPage",
   components: {
       HeaderStartPage,
       NavBarStartPage,
-      HeaderLogAndRegister,
-      AdventureSearch
+      BoatSearch,
+      NavBarLogOut
   },
 };
 
@@ -85,14 +81,17 @@ export default {
     border-radius: 10px;
     align-content: center;
     position: relative;
-    background-color: #FDFBEC;
+    background-color: fff;
     box-shadow: 0 19px 40px rgb(0 0 0 / 30%), 0 15px 12px rgb(0 0 0 / 22%);
     }
     .col-with-picture{
     margin-top: 1%;
     margin-bottom: 1%;
     }
-    .b{
-    background-color: #FDFBEC;
+    .col-with-picture{
+    margin-top: 1%;
+    margin-bottom: 1%;
     }
+
+
 </style>

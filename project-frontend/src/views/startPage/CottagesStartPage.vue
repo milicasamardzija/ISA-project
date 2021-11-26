@@ -1,6 +1,6 @@
 <template>
     <div>
-    <HeaderLogAndRegister/>
+    <NavBarLogOut/>
     <HeaderStartPage />
     <NavBarStartPage />
     <CottageSearch />
@@ -9,7 +9,7 @@
         <div class=" tab-pane container active">
             <div class="row-boats">
                 <div class = "col-with-picture">
-                        <div><img src="../assets/cottageStart.jpg"  style="height:250px !important; width:300px !important"></div>
+                        <div><img src="../../assets/cottageStart.jpg"  style="height:250px !important; width:300px !important"></div>
                 </div>
                 <div class="col-info">
                     <h4 style="width: 600px;" class="text">Promotivni opis: </h4>
@@ -23,17 +23,17 @@
 </template>
 
 <script>
-import HeaderStartPage from '../components/HeaderStartPage.vue'
-import NavBarStartPage from '../components/NavBarStartPage.vue'
-import HeaderLogAndRegister from '../components/HeaderLogAndRegister.vue'
-import CottageSearch from '../components/CottageSearch.vue'
+import HeaderStartPage from '../../components/startPage/HeaderStartPage.vue'
+import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue'
+import NavBarLogOut from '../../components/client/NavBarLogOut.vue'
+import CottageSearch from '../../components/client/cottages,boats,adventures/CottageSearch.vue'
 
 export default {
-  name: "AdventuresStartPage",
+  name: "CottagesStartPage",
   components: {
       HeaderStartPage,
       NavBarStartPage,
-      HeaderLogAndRegister,
+      NavBarLogOut,
       CottageSearch
   },
 };

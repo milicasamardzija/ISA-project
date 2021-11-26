@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import BoatsStartPage from '../views/BoatsStartPage'
-import CottagesStartPage from '../views/CottagesStartPage'
-import AdventuresStartPage from '../views/AdventuresStartPage'
-import ClientAllCottages from '../views/ClientAllCottages'
-import ClientAllBoats from '../views/ClientAllBoats'
-import ClientAllAdventures from '../views/ClientAllAdventures'
+import BoatsStartPage from '../views/startPage/BoatsStartPage'
+import CottagesStartPage from '../views/startPage/CottagesStartPage'
+import AdventuresStartPage from '../views/startPage/AdventuresStartPage'
+import ClientAllCottages from '../views/client/ClientAllCottages'
+import ClientAllBoats from '../views/client/ClientAllBoats'
+import ClientAllAdventures from '../views/client/ClientAllAdventures'
 
 const routes = [
     {

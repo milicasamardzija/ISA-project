@@ -1,6 +1,6 @@
 <template>
     <div>
-    <HeaderLogAndRegister/>
+    <NavBarLogOut/>
     <HeaderStartPage />
     <NavBarClient />
     <AdventureSearch />
@@ -9,7 +9,7 @@
         <div class=" tab-pane container active">
             <div class="row-boats">
                 <div class = "col-with-picture">
-                        <div><img src="../assets/fishingStart.jpg"  style="height:250px !important; width:300px !important"></div>
+                        <div><img src="../../assets/fishingStart.jpg"  style="height:250px !important; width:300px !important"></div>
                 </div>
                 <div class="col-info">
                     <h4 style="width: 600px;" class="text">Promotivni opis: </h4>
@@ -23,17 +23,17 @@
 </template>
 
 <script>
-import HeaderStartPage from '../components/HeaderStartPage.vue'
-import NavBarClient from '../components/NavBarClient.vue'
-import HeaderLogAndRegister from '../components/HeaderLogAndRegister.vue'
-import AdventureSearch from '../components/AdventureSearch.vue'
+import NavBarLogOut from '../../components/client/NavBarLogOut.vue'
+import NavBarClient from '../../components/client/NavBarClient.vue'
+import HeaderStartPage from '../../components/startPage/HeaderStartPage.vue'
+import AdventureSearch from '../../components/client/cottages,boats,adventures/AdventureSearch.vue'
 
 export default {
   name: "ClientAllAdventures",
   components: {
       HeaderStartPage,
       NavBarClient,
-      HeaderLogAndRegister,
+      NavBarLogOut,
       AdventureSearch
   },
 };

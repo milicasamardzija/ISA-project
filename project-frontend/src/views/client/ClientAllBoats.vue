@@ -1,15 +1,15 @@
 <template>
     <div>
-    <HeaderLogAndRegister/>
+    <NavBarLogOut/>
     <HeaderStartPage />
-    <NavBarStartPage />
+    <NavBarClient />
     <BoatSearch />
     </div>
     <div class="containerInfo" >
         <div class=" tab-pane container active">
             <div class="row-boats">
-                 <div class = "col-with-picture">
-                    <div><img src="../assets/boatStart.jpg"  style="height:250px !important; width:300px !important"></div>
+                <div class = "col-with-picture">
+                        <div><img src="../../assets/boatStart.jpg"  style="height:250px !important; width:300px !important"></div>
                 </div>
                 <div class="col-info">
                     <h4 style="width: 600px;" class="text">Promotivni opis: </h4>
@@ -23,17 +23,17 @@
 </template>
 
 <script>
-import HeaderStartPage from '../components/HeaderStartPage.vue'
-import NavBarStartPage from '../components/NavBarStartPage.vue'
-import HeaderLogAndRegister from '../components/HeaderLogAndRegister.vue'
-import BoatSearch from '../components/BoatSearch.vue'
+import HeaderStartPage from '../../components/startPage/HeaderStartPage.vue'
+import NavBarClient from '../../components/client/NavBarClient.vue'
+import NavBarLogOut from '../../components/client/NavBarLogOut.vue'
+import BoatSearch from '../../components/client/cottages,boats,adventures/BoatSearch.vue'
 
 export default {
-  name: "BoatsStartPage",
+  name: "AdventuresStartPage",
   components: {
       HeaderStartPage,
-      NavBarStartPage,
-      HeaderLogAndRegister,
+      NavBarClient,
+      NavBarLogOut,
       BoatSearch
   },
 };
@@ -88,10 +88,5 @@ export default {
     margin-top: 1%;
     margin-bottom: 1%;
     }
-    .col-with-picture{
-    margin-top: 1%;
-    margin-bottom: 1%;
-    }
-
 
 </style>
