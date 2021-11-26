@@ -10,13 +10,19 @@
     <!-- The slideshow -->
     <div class="carousel-inner" style="bacground-repeat: no repeat">
       <div class="carousel-item active">
-        <img src="../assets/cottageStart.jpg" width="2200" height="500" />
+        <img src="../assets/pexels-tatiana-syrikova).jpg" width="2200" height="600" />
       </div>
       <div class="carousel-item">
-        <img src="../assets/boatStart.jpg" width="2200" height="500" />
+        <img src="../assets/pexels-skitterphoto-411013.jpg" width="2200" height="600" />
       </div>
       <div class="carousel-item">
-        <img src="../assets/fishingStart.jpg" width="2200" height="500" />
+        <img src="../assets/pexels-pictures-of-scotland1.jpg" width="2200" height="600" />
+      </div>
+      <div class="carousel-item">
+        <img src="../assets/pexels-quang-nguyen-vinh.jpg" width="2200" height="600" />
+      </div>
+      <div class="carousel-item">
+        <img src="../assets/pexels-max-vakhtbovych-70616.jpg" width="2200" height="600" />
       </div>
     </div>
 
