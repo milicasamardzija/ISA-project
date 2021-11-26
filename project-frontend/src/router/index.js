@@ -7,6 +7,7 @@ import ClientAllCottages from '../views/client/ClientAllCottages'
 import ClientAllBoats from '../views/client/ClientAllBoats'
 import ClientAllAdventures from '../views/client/ClientAllAdventures'
 import ScheduledReservation from '../views/client/reservations/ScheduledReservation'
+import ReservationHistory from '../views/client/reservations/ReservationHistory'
 
 const routes = [
     {
@@ -43,6 +44,11 @@ const routes = [
         path: '/clientScheduledReservations',
         name: 'ScheduledReservation',
         component: ScheduledReservation
+    },
+    {
+        path: '/clientReservationHistory',
+        name: 'ReservationHistory',
+        component: ReservationHistory
     }
 ]
 

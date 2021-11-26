@@ -11,7 +11,7 @@
             <router-link to="/clientAdventures">Adventures</router-link>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Reservation history</a>
+            <a class="nav-link"><router-link to="/clientReservationHistory">Reservation history</router-link></a>
             </li>
             <li class="nav-item">
             <router-link to="/clientScheduledReservations">Scheduled reservations</router-link>

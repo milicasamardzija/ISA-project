@@ -4,10 +4,10 @@
     <HeaderStartPage />
     <NavBarClient />
     </div>
-    <div class="container-info">
+    <div class="card">
         <div class="container">
         <h2><i>You're incoming reservations:</i></h2>    
-        <table class="table table-light table-striped table-hover">
+        `<table class="table table-light table-striped table-hover">
             <thead>
             <tr>
                 <th>Firstname</th>
