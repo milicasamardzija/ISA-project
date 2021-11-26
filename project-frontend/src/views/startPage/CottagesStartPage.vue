@@ -1,6 +1,6 @@
 <template>
     <div>
-    <NavBarLogOut/>
+    <HeaderLogAndRegister/>
     <HeaderStartPage />
     <NavBarStartPage />
     <CottageSearch />
@@ -25,7 +25,7 @@
 <script>
 import HeaderStartPage from '../../components/startPage/HeaderStartPage.vue'
 import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue'
-import NavBarLogOut from '../../components/client/NavBarLogOut.vue'
+import HeaderLogAndRegister from '../../components/startPage/HeaderLogAndRegister.vue'
 import CottageSearch from '../../components/client/cottages,boats,adventures/CottageSearch.vue'
 
 export default {
@@ -33,7 +33,7 @@ export default {
   components: {
       HeaderStartPage,
       NavBarStartPage,
-      NavBarLogOut,
+      HeaderLogAndRegister,
       CottageSearch
   },
 };

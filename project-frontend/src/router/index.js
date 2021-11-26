@@ -6,6 +6,7 @@ import AdventuresStartPage from '../views/startPage/AdventuresStartPage'
 import ClientAllCottages from '../views/client/ClientAllCottages'
 import ClientAllBoats from '../views/client/ClientAllBoats'
 import ClientAllAdventures from '../views/client/ClientAllAdventures'
+import ScheduledReservation from '../views/client/reservations/ScheduledReservation'
 
 const routes = [
     {
@@ -37,6 +38,11 @@ const routes = [
         path: '/clientAdventures',
         name: 'ClientAllAdventures',
         component: ClientAllAdventures
+    },
+    {
+        path: '/clientScheduledReservations',
+        name: 'ScheduledReservation',
+        component: ScheduledReservation
     }
 ]
 

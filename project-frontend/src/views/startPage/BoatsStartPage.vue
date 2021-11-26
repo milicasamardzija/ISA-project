@@ -1,6 +1,6 @@
 <template>
     <div>
-    <NavBarLogOut/>
+    <HeaderLogAndRegister/>
     <HeaderStartPage />
     <NavBarStartPage />
     <BoatSearch />
@@ -26,7 +26,7 @@
 import HeaderStartPage from '../../components/startPage/HeaderStartPage.vue'
 import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue'
 import BoatSearch from '../../components/client/cottages,boats,adventures/BoatSearch.vue'
-import NavBarLogOut from '../../components/client/NavBarLogOut.vue'
+import HeaderLogAndRegister from '../../components/startPage/HeaderLogAndRegister.vue'
 
 export default {
   name: "BoatsStartPage",
@@ -34,7 +34,7 @@ export default {
       HeaderStartPage,
       NavBarStartPage,
       BoatSearch,
-      NavBarLogOut
+      HeaderLogAndRegister
   },
 };
 
