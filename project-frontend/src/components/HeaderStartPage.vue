@@ -22,7 +22,7 @@
         <img src="../assets/pexels-quang-nguyen-vinh.jpg" width="2200" height="600" />
       </div>
       <div class="carousel-item">
-        <img src="../assets/pexels-max-vakhtbovych-70616.jpg" width="2200" height="600" />
+        <img src="../assets/pexels-max-vakhtbovyc.jpg" width="2200" height="600" />
       </div>
     </div>
 
