@@ -2,7 +2,9 @@
     <div>
     <HeaderLogAndRegister/>
     <HeaderStartPage />
-    <NavBarStartPage /></div>
+    <NavBarStartPage />
+    <CottageSearch />
+    </div>
     <div class="containerInfo" >
         <div class=" tab-pane container active">
             <div class="row-boats">
@@ -24,13 +26,15 @@
 import HeaderStartPage from '../components/HeaderStartPage.vue'
 import NavBarStartPage from '../components/NavBarStartPage.vue'
 import HeaderLogAndRegister from '../components/HeaderLogAndRegister.vue'
+import CottageSearch from '../components/CottageSearch.vue'
 
 export default {
   name: "AdventuresStartPage",
   components: {
       HeaderStartPage,
       NavBarStartPage,
-      HeaderLogAndRegister
+      HeaderLogAndRegister,
+      CottageSearch
   },
 };
 
