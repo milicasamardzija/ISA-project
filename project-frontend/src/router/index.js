@@ -8,6 +8,14 @@ import ClientAllBoats from '../views/client/ClientAllBoats'
 import ClientAllAdventures from '../views/client/ClientAllAdventures'
 import ScheduledReservation from '../views/client/reservations/ScheduledReservation'
 import ReservationHistory from '../views/client/reservations/ReservationHistory'
+import HomePageInProfil from '../views/cottageOwner/HomePageInProfil'
+import MyCottages from '../views/cottageOwner/MyCottages'
+import MyProfile from '../views/cottageOwner/MyProfile'
+import Statistic from '../views/cottageOwner/Statistic'
+import EditProfile from '../views/cottageOwner/EditProfile'
+import NewCottage from '../views/cottageOwner/NewCottage'
+
+
 
 const routes = [
     {
@@ -49,8 +57,39 @@ const routes = [
         path: '/clientReservationHistory',
         name: 'ReservationHistory',
         component: ReservationHistory
+    },
+    {
+        path: '/cottageOwnerHomePage',
+        name: 'HomePageInProfil',
+        component: HomePageInProfil
+    },
+    {
+        path: '/myCottages',
+        name: 'MyCottages',
+        component: MyCottages
+    },
+    {
+        path: '/myProfile',
+        name: 'MyProfile',
+        component: MyProfile
+    },
+    {
+        path: '/editProfile',
+        name: 'EditProfile',
+        component: EditProfile
+    },
+    {
+        path: '/statistic',
+        name: 'Statistic',
+        component: Statistic
+    },
+    {
+        path: '/newCottage',
+        name: 'NewCottage',
+        component: NewCottage
     }
 ]
+
 
 const router = createRouter({
     history: createWebHistory(process.env

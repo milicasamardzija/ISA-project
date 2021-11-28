@@ -1,0 +1,11 @@
+<template>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light"> 
+        <img src="../../assets/logo_for_homePage.jpg" style="height: 8%; width: 20%; margin-right: 3%;"> 
+        <div class="collapse navbar-collapse"> 
+            <a class="navbar-brand"> <h4 style="color:#0B4025; " class="font-italic">  Vikendice & avanture </h4> </a>
+        <ul class="navbar-nav ml-auto"> 
+            <li class="nav-item" style="margin-right: 15px;"> <button  type="button" class="btn btn-outline-success" > <router-link to=""> </router-link>Odjavi se </button></li>
+         </ul>
+        </div>
+    </nav>
+</template>
