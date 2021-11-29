@@ -3,11 +3,11 @@
     <NavBarLogOut/>
     <NavBarHomePage/>
 </div>    
- <div class= "backgrounDiv">
+ <div class= "">
     
         <div class=" tab-pane  active containerInfo"> 
             <table style="width: 80%"> 
-                <tr> <td>  <Search/> </td> <td style="width: 28%"> <button class="btn btn-danger" style="margin-left: 39%"> <router-link  style="text-decoration: none !important; display: inline-block; color: white"  to="/newCottage"> Dodaj novu vikendicu</router-link> </button></td> <td >
+                <tr > <td >  <Search/> </td> <td style="width: 28%"> <button class="btn btn-danger" style="margin-left: 39%"> <router-link  style="text-decoration: none !important; display: inline-block; color: white"  to="/newCottage"> Dodaj novu vikendicu</router-link> </button></td> <td >
             </td> </tr>
             </table>
           
