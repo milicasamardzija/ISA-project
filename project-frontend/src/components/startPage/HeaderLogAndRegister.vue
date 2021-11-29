@@ -9,6 +9,7 @@
          
             <li class="nav-item"> <button  type="button" class="btn btn-success" data-target="#registracija" data-toggle="modal"  > Registruj se </button> </li> 
             <li class="nav-item"> <button  type="button" class="btn btn-success"><router-link to="/client">KLIJENT</router-link></button> </li> 
+             <li class="nav-item"> <button  type="button" class="btn btn-success"><router-link to="/myCottages">Vlasnik vik</router-link></button> </li> 
          </ul>
         </div>
     </nav>
