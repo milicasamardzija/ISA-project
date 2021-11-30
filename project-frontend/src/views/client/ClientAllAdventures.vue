@@ -16,6 +16,7 @@
                     <h4 style="width: 600px;" class="text">Naziv:  </h4>
                     <h4 style="width: 600px;" class="text">Adresa:</h4>
                     <h4 style="width: 600px;" class="text">Prosecna ocena:</h4>
+                    <button  type="button" class="btn btn-success"><router-link to="/adventurePage">Detalji</router-link></button>
                 </div>
             </div>
         </div>

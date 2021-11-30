@@ -17,6 +17,7 @@
                     <h4 style="width: 600px;" class="text">Naziv:  </h4>
                     <h4 style="width: 600px;" class="text">Adresa:</h4>
                     <h4 style="width: 600px;" class="text">Prosecna ocena:</h4>
+                    <button  type="button" class="btn btn-success">Detalji</button>
                 </div>
             </div>
         </div>

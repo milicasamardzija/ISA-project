@@ -16,6 +16,7 @@ import EditProfile from '../views/cottageOwner/EditProfile'
 import NewCottage from '../views/cottageOwner/NewCottage'
 import AllRegistrationRequests from '../views/administrator/AllRegistrationRequests'
 import MyService from '../views/fishingInstructor/MyService'
+import AdventurePage from '../views/adventure/AdventurePage'
 
 const routes = [
     {
@@ -38,6 +39,11 @@ const routes = [
         name: 'ClientAllCottages',
         component: ClientAllCottages
     },
+    {
+        path: '/adventurePage',
+        name: 'AdventurePage',
+        component: AdventurePage
+    },    
     {
         path: '/administrator',
         name: 'AllRegistrationRequests',
