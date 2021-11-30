@@ -14,7 +14,7 @@ import MyProfile from '../views/cottageOwner/MyProfile'
 import Statistic from '../views/cottageOwner/Statistic'
 import EditProfile from '../views/cottageOwner/EditProfile'
 import NewCottage from '../views/cottageOwner/NewCottage'
-
+import AllRegistrationRequests from '../views/administrator/AllRegistrationRequests'
 
 
 const routes = [
@@ -37,6 +37,11 @@ const routes = [
         path: '/client',
         name: 'ClientAllCottages',
         component: ClientAllCottages
+    },
+    {
+        path: '/administrator',
+        name: 'AllRegistrationRequests',
+        component: AllRegistrationRequests
     },
     {
         path: '/clientBoats',
