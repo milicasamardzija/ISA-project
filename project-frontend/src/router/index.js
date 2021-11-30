@@ -15,7 +15,7 @@ import Statistic from '../views/cottageOwner/Statistic'
 import EditProfile from '../views/cottageOwner/EditProfile'
 import NewCottage from '../views/cottageOwner/NewCottage'
 import AllRegistrationRequests from '../views/administrator/AllRegistrationRequests'
-
+import MyService from '../views/fishingInstructor/MyService'
 
 const routes = [
     {
@@ -42,6 +42,11 @@ const routes = [
         path: '/administrator',
         name: 'AllRegistrationRequests',
         component: AllRegistrationRequests
+    },
+    {
+        path: '/fishingInstructor',
+        name: 'MyService',
+        component: MyService
     },
     {
         path: '/clientBoats',
