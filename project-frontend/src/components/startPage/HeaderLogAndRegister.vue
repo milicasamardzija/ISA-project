@@ -1,11 +1,12 @@
 <template>
-<div> 
+<div  > 
     <nav class="navbar navbar-expand-sm navbar-light bg-light"> 
         
         <div class="collapse navbar-collapse"> 
             <a class="navbar-brand"> <h4 style="color:#0B4025; " class="font-italic">  Vikendice & avanture </h4> </a>
         <ul class="navbar-nav ml-auto"> 
-            <li class="nav-item"> <button  type="button" data-target="#prijava" data-toggle="modal" class="btn btn-outline-success"  >Prijavi se </button></li>
+            <li class="nav-item" style="margin-right: 15px;"> <button  type="button" class="btn btn-outline-success"  >Prijavi se </button></li>
+         
             <li class="nav-item"> <button  type="button" class="btn btn-success" data-target="#registracija" data-toggle="modal"  > Registruj se </button> </li> 
             <li class="nav-item"> <button  type="button" class="btn btn-success"><router-link to="/client">KLIJENT</router-link></button> </li> 
              <li class="nav-item"> <button  type="button" class="btn btn-success"><router-link to="/myCottages">Vlasnik vik</router-link></button> </li> 
@@ -68,33 +69,6 @@
                   <input type="password" class="form-control"  id="psw" placeholder="Potvrdite lozinku" >
                 </div>
                 <button type="submit" class="btn btn-success btn-block"><span ></span> Registruj se</button>
-            </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary  pull-left"  data-dismiss="modal">Odustani</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="prijava" role="dialog" >
-    <div class="modal-dialog" >
-        <!-- Modal content -->
-      <div class="modal-content">
-        <div class="modal-header" >
-          <h5 class="modal-title" id="exampleModalLabel" style="color:#0B4025; padding: 5px 35px">Prijavljivanje</h5>
-        </div>
-        <div class="modal-body" style="padding:15px 50px;" >
-            <form role="form">
-                <div class="form-group">
-                    <label for="name">E-mail:</label>
-                    <input type="text" class="form-control"  placeholder="Unesite Vas e-mail" >
-                </div>
-                <div class="form-group">
-                  <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Lozinka:</label>
-                  <input type="password" class="form-control"  id="psw" placeholder="Unesite lozinku" >
-                </div>
-                <button type="submit" class="btn btn-success btn-block"><span ></span> Uloguj se</button>
             </form>
         </div>
         <div class="modal-footer">
