@@ -20,7 +20,7 @@
             <li class="nav-item">
             <button type="button" class="btn btn-success"><router-link to="">Zahtev za brisanje</router-link></button></li>
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="">Promeni lozinku</router-link></button></li>
+            <button type="button" class="btn btn-success"><router-link to="/ChangePasswordFishingInstructor">Promeni lozinku</router-link></button></li>
       
         </ul>
     </nav>
