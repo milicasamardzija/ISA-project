@@ -2,25 +2,25 @@
     <nav class="navbar navbar-expand-sm bg-light">
         <ul class="navbar-nav">
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="/fishingInstructor">Usluge</router-link></button></li>
+            <a class="nav-link"><router-link to="/fishingInstructor">Usluge</router-link></a></li>
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="/AvailablePeriod">Period dostupnosti</router-link></button></li>
+            <a class="nav-link"><router-link to="/AvailablePeriod">Period dostupnosti</router-link></a></li>
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="">Istorija rezervacija</router-link></button></li>
+            <a class="nav-link"><router-link to="">Istorija rezervacija</router-link></a></li>
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="">Kreiraj akciju</router-link></button></li>
+            <a class="nav-link"><router-link to="">Kreiraj akciju</router-link></a></li>
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="">Popuni izvestaj</router-link></button></li>
+            <a class="nav-link"><router-link to="">Popuni izvestaj</router-link></a></li>
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="">Kreiraj rezervaciju</router-link></button></li>
+            <a class="nav-link"><router-link to="">Kreiraj rezervaciju</router-link></a></li>
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="">Kalendar zauzetosti</router-link></button></li>
+            <a class="nav-link"><router-link to="">Kalendar zauzetosti</router-link></a></li>
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="/fishingInstructorProfile">Azuriraj svoje podatke</router-link></button></li>
+            <a class="nav-link"><router-link to="/fishingInstructorProfile">Azuriraj svoje podatke</router-link></a></li>
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="">Zahtev za brisanje</router-link></button></li>
+            <a class="nav-link"><router-link to="">Zahtev za brisanje</router-link></a></li>
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="/ChangePasswordFishingInstructor">Promeni lozinku</router-link></button></li>
+            <a class="nav-link"><router-link to="/ChangePasswordFishingInstructor">Promeni lozinku</router-link></a></li>
       
         </ul>
     </nav>
