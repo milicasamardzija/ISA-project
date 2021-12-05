@@ -17,6 +17,7 @@ import NewCottage from '../views/cottageOwner/NewCottage'
 import AllRegistrationRequests from '../views/administrator/AllRegistrationRequests'
 import MyService from '../views/fishingInstructor/MyService'
 import AdventurePage from '../views/adventure/AdventurePage'
+import FishingInstructorProfile from '../views/fishingInstructor/FishingInstructorProfile'
 
 const routes = [
     {
@@ -53,6 +54,11 @@ const routes = [
         path: '/fishingInstructor',
         name: 'MyService',
         component: MyService
+    },
+    {
+        path: '/fishingInstructorProfile',
+        name: 'FishingInstructorProfile',
+        component: FishingInstructorProfile
     },
     {
         path: '/clientBoats',
