@@ -19,6 +19,7 @@ import MyService from '../views/fishingInstructor/MyService'
 import AdventurePage from '../views/adventure/AdventurePage'
 import FishingInstructorProfile from '../views/fishingInstructor/FishingInstructorProfile'
 import ChangePasswordFishingInstructor from '../views/fishingInstructor/ChangePasswordFishingInstructor'
+import AvailablePeriod from '../views/fishingInstructor/AvailablePeriod'
 
 const routes = [
     {
@@ -60,6 +61,11 @@ const routes = [
         path: '/ChangePasswordFishingInstructor',
         name: 'ChangePasswordFishingInstructor',
         component: ChangePasswordFishingInstructor
+    },
+    {
+        path: '/AvailablePeriod',
+        name: 'AvailablePeriod',
+        component: AvailablePeriod
     },   
     {
         path: '/fishingInstructorProfile',

@@ -4,7 +4,7 @@
             <li class="nav-item">
             <button type="button" class="btn btn-success"><router-link to="/fishingInstructor">Usluge</router-link></button></li>
             <li class="nav-item">
-            <button type="button" class="btn btn-success"><router-link to="">Period dostupnosti</router-link></button></li>
+            <button type="button" class="btn btn-success"><router-link to="/AvailablePeriod">Period dostupnosti</router-link></button></li>
             <li class="nav-item">
             <button type="button" class="btn btn-success"><router-link to="">Istorija rezervacija</router-link></button></li>
             <li class="nav-item">
@@ -29,5 +29,6 @@
     button {
         background-color: #4CAF50; /* Green */
         font-size: 14px;
+        margin: 0px 5px;
     }
 </style>

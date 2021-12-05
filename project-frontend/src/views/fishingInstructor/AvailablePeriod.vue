@@ -3,7 +3,7 @@
     <NavBarLogOut/>
     <HeaderStartPage />
     <NavBarFishingInstructor />
-    <MyServices/>
+    <AvailablePeriodComponent/>
     </div>
 </template>
 
@@ -11,15 +11,15 @@
 import HeaderStartPage from '../../components/startPage/HeaderStartPage'
 import NavBarFishingInstructor from '../../components/fishingInstructor/NavBarFishingInstructor.vue'
 import NavBarLogOut from '../../components/fishingInstructor/NavbarLogOut.vue'
-import MyServices from '../../components/fishingInstructor/MyServices.vue'
+import AvailablePeriodComponent from '../../components/fishingInstructor/AvailablePeriodComponent.vue'
 
 export default {
-  name: "MyService",
+  name: "AvailablePeriod",
   components: {
       HeaderStartPage,
       NavBarFishingInstructor,
       NavBarLogOut,
-      MyServices
+      AvailablePeriodComponent
   },
 };
 
