@@ -1,4 +1,4 @@
-package model;
+package com.example.demo.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +27,7 @@ public class User {
 	private String password;
 	@Column(name = "telephone", nullable = false)
 	private String telephone;
-	@OneToOne(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Address address;
 	
 	public User() {}
