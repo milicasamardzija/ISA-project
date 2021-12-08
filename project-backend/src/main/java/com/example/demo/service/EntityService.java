@@ -1,0 +1,40 @@
+package com.example.demo.service;
+
+
+import com.example.demo.model.entities.EntityClass;
+import com.example.demo.repository.EntityRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class EntityService {
+
+    private EntityRepository entityRepository;
+
+    public EntityService(EntityRepository entityRepository){
+        this.entityRepository = entityRepository;
+    }
+
+    public List<EntityClass> findAll() {
+        return entityRepository.findAll();
+    }
+
+    public EntityClass findOne(Integer id) {
+        return entityRepository.findById(id).orElseGet(null);
+    }
+
+    public Page<EntityClass> findAll(Pageable page) {
+        return entityRepository.findAll(page);
+    }
+
+    public EntityClass EntityClass(EntityClass entity) {
+        return entityRepository.save(entity);
+    }
+
+    public void remove(Integer id) {
+        entityRepository.deleteById(id);
+    }
+}

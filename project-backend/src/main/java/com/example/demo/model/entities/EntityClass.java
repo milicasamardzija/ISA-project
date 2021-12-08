@@ -37,7 +37,7 @@ public class EntityClass {
 	@Column(name="promoDescription", unique=false, nullable=false)
 	private String promoDescription; //promotivni opis
 	
-	@OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Image> image;
 	
 	@OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -49,22 +49,26 @@ public class EntityClass {
 	@Column(name="price", unique=false, nullable=false)
 	private int price; //je l ovo dovoljno za cenovnik
 	//slobodni termini sa akcijama za rezervaciju OVO NEMAMO
+
+	@Column(name="grade", unique=false, nullable=false)
+	private double grade;
 	
 	public EntityClass() {
 		super();
 	}
 
 	public EntityClass(int id, String name, Address address, String promoDescription, Set<Image> image,
-			Set<AdditionalService> additionalServices, String rules, int price) {
+			Set<AdditionalService> additionalServices, String rules, int price, double grade) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.promoDescription = promoDescription;
 		this.image = image;
-		//this.additionalServices = additionalServices;
+		this.additionalServices = additionalServices;
 		this.rules = rules;
 		this.price = price;
+		this.grade = grade;
 	}
 
 	public Integer getId() {
@@ -130,6 +134,12 @@ public class EntityClass {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	
-	
+
+	public double getGrade() {
+		return grade;
+	}
+
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
 }

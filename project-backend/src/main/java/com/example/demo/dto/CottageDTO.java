@@ -17,39 +17,22 @@ public class CottageDTO {
         private String name;
         private Address address;
         private String promoDescription; //promotivni opis
-        //private Set<Image> image;
-        //private Set<AdditionalService> additionalServices;
         private String rules;
 
 
     public CottageDTO() {
 
     }
-public CottageDTO(Cottage cottage){
-    this.roomsNumber = cottage.getRoomsNumber();
-    this.bedsByRoom = cottage.getBedsByRoom();
-    this.id = cottage.getId();
-    this.name = cottage.getName();
-    this.address = cottage.getAddress();
-    this.promoDescription = cottage.getPromoDescription();
-    //this.image = cottage.getImage();
-  //  this.additionalServices = cottage.getAdditionalServices();
-    this.rules = cottage.getRules();
-    this.price = cottage.getPrice();
-}
 
-
-    public CottageDTO(int roomsNumber, int bedsByRoom, int id, String name, Address address, String promoDescription, Set<Image> image, Set<AdditionalService> additionalServices, String rules, int price) {
-        this.roomsNumber = roomsNumber;
-        this.bedsByRoom = bedsByRoom;
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.promoDescription = promoDescription;
-       // this.image = image;
-       // this.additionalServices = additionalServices;
-        this.rules = rules;
-        this.price = price;
+    public CottageDTO(Cottage cottage){
+        this.roomsNumber = cottage.getRoomsNumber();
+        this.bedsByRoom = cottage.getBedsByRoom();
+        this.id = cottage.getId();
+        this.name = cottage.getName();
+        this.address = cottage.getAddress();
+        this.promoDescription = cottage.getPromoDescription();
+        this.rules = cottage.getRules();
+        this.price = cottage.getPrice();
     }
 
     public int getId() {
@@ -84,22 +67,6 @@ public CottageDTO(Cottage cottage){
         this.promoDescription = promoDescription;
     }
 
-  /*  public Set<Image> getImage() {
-        return image;
-    }
-
-    public void setImage(Set<Image> image) {
-        this.image = image;
-    }
-
-    public Set<AdditionalService> getAdditionalServices() {
-        return additionalServices;
-    }
-
-    public void setAdditionalServices(Set<AdditionalService> additionalServices) {
-        this.additionalServices = additionalServices;
-    }
-*/
     public String getRules() {
         return rules;
     }
@@ -119,21 +86,19 @@ public CottageDTO(Cottage cottage){
     private int price; //je l ovo dovoljno za cenovnik
     //slobodni termini sa akcijama za rezervaciju OVO NEMAMO
 
-
-
-        public int getRoomsNumber() {
+    public int getRoomsNumber() {
             return roomsNumber;
         }
 
-        public void setRoomsNumber(int roomsNumber) {
+    public void setRoomsNumber(int roomsNumber) {
             this.roomsNumber = roomsNumber;
         }
 
-        public int getBedsByRoom() {
+    public int getBedsByRoom() {
             return bedsByRoom;
         }
 
-        public void setBedsByRoom(int bedsByRoom) {
+    public void setBedsByRoom(int bedsByRoom) {
             this.bedsByRoom = bedsByRoom;
         }
 
