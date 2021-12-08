@@ -7,13 +7,13 @@
     </div>
     <div class="containerInfo" >
         <div class=" tab-pane container active">
-            <div class="row-boats">
+            <div class="row-boats" v-for="(cottage, index) in cottages" :key="index">
                 <div class = "col-with-picture">
                         <div><img src="../../assets/cottageStart.jpg"  style="height:250px !important; width:300px !important"></div>
                 </div>
                 <div class="col-info">
                     <h4 style="width: 600px;" class="text">Promotivni opis: </h4>
-                    <h4 style="width: 600px;" class="text">Naziv:  </h4>
+                    <h4 style="width: 600px;" class="text">{{cottage.name}}  </h4>
                     <h4 style="width: 600px;" class="text">Adresa:</h4>
                     <h4 style="width: 600px;" class="text">Prosecna ocena:</h4>
                 </div>
@@ -36,8 +36,25 @@ export default {
       HeaderLogAndRegister,
       CottageSearch
   },
-};
 
+  data(){
+      return {
+          cottages: []
+      }
+   },
+
+  methods: {
+    async fetchCottages(){
+        const res = await fetch('http://localhost:8081/api/cottages')
+        const data = await res.json()
+        return data
+    }
+  },
+
+    async created(){
+        this.cottages = await this.fetchCottages()
+    }
+}
 </script>
 
 <style scoped>
