@@ -31,7 +31,7 @@ public class EntityClass {
 	@Column(name="name", unique=false, nullable=false)
 	private String name;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Address address;
 	
 	@Column(name="promoDescription", unique=false, nullable=false)
@@ -107,13 +107,13 @@ public class EntityClass {
 		this.image = image;
 	}
 
-	/*public Set<AdditionalService> getAdditionalServices() {
+	public Set<AdditionalService> getAdditionalServices() {
 		return additionalServices;
 	}
 
 	public void setAdditionalServices(Set<AdditionalService> additionalServices) {
 		this.additionalServices = additionalServices;
-	}*/
+	}
 
 	public String getRules() {
 		return rules;

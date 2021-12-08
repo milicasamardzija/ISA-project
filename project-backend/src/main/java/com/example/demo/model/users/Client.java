@@ -1,11 +1,11 @@
 package com.example.demo.model.users;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.example.demo.enums.LoyalityType;
+import com.example.demo.model.business.Reservation;
+
+import java.util.List;
 
 @Entity
 @Table(name = "client")
@@ -17,5 +17,8 @@ public class Client extends User{
 	
 	@Column(name = "loyalityType", nullable = false)
 	private LoyalityType loyalityType;
+
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Reservation> reservations;
 
 }
