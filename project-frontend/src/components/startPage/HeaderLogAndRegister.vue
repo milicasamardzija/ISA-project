@@ -45,7 +45,10 @@
                 >Fishing instructor</router-link
               >
             </button>
-          </li>-->
+          </li>
+           <li class="nav-item"> <button  type="button" class="btn btn-success"><router-link to="/cottageOwnerHomePage">Vlasnik vik</router-link></button> </li>
+          -->
+           <li class="nav-item"> <button  type="button" class="btn btn-success"><router-link to="/cottageOwnerHomePage">Vlasnik vik</router-link></button> </li>
         </ul>
       </div>
     </nav>

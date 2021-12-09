@@ -1,8 +1,9 @@
 package com.example.demo.model.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.example.demo.model.users.CottageOwner;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name="cottage")
@@ -13,7 +14,12 @@ public class Cottage extends EntityClass {
 	
 	@Column(name="bedsByRoom", unique=false, nullable=true)
 	private int bedsByRoom;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "owner_id") //ovako ce se zvati id polje u bazi
+	@JsonIgnoreProperties("cottageOwner")
+	public CottageOwner cottageOwner;
+
 	public Cottage() {
 		super();
 	}

@@ -17,6 +17,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.example.demo.model.users.Address;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -37,10 +38,11 @@ public class EntityClass {
 	@Column(name="promoDescription", unique=false, nullable=false)
 	private String promoDescription; //promotivni opis
 	
-	@OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("entity") //da ne pravi loop
 	private Set<Image> image;
 	
-	@OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<AdditionalService> additionalServices;
 	
 	@Column(name="rules", unique=false, nullable=false)
