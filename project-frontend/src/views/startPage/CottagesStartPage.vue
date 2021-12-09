@@ -12,10 +12,10 @@
                         <div><img src="../../assets/cottageStart.jpg"  style="height:250px !important; width:300px !important"></div>
                 </div>
                 <div class="col-info">
-                    <h4 style="width: 600px;" class="text">Opis: {{cottage.promoDescription}} </h4>
+                    <h4 style="width: 600px;" class="text">Promotivni opis: {{cottage.promoDescription}} </h4>
                     <h4 style="width: 600px;" class="text">Naziv: {{cottage.name}}  </h4>
                     <h4 style="width: 600px;" class="text"> Adresa: {{cottage.address.street}} {{cottage.address.number}},  {{cottage.address.city}},  {{cottage.address.country}}</h4>
-                    <h4 style="width: 600px;" class="text">Ocena:  fali nam ocena</h4>
+                    <h4 style="width: 600px;" class="text">Ocena:  {{cottage.grade}}</h4>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@ export default {
 
   methods: {
     async fetchCottages(){
-        const res = await fetch('http://localhost:8081/api/entities')
+        const res = await fetch('http://localhost:8081/api/cottages')
         const data = await res.json()
         return data
     }

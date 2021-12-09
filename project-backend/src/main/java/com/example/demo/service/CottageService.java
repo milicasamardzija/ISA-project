@@ -38,4 +38,6 @@ public class CottageService {
         cottageRepository.deleteById(id);
     }
 
+    public List<Cottage> findCottagesWithPictures() { return cottageRepository.findCottagesWithPictures()}
+
 }

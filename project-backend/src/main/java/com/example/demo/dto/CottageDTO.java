@@ -18,7 +18,7 @@ public class CottageDTO {
         private Address address;
         private String promoDescription; //promotivni opis
         private String rules;
-
+        private double grade;
 
     public CottageDTO() {
 
@@ -33,6 +33,7 @@ public class CottageDTO {
         this.promoDescription = cottage.getPromoDescription();
         this.rules = cottage.getRules();
         this.price = cottage.getPrice();
+        this.grade = cottage.getGrade();
     }
 
     public int getId() {
@@ -86,6 +87,14 @@ public class CottageDTO {
     private int price; //je l ovo dovoljno za cenovnik
     //slobodni termini sa akcijama za rezervaciju OVO NEMAMO
 
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
     public int getRoomsNumber() {
             return roomsNumber;
         }
@@ -98,8 +107,6 @@ public class CottageDTO {
             return bedsByRoom;
         }
 
-    public void setBedsByRoom(int bedsByRoom) {
-            this.bedsByRoom = bedsByRoom;
-        }
+    public void setBedsByRoom(int bedsByRoom) { this.bedsByRoom = bedsByRoom; }
 
 }
