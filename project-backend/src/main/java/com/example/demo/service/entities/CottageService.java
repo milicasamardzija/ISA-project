@@ -1,9 +1,7 @@
-package com.example.demo.service;
+package com.example.demo.service.entities;
 
-import com.example.demo.controller.CottageController;
 import com.example.demo.model.entities.Cottage;
-import com.example.demo.repository.CottageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.repository.entities.CottageRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -37,7 +35,5 @@ public class CottageService {
     public void remove(Integer id) {
         cottageRepository.deleteById(id);
     }
-
-    public List<Cottage> findCottagesWithPictures() { return cottageRepository.findCottagesWithPictures()}
 
 }

@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.entities;
 
 import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.Cottage;

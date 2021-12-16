@@ -8,15 +8,16 @@
     </div>
     <div class="containerInfo" >
         <div class=" tab-pane container active b">
-            <div class="row-boats">
+            <div class="row-boats" v-for="(adventure, index) in adventures" :key="index">
                  <div class = "col-with-picture">
                     <div><img src="../../assets/fishingStart.jpg"  style="height:250px !important; width:300px !important"></div>
                 </div>
                 <div class="col-info">
-                    <h4 style="width: 600px;" class="text">Promotivni opis: </h4>
-                    <h4 style="width: 600px;" class="text">Naziv:  </h4>
-                    <h4 style="width: 600px;" class="text">Adresa:</h4>
-                    <h4 style="width: 600px;" class="text">Prosecna ocena:</h4>
+                    <h4 style="width: 600px;" class="text">Promotivni opis: {{adventure.promoDescription}}</h4>
+                    <h4 style="width: 600px;" class="text">Naziv:   {{adventure.name}}</h4>
+                    <h4 style="width: 600px;" class="text">Adresa: {{adventure.address.street}} {{adventure.address.number}},  {{adventure.address.city}},  {{adventure.address.country}}</h4>
+                    <h4 style="width: 600px;" class="text">Prosecna ocena: {{adventure.grade}}</h4>
+                    <h4 style="width: 600px;" class="text">Biografija instruktora: {{adventure.instructorBiografy}}</h4>
                     <button  type="button" class="btn btn-success">Detalji</button>
                 </div>
             </div>
@@ -41,6 +42,23 @@ export default {
       HeaderLogAndRegister,
       AdventureSearch
   },
+  data(){
+      return {
+          adventures: []
+      }
+   },
+
+  methods: {
+    async fetchAdventures(){
+        const res = await fetch('http://localhost:8081/api/adventures')
+        const data = await res.json()
+        return data
+    }
+  },
+
+    async created(){
+        this.adventures = await this.fetchAdventures()
+    }
 };
 
 </script>

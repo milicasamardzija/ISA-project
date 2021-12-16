@@ -1,8 +1,8 @@
-package com.example.demo.service;
+package com.example.demo.service.entities;
 
 
 import com.example.demo.model.entities.EntityClass;
-import com.example.demo.repository.EntityRepository;
+import com.example.demo.repository.entities.EntityRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

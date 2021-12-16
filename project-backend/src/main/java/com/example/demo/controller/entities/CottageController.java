@@ -1,8 +1,8 @@
-package com.example.demo.controller;
+package com.example.demo.controller.entities;
 
-import com.example.demo.dto.CottageDTO;
+import com.example.demo.dto.entities.CottageDTO;
 import com.example.demo.model.entities.Cottage;
-import com.example.demo.service.CottageService;
+import com.example.demo.service.entities.CottageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

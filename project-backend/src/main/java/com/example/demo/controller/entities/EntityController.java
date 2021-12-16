@@ -1,8 +1,8 @@
-package com.example.demo.controller;
+package com.example.demo.controller.entities;
 
-import com.example.demo.dto.EntityDTO;
+import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.model.entities.EntityClass;
-import com.example.demo.service.EntityService;
+import com.example.demo.service.entities.EntityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

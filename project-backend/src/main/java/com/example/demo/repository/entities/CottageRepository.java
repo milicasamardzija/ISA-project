@@ -1,4 +1,4 @@
-package com.example.demo.repository;
+package com.example.demo.repository.entities;
 
 import com.example.demo.model.entities.Cottage;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,5 @@ import java.util.List;
 @Repository
 public interface CottageRepository extends JpaRepository<Cottage, Integer> {
 
-    @Query("select c from Cottage c, Image i join fetch c.id = i.id ")
-    public List<Cottage> findCottagesWithPictures();
 
 }

@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.entities;
 
 import com.example.demo.enums.BoatType;
 import com.example.demo.enums.CancelationType;
