@@ -11,22 +11,24 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    User findById(int id) {
+    public User findById(int id) {
         return this.userRepository.findById(id);
     }
 
-    User findByEmail(String email) {
+    public User findByEmail(String email) {
         return this.userRepository.findByEmail(email);
     }
 
-    User save(UserRequest userRequest){
+    public User save(UserRequest userRequest){
         User u = new User();
-        u.setPassword(userRequest.getPassword());
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         u.setName(userRequest.getFirstname());
         u.setSurname(userRequest.getLastname());
         u.setRole(new Role(("ROLE_CLIENT")));

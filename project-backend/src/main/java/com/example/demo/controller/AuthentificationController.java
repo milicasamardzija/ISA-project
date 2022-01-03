@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 @Controller
 @RequestMapping(value = "api/auth")
@@ -64,25 +65,25 @@ public class AuthentificationController {
     }
 
     // Endpoint za registraciju novog korisnika
-    /*@PostMapping("/signup")
-    public ResponseEntity<RegistrationRequest> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
+    @PostMapping("/signup")
+    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
 
         User existUser = this.userService.findByEmail(userRequest.getEmail());
-        RegistrationRequest user = null;
+        User user = null;
         if (existUser != null) {
-            throw new ResourceConflictException(userRequest.getEmail(), "Username already exists");
+            //throw new ResourceConflictException(userRequest.getEmail(), "Username already exists");
         }
         try {
             user = this.userService.save(userRequest);
-            if(userRequest.getRoleName().equals("ROLE_CLIENT")) {
+            /*if(userRequest.getRole().equals("ROLE_CLIENT")) {
                 VerificationToken verificationToken = new VerificationToken(String.valueOf(UUID.randomUUID()), user);
                 mailService.sendEmail(verificationToken, userRequest.getEmail());
                 verificationTokenService.save(verificationToken);
-            }
+            }*/
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(user, HttpStatus.CREATED);
-    }*/
+    }
 
 }

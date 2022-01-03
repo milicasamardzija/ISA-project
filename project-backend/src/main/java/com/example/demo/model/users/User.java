@@ -29,13 +29,13 @@ public class User implements UserDetails {
 	private String email;
 	@Column(name = "password", nullable = false)
 	private String password;
-	@Column(name = "telephone", nullable = false)
+	@Column(name = "telephone")
 	private String telephone;
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Address address;
 	@Column(name = "enabled")
 	private boolean enabled;
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "role_id")
 	private Role role;
 	@Column(name = "last_password_reset_date")

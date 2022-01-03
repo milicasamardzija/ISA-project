@@ -12,10 +12,10 @@ import java.util.List;
 @DiscriminatorValue("CC")
 public class Client extends User{
 	
-	@Column(name = "poents", nullable = false)
+	@Column(name = "poents")
 	private int poents;
 	
-	@Column(name = "loyalityType", nullable = false)
+	//@Column(name = "loyalityType")
 	private LoyalityType loyalityType;
 
 	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

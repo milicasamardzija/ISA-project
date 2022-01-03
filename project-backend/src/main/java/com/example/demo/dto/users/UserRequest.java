@@ -6,8 +6,6 @@ public class UserRequest {
 
     private int id;
 
-    private String username;
-
     private String password;
 
     private String firstname;
@@ -16,13 +14,8 @@ public class UserRequest {
 
     private String email;
 
-    public String getUsername() {
-        return username;
-    }
+    private String role;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getPassword() {
         return password;
@@ -64,5 +57,11 @@ public class UserRequest {
         this.email = email;
     }
 
+    public String getRole() {
+        return role;
+    }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
