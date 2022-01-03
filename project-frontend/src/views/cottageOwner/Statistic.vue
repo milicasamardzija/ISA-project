@@ -1,33 +1,22 @@
-<template> 
-<div> 
-    <NavBarLogOut/>
-    <NavBarHomePage/>
-</div>    
- <div>
-    
-       
- </div>
-
-
+<template>
+  <div>
+    <NavBarLogOut />
+    <NavBarHomePage />
+  </div>
+  <div></div>
 </template>
 
 <script>
+import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
+import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 
-import NavBarLogOut from '../../components/cottageOwner/NavBarLogOut.vue'
-import NavBarHomePage from '../../components/cottageOwner/NavBarHomePage.vue'
-
-export default{
-name: "Statistic",
-components:
-{
-  
+export default {
+  name: "Statistic",
+  components: {
     NavBarLogOut,
-    NavBarHomePage
-
-}
+    NavBarHomePage,
+  },
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,23 +1,22 @@
 <template>
-    <div>
-    <NavBarLogOut/>
+  <div>
+    <NavBarLogOut />
     <HeaderStartPage />
     <NavBarAdministrator />
-    </div>
+  </div>
 </template>
 
 <script>
-import HeaderStartPage from '../../components/startPage/HeaderStartPage'
-import NavBarAdministrator from '../../components/administrator/NavBarAdministrator'
-import NavBarLogOut from '../../components/administrator/NavBarLogOut'
+import HeaderStartPage from "../../components/startPage/HeaderStartPage";
+import NavBarAdministrator from "../../components/administrator/NavBarAdministrator";
+import NavBarLogOut from "../../components/administrator/NavBarLogOut";
 
 export default {
   name: "AllRegistrationRequests",
   components: {
-      HeaderStartPage,
-      NavBarAdministrator,
-      NavBarLogOut,
+    HeaderStartPage,
+    NavBarAdministrator,
+    NavBarLogOut,
   },
 };
-
 </script>

@@ -1,109 +1,118 @@
 <template>
-    <div>
-    <HeaderLogAndRegister/>
+  <div>
+    <HeaderLogAndRegister />
     <HeaderStartPage />
     <NavBarStartPage />
     <CottageSearch />
-    </div>
-    <div class="containerInfo" >
-        <div class=" tab-pane container active">
-            <div class="row-boats" v-for="(cottage, index) in cottages" :key="index">
-                <div class = "col-with-picture">
-                        <div><img src="../../assets/cottageStart.jpg"  style="height:250px !important; width:300px !important"></div>
-                </div>
-                <div class="col-info">
-                    <h4 style="width: 600px;" class="text">Promotivni opis: {{cottage.promoDescription}} </h4>
-                    <h4 style="width: 600px;" class="text">Naziv: {{cottage.name}}  </h4>
-                    <h4 style="width: 600px;" class="text"> Adresa: {{cottage.address.street}} {{cottage.address.number}},  {{cottage.address.city}},  {{cottage.address.country}}</h4>
-                    <h4 style="width: 600px;" class="text">Ocena:  {{cottage.grade}}</h4>
-                </div>
-            </div>
+  </div>
+  <div class="containerInfo">
+    <div class="tab-pane container active">
+      <div class="row-boats" v-for="(cottage, index) in cottages" :key="index">
+        <div class="col-with-picture">
+          <div>
+            <img
+              src="../../assets/cottageStart.jpg"
+              style="height: 250px !important; width: 300px !important"
+            />
+          </div>
         </div>
+        <div class="col-info">
+          <h4 style="width: 600px" class="text">
+            Promotivni opis: {{ cottage.promoDescription }}
+          </h4>
+          <h4 style="width: 600px" class="text">Naziv: {{ cottage.name }}</h4>
+          <h4 style="width: 600px" class="text">
+            Adresa: {{ cottage.address.street }} {{ cottage.address.number }},
+            {{ cottage.address.city }}, {{ cottage.address.country }}
+          </h4>
+          <h4 style="width: 600px" class="text">Ocena: {{ cottage.grade }}</h4>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-import HeaderStartPage from '../../components/startPage/HeaderStartPage.vue'
-import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue'
-import HeaderLogAndRegister from '../../components/startPage/HeaderLogAndRegister.vue'
-import CottageSearch from '../../components/client/cottages,boats,adventures/CottageSearch.vue'
+import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
+import NavBarStartPage from "../../components/startPage/NavBarStartPage.vue";
+import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
+import CottageSearch from "../../components/client/cottages,boats,adventures/CottageSearch.vue";
 
 export default {
   name: "CottagesStartPage",
   components: {
-      HeaderStartPage,
-      NavBarStartPage,
-      HeaderLogAndRegister,
-      CottageSearch
+    HeaderStartPage,
+    NavBarStartPage,
+    HeaderLogAndRegister,
+    CottageSearch,
   },
 
-  data(){
-      return {
-          cottages: []
-      }
-   },
+  data() {
+    return {
+      cottages: [],
+    };
+  },
 
   methods: {
-    async fetchCottages(){
-        const res = await fetch('http://localhost:8081/api/cottages')
-        const data = await res.json()
-        return data
-    }
+    async fetchCottages() {
+      const res = await fetch("http://localhost:8081/api/cottages");
+      const data = await res.json();
+      return data;
+    },
   },
 
-    async created(){
-        this.cottages = await this.fetchCottages()
-    }
-}
+  async created() {
+    this.cottages = await this.fetchCottages();
+  },
+};
 </script>
 
 <style scoped>
-    .row-boats {
-    display: flex;
-    }  
+.row-boats {
+  display: flex;
+}
 
-    .text {
-    text-align: left;
-    font-size: 15px;
-    font-weight: 600;
-    margin-top: 1%;
-    margin-bottom: 1%;
-    }
+.text {
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
 
-    .col-info {
-        margin-left: 30px;
-        margin-top: 10px;
-    }
+.col-info {
+  margin-left: 30px;
+  margin-top: 10px;
+}
 
-    .row {
-    width: 660%;
-    padding-left: 60px;
-    height: 10%;
-    margin-top: 100px;
-    margin-left: 5000px;
-    margin-right: 500px;
-    opacity: 1.2;
-    border-radius: 10px;
-    align-content: center;
-    background-color: rgba(255, 255, 255, 0.288);
-    box-shadow: 0 5px 4px rgb(0 0 0 / 30%), 0 1px 1px rgb(0 0 0 / 22%);
-    }
-    /* kartica u okviru stavke menija  */
-    .containerInfo {
-    width: 97%;
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-right: 10px;
-    opacity: 1;
-    border-radius: 10px;
-    align-content: center;
-    position: relative;
-    background-color: fff;
-    box-shadow: 0 19px 40px rgb(0 0 0 / 30%), 0 15px 12px rgb(0 0 0 / 22%);
-    }
-    .col-with-picture{
-    margin-top: 1%;
-    margin-bottom: 1%;
-    }
-
+.row {
+  width: 660%;
+  padding-left: 60px;
+  height: 10%;
+  margin-top: 100px;
+  margin-left: 5000px;
+  margin-right: 500px;
+  opacity: 1.2;
+  border-radius: 10px;
+  align-content: center;
+  background-color: rgba(255, 255, 255, 0.288);
+  box-shadow: 0 5px 4px rgb(0 0 0 / 30%), 0 1px 1px rgb(0 0 0 / 22%);
+}
+/* kartica u okviru stavke menija  */
+.containerInfo {
+  width: 97%;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 10px;
+  opacity: 1;
+  border-radius: 10px;
+  align-content: center;
+  position: relative;
+  background-color: fff;
+  box-shadow: 0 19px 40px rgb(0 0 0 / 30%), 0 15px 12px rgb(0 0 0 / 22%);
+}
+.col-with-picture {
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
 </style>
