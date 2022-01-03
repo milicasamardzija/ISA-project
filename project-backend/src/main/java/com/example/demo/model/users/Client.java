@@ -15,7 +15,7 @@ public class Client extends User{
 	@Column(name = "poents")
 	private int poents;
 	
-	//@Column(name = "loyalityType")
+	@Column(name = "loyalityType")
 	private LoyalityType loyalityType;
 
 	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
