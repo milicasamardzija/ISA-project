@@ -127,19 +127,19 @@
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Unesite Vase ime"
+                  placeholder="Unesite Vase ime" v-model="newUser.firstname"
                 />
                 <label for="name">Prezime</label>
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Unesite Vase prezime"
+                  placeholder="Unesite Vase prezime" v-model="newUser.lastname"
                 />
                 <label for="name">Email </label>
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Unesite Vas mejl"
+                  placeholder="Unesite Vas mejl" v-model="newUser.email"
                 />
 
                 <label for="text">Adresa</label>
@@ -150,7 +150,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Ulica"
+                          placeholder="Ulica" 
                         />
                       </td>
 
@@ -206,7 +206,7 @@
                   type="password"
                   class="form-control"
                   id="psw"
-                  placeholder="Unesite lozinku"
+                  placeholder="Unesite lozinku" v-model="newUser.password"
                 />
               </div>
               <div class="form-group">
@@ -221,7 +221,7 @@
                   placeholder="Potvrdite lozinku"
                 />
               </div>
-              <button type="submit" class="btn btn-success btn-block">
+              <button type="submit" class="btn btn-success btn-block" @click="register()">
                 <span></span> Registruj se
               </button>
             </form>
@@ -247,6 +247,7 @@ export default {
     return {
       email: "",
       password: "",
+      newUser: {firstname: "", lastname: "", email:"", password: "", role: "ROLE_CLIENT"}
     };
   },
   computed: {
@@ -272,6 +273,19 @@ export default {
     } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
       this.$router.push({ name: "HomePageInProfil" });
     } 
+  },
+  async register(){
+    const res = await fetch('http://localhost:8081/api/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'},
+        body: JSON.stringify(this.newUser)
+    })
+    const data = await res.json()
+    console.log(data)
+    if (data != null){
+      alert("Uspesno ste se registrovali!")
+    }
   }
 }
 };
