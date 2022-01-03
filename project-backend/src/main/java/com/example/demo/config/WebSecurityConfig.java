@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import com.example.demo.security.RestAuthenticationEntryPoint;
+import com.example.demo.security.TokenAuthenticationFilter;
 import com.example.demo.service.users.CustomUserDetailsService;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated().and()
 
 
-                .cors().and();
-                //.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);
+                .cors().and()
+                .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);
 
         http.csrf().disable();
     }
