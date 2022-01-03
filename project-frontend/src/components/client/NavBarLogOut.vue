@@ -6,7 +6,7 @@
       </a>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item" style="margin-right: 15px">
-          <button type="button" class="btn btn-outline-success">
+          <button type="button" class="btn btn-outline-success" @click="logOut">
             Odjavi se
           </button>
         </li>
@@ -14,3 +14,18 @@
     </div>
   </nav>
 </template>
+
+<script>
+export default{
+  methods:{
+    logOut(){
+      localStorage.setItem("token", "")
+      localStorage.setItem("role", "")
+      console.log(localStorage.getItem("token"))
+      console.log(localStorage.getItem("role"))
+      this.$router.push({ name: "BoatsStartPage" });
+    }
+  }
+}
+</script>
+
