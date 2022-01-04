@@ -75,11 +75,9 @@ public class AuthentificationController {
         }
         try {
             user = this.userService.save(userRequest);
-            /*if(userRequest.getRole().equals("ROLE_CLIENT")) {
-                VerificationToken verificationToken = new VerificationToken(String.valueOf(UUID.randomUUID()), user);
-                mailService.sendEmail(verificationToken, userRequest.getEmail());
-                verificationTokenService.save(verificationToken);
-            }*/
+            if(userRequest.getRole().equals("ROLE_CLIENT")) {
+               //ovde dodati klijenta umesto gore usera
+            }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
