@@ -29,7 +29,7 @@
               Registruj se
             </button>
           </li>
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <button type="button" class="btn btn-success">
               <router-link to="/client">KLIJENT</router-link>
             </button>
@@ -45,7 +45,7 @@
                 >Fishing instructor</router-link
               >
             </button>
-          </li>
+          </li>-->
         </ul>
       </div>
     </nav>
