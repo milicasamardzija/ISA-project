@@ -37,10 +37,10 @@ public class EntityClass {
 	@Column(name="promoDescription", unique=false, nullable=false)
 	private String promoDescription; //promotivni opis
 	
-	@OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Image> image;
 	
-	@OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<AdditionalService> additionalServices;
 	
 	@Column(name="rules", unique=false, nullable=false)

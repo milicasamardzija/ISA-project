@@ -1,12 +1,16 @@
 package com.example.demo.service.entities;
 
+import com.example.demo.dto.entities.CottageSearchDTO;
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.repository.entities.CottageRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 @Service
 public class CottageService {
 
@@ -34,6 +38,22 @@ public class CottageService {
 
     public void remove(Integer id) {
         cottageRepository.deleteById(id);
+    }
+
+    public List<Cottage> searchCottages(CottageSearchDTO searchParam){
+        List<Cottage> ret = new ArrayList<>();
+
+        for (Cottage cottage : this.findAll()){
+            if (cottage.getName().toLowerCase().contains(searchParam.getName().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().contains(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().contains(searchParam.getCity().toLowerCase())){
+                ret.add(cottage);
+            }
+        }
+
+       /* if (ret.size() == 0){
+            ret = this.findAll();
+        }*/
+
+        return  ret;
     }
 
 }
