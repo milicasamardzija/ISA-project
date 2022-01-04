@@ -270,6 +270,7 @@ export default {
     console.log(localStorage.getItem("role"))
     if (localStorage.getItem("role") == "ROLE_CLIENT") {
       this.$router.push({ name: "ClientAllCottages" });
+      this.$router.go(0);
     } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
       this.$router.push({ name: "HomePageInProfil" });
     } 
