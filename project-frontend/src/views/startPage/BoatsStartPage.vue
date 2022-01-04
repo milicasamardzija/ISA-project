@@ -3,8 +3,15 @@
     <HeaderLogAndRegister />
     <HeaderStartPage />
     <NavBarStartPage />
-    <BoatSearch />
   </div>
+  <div style="width: 1000px;">
+      <nav class="navbar navbar-expand-sm navbar-dark">
+          <input class="form-control mr-sm-2" type="text" placeholder="Naziv" v-model="name"/>
+          <input class="form-control mr-sm-2" type="text" placeholder="Ulica" v-model="street"/>
+          <input class="form-control mr-sm-2" type="text" placeholder="Grad" v-model="city"/>
+          <button class="btn btn-success" type="submit" @click="search()">Pretrazi</button>
+      </nav>
+    </div>
   <div class="containerInfo">
     <div class="tab-pane container active">
       <div class="row-boats" v-for="(boat, index) in boats" :key="index">
@@ -37,7 +44,6 @@
 <script>
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarStartPage from "../../components/startPage/NavBarStartPage.vue";
-import BoatSearch from "../../components/client/cottages,boats,adventures/BoatSearch.vue";
 import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
 
 export default {
@@ -45,12 +51,14 @@ export default {
   components: {
     HeaderStartPage,
     NavBarStartPage,
-    BoatSearch,
     HeaderLogAndRegister,
   },
   data() {
     return {
       boats: [],
+      name:"",
+      street:"",
+      city:""
     };
   },
 
@@ -60,6 +68,16 @@ export default {
       const data = await res.json();
       return data;
     },
+    async search(){
+      const res = await fetch('http://localhost:8081/api/boats/search', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'},
+          body: JSON.stringify({name: this.name, street: this.street, city: this.city})
+      })
+      const data = await res.json()
+      this.boats = data
+    }
   },
 
   async created() {

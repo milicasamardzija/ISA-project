@@ -4,8 +4,15 @@
       <HeaderLogAndRegister />
       <HeaderStartPage />
       <NavBarStartPage />
-      <AdventureSearch />
     </div>
+    <div style="width: 1000px;">
+    <nav class="navbar navbar-expand-sm navbar-dark">
+        <input class="form-control mr-sm-2" type="text" placeholder="Naziv" v-model="name"/>
+        <input class="form-control mr-sm-2" type="text" placeholder="Ulica" v-model="street"/>
+        <input class="form-control mr-sm-2" type="text" placeholder="Grad" v-model="city"/>
+        <button class="btn btn-success" type="submit" @click="search()">Pretrazi</button>
+    </nav>
+  </div>
     <div class="containerInfo">
       <div class="tab-pane container active b">
         <div
@@ -39,7 +46,6 @@
             <h4 style="width: 600px" class="text">
               Biografija instruktora: {{ adventure.instructorBiografy }}
             </h4>
-            <button type="button" class="btn btn-success">Detalji</button>
           </div>
         </div>
       </div>
@@ -51,7 +57,6 @@
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarStartPage from "../../components/startPage/NavBarStartPage.vue";
 import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
-import AdventureSearch from "../../components/client/cottages,boats,adventures/AdventureSearch.vue";
 
 export default {
   name: "AdventuresStartPage",
@@ -59,11 +64,13 @@ export default {
     HeaderStartPage,
     NavBarStartPage,
     HeaderLogAndRegister,
-    AdventureSearch,
   },
   data() {
     return {
       adventures: [],
+      name:"",
+      street:"",
+      city:""
     };
   },
 
@@ -73,6 +80,16 @@ export default {
       const data = await res.json();
       return data;
     },
+    async search(){
+      const res = await fetch('http://localhost:8081/api/adventures/search', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'},
+          body: JSON.stringify({name: this.name, street: this.street, city: this.city})
+      })
+      const data = await res.json()
+      this.adventures = data
+    }
   },
 
   async created() {

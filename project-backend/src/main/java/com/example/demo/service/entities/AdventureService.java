@@ -1,11 +1,13 @@
 package com.example.demo.service.entities;
 
+import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.repository.entities.AdventureRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,4 +37,15 @@ public class AdventureService {
         adventureRepository.deleteById(id);
     }
 
+    public List<Adventure> searchAdventures(SearchDTO searchParam) {
+        List<Adventure> ret = new ArrayList<>();
+
+        for (Adventure adventure : this.findAll()){
+            if (adventure.getName().toLowerCase().contains(searchParam.getName().toLowerCase()) && adventure.getAddress().getCity().toLowerCase().contains(searchParam.getCity().toLowerCase()) && adventure.getAddress().getStreet().toLowerCase().contains(searchParam.getStreet().toLowerCase())){
+                ret.add(adventure);
+            }
+        }
+
+        return  ret;
+    }
 }

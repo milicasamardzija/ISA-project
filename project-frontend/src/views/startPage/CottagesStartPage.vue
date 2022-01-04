@@ -4,7 +4,7 @@
     <HeaderStartPage />
     <NavBarStartPage />
   </div>
-  <div>
+  <div style="width: 1000px;">
     <nav class="navbar navbar-expand-sm navbar-dark">
         <input class="form-control mr-sm-2" type="text" placeholder="Naziv" v-model="name"/>
         <input class="form-control mr-sm-2" type="text" placeholder="Ulica" v-model="street"/>

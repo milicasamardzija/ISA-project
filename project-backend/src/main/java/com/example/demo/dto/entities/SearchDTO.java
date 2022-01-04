@@ -1,6 +1,6 @@
 package com.example.demo.dto.entities;
 
-public class CottageSearchDTO {
+public class SearchDTO {
 
     private String name;
     private String street;
