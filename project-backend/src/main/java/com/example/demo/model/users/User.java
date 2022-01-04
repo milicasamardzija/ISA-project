@@ -72,6 +72,18 @@ public class User implements UserDetails {
 		this.role = role;
 		this.lastPasswordResetDate = lastPasswordResetDate;
 	}
+
+	public User(String name, String surname, String email, String password, String telephone, Address address) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.password = password;
+		this.telephone = telephone;
+		this.address = address;
+	}
+
+
 	public int getId() {
 		return id;
 	}
@@ -167,13 +179,6 @@ public class User implements UserDetails {
 		return role;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
