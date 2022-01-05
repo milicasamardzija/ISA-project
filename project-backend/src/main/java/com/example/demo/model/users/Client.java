@@ -18,7 +18,45 @@ public class Client extends User{
 	@Column(name = "loyalityType", nullable = true)
 	private LoyalityType loyalityType;
 
+	@Column(name = "penals", nullable = true)
+	private int penals;
+
 	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Reservation> reservations;
 
+	public int getPoents() {
+		return poents;
+	}
+
+	public void setPoents(int poents) {
+		this.poents = poents;
+	}
+
+	public LoyalityType getLoyalityType() {
+		return loyalityType;
+	}
+
+	public void setLoyalityType(LoyalityType loyalityType) {
+		this.loyalityType = loyalityType;
+	}
+
+	public int getPenals() {
+		return penals;
+	}
+
+	public void setPenals(int penals) {
+		this.penals = penals;
+	}
+
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(List<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+
+	public Client(){
+		super();
+	}
 }
