@@ -15,18 +15,17 @@
   <div class="containerInfo">
     <div class="tab-pane container active">
       <div class="row-boats" v-for="(cottage, index) in cottages" :key="index">
-        <div class="col-with-picture">
+        <div class="col-with-picture" v-if="cottage.images.length != 0">
           <div>
-            <img
-              src="../../assets/cottageStart.jpg"
+            <img v-bind:src="'../../assets/' + cottage.images[0].filePath"
               style="height: 250px !important; width: 300px !important"
             />
           </div>
         </div>
         <div class="col-info">
-          <h4 style="width: 600px" class="text">
-            Promotivni opis: {{ cottage.promoDescription }}
-          </h4>
+          <h4 style="width: 600px" class="text"  >
+            Promotivni opis: {{ cottage.promoDescription}}
+          </h4> 
           <h4 style="width: 600px" class="text">Naziv: {{ cottage.name }}</h4>
           <h4 style="width: 600px" class="text">
             Adresa: {{ cottage.address.street }} {{ cottage.address.number }},
@@ -57,7 +56,7 @@ export default {
       cottages: [],
       name:"",
       street:"",
-      city:""
+      city:"",
     };
   },
 
@@ -77,6 +76,7 @@ export default {
       const data = await res.json()
       this.cottages = data
     }
+  
   },
 
   async created() {

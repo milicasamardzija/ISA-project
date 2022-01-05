@@ -1,21 +1,24 @@
 package com.example.demo.dto.entities;
 
 import com.example.demo.model.entities.Cottage;
+import com.example.demo.model.entities.Image;
 import com.example.demo.model.users.Address;
 import com.example.demo.model.users.CottageOwner;
 
 import java.util.List;
+import java.util.Set;
 
 public class CottageDTO {
 
-        private int roomsNumber;
-        private int bedsByRoom;
-        private int id;
-        private String name;
-        private Address address;
-        private String promoDescription; //promotivni opis
-        private String rules;
-        private double grade;
+    private int roomsNumber;
+    private int bedsByRoom;
+    private int id;
+    private String name;
+    private Address address;
+    private String promoDescription; //promotivni opis
+    private String rules;
+    private double grade;
+    private Set<Image> images;
 
     public CottageDTO() {
 
@@ -31,6 +34,7 @@ public class CottageDTO {
         this.rules = cottage.getRules();
         this.price = cottage.getPrice();
         this.grade = cottage.getGrade();
+        this.images = cottage.getImage();
     }
 
     public int getId() {
@@ -105,6 +109,22 @@ public class CottageDTO {
         }
 
     public void setBedsByRoom(int bedsByRoom) { this.bedsByRoom = bedsByRoom; }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
+    }
+
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<Image> images) {
+        this.images = images;
+    }
 
     public static class CottageOwnerDTO {
 

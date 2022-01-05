@@ -24,7 +24,7 @@ public class Image {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "entity_id")
-	@JsonIgnoreProperties("entities")
+	@JsonIgnoreProperties("image")
 	private EntityClass entity;
 
 	public Image(int id, String filePath, EntityClass entity) {

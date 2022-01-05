@@ -6,13 +6,13 @@
       <NavBarStartPage />
     </div>
     <div style="width: 1000px;">
-    <nav class="navbar navbar-expand-sm navbar-dark">
-        <input class="form-control mr-sm-2" type="text" placeholder="Naziv" v-model="name"/>
-        <input class="form-control mr-sm-2" type="text" placeholder="Ulica" v-model="street"/>
-        <input class="form-control mr-sm-2" type="text" placeholder="Grad" v-model="city"/>
-        <button class="btn btn-success" type="submit" @click="search()">Pretrazi</button>
-    </nav>
-  </div>
+      <nav class="navbar navbar-expand-sm navbar-dark">
+          <input class="form-control mr-sm-2" type="text" placeholder="Naziv" v-model="name"/>
+          <input class="form-control mr-sm-2" type="text" placeholder="Ulica" v-model="street"/>
+          <input class="form-control mr-sm-2" type="text" placeholder="Grad" v-model="city"/>
+          <button class="btn btn-success" type="submit" @click="search()">Pretrazi</button>
+      </nav>
+    </div>
     <div class="containerInfo">
       <div class="tab-pane container active b">
         <div
