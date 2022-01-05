@@ -13,15 +13,15 @@
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#cottages"
-              >Cottages</a
+              >Vikendice</a
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#boats">Boats</a>
+            <a class="nav-link" data-toggle="tab" href="#boats">Brodovi</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#adventures"
-              >Adventures</a
+              >Avanture</a
             >
           </li>
         </ul>
@@ -30,15 +30,81 @@
         <div class="tab-content">
           <div id="cottages" class="container tab-pane active">
             <br />
-            <ReservationHistoryCottagesTable />
+            <table class="table table-light table-striped table-hover" v-if="reservationsCottages.length != 0">
+              <thead>
+                <tr>
+                  <th>Datum pocetka</th>
+                  <th>Datum kraja</th>
+                  <th>Cena</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  v-for="(reservation, index) in reservationsCottages" :key="index">
+                  <td>{{reservation.dateStart}}</td>
+                  <td>{{reservation.dateEnd}}</td>
+                  <td>{{reservation.price}}</td>
+                  <td><button class="btn btn-success">Napisi zalbu</button></td>
+                  <td><button class="btn btn-success">Oceni uslugu</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div v-if="reservationsCottages.length === 0">
+            <p> Nemate nijednu rezervaciju. </p>
           </div>
           <div id="boats" class="container tab-pane fade">
             <br />
-            <ReservationHistoryBoatsTable />
+             <table class="table table-light table-striped table-hover" v-if="reservationsBoats.length != 0">
+              <thead>
+                <tr>
+                  <th>Datum pocetka</th>
+                  <th>Datum kraja</th>
+                  <th>Cena</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  v-for="(reservation, index) in reservationsBoats" :key="index">
+                  <td>{{reservation.dateStart}}</td>
+                  <td>{{reservation.dateEnd}}</td>
+                  <td>{{reservation.price}}</td>
+                  <td><button class="btn btn-success">Napisi zalbu</button></td>
+                  <td><button class="btn btn-success">Oceni uslugu</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <div v-if="reservationsBoats.length === 0">
+              <p> Nemate nijednu rezervaciju. </p>
+            </div>
           </div>
           <div id="adventures" class="container tab-pane fade">
             <br />
-            <ReservationHistoryAdventuresTable />
+            <table class="table table-light table-striped table-hover" v-if="reservationsAdventures.length != 0">
+              <thead>
+                <tr>
+                  <th>Datum pocetka</th>
+                  <th>Datum kraja</th>
+                  <th>Cena</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  v-for="(reservation, index) in reservationsAdventures" :key="index">
+                  <td>{{reservation.dateStart}}</td>
+                  <td>{{reservation.dateEnd}}</td>
+                  <td>{{reservation.price}}</td>
+                  <td><button class="btn btn-success">Napisi zalbu</button></td>
+                  <td><button class="btn btn-success">Oceni uslugu</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <div v-if="reservationsAdventures.length === 0">
+              <p> Nemate nijednu rezervaciju. </p>
+            </div>
           </div>
         </div>
       </div>
@@ -50,9 +116,6 @@
 import NavBarLogOut from "../../../components/client/NavBarLogOut.vue";
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 import HeaderStartPage from "../../../components/startPage/HeaderStartPage.vue";
-import ReservationHistoryCottagesTable from "../../../components/client/reservations/ReservationHistoryCottagesTable.vue";
-import ReservationHistoryBoatsTable from "../../../components/client/reservations/ReservationHistoryBoatsTable.vue";
-import ReservationHistoryAdventuresTable from "../../../components/client/reservations/ReservationHistoryAdventuresTable.vue";
 
 export default {
   name: "HistoryReservation",
@@ -60,9 +123,44 @@ export default {
     HeaderStartPage,
     NavBarClient,
     NavBarLogOut,
-    ReservationHistoryCottagesTable,
-    ReservationHistoryBoatsTable,
-    ReservationHistoryAdventuresTable,
+  },
+  data(){
+    return{
+      reservationsCottages: [],
+      reservationsBoats: [],
+      reservationsAdventures: []
+    }
+  },
+   methods:{
+    async fetchCottageReservations() {
+      const headers = { 
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+      }
+      const res = await fetch("http://localhost:8081/api/reservation/historyReservationsCottages", {headers});
+      const data = await res.json();
+      return data;
+    },
+    async fetchBoatsReservations() {
+      const headers = { 
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+      }
+      const res = await fetch("http://localhost:8081/api/reservation/historyReservationsBoats", {headers});
+      const data = await res.json();
+      return data;
+    },
+    async fetchAdventuresReservations() {
+      const headers = { 
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+      }
+      const res = await fetch("http://localhost:8081/api/reservation/historyReservationsAdventures", {headers});
+      const data = await res.json();
+      return data;
+    }
+  },
+   async created() {
+    this.reservationsCottages = await this.fetchCottageReservations();
+    this.reservationsBoats = await this.fetchBoatsReservations();
+    this.reservationsAdventures = await this.fetchAdventuresReservations();
   },
 };
 </script>

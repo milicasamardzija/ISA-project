@@ -50,6 +50,21 @@ public class ReservationDTO {
         this.price = price;
     }
 
+    public EntityType getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
+
+    public Boolean getCanceled() {
+        return isCanceled;
+    }
+
+    public void setCanceled(Boolean canceled) {
+        isCanceled = canceled;
+    }
 
     public ReservationDTO(Reservation reservation) {
         this.id = reservation.getId();

@@ -11,38 +11,21 @@
       <table class="table table-light table-striped table-hover">
         <thead>
           <tr>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Email</th>
-            <th>Date</th>
-            <th></th>
+            <th>Objekat rezervacije</th>
+            <th>Datum pocetka</th>
+            <th>Datum kraja</th>
+            <th>Cena</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>John</td>
-            <td>Doe</td>
-            <td>john@example.com</td>
-            <td>20.01.2022.</td>
-            <td><button class="btn btn-success">Details</button></td>
-            <td><button class="btn btn-danger">Cancel</button></td>
-          </tr>
-          <tr>
-            <td>Mary</td>
-            <td>Moe</td>
-            <td>mary@example.com</td>
-            <td>20.01.2022.</td>
-            <td><button class="btn btn-success">Details</button></td>
-            <td><button class="btn btn-danger">Cancel</button></td>
-          </tr>
-          <tr>
-            <td>July</td>
-            <td>Dooley</td>
-            <td>july@example.com</td>
-            <td>20.01.2022.</td>
-            <td><button class="btn btn-success">Details</button></td>
-            <td><button class="btn btn-danger">Cancel</button></td>
+          <tr  v-for="(reservation, index) in reservations"
+          :key="index">
+            <td>{{reservation.entityType}}</td>
+            <td>{{reservation.dateStart}}</td>
+            <td>{{reservation.dateEnd}}</td>
+            <td>{{reservation.price}}</td>
+            <td v-if="reservation.isCanceled != false"><button class="btn btn-danger">Cancel</button></td>
           </tr>
         </tbody>
       </table>
@@ -61,6 +44,24 @@ export default {
     HeaderStartPage,
     NavBarClient,
     NavBarLogOut,
+  },
+  data(){
+    return {
+      reservations: []
+    }
+  },
+  methods:{
+    async fetchScheduledReservations() {
+      const headers = { 
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+      }
+      const res = await fetch("http://localhost:8081/api/reservation/scheduledReservations", {headers});
+      const data = await res.json();
+      return data;
+    }
+  },
+   async created() {
+    this.reservations = await this.fetchScheduledReservations();
   },
 };
 </script>
