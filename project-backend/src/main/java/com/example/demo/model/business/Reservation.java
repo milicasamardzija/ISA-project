@@ -1,5 +1,7 @@
 package com.example.demo.model.business;
 
+import com.example.demo.enums.EntityType;
+import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 
 import javax.persistence.*;
@@ -23,9 +25,19 @@ public class Reservation {
     @Column(name="price", unique=false, nullable=false)
     private double price;
 
+    @Column(name="entity_type")
+    private EntityType entityType;
+
+    @Column(name="is_canceled",nullable=false)
+    private Boolean isCanceled = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private Client client;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "entity_id")
+    private EntityClass entity;
 
     public Reservation() {
 
@@ -77,5 +89,29 @@ public class Reservation {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public EntityType getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
+
+    public Boolean getCanceled() {
+        return isCanceled;
+    }
+
+    public void setCanceled(Boolean canceled) {
+        isCanceled = canceled;
+    }
+
+    public EntityClass getEntity() {
+        return entity;
+    }
+
+    public void setEntity(EntityClass entity) {
+        this.entity = entity;
     }
 }
