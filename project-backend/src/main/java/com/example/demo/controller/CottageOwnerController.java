@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.dto.entities.CottageDTO;
+import com.example.demo.dto.entities.CottageOwnerDTO;
 import com.example.demo.model.users.CottageOwner;
 import com.example.demo.service.CottageOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +30,11 @@ public class CottageOwnerController {
 
 
     @GetMapping
-    public ResponseEntity<List<CottageDTO.CottageOwnerDTO>> getAll(){
+    public ResponseEntity<List<CottageOwnerDTO>> getAll(){
         List<CottageOwner> allOwners = cottageOwnerService.findAll();
-        List<CottageDTO.CottageOwnerDTO> cottages = new ArrayList<>();
+        List<CottageOwnerDTO> cottages = new ArrayList<>();
         for(CottageOwner owner : allOwners ) {
-           cottages.add(new CottageDTO.CottageOwnerDTO(owner));
+           cottages.add(new CottageOwnerDTO(owner));
         }
         return  new ResponseEntity<>(cottages, HttpStatus.OK);
     }
