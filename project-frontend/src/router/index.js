@@ -14,6 +14,7 @@ import MyProfile from "../views/cottageOwner/MyProfile";
 import Statistic from "../views/cottageOwner/Statistic";
 import EditProfile from "../views/cottageOwner/EditProfile";
 import NewCottage from "../views/cottageOwner/NewCottage";
+import EditCottage from "../views/cottageOwner/EditCottage";
 
 import AllRegistrationRequests from "../views/administrator/AllRegistrationRequests";
 import MyService from "../views/fishingInstructor/MyService";
@@ -128,6 +129,11 @@ const routes = [
     path: "/cottageProfile",
     name: "CottageProfile",
     component: CottageProfile,
+  },
+  {
+    path: "/editCottage",
+    name: "EditCottage",
+    component: EditCottage,
   },
 ];
 

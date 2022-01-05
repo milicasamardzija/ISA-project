@@ -8,8 +8,18 @@
       <div class="row"> 
         <div class="column" style="width: 24rem; height: 3rem">   <h4> pakao od zivota</h4></div>
         <div class="column" style="width: 40rem; height: 3rem"><h4> Na kraju sveta 45, Negde Daleko</h4> </div>
-        <div class="column" style="width: 18rem;  height: 3rem"> <button class="btn btn-success"> Izmeni vikendicu</button></div>
-      <div class="column" style="width: 20rem;  height: 3rem"> <button class="btn btn-success"> Dodaj akciju</button></div>
+        <div class="column" style="width: 18rem;  height: 3rem"> <button class="btn btn-success">   <router-link
+                style="
+                  text-decoration: none !important;
+                  display: inline-block;
+                  color: white;
+                "
+                to="/editCottage"
+              >Izmeni vikendicu
+               </router-link
+              > </button></div>
+      <div class="column" style="width: 30rem;  height: 3rem"> <button class="btn btn-success"> Dodaj akciju</button> <button class="btn btn-success"> Pretplati se</button></div>
+      
      
       </div>
     

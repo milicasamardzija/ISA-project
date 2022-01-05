@@ -3,6 +3,7 @@
     <NavBarLogOut />
     <NavBarHomePage />
   </div>
+  
   <div class="form-group containerInfo">
     <section class="mb-5">
       <!--Section heading-->
@@ -86,7 +87,26 @@
               </div>
               <!--Grid column-->
               <div class="col-md-6">
-                <div class="md-form mb-0"></div>
+                <div class="md-form mb-0">
+                  <div class="file-loading">  
+                       <input id="input-b6" name="input-b6[]" type="file" accept="image/jpg, image/png " multiple></div>
+                </div>
+              </div>
+            </div>
+
+                 <div class="row" style="margin-bottom: 1%">
+              <!--Grid column-->
+              <div class="col-md-2">
+                <div class="md-form mb-0">
+                  <label for="name" class=""></label>
+                </div>
+              </div>
+              <!--Grid column  OVDE DA SE IZLISTAJU UPLOADOVANE SLIKE-->
+              <div class="col-md-6">
+                <div class="md-form mb-0">
+                  <div >  
+                     </div>
+                </div>
               </div>
             </div>
             <!--Grid row-->
@@ -239,17 +259,27 @@
   <div></div>
 </template>
 
-<script>
+<script >
+
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
+import $ from 'jquery'
+
 
 export default {
   name: "NewCottage",
   components: {
     NavBarLogOut,
     NavBarHomePage,
+    
   },
 };
+$(document).ready(function() {
+      $("#input-b6").fileinput({     
+           showUpload:true,      
+             dropZoneEnabled: false,   
+                  maxFileCount: 7,  
+                        mainClass: "input-group-lg"    });});
 </script>
 
 <style scoped>
