@@ -7,7 +7,19 @@
   <div class="card">
     <div class="container">
       <h2><i>Zakazane rezervacije:</i></h2>
-      `
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Sortitaj
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#" @click="sort('CenaRastuce')">Cena - rastuce</a>
+          <a class="dropdown-item" href="#" @click="sort('CenaOpadajuce')">Cena - opadajuce</a>
+          <a class="dropdown-item" href="#" @click="sort('DatumRastuce')">Datum - rastuce</a>
+          <a class="dropdown-item" href="#" @click="sort('DatumOpadajuce')">Datum - opadajuce</a>
+          <a class="dropdown-item" href="#" @click="sort('TrajanjeRastuce')">Trajanje - rastuce</a>
+          <a class="dropdown-item" href="#" @click="sort('TrajanjeOpadajuce')">Trajanje - rastuce</a>
+        </div>
+      </div>
       <table class="table table-light table-striped table-hover" style="margin-bottom:80px">
         <thead>
           <tr>
@@ -19,8 +31,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr  v-for="(reservation, index) in reservations"
-          :key="index">
+          <tr  v-for="(reservation, index) in reservations" :key="index">
             <td>{{reservation.entityType}}</td>
             <td>{{reservation.dateStart}}</td>
             <td>{{reservation.dateEnd}}</td>
@@ -45,6 +56,7 @@ export default {
     NavBarClient,
     NavBarLogOut,
   },
+  
   data(){
     return {
       reservations: []
@@ -58,11 +70,18 @@ export default {
       const res = await fetch("http://localhost:8081/api/reservation/scheduledReservations", {headers});
       const data = await res.json();
       return data;
-    }
+    },
+    sort(sortParam){
+      if(sortParam == 'CenaRastuce') this.reservations.sort(function(a, b){return a.price-b.price});
+      if(sortParam == 'CenaOpadajuce') this.reservations.sort(function(a, b){return b.price-a.price});
+      if(sortParam == 'DatumRastuce') this.reservations.sort(function(a, b){return a.dateStart-b.dateStart});
+      if(sortParam == 'DatumOpadajuce') this.reservations.sort(function(a, b){return b.dateStart-a.dateStart});
+    },
   },
    async created() {
     this.reservations = await this.fetchScheduledReservations();
-  },
+  }
+
 };
 </script>
 
