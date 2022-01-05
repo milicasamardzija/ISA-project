@@ -98,4 +98,5 @@ public class EntityDTO {
     public void setGrade(double grade) {
         this.grade = grade;
     }
+
 }

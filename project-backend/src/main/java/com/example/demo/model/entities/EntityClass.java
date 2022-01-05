@@ -2,21 +2,12 @@ package com.example.demo.model.entities;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.example.demo.model.business.Reservation;
 import com.example.demo.model.users.Address;
+import com.example.demo.model.users.Client;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -54,6 +45,15 @@ public class EntityClass {
 
 	@Column(name="grade", unique=false, nullable=false)
 	private double grade;
+
+	@OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//@JsonIgnoreProperties("entity")
+	@JsonIgnore
+	private Set<Reservation> reservations;
+
+	@ManyToMany(mappedBy = "subscribedEntities")
+	@JsonIgnore
+	private Set<Client> subscribedClients;
 	
 	public EntityClass() {
 		super();
@@ -145,4 +145,23 @@ public class EntityClass {
 		this.grade = grade;
 	}
 
+	public void setGrade(double grade) {
+		this.grade = grade;
+	}
+
+	public Set<Client> getSubscribedClients() {
+		return subscribedClients;
+	}
+
+	public void setSubscribedClients(Set<Client> subscribedClients) {
+		this.subscribedClients = subscribedClients;
+	}
+
+	public Set<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
+	}
 }

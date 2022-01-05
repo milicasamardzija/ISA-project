@@ -39,6 +39,12 @@ public class Cottage extends EntityClass {
 	public void setBedsByRoom(int bedsByRoom) {
 		this.bedsByRoom = bedsByRoom;
 	}
-	
-	
+
+	public CottageOwner getCottageOwner() {
+		return cottageOwner;
+	}
+
+	public void setCottageOwner(CottageOwner cottageOwner) {
+		this.cottageOwner = cottageOwner;
+	}
 }

@@ -4,8 +4,12 @@ import javax.persistence.*;
 
 import com.example.demo.enums.LoyalityType;
 import com.example.demo.model.business.Reservation;
+import com.example.demo.model.entities.EntityClass;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "client")
@@ -22,7 +26,13 @@ public class Client extends User{
 	private int penals;
 
 	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Reservation> reservations;
+
+	@ManyToMany
+	@JoinTable(name="subscription", joinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "entity_id", referencedColumnName = "id"))
+	@JsonIgnore
+	private Set<EntityClass> subscribedEntities;
 
 	public int getPoents() {
 		return poents;
@@ -54,6 +64,14 @@ public class Client extends User{
 
 	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
+	}
+
+	public Set<EntityClass> getSubscribedEntities() {
+		return subscribedEntities;
+	}
+
+	public void setSubscribedEntities(Set<EntityClass> subscribedEntities) {
+		this.subscribedEntities = subscribedEntities;
 	}
 
 	public Client(){

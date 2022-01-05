@@ -3,6 +3,7 @@ package com.example.demo.model.business;
 import com.example.demo.enums.EntityType;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -33,10 +34,12 @@ public class Reservation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
+    @JsonIgnoreProperties("reservation")
     private Client client;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity_id")
+    @JsonIgnoreProperties("entities")
     private EntityClass entity;
 
     public Reservation() {
