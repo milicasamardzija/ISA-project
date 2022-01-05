@@ -7,10 +7,10 @@
     </div>
     <div class="tab">
       <div class="card">
-        <h2><i>You're reservation history</i></h2>
+        <h2 style="margin-left:40px; margin-top:40px"><i>Istorija rezervacija:</i></h2>
         <br />
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" style="margin-left:40px;">
           <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#cottages"
               >Vikendice</a
@@ -30,7 +30,7 @@
         <div class="tab-content">
           <div id="cottages" class="container tab-pane active">
             <br />
-            <table class="table table-light table-striped table-hover" v-if="reservationsCottages.length != 0">
+            <table class="table table-light table-striped table-hover" v-if="reservationsCottages.length != 0" style="margin-bottom:80px">
               <thead>
                 <tr>
                   <th>Datum pocetka</th>
@@ -56,7 +56,7 @@
           </div>
           <div id="boats" class="container tab-pane fade">
             <br />
-             <table class="table table-light table-striped table-hover" v-if="reservationsBoats.length != 0">
+             <table class="table table-light table-striped table-hover" v-if="reservationsBoats.length != 0" style="margin-bottom:80px">
               <thead>
                 <tr>
                   <th>Datum pocetka</th>
@@ -82,7 +82,7 @@
           </div>
           <div id="adventures" class="container tab-pane fade">
             <br />
-            <table class="table table-light table-striped table-hover" v-if="reservationsAdventures.length != 0">
+            <table class="table table-light table-striped table-hover" v-if="reservationsAdventures.length != 0" style="margin-bottom:80px">
               <thead>
                 <tr>
                   <th>Datum pocetka</th>

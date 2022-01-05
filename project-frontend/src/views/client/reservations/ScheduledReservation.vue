@@ -6,9 +6,9 @@
   </div>
   <div class="card">
     <div class="container">
-      <h2><i>You're incoming reservations:</i></h2>
+      <h2><i>Zakazane rezervacije:</i></h2>
       `
-      <table class="table table-light table-striped table-hover">
+      <table class="table table-light table-striped table-hover" style="margin-bottom:80px">
         <thead>
           <tr>
             <th>Objekat rezervacije</th>
