@@ -92,7 +92,7 @@
             </table>
           </div>
           <div v-if="reservationsCottages.length === 0">
-            <p>Nemate nijednu rezervaciju.</p>
+            <p style="font-size: 20px; margin-bottom:60px">Nemate nijednu rezervaciju.</p>
           </div>
           <div id="boats" class="container tab-pane fade">
             <br />
@@ -159,7 +159,7 @@
               </tbody>
             </table>
             <div v-if="reservationsBoats.length === 0">
-              <p>Nemate nijednu rezervaciju.</p>
+              <p style="font-size: 20px; margin-bottom:60px">Nemate nijednu rezervaciju.</p>
             </div>
           </div>
           <div id="adventures" class="container tab-pane fade">
@@ -228,7 +228,7 @@
               </tbody>
             </table>
             <div v-if="reservationsAdventures.length === 0">
-              <p>Nemate nijednu rezervaciju.</p>
+              <p style="font-size: 20px; margin-bottom:60px">Nemate nijednu rezervaciju.</p>
             </div>
           </div>
         </div>

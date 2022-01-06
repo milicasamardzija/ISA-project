@@ -26,6 +26,8 @@ public class ClientDTO {
 
     private Address address;
 
+    private String telephone;
+
     public ClientDTO(Client client) {
         this.id = client.getId();
         this.password = client.getPassword();
@@ -37,6 +39,7 @@ public class ClientDTO {
         this.loyalityType = client.getLoyalityType();
         this.poents = client.getPoents();
         this.address = client.getAddress();
+        this.telephone = client.getTelephone();
     }
 
     public int getId() {
@@ -117,5 +120,13 @@ public class ClientDTO {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 }
