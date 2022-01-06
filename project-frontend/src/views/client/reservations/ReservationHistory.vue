@@ -85,8 +85,8 @@
                   <td>{{ format_date(reservation.dateStart) }}</td>
                   <td>{{ format_date(reservation.dateEnd) }}</td>
                   <td>{{ reservation.price }}</td>
-                  <td><button class="btn btn-success">Napisi zalbu</button></td>
-                  <td><button class="btn btn-success">Oceni uslugu</button></td>
+                  <td><button class="btn btn-success" data-target="#zalba" data-toggle="modal">Napisi zalbu</button></td>
+                  <td><button class="btn btn-success" data-target="#ocena" data-toggle="modal">Oceni uslugu</button></td>
                 </tr>
               </tbody>
             </table>
@@ -234,6 +234,135 @@
         </div>
       </div>
     </div>
+
+  <!-- Modal za pisanje zalbe -->
+  <div class="modal fade" id="zalba" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="color: #0b4025; padding: 5px 35px">
+              Zalba
+            </h5>
+          </div>
+          <div class="modal-body" style="padding: 15px 50px">
+            <form role="form" @submit.prevent="Cancel">
+              <div class="form-group">
+                <table>
+                  <tr>
+                    <td><label>Ime vlasnika: </label> </td>
+                    <td><label>Marko Maric </label> </td>
+                  </tr>
+                  <tr>
+                    Komentar na vlasnika:
+                  </tr> 
+                  <tr>
+                    <textarea type="text" style="width: 100%; height: 50%">
+                    </textarea>
+                  </tr>
+                  <tr>
+                    <td><label>Naziv vikendice: </label> </td>
+                    <td><label>Magicni raj</label> </td>
+                  </tr>
+                   <tr>
+                    Komentar na vikendicu:
+                  </tr> 
+                  <tr>
+                    <textarea type="text" style="width: 100%; height: 50%">
+                    </textarea>
+                  </tr>
+                </table>
+              </div>
+              <table>
+                <tr>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" @click="sendComplaint()" style="width:80px; margin-bottom:20px">
+                      Potvrdi
+                    </button>
+                  </td>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
+                      Otkazi
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal za pisanje ocene -->
+  <div class="modal fade" id="ocena" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="color: #0b4025; padding: 5px 35px">
+              Ocena
+            </h5>
+          </div>
+          <div class="modal-body" style="padding: 15px 50px">
+            <form role="form" @submit.prevent="Cancel">
+              <div class="form-group">
+                <table>
+                  <tr>
+                    <td><label>Ime vlasnika: </label> </td>
+                    <td><label>Marko Maric </label> </td>
+                  </tr>
+                  <tr>
+                    Komentar na vlasnika:
+                  </tr> 
+                  <tr>
+                    <textarea type="text" style="width: 100%; height: 50%">
+                    </textarea>
+                  </tr>
+                  <tr>
+                    <td><label>Naziv vikendice: </label> </td>
+                    <td><label>Magicni raj</label> </td>
+                  </tr>
+                   <tr>
+                    Komentar na vikendicu:
+                  </tr> 
+                  <tr>
+                    <textarea type="text" style="width: 100%; height: 50%">
+                    </textarea>
+                  </tr>
+                  <tr>
+                    <td><label>Unesite ocenu: </label> </td>
+                    <td style="width: 200px"> 
+                      <select  v-model="review.grade"> Ocena
+                        <option  v-bind:value="5">5</option>
+                        <option  v-bind:value="4">4</option>
+                        <option  v-bind:value="3">3</option>
+                        <option  v-bind:value="2">2</option>
+                        <option  v-bind:value="1">1</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <table>
+                <tr>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" @click="sendReview()" style="width:80px; margin-bottom:20px">
+                      Potvrdi
+                    </button>
+                  </td>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
+                      Otkazi
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </template>
 
 <script>
@@ -250,6 +379,8 @@ export default {
       reservationsCottages: [],
       reservationsBoats: [],
       reservationsAdventures: [],
+      complaint: "",
+      review:""
     };
   },
   methods: {

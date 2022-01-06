@@ -25,8 +25,8 @@
           </div>
         </div>
 
-        <!--KLIJENT-->
         <div>
+           <!--KLIJENT-->
           <div class="col-info" style="margin-top: 2%" v-if="this.role === 'ROLE_CLIENT'">
             <h5 style="width: 600px" class="text">Ime: {{client.firstname}}</h5>
             <h5 style="width: 600px" class="text">Prezime: {{client.lastname}}</h5>
@@ -36,6 +36,18 @@
             <h5 style="width: 600px" class="text">Kategorija korisnika: {{client.loyalityType}}</h5>
             <h5 style="width: 600px" class="text">Kategorija korisnika: {{client.poents}}</h5>
             <h5 style="width: 600px" class="text">Kategorija korisnika: {{client.penals}}</h5>
+          </div>
+
+           <!--VLASNIK VIKENDICE-->
+           <div class="col-info" style="margin-top: 2%" v-if="this.role === 'ROLE_COTTAGE_OWNER'">
+            <h5 style="width: 600px" class="text">Ime: </h5>
+            <h5 style="width: 600px" class="text">Prezime: </h5>
+            <h5 style="width: 600px" class="text">Adresa: </h5>
+            <h5 style="width: 600px" class="text">Email:</h5>
+            <h5 style="width: 600px" class="text">Broj telefona:</h5>
+            <h5 style="width: 600px" class="text">Kategorija korisnika: </h5>
+            <h5 style="width: 600px" class="text">Kategorija korisnika: </h5>
+            <h5 style="width: 600px" class="text">Kategorija korisnika: </h5>
           </div>
 
           <div style="margin-top:40px">
@@ -199,12 +211,14 @@ export default {
     }
   },
   methods: {
-    editProfile() {},
+    editProfile() {
+      this.$router.push({ name: "EditProfile" });
+    },
     async getClient() {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/user/profileClient", {headers});
+      const res = await fetch("http://localhost:8081/api/client/profileClient", {headers});
       const data = await res.json();
       return data;
     }

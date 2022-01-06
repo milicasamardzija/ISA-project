@@ -28,7 +28,7 @@
     </div>
   </div>
 
-   <!-- Modal za odjavu na akciju -->
+  <!-- Modal za odjavu na akciju -->
   <div class="modal fade" id="odjava" role="dialog">
       <div class="modal-dialog">
         <!-- Modal content -->
@@ -84,7 +84,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch(
-        "http://localhost:8081/api/user/subscribedEntitites",
+        "http://localhost:8081/api/client/subscribedEntitites",
         { headers }
       );
       const data = await res.json();

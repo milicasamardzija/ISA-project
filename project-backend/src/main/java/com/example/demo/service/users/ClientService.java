@@ -22,8 +22,11 @@ public class ClientService {
         return this.clientRepository.findByEmail(id);
     }
 
-
     public List<EntityClass> findSubscribedEnities(int idClient){
         return this.clientRepository.findSubscribedEnities(idClient);
+    }
+
+    public void cancelSubsrciption(int idEntity, int idUser){
+
     }
 }

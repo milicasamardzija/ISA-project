@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.users;
 
 import com.example.demo.dto.users.JwtAuthenticationRequest;
 import com.example.demo.dto.users.UserRequest;
