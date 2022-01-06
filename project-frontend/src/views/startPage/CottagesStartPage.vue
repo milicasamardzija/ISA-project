@@ -4,12 +4,29 @@
     <HeaderStartPage />
     <NavBarStartPage />
   </div>
-  <div style="width: 1000px;">
+  <div style="width: 1000px">
     <nav class="navbar navbar-expand-sm navbar-dark">
-        <input class="form-control mr-sm-2" type="text" placeholder="Naziv" v-model="name"/>
-        <input class="form-control mr-sm-2" type="text" placeholder="Ulica" v-model="street"/>
-        <input class="form-control mr-sm-2" type="text" placeholder="Grad" v-model="city"/>
-        <button class="btn btn-success" type="submit" @click="search()">Pretrazi</button>
+      <input
+        class="form-control mr-sm-2"
+        type="text"
+        placeholder="Naziv"
+        v-model="name"
+      />
+      <input
+        class="form-control mr-sm-2"
+        type="text"
+        placeholder="Ulica"
+        v-model="street"
+      />
+      <input
+        class="form-control mr-sm-2"
+        type="text"
+        placeholder="Grad"
+        v-model="city"
+      />
+      <button class="btn btn-success" type="submit" @click="search()">
+        Pretrazi
+      </button>
     </nav>
   </div>
   <div class="containerInfo">
@@ -17,15 +34,16 @@
       <div class="row-boats" v-for="(cottage, index) in cottages" :key="index">
         <div class="col-with-picture" v-if="cottage.images.length != 0">
           <div>
-            <img v-bind:src="'../../assets/' + cottage.images[0].filePath"
+            <img
+              v-bind:src="'../../assets/' + cottage.images[0].filePath"
               style="height: 250px !important; width: 300px !important"
             />
           </div>
         </div>
         <div class="col-info">
-          <h4 style="width: 600px" class="text"  >
-            Promotivni opis: {{ cottage.promoDescription}}
-          </h4> 
+          <h4 style="width: 600px" class="text">
+            Promotivni opis: {{ cottage.promoDescription }}
+          </h4>
           <h4 style="width: 600px" class="text">Naziv: {{ cottage.name }}</h4>
           <h4 style="width: 600px" class="text">
             Adresa: {{ cottage.address.street }} {{ cottage.address.number }},
@@ -54,9 +72,9 @@ export default {
   data() {
     return {
       cottages: [],
-      name:"",
-      street:"",
-      city:"",
+      name: "",
+      street: "",
+      city: "",
     };
   },
 
@@ -66,23 +84,26 @@ export default {
       const data = await res.json();
       return data;
     },
-    async search(){
-      const res = await fetch('http://localhost:8081/api/cottages/search', {
-        method: 'POST',
+    async search() {
+      const res = await fetch("http://localhost:8081/api/cottages/search", {
+        method: "POST",
         headers: {
-          'Content-type': 'application/json'},
-          body: JSON.stringify({name: this.name, street: this.street, city: this.city})
-      })
-      const data = await res.json()
-      this.cottages = data
-    }
-  
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          name: this.name,
+          street: this.street,
+          city: this.city,
+        }),
+      });
+      const data = await res.json();
+      this.cottages = data;
+    },
   },
 
   async created() {
     this.cottages = await this.fetchCottages();
   },
-
 };
 </script>
 

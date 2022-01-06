@@ -7,10 +7,12 @@
     </div>
     <div class="tab">
       <div class="card">
-        <h2 style="margin-left:40px; margin-top:40px"><i>Istorija rezervacija:</i></h2>
+        <h2 style="margin-left: 40px; margin-top: 40px">
+          <i>Istorija rezervacija:</i>
+        </h2>
         <br />
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs" style="margin-left:40px;">
+        <ul class="nav nav-tabs" style="margin-left: 40px">
           <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#cottages"
               >Vikendice</a
@@ -30,7 +32,11 @@
         <div class="tab-content">
           <div id="cottages" class="container tab-pane active">
             <br />
-            <table class="table table-light table-striped table-hover" v-if="reservationsCottages.length != 0" style="margin-bottom:80px">
+            <table
+              class="table table-light table-striped table-hover"
+              v-if="reservationsCottages.length != 0"
+              style="margin-bottom: 80px"
+            >
               <thead>
                 <tr>
                   <th>Datum pocetka</th>
@@ -41,10 +47,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr  v-for="(reservation, index) in reservationsCottages" :key="index">
-                  <td>{{reservation.dateStart}}</td>
-                  <td>{{reservation.dateEnd}}</td>
-                  <td>{{reservation.price}}</td>
+                <tr
+                  v-for="(reservation, index) in reservationsCottages"
+                  :key="index"
+                >
+                  <td>{{ reservation.dateStart }}</td>
+                  <td>{{ reservation.dateEnd }}</td>
+                  <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success">Napisi zalbu</button></td>
                   <td><button class="btn btn-success">Oceni uslugu</button></td>
                 </tr>
@@ -52,11 +61,15 @@
             </table>
           </div>
           <div v-if="reservationsCottages.length === 0">
-            <p> Nemate nijednu rezervaciju. </p>
+            <p>Nemate nijednu rezervaciju.</p>
           </div>
           <div id="boats" class="container tab-pane fade">
             <br />
-             <table class="table table-light table-striped table-hover" v-if="reservationsBoats.length != 0" style="margin-bottom:80px">
+            <table
+              class="table table-light table-striped table-hover"
+              v-if="reservationsBoats.length != 0"
+              style="margin-bottom: 80px"
+            >
               <thead>
                 <tr>
                   <th>Datum pocetka</th>
@@ -67,22 +80,29 @@
                 </tr>
               </thead>
               <tbody>
-                <tr  v-for="(reservation, index) in reservationsBoats" :key="index">
-                  <td>{{reservation.dateStart}}</td>
-                  <td>{{reservation.dateEnd}}</td>
-                  <td>{{reservation.price}}</td>
+                <tr
+                  v-for="(reservation, index) in reservationsBoats"
+                  :key="index"
+                >
+                  <td>{{ reservation.dateStart }}</td>
+                  <td>{{ reservation.dateEnd }}</td>
+                  <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success">Napisi zalbu</button></td>
                   <td><button class="btn btn-success">Oceni uslugu</button></td>
                 </tr>
               </tbody>
             </table>
             <div v-if="reservationsBoats.length === 0">
-              <p> Nemate nijednu rezervaciju. </p>
+              <p>Nemate nijednu rezervaciju.</p>
             </div>
           </div>
           <div id="adventures" class="container tab-pane fade">
             <br />
-            <table class="table table-light table-striped table-hover" v-if="reservationsAdventures.length != 0" style="margin-bottom:80px">
+            <table
+              class="table table-light table-striped table-hover"
+              v-if="reservationsAdventures.length != 0"
+              style="margin-bottom: 80px"
+            >
               <thead>
                 <tr>
                   <th>Datum pocetka</th>
@@ -93,17 +113,20 @@
                 </tr>
               </thead>
               <tbody>
-                <tr  v-for="(reservation, index) in reservationsAdventures" :key="index">
-                  <td>{{reservation.dateStart}}</td>
-                  <td>{{reservation.dateEnd}}</td>
-                  <td>{{reservation.price}}</td>
+                <tr
+                  v-for="(reservation, index) in reservationsAdventures"
+                  :key="index"
+                >
+                  <td>{{ reservation.dateStart }}</td>
+                  <td>{{ reservation.dateEnd }}</td>
+                  <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success">Napisi zalbu</button></td>
                   <td><button class="btn btn-success">Oceni uslugu</button></td>
                 </tr>
               </tbody>
             </table>
             <div v-if="reservationsAdventures.length === 0">
-              <p> Nemate nijednu rezervaciju. </p>
+              <p>Nemate nijednu rezervaciju.</p>
             </div>
           </div>
         </div>
@@ -124,40 +147,49 @@ export default {
     NavBarClient,
     NavBarLogOut,
   },
-  data(){
-    return{
+  data() {
+    return {
       reservationsCottages: [],
       reservationsBoats: [],
-      reservationsAdventures: []
-    }
+      reservationsAdventures: [],
+    };
   },
-   methods:{
+  methods: {
     async fetchCottageReservations() {
-      const headers = { 
-      "Authorization": "Bearer " + localStorage.getItem("token"),
-      }
-      const res = await fetch("http://localhost:8081/api/reservation/historyReservationsCottages", {headers});
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch(
+        "http://localhost:8081/api/reservation/historyReservationsCottages",
+        { headers }
+      );
       const data = await res.json();
       return data;
     },
     async fetchBoatsReservations() {
-      const headers = { 
-      "Authorization": "Bearer " + localStorage.getItem("token"),
-      }
-      const res = await fetch("http://localhost:8081/api/reservation/historyReservationsBoats", {headers});
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch(
+        "http://localhost:8081/api/reservation/historyReservationsBoats",
+        { headers }
+      );
       const data = await res.json();
       return data;
     },
     async fetchAdventuresReservations() {
-      const headers = { 
-      "Authorization": "Bearer " + localStorage.getItem("token"),
-      }
-      const res = await fetch("http://localhost:8081/api/reservation/historyReservationsAdventures", {headers});
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch(
+        "http://localhost:8081/api/reservation/historyReservationsAdventures",
+        { headers }
+      );
       const data = await res.json();
       return data;
-    }
+    },
   },
-   async created() {
+  async created() {
     this.reservationsCottages = await this.fetchCottageReservations();
     this.reservationsBoats = await this.fetchBoatsReservations();
     this.reservationsAdventures = await this.fetchAdventuresReservations();

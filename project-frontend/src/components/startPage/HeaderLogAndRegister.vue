@@ -48,7 +48,11 @@
           </li>
            <li class="nav-item"> <button  type="button" class="btn btn-success"><router-link to="/cottageOwnerHomePage">Vlasnik vik</router-link></button> </li>
           -->
-           <li class="nav-item"> <button  type="button" class="btn btn-success"><router-link to="/cottageOwnerHomePage">Vlasnik vik</router-link></button> </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-success">
+              <router-link to="/cottageOwnerHomePage">Vlasnik vik</router-link>
+            </button>
+          </li>
         </ul>
       </div>
     </nav>
@@ -91,7 +95,11 @@
                   v-model="password"
                 />
               </div>
-              <button type="submit" class="btn btn-success btn-block" @click="Login()">
+              <button
+                type="submit"
+                class="btn btn-success btn-block"
+                @click="Login()"
+              >
                 <span></span> Uloguj se
               </button>
             </form>
@@ -130,19 +138,22 @@
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Unesite Vase ime" v-model="newUser.firstname"
+                  placeholder="Unesite Vase ime"
+                  v-model="newUser.firstname"
                 />
                 <label for="name">Prezime</label>
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Unesite Vase prezime" v-model="newUser.lastname"
+                  placeholder="Unesite Vase prezime"
+                  v-model="newUser.lastname"
                 />
                 <label for="name">Email </label>
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Unesite Vas mejl" v-model="newUser.email"
+                  placeholder="Unesite Vas mejl"
+                  v-model="newUser.email"
                 />
 
                 <label for="text">Adresa</label>
@@ -153,7 +164,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Ulica" 
+                          placeholder="Ulica"
                         />
                       </td>
 
@@ -209,7 +220,8 @@
                   type="password"
                   class="form-control"
                   id="psw"
-                  placeholder="Unesite lozinku" v-model="newUser.password"
+                  placeholder="Unesite lozinku"
+                  v-model="newUser.password"
                 />
               </div>
               <div class="form-group">
@@ -224,7 +236,11 @@
                   placeholder="Potvrdite lozinku"
                 />
               </div>
-              <button type="submit" class="btn btn-success btn-block" @click="register()">
+              <button
+                type="submit"
+                class="btn btn-success btn-block"
+                @click="register()"
+              >
                 <span></span> Registruj se
               </button>
             </form>
@@ -250,7 +266,13 @@ export default {
     return {
       email: "",
       password: "",
-      newUser: {firstname: "", lastname: "", email:"", password: "", role: "ROLE_CLIENT"}
+      newUser: {
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+        role: "ROLE_CLIENT",
+      },
     };
   },
   computed: {
@@ -259,40 +281,42 @@ export default {
     },
   },
   methods: {
-  async Login(){
-    const res = await fetch('http://localhost:8081/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'},
-        body: JSON.stringify({"email": this.email, "password": this.password})
-    })
-    const data = await res.json()
-    localStorage.setItem("token", data.accessToken)
-    localStorage.setItem("role", data.role)
-    console.log(localStorage.getItem("token"))
-    console.log(localStorage.getItem("role"))
-    if (localStorage.getItem("role") == "ROLE_CLIENT") {
-      this.$router.push({ name: "ClientAllCottages" });
-      //this.$router.go(0);
-      console.log(localStorage.getItem("token"))
-    console.log(localStorage.getItem("role"))
-    } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
-      this.$router.push({ name: "HomePageInProfil" });
-    } 
+    async Login() {
+      const res = await fetch("http://localhost:8081/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ email: this.email, password: this.password }),
+      });
+      const data = await res.json();
+      localStorage.setItem("token", data.accessToken);
+      localStorage.setItem("role", data.role);
+      console.log(localStorage.getItem("token"));
+      console.log(localStorage.getItem("role"));
+      if (localStorage.getItem("role") == "ROLE_CLIENT") {
+        this.$router.push({ name: "ClientAllCottages" });
+        //this.$router.go(0);
+        console.log(localStorage.getItem("token"));
+        console.log(localStorage.getItem("role"));
+      } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
+        this.$router.push({ name: "HomePageInProfil" });
+      }
+    },
+    async register() {
+      const res = await fetch("http://localhost:8081/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(this.newUser),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data != null) {
+        alert("Uspesno ste se registrovali!");
+      }
+    },
   },
-  async register(){
-    const res = await fetch('http://localhost:8081/api/auth/signup', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'},
-        body: JSON.stringify(this.newUser)
-    })
-    const data = await res.json()
-    console.log(data)
-    if (data != null){
-      alert("Uspesno ste se registrovali!")
-    }
-  }
-}
 };
 </script>

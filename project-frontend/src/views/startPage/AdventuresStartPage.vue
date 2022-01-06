@@ -5,12 +5,29 @@
       <HeaderStartPage />
       <NavBarStartPage />
     </div>
-    <div style="width: 1000px;">
+    <div style="width: 1000px">
       <nav class="navbar navbar-expand-sm navbar-dark">
-          <input class="form-control mr-sm-2" type="text" placeholder="Naziv" v-model="name"/>
-          <input class="form-control mr-sm-2" type="text" placeholder="Ulica" v-model="street"/>
-          <input class="form-control mr-sm-2" type="text" placeholder="Grad" v-model="city"/>
-          <button class="btn btn-success" type="submit" @click="search()">Pretrazi</button>
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Naziv"
+          v-model="name"
+        />
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Ulica"
+          v-model="street"
+        />
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Grad"
+          v-model="city"
+        />
+        <button class="btn btn-success" type="submit" @click="search()">
+          Pretrazi
+        </button>
       </nav>
     </div>
     <div class="containerInfo">
@@ -68,9 +85,9 @@ export default {
   data() {
     return {
       adventures: [],
-      name:"",
-      street:"",
-      city:""
+      name: "",
+      street: "",
+      city: "",
     };
   },
 
@@ -80,16 +97,21 @@ export default {
       const data = await res.json();
       return data;
     },
-    async search(){
-      const res = await fetch('http://localhost:8081/api/adventures/search', {
-        method: 'POST',
+    async search() {
+      const res = await fetch("http://localhost:8081/api/adventures/search", {
+        method: "POST",
         headers: {
-          'Content-type': 'application/json'},
-          body: JSON.stringify({name: this.name, street: this.street, city: this.city})
-      })
-      const data = await res.json()
-      this.adventures = data
-    }
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          name: this.name,
+          street: this.street,
+          city: this.city,
+        }),
+      });
+      const data = await res.json();
+      this.adventures = data;
+    },
   },
 
   async created() {

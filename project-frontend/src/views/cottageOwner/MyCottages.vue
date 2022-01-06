@@ -54,17 +54,17 @@
             </button>
           </div>
           <div class="row">
-            <button class="btn btn-success" >     
-                        <router-link
+            <button class="btn btn-success">
+              <router-link
                 style="
                   text-decoration: none !important;
                   display: inline-block;
                   color: white;
                 "
                 to="/cottageProfile"
-              >Prikazi vikendicu
-               </router-link
-              ></button>
+                >Prikazi vikendicu
+              </router-link>
+            </button>
           </div>
         </div>
       </div>

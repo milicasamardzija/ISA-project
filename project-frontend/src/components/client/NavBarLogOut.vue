@@ -16,16 +16,15 @@
 </template>
 
 <script>
-export default{
-  methods:{
-    logOut(){
-      localStorage.setItem("token", "")
-      localStorage.setItem("role", "")
-      console.log(localStorage.getItem("token"))
-      console.log(localStorage.getItem("role"))
+export default {
+  methods: {
+    logOut() {
+      localStorage.setItem("token", "");
+      localStorage.setItem("role", "");
+      console.log(localStorage.getItem("token"));
+      console.log(localStorage.getItem("role"));
       this.$router.push({ name: "BoatsStartPage" });
-    }
-  }
-}
+    },
+  },
+};
 </script>
-
