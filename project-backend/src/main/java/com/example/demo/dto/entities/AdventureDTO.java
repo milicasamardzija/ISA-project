@@ -2,11 +2,9 @@ package com.example.demo.dto.entities;
 
 import com.example.demo.enums.CancelationType;
 import com.example.demo.model.entities.Adventure;
-import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.entities.Image;
 import com.example.demo.model.users.Address;
 
-import javax.persistence.Column;
 import java.util.Set;
 
 public class AdventureDTO {
@@ -19,7 +17,7 @@ public class AdventureDTO {
 
     private String promoDescription;
 
-    //private Set<Image> image;
+    private Set<Image> images;
 
     private String rules;
 
@@ -40,7 +38,7 @@ public class AdventureDTO {
         this.name = adventure.getName();
         this.address = adventure.getAddress();
         this.promoDescription = adventure.getPromoDescription();
-        //this.image = adventure.getImage();
+        this.images = adventure.getImage();
         this.rules = adventure.getRules();
         this.price = adventure.getPrice();
         this.grade = adventure.getGrade();
@@ -136,5 +134,13 @@ public class AdventureDTO {
 
     public void setCancelationType(CancelationType cancelationType) {
         this.cancelationType = cancelationType;
+    }
+
+    public Set<Image> getImage() {
+        return images;
+    }
+
+    public void setImage(Set<Image> image) {
+        this.images = image;
     }
 }

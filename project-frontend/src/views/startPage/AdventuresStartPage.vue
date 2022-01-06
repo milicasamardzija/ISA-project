@@ -38,9 +38,9 @@
           :key="index"
         >
           <div class="col-with-picture">
-            <div>
+            <div v-if="adventure.image[0].length != 0">
               <img
-                src="../../assets/fishingStart.jpg"
+                :src="getImgUrl(adventure.image[0].filePath)"
                 style="height: 250px !important; width: 300px !important"
               />
             </div>
@@ -112,8 +112,11 @@ export default {
       const data = await res.json();
       this.adventures = data;
     },
+    getImgUrl(img) {
+      var images = require.context('../../assets/', false, /.jpg$/)
+    return images('./' + img + ".jpg")
+    }
   },
-
   async created() {
     this.adventures = await this.fetchAdventures();
   },

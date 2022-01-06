@@ -33,9 +33,9 @@
     <div class="tab-pane container active">
       <div class="row-boats" v-for="(boat, index) in boats" :key="index">
         <div class="col-with-picture">
-          <div>
+          <div v-if="boat.images[0].length != 0">
             <img
-              src="..\..\assets\cottage1.jpg"
+              :src="getImgUrl(boat.images[0].filePath)"
               style="height: 250px !important; width: 300px !important"
             />
           </div>
@@ -100,6 +100,10 @@ export default {
       const data = await res.json();
       this.boats = data;
     },
+    getImgUrl(img) {
+      var images = require.context('../../assets/', false, /.jpg$/)
+    return images('./' + img + ".jpg")
+    }
   },
 
   async created() {

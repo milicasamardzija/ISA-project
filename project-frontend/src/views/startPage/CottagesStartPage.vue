@@ -32,10 +32,10 @@
   <div class="containerInfo">
     <div class="tab-pane container active">
       <div class="row-boats" v-for="(cottage, index) in cottages" :key="index">
-        <div class="col-with-picture" v-if="cottage.images.length != 0">
-          <div>
+        <div class="col-with-picture" >
+          <div v-if="cottage.images[0].length != 0">
             <img
-              v-bind:src="'../../assets/' + cottage.images[0].filePath"
+              :src="getImgUrl(cottage.images[0].filePath)"
               style="height: 250px !important; width: 300px !important"
             />
           </div>
@@ -99,6 +99,10 @@ export default {
       const data = await res.json();
       this.cottages = data;
     },
+    getImgUrl(img) {
+    var images = require.context('../../assets/', false, /.jpg$/)
+    return images('./' + img + ".jpg")
+  }
   },
 
   async created() {

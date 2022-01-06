@@ -44,6 +44,8 @@ public class BoatDTO {
 
     private CancelationType cancelationType;
 
+    private Set<Image> images;
+
     public BoatDTO(Boat boat){
         this.id = boat.getId();
         this.name = boat.getName();
@@ -62,7 +64,7 @@ public class BoatDTO {
         this.fishingEquipment =  boat.getFishingEquipment();
         this.quantity =  boat.getQuantity();
         this.cancelationType =  boat.getCancelationType();
-        this.image = boat.getImage();
+        this.images = boat.getImage();
     }
 
     public Integer getId() {
@@ -199,5 +201,13 @@ public class BoatDTO {
 
     public void setCancelationType(CancelationType cancelationType) {
         this.cancelationType = cancelationType;
+    }
+
+    public Set<Image> getImages() {
+        return image;
+    }
+
+    public void setImages(Set<Image> image) {
+        this.image = image;
     }
 }

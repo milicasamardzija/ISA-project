@@ -85,8 +85,6 @@ public class CottageDTO {
         this.price = price;
     }
 
-   
-
     public double getGrade() {
         return grade;
     }
@@ -109,4 +107,19 @@ public class CottageDTO {
 
     public void setBedsByRoom(int bedsByRoom) { this.bedsByRoom = bedsByRoom; }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
+    }
+
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<Image> images) {
+        this.images = images;
+    }
 }
