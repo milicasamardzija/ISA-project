@@ -2,25 +2,67 @@
   <div>
     <NavBarClient />
   </div>
-  <div class="containerInfo">
-    <div class="tab-pane container active">
-      <div class="row-boats">
-        <div class="col-with-picture">
-          <div>
-            <img
-              
-              style="height: 250px !important; width: 300px !important" @click="goToAdventure()"
-            />
+  <div style="width: 1000px">
+      <nav class="navbar navbar-expand-sm navbar-dark">
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Naziv"
+          v-model="name"
+        />
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Ulica"
+          v-model="street"
+        />
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Grad"
+          v-model="city"
+        />
+        <button class="btn btn-success" type="submit" @click="search()">
+          Pretrazi
+        </button>
+      </nav>
+    </div>
+    <div class="containerInfo">
+      <div class="tab-pane container active b">
+        <div
+          class="row-boats"
+          v-for="(adventure, index) in adventures"
+          :key="index"
+        >
+          <div class="col-with-picture">
+            <div v-if="adventure.images[0].length != 0">
+              <img
+                :src="getImgUrl(adventure.images[0].filePath)"
+                style="height: 250px !important; width: 300px !important" @click="goToAdventure()"
+              />
+            </div>
+          </div>
+          <div class="col-info">
+            <h4 style="width: 600px" class="text">
+              Promotivni opis: {{ adventure.promoDescription }}
+            </h4>
+            <h4 style="width: 600px" class="text">
+              Naziv: {{ adventure.name }}
+            </h4>
+            <h4 style="width: 600px" class="text">
+              Adresa: {{ adventure.address.street }}
+              {{ adventure.address.number }}, {{ adventure.address.city }},
+              {{ adventure.address.country }}
+            </h4>
+            <h4 style="width: 600px" class="text">
+              Prosecna ocena: {{ adventure.grade }}
+            </h4>
+            <h4 style="width: 600px" class="text">
+              Biografija instruktora: {{ adventure.instructorBiografy }}
+            </h4>
           </div>
         </div>
-        <div class="col-info">
-          <h4 style="width: 600px" class="text">Promotivni opis:</h4>
-          <h4 style="width: 600px" class="text">Naziv:</h4>
-          <h4 style="width: 600px" class="text">Adresa:</h4>
-          <h4 style="width: 600px" class="text">Prosecna ocena:</h4>
-        </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -33,11 +75,47 @@ export default {
   components: {
     NavBarClient,
   },
-  methods:{
+  data() {
+    return {
+      adventures: [],
+      name: "",
+      street: "",
+      city: "",
+    };
+  },
+
+  methods: {
+    async fetchAdventures() {
+      const res = await fetch("http://localhost:8081/api/adventures");
+      const data = await res.json();
+      return data;
+    },
+    async search() {
+      const res = await fetch("http://localhost:8081/api/adventures/search", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          name: this.name,
+          street: this.street,
+          city: this.city,
+        }),
+      });
+      const data = await res.json();
+      this.adventures = data;
+    },
+    getImgUrl(img) {
+      var images = require.context('../../../assets/adventureImages/', false, /.jpg$/)
+    return images('./' + img + ".jpg")
+    },
     goToAdventure(){
       this.$router.push({ name: "AdventurePage" });
     }
-  }
+  },
+  async created() {
+    this.adventures = await this.fetchAdventures();
+  },
 };
 </script>
 

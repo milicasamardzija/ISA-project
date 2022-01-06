@@ -38,10 +38,10 @@
           :key="index"
         >
           <div class="col-with-picture">
-            <div v-if="adventure.image[0].length != 0">
+            <div v-if="adventure.images[0].length != 0">
               <img
-                :src="getImgUrl(adventure.image[0].filePath)"
-                style="height: 250px !important; width: 300px !important"
+                :src="getImgUrl(adventure.images[0].filePath)"
+                style="height: 250px !important; width: 300px !important" @click="goToAdventure()"
               />
             </div>
           </div>
@@ -113,8 +113,11 @@ export default {
       this.adventures = data;
     },
     getImgUrl(img) {
-      var images = require.context('../../assets/', false, /.jpg$/)
+      var images = require.context('../../assets/adventureImages/', false, /.jpg$/)
     return images('./' + img + ".jpg")
+    },
+    goToAdventure(){
+      this.$router.push({ name: "AdventurePage" });
     }
   },
   async created() {

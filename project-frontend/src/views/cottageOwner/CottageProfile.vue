@@ -1,8 +1,21 @@
 <template>
-  <div>
+  <div v-if="this.role === 'ROLE_COTTAGE_OWNER'">
     <NavBarLogOut />
     <NavBarHomePage />
   </div>
+
+  <!--OBICNI KORISNIK-->
+  <div v-if="this.role === ''">
+    <HeaderLogAndRegister />
+    <HeaderStartPage />
+    <NavBarStartPage />
+  </div>
+  
+  <!--KLIJENT-->
+  <div v-if="this.role === 'ROLE_CLIENT'">
+    <NavBarClient/>
+  </div>
+  
   <div>
     <div class="tab-pane active containerInfo">
       <div class="row">
@@ -13,21 +26,21 @@
           <h4>Na kraju sveta 45, Negde Daleko</h4>
         </div>
         <div class="column" style="width: 18rem; height: 3rem">
-          <button class="btn btn-success">
+          <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'">
             <router-link
               style="
                 text-decoration: none !important;
                 display: inline-block;
                 color: white;
               "
-              to="/editCottage"
+              to="/editCottage" 
               >Izmeni vikendicu
             </router-link>
           </button>
         </div>
-        <div class="column" style="width: 30rem; height: 3rem">
-          <button class="btn btn-success">Dodaj akciju</button>
-          <button class="btn btn-success">Pretplati se</button>
+        <div class="column" style="width: 30rem; height: 3rem" >
+          <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'">Dodaj akciju</button>
+          <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'">Pretplati se</button>
         </div>
       </div>
 
@@ -165,12 +178,27 @@
 <script>
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
+import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
+import NavBarClient from "../../components/client/NavBarClient.vue"
+import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
+
 
 export default {
   name: "CottageProfile",
   components: {
     NavBarLogOut,
     NavBarHomePage,
+    HeaderStartPage,
+    NavBarClient,
+    HeaderLogAndRegister,
+  },
+  data() {
+    return {
+      role:""
+    };
+  },
+  async created() {
+    this.role = localStorage.getItem("role");
   },
 };
 </script>

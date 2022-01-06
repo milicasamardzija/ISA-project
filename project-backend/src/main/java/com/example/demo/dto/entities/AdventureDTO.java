@@ -136,11 +136,11 @@ public class AdventureDTO {
         this.cancelationType = cancelationType;
     }
 
-    public Set<Image> getImage() {
+    public Set<Image> getImages() {
         return images;
     }
 
-    public void setImage(Set<Image> image) {
+    public void setImages(Set<Image> image) {
         this.images = image;
     }
 }

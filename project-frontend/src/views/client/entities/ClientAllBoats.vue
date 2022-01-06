@@ -2,22 +2,54 @@
   <div>
     <NavBarClient />
   </div>
+  <div style="width: 1000px">
+    <nav class="navbar navbar-expand-sm navbar-dark">
+      <input
+        class="form-control mr-sm-2"
+        type="text"
+        placeholder="Naziv"
+        v-model="name"
+      />
+      <input
+        class="form-control mr-sm-2"
+        type="text"
+        placeholder="Ulica"
+        v-model="street"
+      />
+      <input
+        class="form-control mr-sm-2"
+        type="text"
+        placeholder="Grad"
+        v-model="city"
+      />
+      <button class="btn btn-success" type="submit" @click="search()">
+        Pretrazi
+      </button>
+    </nav>
+  </div>
   <div class="containerInfo">
     <div class="tab-pane container active">
-      <div class="row-boats">
+      <div class="row-boats" v-for="(boat, index) in boats" :key="index">
         <div class="col-with-picture">
-          <div>
+          <div v-if="boat.images[0].length != 0">
             <img
-              
-              style="height: 250px !important; width: 300px !important" @click="goToCottage()"
+              :src="getImgUrl(boat.images[0].filePath)"
+              style="height: 250px !important; width: 300px !important"
             />
           </div>
         </div>
         <div class="col-info">
-          <h4 style="width: 600px" class="text">Promotivni opis:</h4>
-          <h4 style="width: 600px" class="text">Naziv:</h4>
-          <h4 style="width: 600px" class="text">Adresa:</h4>
-          <h4 style="width: 600px" class="text">Prosecna ocena:</h4>
+          <h4 style="width: 600px" class="text">
+            Promotivni opis: {{ boat.promoDescription }}
+          </h4>
+          <h4 style="width: 600px" class="text">Naziv: {{ boat.name }}</h4>
+          <h4 style="width: 600px" class="text">
+            Adresa: {{ boat.address.street }} {{ boat.address.number }},
+            {{ boat.address.city }}, {{ boat.address.country }}
+          </h4>
+          <h4 style="width: 600px" class="text">
+            Prosecna ocena: {{ boat.grade }}
+          </h4>
         </div>
       </div>
     </div>
@@ -28,15 +60,49 @@
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 
 export default {
-  name: "AdventuresStartPage",
+  name: "ClientAllBoats",
   components: {
     NavBarClient,
   },
-  methods:{
-    goToCottage(){
-      this.$router.push({ name: "CottageProfile" });
+  data() {
+    return {
+      boats: [],
+      name: "",
+      street: "",
+      city: "",
+    };
+  },
+
+  methods: {
+    async fetchBoats() {
+      const res = await fetch("http://localhost:8081/api/boats");
+      const data = await res.json();
+      return data;
+    },
+    async search() {
+      const res = await fetch("http://localhost:8081/api/boats/search", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          name: this.name,
+          street: this.street,
+          city: this.city,
+        }),
+      });
+      const data = await res.json();
+      this.boats = data;
+    },
+    getImgUrl(img) {
+      var images = require.context('../../../assets/boatImages/', false, /.jpg$/)
+    return images('./' + img + ".jpg")
     }
-  }
+  },
+
+  async created() {
+    this.boats = await this.fetchBoats();
+  },
 };
 </script>
 

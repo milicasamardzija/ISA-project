@@ -57,12 +57,12 @@ public class ClientController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> cancelSubscription(@PathVariable int idEntity){
+    public ResponseEntity<Void> cancelSubscription(@PathVariable int id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
 
         if (user != null){
-            clientService.cancelSubsrciption(idEntity, user.getId());
+            clientService.cancelSubsrciption(id, user.getEmail());
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

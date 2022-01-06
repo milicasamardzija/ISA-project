@@ -11,7 +11,7 @@
     <div class="carousel-inner" style="bacground-repeat: no repeat">
       <div class="carousel-item active">
         <img
-          src="../../assets/pexels-tatiana-syrikova).jpg"
+          src="../../assets/q.jpg"
           width="2200"
           height="600"
         />

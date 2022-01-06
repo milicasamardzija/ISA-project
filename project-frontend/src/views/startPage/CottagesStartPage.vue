@@ -1,9 +1,10 @@
 <template>
-  <div>
+  <div >
     <HeaderLogAndRegister />
     <HeaderStartPage />
     <NavBarStartPage />
   </div>
+
   <div style="width: 1000px">
     <nav class="navbar navbar-expand-sm navbar-dark">
       <input
@@ -36,7 +37,7 @@
           <div v-if="cottage.images[0].length != 0">
             <img
               :src="getImgUrl(cottage.images[0].filePath)"
-              style="height: 250px !important; width: 300px !important"
+              style="height: 250px !important; width: 300px !important"  @click="goToCottage()"
             />
           </div>
         </div>
@@ -74,7 +75,7 @@ export default {
       cottages: [],
       name: "",
       street: "",
-      city: "",
+      city: ""
     };
   },
 
@@ -100,9 +101,12 @@ export default {
       this.cottages = data;
     },
     getImgUrl(img) {
-    var images = require.context('../../assets/', false, /.jpg$/)
+      var images = require.context('../../assets/cottageImages/', false, /.jpg$/)
     return images('./' + img + ".jpg")
-  }
+    },
+    goToCottage(){
+      this.$router.push({ name: "CottageProfile" });
+    }
   },
 
   async created() {

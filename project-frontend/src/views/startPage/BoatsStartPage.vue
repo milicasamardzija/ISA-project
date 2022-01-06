@@ -101,7 +101,7 @@ export default {
       this.boats = data;
     },
     getImgUrl(img) {
-      var images = require.context('../../assets/', false, /.jpg$/)
+      var images = require.context('../../assets/boatImages/', false, /.jpg$/)
     return images('./' + img + ".jpg")
     }
   },

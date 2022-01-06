@@ -32,11 +32,11 @@
               />
             </div>
           </div>
-          <div>
+          <!--<div>
             <button type="button" class="btn btn-success">
               <router-link to="/clientAdventures">Vrati se nazad</router-link>
             </button>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
