@@ -1,7 +1,5 @@
 <template>
   <div>
-    <NavBarLogOut />
-    <HeaderStartPage />
     <NavBarClient />
   </div>
   <h2 style="margin-left: 40px; margin-top: 40px">
@@ -68,16 +66,12 @@
 </template>
 
 <script>
-import NavBarLogOut from "../../../components/client/NavBarLogOut.vue";
 import NavBarClient from "../../../components/client/NavBarClient.vue";
-import HeaderStartPage from "../../../components/startPage/HeaderStartPage.vue";
 
 export default {
   name: "ClientSubscription",
   components: {
-    HeaderStartPage,
     NavBarClient,
-    NavBarLogOut,
   },
   data(){
     return{

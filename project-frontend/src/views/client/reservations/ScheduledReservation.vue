@@ -1,7 +1,5 @@
 <template>
   <div>
-    <NavBarLogOut />
-    <HeaderStartPage />
     <NavBarClient />
   </div>
   <div class="card">
@@ -134,17 +132,13 @@
 </template>
 
 <script>
-import NavBarLogOut from "../../../components/client/NavBarLogOut.vue";
 import NavBarClient from "../../../components/client/NavBarClient.vue";
-import HeaderStartPage from "../../../components/startPage/HeaderStartPage.vue";
 import moment from 'moment';
 
 export default {
   name: "ScheduledReservation",
   components: {
-    HeaderStartPage,
     NavBarClient,
-    NavBarLogOut,
   },
 
   data() {

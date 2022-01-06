@@ -1,9 +1,6 @@
 <template>
   <div>
-    <NavBarLogOut />
-    <HeaderStartPage />
     <NavBarClient />
-    <AdventureSearch />
   </div>
   <div class="containerInfo">
     <div class="tab-pane container active">
@@ -28,18 +25,13 @@
 </template>
 
 <script>
-import NavBarLogOut from "../../../components/client/NavBarLogOut.vue";
 import NavBarClient from "../../../components/client/NavBarClient.vue";
-import HeaderStartPage from "../../../components/startPage/HeaderStartPage.vue";
-import AdventureSearch from "../../../components/client/cottages,boats,adventures/AdventureSearch.vue";
+
 
 export default {
   name: "ClientAllAdventures",
   components: {
-    HeaderStartPage,
     NavBarClient,
-    NavBarLogOut,
-    AdventureSearch,
   },
   methods:{
     goToAdventure(){

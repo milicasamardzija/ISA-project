@@ -136,7 +136,7 @@ const routes = [
     component: EditCottage,
   },
   {
-    path: "/clientSubscription",
+    path: "/ClientSubscription",
     name: "ClientSubscription",
     component: ClientSubscription,
   },

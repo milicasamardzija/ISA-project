@@ -1,11 +1,16 @@
 <template>
-  <div>
+
+  <div v-if="this.role === 'ROLE_COTTAGE_OWNER'">
     <NavBarLogOut />
     <NavBarHomePage />
   </div>
+
+  <div v-if="this.role === 'ROLE_CLIENT'">
+    <NavBarClient />
+  </div>
+
   <div>
     <div class="tab-pane active containerInfo">
-      <Search />
       <div class="row-boats">
         <div class="col-with-picture" style="margin-right: 5%; margin-top: 1%">
           <div>
@@ -167,6 +172,7 @@
 <script>
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
+import NavBarClient from "../../components/client/NavBarClient.vue";
 
 export default {
   name: "MyProfile",
@@ -174,9 +180,18 @@ export default {
   components: {
     NavBarLogOut,
     NavBarHomePage,
+    NavBarClient
+  },
+  data(){
+    return {
+      role: ""
+    }
   },
   methods: {
     editProfile() {},
+  },
+  async created() {
+    this.role = localStorage.getItem("role")
   },
 };
 </script>
