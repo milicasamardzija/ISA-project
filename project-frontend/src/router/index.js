@@ -3,9 +3,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import BoatsStartPage from "../views/startPage/BoatsStartPage";
 import CottagesStartPage from "../views/startPage/CottagesStartPage";
 import AdventuresStartPage from "../views/startPage/AdventuresStartPage";
-import ClientAllCottages from "../views/client/ClientAllCottages";
-import ClientAllBoats from "../views/client/ClientAllBoats";
-import ClientAllAdventures from "../views/client/ClientAllAdventures";
+import ClientAllCottages from "../views/client/entities/ClientAllCottages";
+import ClientAllBoats from "../views/client/entities/ClientAllBoats";
+import ClientAllAdventures from "../views/client/entities/ClientAllAdventures";
 import ScheduledReservation from "../views/client/reservations/ScheduledReservation";
 import ReservationHistory from "../views/client/reservations/ReservationHistory";
 import HomePageInProfil from "../views/cottageOwner/HomePageInProfil";
@@ -15,7 +15,6 @@ import Statistic from "../views/cottageOwner/Statistic";
 import EditProfile from "../views/cottageOwner/EditProfile";
 import NewCottage from "../views/cottageOwner/NewCottage";
 import EditCottage from "../views/cottageOwner/EditCottage";
-
 import AllRegistrationRequests from "../views/administrator/AllRegistrationRequests";
 import MyService from "../views/fishingInstructor/MyService";
 import AdventurePage from "../views/adventure/AdventurePage";
@@ -23,6 +22,7 @@ import FishingInstructorProfile from "../views/fishingInstructor/FishingInstruct
 import ChangePasswordFishingInstructor from "../views/fishingInstructor/ChangePasswordFishingInstructor";
 import AvailablePeriod from "../views/fishingInstructor/AvailablePeriod";
 import CottageProfile from "../views/cottageOwner/CottageProfile";
+import ClientSubscription from "../views/client/subscription/ClientSubscription"
 
 const routes = [
   {
@@ -134,6 +134,11 @@ const routes = [
     path: "/editCottage",
     name: "EditCottage",
     component: EditCottage,
+  },
+  {
+    path: "/clientSubscription",
+    name: "ClientSubscription",
+    component: ClientSubscription,
   },
 ];
 

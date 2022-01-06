@@ -32,6 +32,41 @@
         <div class="tab-content">
           <div id="cottages" class="container tab-pane active">
             <br />
+
+        <!-- Sortiranje -->
+        <div class="dropdown" style="margin-bottom:20px">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Sortitaj
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="reservationsCottages.length != 0">
+            <a class="dropdown-item" href="#" @click="sort('CenaRastuce','cottage')"
+              >Cena - rastuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('CenaOpadajuce','cottage')"
+              >Cena - opadajuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('DatumRastuce','cottage')"
+              >Datum - rastuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('DatumOpadajuce','cottage')"
+              >Datum - opadajuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('TrajanjeRastuce','cottage')"
+              >Trajanje - rastuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('TrajanjeOpadajuce','cottage')"
+              >Trajanje - rastuce</a
+            >
+          </div>
+        </div>
+
             <table
               class="table table-light table-striped table-hover"
               v-if="reservationsCottages.length != 0"
@@ -49,10 +84,9 @@
               <tbody>
                 <tr
                   v-for="(reservation, index) in reservationsCottages"
-                  :key="index"
-                >
-                  <td>{{ reservation.dateStart }}</td>
-                  <td>{{ reservation.dateEnd }}</td>
+                  :key="index">
+                  <td>{{ format_date(reservation.dateStart) }}</td>
+                  <td>{{ format_date(reservation.dateEnd) }}</td>
                   <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success">Napisi zalbu</button></td>
                   <td><button class="btn btn-success">Oceni uslugu</button></td>
@@ -65,6 +99,41 @@
           </div>
           <div id="boats" class="container tab-pane fade">
             <br />
+
+            <!-- Sortiranje -->
+        <div class="dropdown" style="margin-bottom:20px" v-if="reservationsBoats.length != 0">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Sortitaj
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#" @click="sort('CenaRastuce','boat')"
+              >Cena - rastuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('CenaOpadajuce','boat')"
+              >Cena - opadajuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('DatumRastuce','boat')"
+              >Datum - rastuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('DatumOpadajuce','boat')"
+              >Datum - opadajuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('TrajanjeRastuce','boat')"
+              >Trajanje - rastuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('TrajanjeOpadajuce','boat')"
+              >Trajanje - rastuce</a
+            >
+          </div>
+        </div>
+
             <table
               class="table table-light table-striped table-hover"
               v-if="reservationsBoats.length != 0"
@@ -84,8 +153,8 @@
                   v-for="(reservation, index) in reservationsBoats"
                   :key="index"
                 >
-                  <td>{{ reservation.dateStart }}</td>
-                  <td>{{ reservation.dateEnd }}</td>
+                  <td>{{ format_date(reservation.dateStart) }}</td>
+                  <td>{{ format_date(reservation.dateEnd) }}</td>
                   <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success">Napisi zalbu</button></td>
                   <td><button class="btn btn-success">Oceni uslugu</button></td>
@@ -98,6 +167,42 @@
           </div>
           <div id="adventures" class="container tab-pane fade">
             <br />
+
+            <!-- Sortiranje -->
+        <div class="dropdown" style="margin-bottom:20px" v-if="reservationsAdventures.length != 0">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Sortitaj
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#" @click="sort('CenaRastuce','adventure')"
+              >Cena - rastuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('CenaOpadajuce','adventure')"
+              >Cena - opadajuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('DatumRastuce','adventure')"
+              >Datum - rastuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('DatumOpadajuce','adventure')"
+              >Datum - opadajuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('TrajanjeRastuce','adventure')"
+              >Trajanje - rastuce</a
+            >
+            <a class="dropdown-item" href="#" @click="sort('TrajanjeOpadajuce','adventure')"
+              >Trajanje - rastuce</a
+            >
+          </div>
+        </div>
+
+
             <table
               class="table table-light table-striped table-hover"
               v-if="reservationsAdventures.length != 0"
@@ -117,8 +222,8 @@
                   v-for="(reservation, index) in reservationsAdventures"
                   :key="index"
                 >
-                  <td>{{ reservation.dateStart }}</td>
-                  <td>{{ reservation.dateEnd }}</td>
+                  <td>{{ format_date(reservation.dateStart) }}</td>
+                  <td>{{ format_date(reservation.dateEnd) }}</td>
                   <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success">Napisi zalbu</button></td>
                   <td><button class="btn btn-success">Oceni uslugu</button></td>
@@ -139,6 +244,7 @@
 import NavBarLogOut from "../../../components/client/NavBarLogOut.vue";
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 import HeaderStartPage from "../../../components/startPage/HeaderStartPage.vue";
+import moment from 'moment';
 
 export default {
   name: "HistoryReservation",
@@ -188,6 +294,63 @@ export default {
       const data = await res.json();
       return data;
     },
+    sort(sortParam, tab) {
+      if (sortParam == "CenaRastuce"  && tab == "cottage") 
+        this.reservationsCottages.sort(function (a, b) {
+          return a.price - b.price;
+        });
+      if (sortParam == "CenaOpadajuce" && tab == "cottage" )
+        this.reservationsCottages.sort(function (a, b) {
+          return b.price - a.price;
+        });
+      if (sortParam == "DatumRastuce" && tab == "cottage")
+        this.reservationsCottages.sort(function (a, b) {
+          return a.dateStart - b.dateStart;
+        });
+      if (sortParam == "DatumOpadajuce" && tab == "cottage")
+        this.reservationsCottages.sort(function (a, b) {
+          return b.dateStart - a.dateStart;
+        });
+
+      if (sortParam == "CenaRastuce"  && tab == "boat") 
+        this.reservationsBoats.sort(function (a, b) {
+          return a.price - b.price;
+        });
+      if (sortParam == "CenaOpadajuce" && tab == "boat" )
+        this.reservationsBoats.sort(function (a, b) {
+          return b.price - a.price;
+        });
+      if (sortParam == "DatumRastuce" && tab == "boat")
+        this.reservationsBoats.sort(function (a, b) {
+          return a.dateStart - b.dateStart;
+        });
+      if (sortParam == "DatumOpadajuce" && tab == "boat")
+        this.reservationsBoats.sort(function (a, b) {
+          return b.dateStart - a.dateStart;
+        });
+
+      if (sortParam == "CenaRastuce"  && tab == "adventure") 
+        this.reservationsAdventures.sort(function (a, b) {
+          return a.price - b.price;
+        });
+      if (sortParam == "CenaOpadajuce" && tab == "adventure" )
+        this.reservationsAdventures.sort(function (a, b) {
+          return b.price - a.price;
+        });
+      if (sortParam == "DatumRastuce" && tab == "adventure")
+        this.reservationsAdventures.sort(function (a, b) {
+          return a.dateStart - b.dateStart;
+        });
+      if (sortParam == "DatumOpadajuce" && tab == "adventure")
+        this.reservationsAdventures.sort(function (a, b) {
+          return b.dateStart - a.dateStart;
+        });
+    },
+     format_date(value){
+      if (value) {
+        return moment(value).format('MM/DD/YYYY')
+      }
+    }
   },
   async created() {
     this.reservationsCottages = await this.fetchCottageReservations();

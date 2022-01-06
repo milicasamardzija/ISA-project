@@ -3,7 +3,7 @@
     <NavBarLogOut />
     <HeaderStartPage />
     <NavBarClient />
-    <BoatSearch />
+    <CottageSearch />
   </div>
   <div class="containerInfo">
     <div class="tab-pane container active">
@@ -11,8 +11,8 @@
         <div class="col-with-picture">
           <div>
             <img
-              src="../../assets/boatStart.jpg"
-              style="height: 250px !important; width: 300px !important"
+              
+              style="height: 250px !important; width: 300px !important"  @click="goToCottage()"
             />
           </div>
         </div>
@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
-import NavBarClient from "../../components/client/NavBarClient.vue";
-import NavBarLogOut from "../../components/client/NavBarLogOut.vue";
-import BoatSearch from "../../components/client/cottages,boats,adventures/BoatSearch.vue";
+import HeaderStartPage from "../../../components/startPage/HeaderStartPage.vue";
+import NavBarClient from "../../../components/client/NavBarClient.vue";
+import NavBarLogOut from "../../../components/client/NavBarLogOut.vue";
+import CottageSearch from "../../../components/client/cottages,boats,adventures/CottageSearch.vue";
 
 export default {
   name: "AdventuresStartPage",
@@ -39,8 +39,13 @@ export default {
     HeaderStartPage,
     NavBarClient,
     NavBarLogOut,
-    BoatSearch,
+    CottageSearch,
   },
+  methods:{
+    goToCottage(){
+      this.$router.push({ name: "CottageProfile" });
+    }
+  }
 };
 </script>
 

@@ -23,7 +23,7 @@
         >
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Subsription</a>
+        <router-link to="clientSubscription">Pretplate</router-link>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Profile</a>

@@ -11,8 +11,8 @@
         <div class="col-with-picture">
           <div>
             <img
-              src="../../assets/fishingStart.jpg"
-              style="height: 250px !important; width: 300px !important"
+              
+              style="height: 250px !important; width: 300px !important" @click="goToAdventure()"
             />
           </div>
         </div>
@@ -21,9 +21,6 @@
           <h4 style="width: 600px" class="text">Naziv:</h4>
           <h4 style="width: 600px" class="text">Adresa:</h4>
           <h4 style="width: 600px" class="text">Prosecna ocena:</h4>
-          <button type="button" class="btn btn-success">
-            <router-link to="/adventurePage">Detalji</router-link>
-          </button>
         </div>
       </div>
     </div>
@@ -31,10 +28,10 @@
 </template>
 
 <script>
-import NavBarLogOut from "../../components/client/NavBarLogOut.vue";
-import NavBarClient from "../../components/client/NavBarClient.vue";
-import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
-import AdventureSearch from "../../components/client/cottages,boats,adventures/AdventureSearch.vue";
+import NavBarLogOut from "../../../components/client/NavBarLogOut.vue";
+import NavBarClient from "../../../components/client/NavBarClient.vue";
+import HeaderStartPage from "../../../components/startPage/HeaderStartPage.vue";
+import AdventureSearch from "../../../components/client/cottages,boats,adventures/AdventureSearch.vue";
 
 export default {
   name: "ClientAllAdventures",
@@ -44,6 +41,11 @@ export default {
     NavBarLogOut,
     AdventureSearch,
   },
+  methods:{
+    goToAdventure(){
+      this.$router.push({ name: "AdventurePage" });
+    }
+  }
 };
 </script>
 

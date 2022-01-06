@@ -109,20 +109,4 @@ public class CottageDTO {
 
     public void setBedsByRoom(int bedsByRoom) { this.bedsByRoom = bedsByRoom; }
 
-    public CottageDTO() {
-
-    }
-
-    public CottageDTO(Cottage cottage){
-        this.roomsNumber = cottage.getRoomsNumber();
-        this.bedsByRoom = cottage.getBedsByRoom();
-        this.id = cottage.getId();
-        this.name = cottage.getName();
-        this.address = cottage.getAddress();
-        this.promoDescription = cottage.getPromoDescription();
-        this.rules = cottage.getRules();
-        this.price = cottage.getPrice();
-        this.grade = cottage.getGrade();
-    }
-
 }

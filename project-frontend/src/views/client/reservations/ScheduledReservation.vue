@@ -59,13 +59,78 @@
             <td>{{ format_date(reservation.dateEnd) }}</td>
             <td>{{ reservation.price }}</td>
             <td v-if="reservation.isCanceled != false">
-              <button class="btn btn-danger">Cancel</button>
+              <button class="btn btn-danger"  data-target="#odjava" data-toggle="modal">Otkazi</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+
+<!-- Modal za otkazivanje rezervacije -->
+  <div class="modal fade" id="odjava" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="color: #0b4025; padding: 5px 35px">
+              Otkazivanje rezervacije
+            </h5>
+          </div>
+          <div class="modal-body" style="padding: 15px 50px">
+            <form role="form" @submit.prevent="Cancel">
+              <div class="form-group">
+                <label for="name">Da li ste sigurni da zelite da otkazete ovu rezervaciju?</label>
+              </div>
+              <table>
+                <tr>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" @click="Cancel()" style="width:80px; margin-bottom:20px">
+                      Potvrdi
+                    </button>
+                  </td>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
+                      Otkazi
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal za upozorenje o otkazivanje
+    <div class="modal fade" id="obavestenje" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel" style="color: #0b4025; padding: 5px 35px">
+                Obavestenje!
+              </h5>
+            </div>
+            <div class="modal-body" style="padding: 15px 50px">
+              <form role="form" @submit.prevent="Cancel">
+                <div class="form-group">
+                  <label for="name">Ne mozete da otkazete rezervaciju ako ima manje od tri dana do pocetka!</label>
+                </div>
+                <table>
+                  <tr>
+                    <td>
+                      <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px">
+                        Potvrdi
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
 </template>
 
 <script>
@@ -100,10 +165,10 @@ export default {
       return data;
     },
     format_date(value){
-         if (value) {
-           return moment(value).format('MM/DD/YYYY')
-          }
-      },
+      if (value) {
+        return moment(value).format('MM/DD/YYYY')
+      }
+    },
     sort(sortParam) {
       if (sortParam == "CenaRastuce")
         this.reservations.sort(function (a, b) {
