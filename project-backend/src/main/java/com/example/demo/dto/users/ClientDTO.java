@@ -1,6 +1,7 @@
 package com.example.demo.dto.users;
 
 import com.example.demo.enums.LoyalityType;
+import com.example.demo.model.users.Address;
 import com.example.demo.model.users.Client;
 
 public class ClientDTO {
@@ -23,6 +24,8 @@ public class ClientDTO {
 
     private int poents;
 
+    private Address address;
+
     public ClientDTO(Client client) {
         this.id = client.getId();
         this.password = client.getPassword();
@@ -33,6 +36,7 @@ public class ClientDTO {
         this.penals = client.getPenals();
         this.loyalityType = client.getLoyalityType();
         this.poents = client.getPoents();
+        this.address = client.getAddress();
     }
 
     public int getId() {
@@ -105,5 +109,13 @@ public class ClientDTO {
 
     public void setPoents(int poents) {
         this.poents = poents;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

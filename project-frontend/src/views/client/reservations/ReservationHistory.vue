@@ -4,7 +4,6 @@
       <NavBarClient />
     </div>
     <div class="tab">
-      <div class="card">
         <h2 style="margin-left: 40px; margin-top: 40px">
           <i>Istorija rezervacija:</i>
         </h2>
@@ -235,7 +234,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>

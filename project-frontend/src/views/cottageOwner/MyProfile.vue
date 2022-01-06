@@ -5,11 +5,13 @@
     <NavBarHomePage />
   </div>
 
+  <!--KLIJENT-->
   <div v-if="this.role === 'ROLE_CLIENT'">
     <NavBarClient />
   </div>
 
-  <div>
+
+  <div style="margin-top:80px;margin-left:50px">
     <div class="tab-pane active containerInfo">
       <div class="row-boats">
         <div class="col-with-picture" style="margin-right: 5%; margin-top: 1%">
@@ -22,31 +24,39 @@
             />
           </div>
         </div>
-        <div class="col-info" style="margin-top: 2%">
-          <h5 style="width: 600px" class="text">Ime:</h5>
-          <h5 style="width: 600px" class="text">Prezime:</h5>
-          <h5 style="width: 600px" class="text">Adresa:</h5>
-          <h5 style="width: 600px" class="text">Email:</h5>
-          <h5 style="width: 600px" class="text">Kategorija korisnika:</h5>
-          <h5 style="width: 600px" class="text">Broj telefona:</h5>
 
-          <button class="btn btn-secondary" v-on:click="editProfile">
-            Izmena profila
-          </button>
-          <button
-            class="btn btn-secondary buttonMargin"
-            data-target="#password"
-            data-toggle="modal"
-          >
-            Promeni lozinku
-          </button>
-          <button
-            class="btn btn-secondary buttonMargin"
-            data-target="#deleteAccount"
-            data-toggle="modal"
-          >
-            Obrisi nalog
-          </button>
+        <!--KLIJENT-->
+        <div>
+          <div class="col-info" style="margin-top: 2%" v-if="this.role === 'ROLE_CLIENT'">
+            <h5 style="width: 600px" class="text">Ime: {{client.firstname}}</h5>
+            <h5 style="width: 600px" class="text">Prezime: {{client.lastname}}</h5>
+            <h5 style="width: 600px" class="text">Adresa: {{client.address.street}} {{client.address.number}}, {{client.address.city}}, {{client.address.country}}</h5>
+            <h5 style="width: 600px" class="text">Email: {{client.email}}</h5>
+            <h5 style="width: 600px" class="text">Broj telefona: {{client.telephone}}</h5>
+            <h5 style="width: 600px" class="text">Kategorija korisnika: {{client.loyalityType}}</h5>
+            <h5 style="width: 600px" class="text">Kategorija korisnika: {{client.poents}}</h5>
+            <h5 style="width: 600px" class="text">Kategorija korisnika: {{client.penals}}</h5>
+          </div>
+
+          <div style="margin-top:40px">
+            <button class="btn btn-secondary" v-on:click="editProfile">
+              Izmena profila
+            </button>
+            <button
+              class="btn btn-secondary buttonMargin"
+              data-target="#password"
+              data-toggle="modal"
+            >
+              Promeni lozinku
+            </button>
+            <button
+              class="btn btn-secondary buttonMargin"
+              data-target="#deleteAccount"
+              data-toggle="modal"
+            >
+              Obrisi nalog
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -184,14 +194,24 @@ export default {
   },
   data(){
     return {
-      role: ""
+      role: "",
+      client: ""
     }
   },
   methods: {
     editProfile() {},
+    async getClient() {
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/user/profileClient", {headers});
+      const data = await res.json();
+      return data;
+    }
   },
   async created() {
     this.role = localStorage.getItem("role")
+    this.client = await this.getClient();
   },
 };
 </script>

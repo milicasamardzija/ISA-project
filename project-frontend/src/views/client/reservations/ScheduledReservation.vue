@@ -2,10 +2,9 @@
   <div>
     <NavBarClient />
   </div>
-  <div class="card">
     <div class="container">
       <h2><i>Zakazane rezervacije:</i></h2>
-      <div class="dropdown">
+      <div class="dropdown" style="margin-top: 40px ;margin-bottom:20px">
         <button
           class="btn btn-secondary dropdown-toggle"
           type="button"
@@ -63,7 +62,7 @@
         </tbody>
       </table>
     </div>
-  </div>
+
 
 <!-- Modal za otkazivanje rezervacije -->
   <div class="modal fade" id="odjava" role="dialog">
