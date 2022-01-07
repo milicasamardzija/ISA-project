@@ -1,6 +1,5 @@
 package com.example.demo.dto.users;
 
-import javax.persistence.Column;
 
 public class UserRequest {
 
