@@ -29,11 +29,7 @@
               Registruj se
             </button>
           </li>
-          <!--<li class="nav-item">
-            <button type="button" class="btn btn-success">
-              <router-link to="/client">KLIJENT</router-link>
-            </button>
-          </li>
+          <!--
           <li class="nav-item">
             <button type="button" class="btn btn-success">
               <router-link to="/administrator">Administrator</router-link>
@@ -296,7 +292,7 @@ export default {
       console.log(localStorage.getItem("role"));
       if (localStorage.getItem("role") == "ROLE_CLIENT") {
         this.$router.push({ name: "ClientAllCottages" });
-        this.$router.go(0);
+        //this.$router.go(0);
         console.log(localStorage.getItem("token"));
         console.log(localStorage.getItem("role"));
       } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
