@@ -32,6 +32,9 @@ public class Reservation {
     @Column(name="is_canceled",nullable=false)
     private Boolean isCanceled = false;
 
+    @Column(name="duration", nullable = true)
+    private int duration;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     @JsonIgnoreProperties("reservation")
@@ -46,12 +49,13 @@ public class Reservation {
 
     }
 
-    public Reservation(int id, Date dateStart, Date dateEnd, double price, Client client) {
+    public Reservation(int id, Date dateStart, Date dateEnd, double price, Client client, int duration) {
         this.id = id;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.price = price;
         this.client = client;
+        this.duration = duration;
     }
 
     public int getId() {
@@ -116,5 +120,13 @@ public class Reservation {
 
     public void setEntity(EntityClass entity) {
         this.entity = entity;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }

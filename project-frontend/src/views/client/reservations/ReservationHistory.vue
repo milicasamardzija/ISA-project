@@ -59,7 +59,7 @@
               >Trajanje - rastuce</a
             >
             <a class="dropdown-item" href="#" @click="sort('TrajanjeOpadajuce','cottage')"
-              >Trajanje - rastuce</a
+              >Trajanje - opadajuce</a
             >
           </div>
         </div>
@@ -73,6 +73,7 @@
                 <tr>
                   <th>Datum pocetka</th>
                   <th>Datum kraja</th>
+                  <th>Trajanje</th>
                   <th>Cena</th>
                   <th></th>
                   <th></th>
@@ -84,6 +85,10 @@
                   :key="index">
                   <td>{{ format_date(reservation.dateStart) }}</td>
                   <td>{{ format_date(reservation.dateEnd) }}</td>
+                  <td>{{ reservation.duration }} 
+                    <span v-if="reservation.entityType === 'COTTAGE' || reservation.entityType === 'BOAT'"> dana </span>
+                    <span v-if="reservation.entityType === 'ADVENTURE'"> h </span>  
+                  </td>
                   <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success" data-target="#zalba" data-toggle="modal">Napisi zalbu</button></td>
                   <td><button class="btn btn-success" data-target="#ocena" data-toggle="modal">Oceni uslugu</button></td>
@@ -126,7 +131,7 @@
               >Trajanje - rastuce</a
             >
             <a class="dropdown-item" href="#" @click="sort('TrajanjeOpadajuce','boat')"
-              >Trajanje - rastuce</a
+              >Trajanje - opadajuce</a
             >
           </div>
         </div>
@@ -140,6 +145,7 @@
                 <tr>
                   <th>Datum pocetka</th>
                   <th>Datum kraja</th>
+                  <th>Trajanje</th>
                   <th>Cena</th>
                   <th></th>
                   <th></th>
@@ -152,6 +158,10 @@
                 >
                   <td>{{ format_date(reservation.dateStart) }}</td>
                   <td>{{ format_date(reservation.dateEnd) }}</td>
+                  <td>{{ reservation.duration }} 
+                    <span v-if="reservation.entityType === 'COTTAGE' || reservation.entityType === 'BOAT'"> dana </span>
+                    <span v-if="reservation.entityType === 'ADVENTURE'"> h </span>  
+                  </td>
                   <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success">Napisi zalbu</button></td>
                   <td><button class="btn btn-success">Oceni uslugu</button></td>
@@ -194,7 +204,7 @@
               >Trajanje - rastuce</a
             >
             <a class="dropdown-item" href="#" @click="sort('TrajanjeOpadajuce','adventure')"
-              >Trajanje - rastuce</a
+              >Trajanje - opadajuce</a
             >
           </div>
         </div>
@@ -209,6 +219,7 @@
                 <tr>
                   <th>Datum pocetka</th>
                   <th>Datum kraja</th>
+                  <th>Trajanje</th>
                   <th>Cena</th>
                   <th></th>
                   <th></th>
@@ -221,6 +232,10 @@
                 >
                   <td>{{ format_date(reservation.dateStart) }}</td>
                   <td>{{ format_date(reservation.dateEnd) }}</td>
+                  <td>{{ reservation.duration }} 
+                    <span v-if="reservation.entityType === 'COTTAGE' || reservation.entityType === 'BOAT'"> dana </span>
+                    <span v-if="reservation.entityType === 'ADVENTURE'"> h </span>  
+                  </td>
                   <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success">Napisi zalbu</button></td>
                   <td><button class="btn btn-success">Oceni uslugu</button></td>
@@ -434,6 +449,15 @@ export default {
         this.reservationsCottages.sort(function (a, b) {
           return b.dateStart - a.dateStart;
         });
+       if (sortParam == "TrajanjeRastuce")
+        this.reservationsCottages.sort(function (a, b) {
+          return a.duration - b.duration;
+        });
+      if (sortParam == "TrajanjeOpadajuce")
+        this.reservationsCottages.sort(function (a, b) {
+          return b.duration - a.duration;
+        });
+
 
       if (sortParam == "CenaRastuce"  && tab == "boat") 
         this.reservationsBoats.sort(function (a, b) {
@@ -451,6 +475,15 @@ export default {
         this.reservationsBoats.sort(function (a, b) {
           return b.dateStart - a.dateStart;
         });
+      if (sortParam == "TrajanjeRastuce")
+        this.reservationsBoats.sort(function (a, b) {
+          return a.duration - b.duration;
+        });
+      if (sortParam == "TrajanjeOpadajuce")
+        this.reservationsBoats.sort(function (a, b) {
+          return b.duration - a.duration;
+        });
+
 
       if (sortParam == "CenaRastuce"  && tab == "adventure") 
         this.reservationsAdventures.sort(function (a, b) {
@@ -467,6 +500,14 @@ export default {
       if (sortParam == "DatumOpadajuce" && tab == "adventure")
         this.reservationsAdventures.sort(function (a, b) {
           return b.dateStart - a.dateStart;
+        });
+      if (sortParam == "TrajanjeRastuce")
+        this.reservationsAdventures.sort(function (a, b) {
+          return a.duration - b.duration;
+        });
+      if (sortParam == "TrajanjeOpadajuce")
+        this.reservationsAdventures.sort(function (a, b) {
+          return b.duration - a.duration;
         });
     },
      format_date(value){

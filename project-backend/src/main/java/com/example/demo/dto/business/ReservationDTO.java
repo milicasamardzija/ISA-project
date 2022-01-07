@@ -16,7 +16,9 @@ public class ReservationDTO {
 
     private EntityType entityType;
 
-    private Boolean isCanceled = false;
+    private Boolean isCanceled;
+
+    private int duration;
 
     public int getId() {
         return id;
@@ -66,6 +68,14 @@ public class ReservationDTO {
         isCanceled = canceled;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
     public ReservationDTO(Reservation reservation) {
         this.id = reservation.getId();
         this.dateStart = reservation.getDateStart();
@@ -73,5 +83,6 @@ public class ReservationDTO {
         this.price = reservation.getPrice();
         this.entityType = reservation.getEntityType();
         this.isCanceled = reservation.getCanceled();
+        this.duration = reservation.getDuration();
     }
 }
