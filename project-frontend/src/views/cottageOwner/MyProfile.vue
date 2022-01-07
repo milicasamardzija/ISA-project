@@ -110,7 +110,7 @@
                   type="password"
                   class="form-control"
                   id="psw"
-                  placeholder="Nova lozinka"
+                  placeholder="Nova lozinka" v-model="this.newPassword"
                 />
               </div>
               <div class="form-group">
@@ -122,10 +122,10 @@
                   type="password"
                   class="form-control"
                   id="psw"
-                  placeholder="Potvrdite lozinku"
+                  placeholder="Potvrdite lozinku"  v-model="this.repeatPassword"
                 />
               </div>
-              <button type="submit" class="btn btn-success btn-block">
+              <button type="submit" class="btn btn-success btn-block" @click="changePassword()">
                 <span></span> Potvrdi
               </button>
             </form>
@@ -207,7 +207,9 @@ export default {
   data(){
     return {
       role: "",
-      client: ""
+      client: "",
+      newPassword: "",
+      repeatPassword: ""
     }
   },
   methods: {
@@ -221,6 +223,23 @@ export default {
       const res = await fetch("http://localhost:8081/api/client/profileClient", {headers});
       const data = await res.json();
       return data;
+    },
+    async changePassword(){
+      console.log(localStorage.getItem("token"))
+      if (this.repeatPassword != this.newPassword){
+        alert("Niste dobro uneli ponovljenu sifru!Probajte ponovo!");
+      } else {
+        const res = await fetch("http://localhost:8081/api/user/changePassword/" + this.newPassword, {
+        method: "PUT",
+        headers: {
+           Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      });
+      const data = await res.json();
+      localStorage.setItem("token", data.accessToken);
+      console.log(localStorage.getItem("token"))
+      }
+
     }
   },
   async created() {

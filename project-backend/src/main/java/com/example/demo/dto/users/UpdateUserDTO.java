@@ -10,8 +10,6 @@ public class UpdateUserDTO {
 
     private String lastname;
 
-    private String role;
-
     private Address address;
 
     private String telephone;
@@ -40,14 +38,6 @@ public class UpdateUserDTO {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public Address getAddress() {
