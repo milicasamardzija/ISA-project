@@ -2,7 +2,9 @@
   <div>
     <NavBarClient />
   </div>
-  <div style="width: 1000px">
+
+  <!-- Pretraga -->
+  <div style="width: 1000px;margin-top:20px;margin-bottom:20px" v-if="boats.length != 0">
     <nav class="navbar navbar-expand-sm navbar-dark">
       <input
         class="form-control mr-sm-2"
@@ -27,6 +29,47 @@
       </button>
     </nav>
   </div>
+
+  <!-- Sortiranje -->
+  <div class="dropdown" style="margin-bottom:20px; margin-left:20px">
+    <button
+      class="btn btn-secondary dropdown-toggle"
+      type="button"
+      id="dropdownMenuButton"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Sortitaj
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="boats.length != 0" >
+      <a class="dropdown-item" href="#" @click="sort('NazivRastuce')"
+        >Naziv - rastuce</a
+      >
+      <a class="dropdown-item" href="#" @click="sort('NazivOpadajuce')"
+        >Naziv - opadajuce</a
+      >
+      <a class="dropdown-item" href="#" @click="sort('OcenaRastuce')"
+        >Ocena - rastuce</a
+      >
+      <a class="dropdown-item" href="#" @click="sort('OcenaOpadajuce')"
+        >Ocena - opadajuce</a
+      >
+      <a class="dropdown-item" href="#" @click="sort('UlicaRastuce')"
+        >Ulica - rastuce</a
+      >
+      <a class="dropdown-item" href="#" @click="sort('UlicaOpadajuce')"
+        >Ulica - rastuce</a
+      >
+      <a class="dropdown-item" href="#" @click="sort('GradRastuce')"
+        >Grad - rastuce</a
+      >
+      <a class="dropdown-item" href="#" @click="sort('GradOpadajuce')"
+        >Grad - rastuce</a
+      >
+    </div>
+  </div>
+
   <div class="containerInfo">
     <div class="tab-pane container active">
       <div class="row-boats" v-for="(boat, index) in boats" :key="index">
@@ -97,7 +140,41 @@ export default {
     getImgUrl(img) {
       var images = require.context('../../../assets/boatImages/', false, /.jpg$/)
     return images('./' + img + ".jpg")
-    }
+    },
+    sort(sortParam) {
+      if (sortParam == "NazivRastuce")
+        this.boats.sort(function (a, b) {
+          return a.name - b.name;
+        });
+      if (sortParam == "NazivOpadajuce")
+        this.boats.sort(function (a, b) {
+          return b.name - a.name;
+        });
+      if (sortParam == "OcenaRastuce")
+        this.boats.sort(function (a, b) {
+          return a.grade - b.grade;
+        });
+      if (sortParam == "OcenaOpadajuce")
+        this.boats.sort(function (a, b) {
+          return b.grade - a.grade;
+        });
+        if (sortParam == "UlicaRastuce")
+        this.boats.sort(function (a, b) {
+          return a.address.street - b.address.street;
+        });
+      if (sortParam == "UlicaOpadajuce")
+        this.boats.sort(function (a, b) {
+          return b.address.street - a.address.street;
+        });
+      if (sortParam == "GradRastuce")
+        this.boats.sort(function (a, b) {
+          return a.address.city - b.address.city;
+        });
+      if (sortParam == "GradOpadajuce")
+        this.boats.sort(function (a, b) {
+          return b.address.city - a.address.city;
+        });
+    },
   },
 
   async created() {

@@ -5,7 +5,7 @@
       <HeaderStartPage />
       <NavBarStartPage />
     </div>
-    <div style="width: 1000px">
+    <div style="width: 1000px" v-if="adventures.length != 0">
       <nav class="navbar navbar-expand-sm navbar-dark">
         <input
           class="form-control mr-sm-2"

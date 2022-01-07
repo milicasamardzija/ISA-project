@@ -181,6 +181,7 @@ import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue"
 import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
+import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue'
 
 
 export default {
@@ -191,6 +192,7 @@ export default {
     HeaderStartPage,
     NavBarClient,
     HeaderLogAndRegister,
+    NavBarStartPage
   },
   data() {
     return {
