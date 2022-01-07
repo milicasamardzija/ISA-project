@@ -5,6 +5,7 @@ import com.example.demo.model.users.DeleteUserRequest;
 import com.example.demo.model.users.User;
 import com.example.demo.service.users.DeleteUserRequestService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +24,7 @@ public class DeleteUserRequestController {
         this.deleteUserRequestService = deleteUserRequestService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DeleteUserRequest> saveRequest(@RequestBody DeleteUserRequestDTO request){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();

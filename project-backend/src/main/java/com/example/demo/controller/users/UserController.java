@@ -8,6 +8,7 @@ import com.example.demo.service.users.UserService;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     //@PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN')")
-    @PutMapping(value="/update")
+    @PutMapping(value="/update",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateUser(@RequestBody UpdateUserDTO updatedUser){
         userService.update(updatedUser);
         return new ResponseEntity<>(HttpStatus.OK);

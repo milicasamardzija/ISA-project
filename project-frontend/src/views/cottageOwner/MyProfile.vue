@@ -168,11 +168,11 @@
               </div>
 
               <div class="form-group">
-                <textarea type="text" style="width: 100%; height: 50%">
+                <textarea type="text" style="width: 100%; height: 50%" v-model="explanation">
                 </textarea>
               </div>
-              <button type="submit" class="btn btn-success btn-block">
-                <span></span> Potvrdi
+              <button type="submit" class="btn btn-success btn-block" @click="sendDeleteRequest()">
+                 Potvrdi
               </button>
             </form>
           </div>
@@ -209,7 +209,8 @@ export default {
       role: "",
       client: "",
       newPassword: "",
-      repeatPassword: ""
+      repeatPassword: "",
+      explanation: ""
     }
   },
   methods: {
@@ -239,7 +240,19 @@ export default {
       localStorage.setItem("token", data.accessToken);
       console.log(localStorage.getItem("token"))
       }
-
+    },
+    async sendDeleteRequest(){
+      alert(this.explanation)
+      const res = await fetch("http://localhost:8081/api/userDeleteReq/" , {
+        method: "POST",
+        headers: {
+           Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        body: JSON.stringify({explanation: this.explanation})
+      });
+      alert("aaaaaaaaaaaaaaaa")
+      const data = await res.json();
+      alert(data)
     }
   },
   async created() {
