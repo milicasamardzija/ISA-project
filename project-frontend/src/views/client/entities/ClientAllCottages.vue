@@ -30,7 +30,7 @@
     </div>
 
   <!-- Sortiranje -->
-  <div class="dropdown" style="margin-bottom:20px; margin-left:20px">
+  <div class="dropdown" style="margin-bottom:20px; margin-left:20px"  v-if="cottages.length != 0">
     <button
       class="btn btn-secondary dropdown-toggle"
       type="button"
@@ -69,6 +69,24 @@
     </div>
   </div>
 
+  <!--Filtriranje-->
+
+  <div class="filter" style="margin-left:20px;margin-top: 20px">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle drop-btn" ref="btnToggle" id="dropdownMenuButton" data-toggle="dropdown" 
+        aria-haspopup="true" aria-expanded="false">
+            Filtriraj - ocena &ensp;
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#a" @click="filterData(5)" >5</a>
+          <a class="dropdown-item" href="#a" @click="filterData(4)" >4</a> 
+          <a class="dropdown-item" href="#a" @click="filterData(3)" >3</a>
+          <a class="dropdown-item" href="#a" @click="filterData(2)" >2</a>
+          <a class="dropdown-item" href="#a" @click="filterData(1)" >1</a>
+        </div>
+        <button class="btn btn-secondary" style="margin-left:20px" @click="filterData(-1)" v-if="cottages.length != maxLength"><i class="fa fa-close"></i></button>  
+    </div>   
+  </div>
 
   <div class="containerInfo">
     <div class="tab-pane container active">
@@ -111,7 +129,8 @@ export default {
       cottages: [],
       name: "",
       street: "",
-      city: ""
+      city: "",
+      maxLength:0
     };
   },
 
@@ -177,10 +196,17 @@ export default {
           return b.address.city - a.address.city;
         });
     },
+    async filterData(param){
+      this.cottages = this.cottages.filter((c) => c.grade == param);
+      if (param == -1) {
+        this.cottages =  await this.fetchCottages();
+      }
+    }
   },
 
   async created() {
     this.cottages = await this.fetchCottages();
+    this.maxLength = this.cottages.length;
   }
 };
 </script>

@@ -31,7 +31,7 @@
     </div>
 
     <!-- Sortiranje -->
-  <div class="dropdown" style="margin-bottom:20px; margin-left:20px">
+  <div class="dropdown" style="margin-bottom:20px; margin-left:20px" v-if="adventures.length != 0">
     <button
       class="btn btn-secondary dropdown-toggle"
       type="button"
@@ -42,7 +42,7 @@
     >
       Sortitaj
     </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="adventures.length != 0" >
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
       <a class="dropdown-item" href="#" @click="sort('NazivRastuce')"
         >Naziv - rastuce</a
       >
@@ -68,6 +68,24 @@
         >Grad - rastuce</a
       >
     </div>
+  </div>
+
+  <!--Filtriranje-->
+  <div class="filter" style="margin-left:20px;margin-top: 20px">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle drop-btn" ref="btnToggle" id="dropdownMenuButton" data-toggle="dropdown" 
+        aria-haspopup="true" aria-expanded="false">
+            Filtriraj - ocena &ensp;
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#a" @click="filterData(5)" >5</a>
+          <a class="dropdown-item" href="#a" @click="filterData(4)" >4</a> 
+          <a class="dropdown-item" href="#a" @click="filterData(3)" >3</a>
+          <a class="dropdown-item" href="#a" @click="filterData(2)" >2</a>
+          <a class="dropdown-item" href="#a" @click="filterData(1)" >1</a>
+        </div>
+        <button class="btn btn-secondary" style="margin-left:20px" @click="filterData(-1)" v-if="adventures.length != maxLength"><i class="fa fa-close"></i></button>  
+    </div>   
   </div>
 
     <div class="containerInfo">
@@ -124,6 +142,7 @@ export default {
       name: "",
       street: "",
       city: "",
+      maxLength:0
     };
   },
 
@@ -189,9 +208,16 @@ export default {
           return b.address.city - a.address.city;
         });
     },
+    async filterData(param){
+      this.adventures = this.adventures.filter((a) => a.grade == param);
+      if (param == -1) {
+        this.adventures =  await this.fetchAdventures();
+      }
+    }
   },
   async created() {
     this.adventures = await this.fetchAdventures();
+    this.maxLength = this.adventures.length;
   },
 };
 </script>
