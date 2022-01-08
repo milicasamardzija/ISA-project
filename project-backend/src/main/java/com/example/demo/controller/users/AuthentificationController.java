@@ -94,6 +94,7 @@ public class AuthentificationController {
             if(userRequest.getRole().equals("ROLE_CLIENT")) {
                 user = this.userService.saveClient(userRequest);
                 emailService.sendEmailForUserAuthentication(user);
+            }
             if(userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
                 user = this.userService.save(userRequest);
                 //transfer dovde, ne cuva servis usera vec servis cottage ownera

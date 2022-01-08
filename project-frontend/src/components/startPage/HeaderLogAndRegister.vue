@@ -275,6 +275,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -299,31 +300,36 @@ export default {
     },
   },
   methods: {
-    async Login() {
-      const res = await fetch("http://localhost:8081/api/auth/login", {
-        method: "POST",
-        headers: {
+     Login(){
+      const headers ={
           "Content-type": "application/json",
-        },
-        body: JSON.stringify({ email: this.email, password: this.password }),
-      });
-      const data = await res.json();
-      localStorage.setItem("token", data.accessToken);
-      localStorage.setItem("role", data.role);
-      console.log(localStorage.getItem("token"));
-      console.log(localStorage.getItem("role"));
-      if (localStorage.getItem("role") == "ROLE_CLIENT") {
-        this.$router.push({ name: "ClientAllCottages" });
-        this.$router.go(0);
-        console.log(localStorage.getItem("token"));
-        console.log(localStorage.getItem("role"));
-      } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
-        this.$router.push({ name: "HomePageInProfil" });
       }
+      axios.post("http://localhost:8081/api/auth/login",{ email: this.email, password: this.password }, {headers})
+      .then (response => {
+        if (response.data.enabled === true){
+          localStorage.setItem("token", response.data.accessToken);
+          localStorage.setItem("role", response.data.role);
+          if (localStorage.getItem("role") == "ROLE_CLIENT") {
+            this.$router.push({ name: "ClientAllCottages" });
+            this.$router.go(0);
+            console.log(localStorage.getItem("token"));
+            console.log(localStorage.getItem("role"));
+          } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
+            this.$router.push({ name: "HomePageInProfil" });
+          } 
+        } else {
+          alert("Vas nalog jos uvek nije aktiviran ili ste pogresili prilikom unosa kredencijala!")
+        }
+        
+      })
+      .catch( error => {
+        console.log(error)
+        alert("Vas nalog jos uvek nije aktiviran ili ste pogresili prilikom unosa kredencijala!")
+      }) 
     },
     async register() {
     
-      const res = await fetch("http://localhost:8080/api/auth/signup", {
+      const res = await fetch("http://localhost:8081/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

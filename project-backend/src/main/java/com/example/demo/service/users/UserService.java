@@ -37,7 +37,7 @@ public class UserService {
         return this.userRepository.findByEmail(email);
     }
 
-    pblic void update(UpdateUserDTO updatedUser) {
+    public void update(UpdateUserDTO updatedUser) {
         User userToUpdate = userRepository.findById(updatedUser.getId());
         userToUpdate.setName(updatedUser.getFirstname());
         userToUpdate.setSurname(updatedUser.getLastname());
@@ -78,7 +78,7 @@ public class UserService {
         u.setRole(new Role((userRequest.getRole()))); 
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);   
-        u.setAddress(userRequest.getAddress());
+        u.setAddress(addressService.save(userRequest.getAddress()));
         return this.userRepository.save(u);
     }
 

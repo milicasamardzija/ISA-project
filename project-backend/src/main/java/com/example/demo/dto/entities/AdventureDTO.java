@@ -1,9 +1,10 @@
 package com.example.demo.dto.entities;
 
 import com.example.demo.enums.CancelationType;
+import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.Image;
-import com.example.demo.model.users.Address;
+
 
 import java.util.Set;
 
