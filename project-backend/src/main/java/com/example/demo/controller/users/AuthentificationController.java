@@ -82,7 +82,7 @@ public class AuthentificationController {
             //
             if(userRequest.getRole().equals("ROLE_CLIENT")) {
                //ovde dodati klijenta umesto gore usera
-               user = this.userService.save(userRequest);
+               user = this.userService.saveClient(userRequest);  
             }
             if(userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
                 user = this.userService.save(userRequest);
