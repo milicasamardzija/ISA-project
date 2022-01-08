@@ -67,18 +67,18 @@ export default {
   data(){
     return {
       role: "",
-      user: { id: 0, firstName: "", lastName: "", address: { id: "", street:"", number: 0, city: "", country: ""}, telephone: ""}
+      user: { id: 0, firstname: "", lastname: "", address: { id: "", street:"", number: 0, city: "", country: ""}, telephone: ""}
     }
   },
   methods: {
     async edit() {
-      console.log(this.user)
       await fetch("http://localhost:8081/api/user/update", {
-        method: "PUT",
+        method: "POST",
         headers: {
-           Authorization: "Bearer " + localStorage.getItem("token")
+           Authorization: "Bearer " + localStorage.getItem("token"),
+           "Content-type": "application/json"
         },
-        body: JSON.stringify({ id: this.user.id, firstName: this.user.lastName, address: { id: this.user.addres.id, street:this.user.address.street, number: this.user.number, city: this.user.address.city, country: this.user.address.coutry }, telephone: this.user.telephone}),
+        body: JSON.stringify({ id: parseInt(this.user.id), firstname: this.user.firstname, lastname: this.user.lastname, address: { id: this.user.address.id, street:this.user.address.street, number: this.user.address.number, city: this.user.address.city, country: this.user.address.country }, telephone: this.user.telephone}),
       });
       this.$router.push({ name: "MyProfile" })
     },
@@ -88,6 +88,7 @@ export default {
     async getUser() {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
+        "Access-Control-Allow-Origin": "*"
       };
       const res = await fetch("http://localhost:8081/api/user/userInfo", {headers});
       const data = await res.json();

@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN')")
-    @PutMapping(value="/update",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/update",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateUser(@RequestBody UpdateUserDTO updatedUser){
         userService.update(updatedUser);
         return new ResponseEntity<>(HttpStatus.OK);

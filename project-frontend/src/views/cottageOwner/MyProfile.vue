@@ -158,7 +158,7 @@
             </h5>
           </div>
           <div class="modal-body" style="padding: 15px 50px">
-            <form role="form">
+            <form role="form" >
               <div class="form-group">
                 <label for="psw"
                   ><span class="glyphicon glyphicon-eye-open"></span> Da li ste
@@ -231,28 +231,29 @@ export default {
         alert("Niste dobro uneli ponovljenu sifru!Probajte ponovo!");
       } else {
         const res = await fetch("http://localhost:8081/api/user/changePassword/" + this.newPassword, {
-        method: "PUT",
-        headers: {
-           Authorization: "Bearer " + localStorage.getItem("token")
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            'Content-Type': 'application/json;charset=UTF-8',
+            Accept: 'application/json',
+          }
+        });
+        const data = await localStorage.setItem("token", res.json.accessToken);
+        //localStorage.setItem("token", data.accessToken);
+        console.log(data)
         }
-      });
-      const data = await res.json();
-      localStorage.setItem("token", data.accessToken);
-      console.log(localStorage.getItem("token"))
-      }
     },
     async sendDeleteRequest(){
-      alert(this.explanation)
-      const res = await fetch("http://localhost:8081/api/userDeleteReq/" , {
+      const res = await fetch("http://localhost:8081/api/userDeleteReq" , {
         method: "POST",
         headers: {
+          "Content-type": "application/json",
            Authorization: "Bearer " + localStorage.getItem("token")
         },
         body: JSON.stringify({explanation: this.explanation})
       });
-      alert("aaaaaaaaaaaaaaaa")
-      const data = await res.json();
-      alert(data)
+     const ret = await res.data
+     console.log(ret)
     }
   },
   async created() {

@@ -41,7 +41,7 @@
     >
       Sortitaj
     </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="cottages.length != 0" >
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
       <a class="dropdown-item" href="#" @click="sort('NazivRastuce')"
         >Naziv - rastuce</a
       >
