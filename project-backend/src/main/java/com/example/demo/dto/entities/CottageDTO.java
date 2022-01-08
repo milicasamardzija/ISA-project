@@ -2,10 +2,8 @@ package com.example.demo.dto.entities;
 
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.entities.Image;
-import com.example.demo.model.users.Address;
-import com.example.demo.model.users.CottageOwner;
+import com.example.demo.model.entities.Address;
 
-import java.util.List;
 import java.util.Set;
 
 public class CottageDTO {

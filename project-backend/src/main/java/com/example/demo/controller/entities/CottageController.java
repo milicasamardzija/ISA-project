@@ -38,9 +38,9 @@ public class CottageController {
 
     @PostMapping("/search")
     public ResponseEntity<List<Cottage>> search(@RequestBody SearchDTO searchParam) {
-
         return new ResponseEntity<>(cottageService.searchCottages(searchParam), HttpStatus.OK);
     }
+
 
 }
 

@@ -1,4 +1,4 @@
-package com.example.demo.model.users;
+package com.example.demo.model.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +28,13 @@ public class Address {
 	public Address(int id, String country, String city, String street, String number) {
 		super();
 		this.id = id;
+		this.country = country;
+		this.city = city;
+		this.street = street;
+		this.number = number;
+	}
+	public Address( String country, String city, String street, String number) {
+
 		this.country = country;
 		this.city = city;
 		this.street = street;

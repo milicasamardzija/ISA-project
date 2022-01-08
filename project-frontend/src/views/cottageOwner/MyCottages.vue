@@ -26,7 +26,8 @@
         </tr>
       </table>
 
-      <div class="row-boats">
+      <div class="row-boats"  v-for="(cottage, index) in cottages" :key="index">
+       
         <div class="col-with-picture" style="margin-right: 5%; margin-top: 1%">
           <div>
             <img
@@ -38,10 +39,11 @@
           </div>
         </div>
         <div class="col-info" style="margin-top: 3%">
-          <h4 style="width: 600px" class="text">Promotivni opis:</h4>
-          <h4 style="width: 600px" class="text">Naziv:</h4>
-          <h4 style="width: 600px" class="text">Adresa:</h4>
-          <h4 style="width: 600px" class="text">Prosecna ocena:</h4>
+          <h4 style="width: 600px" class="text">Promotivni opis:   {{cottage.promoDescription}}</h4>
+          <h4 style="width: 600px" class="text">Naziv:   {{cottage.name}}</h4>
+          <h4 style="width: 600px" class="text">Adresa: {{ cottage.address.number }}, {{ cottage.address.city }},
+              {{ cottage.address.country }}</h4>
+          <h4 style="width: 600px" class="text">Prosecna ocena: {{cottage.grade}}</h4>
         </div>
         <div class="col-info" style="margin-left: 10%; margin-top: 4%">
           <div class="row" style="margin-bottom: 15%">
@@ -67,6 +69,7 @@
             </button>
           </div>
         </div>
+        
       </div>
     </div>
 
@@ -125,7 +128,26 @@ export default {
     NavBarLogOut,
     NavBarHomePage,
   },
+  data() {
+    return {
+      cottages: [],
+      name: "",
+      city: "",
+    }
+  },
+
+  methods: {
+    async fetchOwner(){
+      const owner = await fetch("http://localhost:8080/api/cottageOwner");
+      const data = await owner.json();
+      return data;
+    },
+    async getMyCottages(){
+      this.cottages = await this.fetchOwner().cottageList;
+    }
+  }
 };
+
 </script>
 
 <style scoped>

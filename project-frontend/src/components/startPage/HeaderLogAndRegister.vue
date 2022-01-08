@@ -161,6 +161,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Ulica"
+                            v-model="newUser.address.street"
                         />
                       </td>
 
@@ -169,6 +170,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Broj"
+                          v-model="newUser.address.number"
                         />
                       </td>
                     </tr>
@@ -178,6 +180,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Grad"
+                          v-model="newUser.address.city"
                         />
                       </td>
                       <td>
@@ -185,6 +188,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Drzava"
+                          v-model="newUser.address.country"
                         />
                       </td>
                     </tr>
@@ -195,15 +199,16 @@
                   type="text"
                   class="form-control"
                   placeholder="Unesite Vas telefon"
+                  v-model="newUser.telephone"
                 />
 
                 <div class="form-group">
                   <label>Izaberite odgovarajuci tip registracije</label>
-                  <select class="form-control">
-                    <option>Vlasnik vikendice</option>
-                    <option>Vlasnik broda</option>
-                    <option>Instruktor</option>
-                    <option>Korisnik</option>
+                  <select class="form-control" v-model="newUser.role">
+                    <option value="ROLE_COTTAGE_OWNER">Vlasnik vikendice</option>
+                    <option value="ROLE_BOAT_OWNER">Vlasnik broda</option>
+                    <option value="ROLE_INSTRUCTOR">Instruktor</option>
+                    <option value="ROLE_CLIENT">Korisnik</option>
                   </select>
                 </div>
               </div>
@@ -218,6 +223,19 @@
                   id="psw"
                   placeholder="Unesite lozinku"
                   v-model="newUser.password"
+                />
+              </div>
+                 <div class="form-group" v-if="newUser.role === 'ROLE_COTTAGE_OWNER' ">
+                <label for="psw"
+                  ><span class="glyphicon glyphicon-eye-open"></span>
+                  Obrazlozenje registracije</label
+                >
+                <textarea
+                  type="text"
+                  class="form-control"
+                 
+                  placeholder="Unesite obrazlozenje za registraciju"
+                  v-model="newUser.reasonForRegistration"
                 />
               </div>
               <div class="form-group">
@@ -260,6 +278,7 @@
 export default {
   data() {
     return {
+      userAddress: { country: "",  city: "", street: "",number:0 },
       email: "",
       password: "",
       newUser: {
@@ -267,7 +286,10 @@ export default {
         lastname: "",
         email: "",
         password: "",
-        role: "ROLE_CLIENT",
+        address: { country: "",  city: "", street: "",number:0 },
+        role: "",
+        reasonForRegistration: "",
+        telephone: ""
       },
     };
   },
@@ -300,7 +322,8 @@ export default {
       }
     },
     async register() {
-      const res = await fetch("http://localhost:8081/api/auth/signup", {
+    
+      const res = await fetch("http://localhost:8080/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
