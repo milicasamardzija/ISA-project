@@ -1,7 +1,6 @@
 package com.example.demo.service.users;
 
 import com.example.demo.dto.users.UpdateUserDTO;
-import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.users.Role;
 import com.example.demo.model.users.User;
@@ -14,10 +13,12 @@ public class UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private RoleService roleService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     public User findById(int id) {
@@ -33,9 +34,9 @@ public class UserService {
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         u.setName(userRequest.getFirstname());
         u.setSurname(userRequest.getLastname());
-        u.setRole(new Role(("ROLE_CLIENT")));
+        u.setRole(new Role((userRequest.getRole())));
         u.setEmail(userRequest.getEmail());
-        u.setEnabled(true);
+        u.setEnabled(false);
         return this.userRepository.save(u);
     }
 
@@ -51,5 +52,10 @@ public class UserService {
     public void updatePassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
+    }
+
+    public void deleteById(User user){
+        this.userRepository.delete(user);
+        this.roleService.delete(user.getRole());
     }
 }

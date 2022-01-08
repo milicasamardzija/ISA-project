@@ -3,10 +3,16 @@ package com.example.demo.controller.users;
 import com.example.demo.dto.users.JwtAuthenticationRequest;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.dto.users.UserTokenState;
+import com.example.demo.model.users.Client;
+import com.example.demo.model.users.ClientRegistrationToken;
 import com.example.demo.model.users.User;
+import com.example.demo.service.email.EmailService;
+import com.example.demo.service.users.ClientRegistrationTokenService;
+import com.example.demo.service.users.ClientService;
 import com.example.demo.service.users.UserService;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,27 +20,31 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 @Controller
 @RequestMapping(value = "api/auth")
 public class AuthentificationController {
 
-    @Autowired
     private AuthenticationManager authenticationManager;
+    private UserService userService;
+    private TokenUtils tokenUtils;
+    private EmailService emailService;
+    private ClientService clientService;
 
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    TokenUtils tokenUtils;
+    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService) {
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.tokenUtils = tokenUtils;
+        this.emailService = emailService;
+        this.clientService = clientService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenState> createAuthenticationToken(
@@ -49,7 +59,6 @@ public class AuthentificationController {
         }
         catch (Exception ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//            throw new Exception("User with that credentials not found!",ex);
         }
 
         // Ukoliko je autentifikacija uspesna, ubaci korisnika u trenutni security
@@ -66,23 +75,35 @@ public class AuthentificationController {
     }
 
     // Endpoint za registraciju novog korisnika
-    @PostMapping("/signup")
-    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
-
+    @RequestMapping(value="/signup", method = { RequestMethod.GET, RequestMethod.POST })
+    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) {
         User existUser = this.userService.findByEmail(userRequest.getEmail());
         User user = null;
         if (existUser != null) {
-            //throw new ResourceConflictException(userRequest.getEmail(), "Username already exists");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
             user = this.userService.save(userRequest);
             if(userRequest.getRole().equals("ROLE_CLIENT")) {
-               //ovde dodati klijenta umesto gore usera
+                emailService.sendEmailForUserAuthentication(user);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value="/confirm-account", method= {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<Client> confirmAccount(@RequestParam("email") String email) throws URISyntaxException {
+        User user = this.userService.findByEmail(email);
+
+        Client client = this.clientService.save(user);
+        this.userService.deleteById(user);
+        URI frontend = new URI("http://localhost:8082/");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(frontend);
+
+        return new ResponseEntity<>(new Client(), httpHeaders, HttpStatus.SEE_OTHER);
     }
 
 }

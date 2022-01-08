@@ -1,5 +1,7 @@
 package com.example.demo.model.users;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -52,7 +54,8 @@ public class User implements UserDetails {
 	private Address address;
 	@Column(name = "enabled")
 	private boolean enabled;
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "role_id")
 	private Role role;
 	@Column(name = "last_password_reset_date")
