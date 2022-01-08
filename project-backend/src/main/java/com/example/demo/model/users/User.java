@@ -2,6 +2,7 @@ package com.example.demo.model.users;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import com.example.demo.model.entities.Address;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -50,7 +51,7 @@ public class User implements UserDetails {
 	private String password;
 	@Column(name = "telephone")
 	private String telephone;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE ) //PRILIKOM REGISTRACIJE NIJE CUVAO USERA, PA SAM PROMENILA CASCADETYPE
 	private Address address;
 	@Column(name = "enabled")
 	private boolean enabled;
@@ -62,7 +63,8 @@ public class User implements UserDetails {
 	private Timestamp lastPasswordResetDate;
 	
 	public User() {}
-	
+
+	//koristim pri registraciji
 	public User(String name, String surname, String email, String password, String telephone, Address address,boolean enabled, Role role, Timestamp lastPasswordResetDate) {
 		super();
 		this.name = name;
@@ -86,6 +88,18 @@ public class User implements UserDetails {
 		this.address = address;
 	}
 
+	//za pravljenje odredjenog usera  -> ne koristim
+	public User(String name, String surname, String email, String password, String telephone, Address address, String role) {
+		super();
+		this.role= new Role(role); //poslace se u stringu rola
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.password = password;
+		this.telephone = telephone;
+		this.enabled= true;
+		this.address = address;
+	}
 
 	public int getId() {
 		return id;
@@ -185,4 +199,7 @@ public class User implements UserDetails {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	public boolean getEnabled() {return enabled;}
+
 }

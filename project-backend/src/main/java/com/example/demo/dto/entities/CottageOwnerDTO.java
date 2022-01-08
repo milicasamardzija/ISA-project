@@ -1,7 +1,7 @@
 package com.example.demo.dto.entities;
 
 import com.example.demo.model.entities.Cottage;
-import com.example.demo.model.users.Address;
+import com.example.demo.model.entities.Address;
 import com.example.demo.model.users.CottageOwner;
 
 import java.util.List;

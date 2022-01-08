@@ -2,10 +2,8 @@ package com.example.demo.dto.entities;
 
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.entities.Image;
-import com.example.demo.model.users.Address;
-import com.example.demo.model.users.CottageOwner;
+import com.example.demo.model.entities.Address;
 
-import java.util.List;
 import java.util.Set;
 
 public class CottageDTO {
@@ -19,8 +17,7 @@ public class CottageDTO {
     private String rules;
     private double grade;
     private Set<Image> images;
-
- private int price; //je l ovo dovoljno za cenovnik
+    private int price; //je l ovo dovoljno za cenovnik
     //slobodni termini sa akcijama za rezervaciju OVO NEMAMO
     
 

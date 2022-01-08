@@ -9,6 +9,8 @@ import com.example.demo.model.users.User;
 import com.example.demo.service.email.EmailService;
 import com.example.demo.service.users.ClientRegistrationTokenService;
 import com.example.demo.service.users.ClientService;
+import com.example.demo.model.users.CottageOwner;
+import com.example.demo.service.CottageOwnerService;
 import com.example.demo.service.users.UserService;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +39,15 @@ public class AuthentificationController {
     private TokenUtils tokenUtils;
     private EmailService emailService;
     private ClientService clientService;
+    private CottageOwnerService cottageOwnerService;
 
-    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService) {
+    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CottageOwnerService cottageOwnerService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.tokenUtils = tokenUtils;
         this.emailService = emailService;
         this.clientService = clientService;
+        this.cottageOwnerService = cottageOwnerService;
     }
 
     @PostMapping("/login")
@@ -87,9 +91,14 @@ public class AuthentificationController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            user = this.userService.save(userRequest);
             if(userRequest.getRole().equals("ROLE_CLIENT")) {
+                user = this.userService.saveClient(userRequest);
                 emailService.sendEmailForUserAuthentication(user);
+            if(userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
+                user = this.userService.save(userRequest);
+                //transfer dovde, ne cuva servis usera vec servis cottage ownera
+                //mora se drugacije implementirati kad Lidija bude radila svoje odobravanje registracije
+                cottageOwnerService.save(new CottageOwner(user));
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -5,7 +5,6 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.example.demo.model.business.Reservation;
-import com.example.demo.model.users.Address;
 import com.example.demo.model.users.Client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

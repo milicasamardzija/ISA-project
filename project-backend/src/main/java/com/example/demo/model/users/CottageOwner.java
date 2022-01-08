@@ -1,5 +1,7 @@
 package com.example.demo.model.users;
 
+import com.example.demo.dto.users.UserRequest;
+import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Cottage;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Proxy;
@@ -30,5 +32,15 @@ public class CottageOwner extends User{
     public CottageOwner(String name, String surname, String email, String password, String telephone, Address address, List<Cottage> cottageList) {
         super(name, surname, email, password, telephone, address);
         this.cottageList = cottageList;
+    }
+
+    public CottageOwner(UserRequest user) {
+        super(user.getFirstname(), user.getLastname(), user.getEmail(), user.getPassword(), user.getTelephone(), user.getAddress(), user.getRole());
+        //cottageList je null
+    }
+
+    public CottageOwner(User user) {
+        super(user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getTelephone(), user.getAddress(), true, user.getRole(), user.getLastPasswordResetDate());
+        //cottageList je null
     }
 }
