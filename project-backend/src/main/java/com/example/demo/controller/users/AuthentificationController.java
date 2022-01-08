@@ -48,7 +48,7 @@ public class AuthentificationController {
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenState> createAuthenticationToken(
-            @RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
+            @RequestBody JwtAuthenticationRequest authenticationRequest) throws Exception {
 
         // Ukoliko kredencijali nisu ispravni, logovanje nece biti uspesno, desice se
         // AuthenticationException
@@ -70,8 +70,12 @@ public class AuthentificationController {
         String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 
+        if (user.isEnabled() == false){
+            return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,user.getRole().getName(), user.isEnabled()));
+        }
+
         // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,user.getRole().getName()));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,user.getRole().getName(), user.isEnabled()));
     }
 
     // Endpoint za registraciju novog korisnika

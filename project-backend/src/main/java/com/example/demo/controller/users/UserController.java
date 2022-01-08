@@ -68,7 +68,7 @@ public class UserController {
         String jwt = tokenUtils.generateToken(userAuth.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,userAuth.getRole().getName()));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,userAuth.getRole().getName(), user.isEnabled()));
     }
 
 }

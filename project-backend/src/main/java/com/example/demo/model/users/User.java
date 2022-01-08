@@ -182,7 +182,6 @@ public class User implements UserDetails {
 		return role;
 	}
 
-
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
