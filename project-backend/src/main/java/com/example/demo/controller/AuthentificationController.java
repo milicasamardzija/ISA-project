@@ -3,7 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.dto.users.JwtAuthenticationRequest;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.dto.users.UserTokenState;
+import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
+import com.example.demo.service.CottageOwnerService;
 import com.example.demo.service.users.UserService;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ public class AuthentificationController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    CottageOwnerService cottageOwnerService;
 
     @Autowired
     TokenUtils tokenUtils;
@@ -75,9 +79,17 @@ public class AuthentificationController {
             //throw new ResourceConflictException(userRequest.getEmail(), "Username already exists");
         }
         try {
-            user = this.userService.save(userRequest);
+            //
             if(userRequest.getRole().equals("ROLE_CLIENT")) {
                //ovde dodati klijenta umesto gore usera
+               user = this.userService.save(userRequest);
+            }
+            if(userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
+                user = this.userService.save(userRequest);
+                //transfer dovde, ne cuva servis usera vec servis cottage ownera
+                //mora se drugacije implementirati kad Lidija bude radila svoje odobravanje registracije
+                cottageOwnerService.save(new CottageOwner(user));
+
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

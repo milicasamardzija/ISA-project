@@ -4,7 +4,7 @@ import com.example.demo.enums.BoatType;
 import com.example.demo.enums.CancelationType;
 import com.example.demo.model.entities.Boat;
 import com.example.demo.model.entities.Image;
-import com.example.demo.model.users.Address;
+import com.example.demo.model.entities.Address;
 
 import java.util.Set;
 

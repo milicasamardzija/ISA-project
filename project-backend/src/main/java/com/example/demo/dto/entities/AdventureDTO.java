@@ -2,12 +2,7 @@ package com.example.demo.dto.entities;
 
 import com.example.demo.enums.CancelationType;
 import com.example.demo.model.entities.Adventure;
-import com.example.demo.model.entities.EntityClass;
-import com.example.demo.model.entities.Image;
-import com.example.demo.model.users.Address;
-
-import javax.persistence.Column;
-import java.util.Set;
+import com.example.demo.model.entities.Address;
 
 public class AdventureDTO {
 

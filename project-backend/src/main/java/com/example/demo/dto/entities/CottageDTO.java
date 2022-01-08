@@ -2,10 +2,8 @@ package com.example.demo.dto.entities;
 
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.entities.Image;
-import com.example.demo.model.users.Address;
-import com.example.demo.model.users.CottageOwner;
+import com.example.demo.model.entities.Address;
 
-import java.util.List;
 import java.util.Set;
 
 public class CottageDTO {
@@ -113,16 +111,6 @@ public class CottageDTO {
 
     }
 
-    public CottageDTO(Cottage cottage){
-        this.roomsNumber = cottage.getRoomsNumber();
-        this.bedsByRoom = cottage.getBedsByRoom();
-        this.id = cottage.getId();
-        this.name = cottage.getName();
-        this.address = cottage.getAddress();
-        this.promoDescription = cottage.getPromoDescription();
-        this.rules = cottage.getRules();
-        this.price = cottage.getPrice();
-        this.grade = cottage.getGrade();
-    }
+
 
 }
