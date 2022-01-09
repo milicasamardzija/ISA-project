@@ -1,6 +1,7 @@
 package com.example.demo.service.business;
 
 import com.example.demo.model.business.Reservation;
+import com.example.demo.model.entities.EntityClass;
 import com.example.demo.repository.business.ReservationRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,9 @@ public class ReservationService {
 
     public List<Reservation> fetchAllHistoryReservationsForClientAdventures(int clientId) {
         return reservationRepository.fetchAllHistoryReservationsForClientAdventures(clientId, new Date());
+    }
+
+    public EntityClass findEntityByReservation(int id) {
+        return this.reservationRepository.findEntityByReservation(id);
     }
 }
