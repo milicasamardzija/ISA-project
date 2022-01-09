@@ -1,5 +1,6 @@
 package com.example.demo.controller.users;
 
+import com.example.demo.dto.entities.ChangePasswordDTO;
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.users.UserTokenState;
@@ -48,16 +49,18 @@ public class UserController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN')")
-    @PutMapping(value="/changePassword/{password}")
-    public ResponseEntity<UserTokenState> changePassword(@PathVariable String password){
+   // @PutMapping(value="/changePassword/{password}")
+    @PostMapping(value="/changePassword")
+    public ResponseEntity<UserTokenState> changePassword(@RequestBody ChangePasswordDTO password){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
-        userService.updatePassword(user, password);
+        userService.updatePassword(user, password.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(null);
 
         Authentication authenticationNew = null;
         try {
             authenticationNew = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    user.getEmail(), password));
+                    user.getEmail(), password.getPassword()));
         }
         catch (Exception ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
