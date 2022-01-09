@@ -16,17 +16,18 @@ public class UserRequest {
 
 
     public void setAddress(Address address) { this.address= address; }
+
+
     public String getPassword() {
+        return password;
+    }
+
     public void setReasonForRegistration(String reasonForRegistration) {
         this.reasonForRegistration = reasonForRegistration;
     }
 
     public String getReasonForRegistration() {
         return reasonForRegistration;
-    }
-
-    
-        return password;
     }
 
     public void setPassword(String password) {
@@ -85,4 +86,12 @@ public class UserRequest {
     }
 
     public UserRequest() {}
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 }
