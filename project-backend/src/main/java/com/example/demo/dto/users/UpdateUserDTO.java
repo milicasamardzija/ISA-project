@@ -1,6 +1,6 @@
 package com.example.demo.dto.users;
 
-import com.example.demo.model.users.Address;
+import com.example.demo.model.entities.Address;
 
 public class UpdateUserDTO {
 

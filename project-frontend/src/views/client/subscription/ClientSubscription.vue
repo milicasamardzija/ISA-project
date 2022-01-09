@@ -22,7 +22,7 @@
           <h4 style="width: 600px" class="text">Naziv: {{subscription.name}}</h4>
           <h4 style="width: 600px" class="text">Adresa: {{subscription.address.street}} {{subscription.address.number}}, {{subscription.address.country}}, {{subscription.address.city}}</h4>
           <h4 style="width: 600px" class="text">Prosecna ocena: {{subscription.grade}}</h4>
-          <button class="btn btn-danger" style="margin-top: 40px;" type="button" data-target="#odjava" data-toggle="modal">Otkazi</button>
+          <button class="btn btn-danger" style="margin-top: 40px;" type="button" data-target="#odjava" data-toggle="modal" @click="getSelected(subscription.id)">Otkazi</button>
         </div>
       </div>
     </div>
@@ -39,14 +39,14 @@
             </h5>
           </div>
           <div class="modal-body" style="padding: 15px 50px">
-            <form role="form" @submit.prevent="Cancel">
+            <form role="form">
               <div class="form-group">
                 <label for="name">Da li ste sigurni da zelite da se odjavite sa ove pretplate?</label>
               </div>
               <table>
                 <tr>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block" @click="Cancel()" style="width:80px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" @click="cancel()" style="width:80px; margin-bottom:20px">
                       Potvrdi
                     </button>
                   </td>
@@ -67,6 +67,7 @@
 
 <script>
 import NavBarClient from "../../../components/client/NavBarClient.vue";
+import axios from 'axios'
 
 export default {
   name: "ClientSubscription",
@@ -75,7 +76,8 @@ export default {
   },
   data(){
     return{
-      subscriptions: []
+      subscriptions: [],
+      selectedId: 0
     }
   },
   methods:{
@@ -89,7 +91,31 @@ export default {
       );
       const data = await res.json();
       return data;
+    },
+    getSelected(id){
+      this.selectedId = id;
+    },
+    cancel() {
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.delete("http://localhost:8081/api/client/" + this.selectedId,{headers})
+      .then (response => { 
+        console.log(response);
+        alert("Uspesno ste se odjavili sa pretplate!")
+        this.$router.go(0);
+      })
     }
+    /*const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.put("http://localhost:8081/api/client/" + this.selectedId,{headers})
+      .then (response => { 
+        console.log(response);
+        alert("Uspesno ste se odjavili sa pretplate!")
+        this.$router.go(0);
+      })
+    }*/
   },
   async created() {
     this.subscriptions = await this.fetchSubscriptions();

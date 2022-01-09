@@ -1,5 +1,6 @@
 package com.example.demo.model.entities;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -52,7 +53,7 @@ public class EntityClass {
 
 	@ManyToMany(mappedBy = "subscribedEntities")
 	@JsonIgnore
-	private Set<Client> subscribedClients;
+	private List<Client> subscribedClients;
 	
 	public EntityClass() {
 		super();
@@ -148,11 +149,11 @@ public class EntityClass {
 		this.grade = grade;
 	}
 
-	public Set<Client> getSubscribedClients() {
+	public List<Client> getSubscribedClients() {
 		return subscribedClients;
 	}
 
-	public void setSubscribedClients(Set<Client> subscribedClients) {
+	public void setSubscribedClients(List<Client> subscribedClients) {
 		this.subscribedClients = subscribedClients;
 	}
 

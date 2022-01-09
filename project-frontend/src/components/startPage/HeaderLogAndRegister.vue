@@ -275,6 +275,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -300,7 +301,7 @@ export default {
   },
   methods: {
     async Login() {
-      const res = await fetch("http://localhost:8081/api/auth/login", {
+     /* const res = await fetch("http://localhost:8081/api/auth/login", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -319,7 +320,29 @@ export default {
         console.log(localStorage.getItem("role"));
       } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
         this.$router.push({ name: "HomePageInProfil" });
-      }
+      }*/
+      const headers ={
+        "Content-type": "application/json",
+      }; 
+      axios.post("http://localhost:8081/api/auth/login",{ email: this.email, password: this.password }, {headers})
+      .then (response => {
+       // if (response.data.enabled === true){
+          localStorage.setItem("token", response.data.accessToken);
+          localStorage.setItem("role", response.data.role);
+          if (localStorage.getItem("role") == "ROLE_CLIENT") {
+            this.$router.push({ name: "ClientAllCottages" });
+           // this.$router.go(0);
+            console.log(localStorage.getItem("token"));
+            console.log(localStorage.getItem("role"));
+          } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
+            this.$router.push({ name: "HomePageInProfil" });
+          } 
+        //} 
+      })
+      .catch( error => {
+        console.log(error)
+        alert("Vas nalog jos uvek nije aktiviran ili ste pogresili prilikom unosa kredencijala!")
+      }) 
     },
     async register() {
     

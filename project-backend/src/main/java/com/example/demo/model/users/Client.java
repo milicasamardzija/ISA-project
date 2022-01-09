@@ -27,12 +27,12 @@ public class Client extends User{
 
 	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<Reservation> reservations;
+	private Set<Reservation> reservations;
 
 	@ManyToMany
 	@JoinTable(name="subscription", joinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "entity_id", referencedColumnName = "id"))
 	@JsonIgnore
-	private Set<EntityClass> subscribedEntities;
+	private List<EntityClass> subscribedEntities;
 
 	public int getPoents() {
 		return poents;
@@ -58,19 +58,19 @@ public class Client extends User{
 		this.penals = penals;
 	}
 
-	public List<Reservation> getReservations() {
+	public Set<Reservation> getReservations() {
 		return reservations;
 	}
 
-	public void setReservations(List<Reservation> reservations) {
+	public void setReservations(Set<Reservation> reservations) {
 		this.reservations = reservations;
 	}
 
-	public Set<EntityClass> getSubscribedEntities() {
+	public List<EntityClass> getSubscribedEntities() {
 		return subscribedEntities;
 	}
 
-	public void setSubscribedEntities(Set<EntityClass> subscribedEntities) {
+	public void setSubscribedEntities(List<EntityClass> subscribedEntities) {
 		this.subscribedEntities = subscribedEntities;
 	}
 
