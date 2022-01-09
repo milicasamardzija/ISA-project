@@ -28,41 +28,41 @@
         <!-- Tab panes -->
         <div class="tab-content">
           <div id="cottages" class="container tab-pane active">
-            <br />
+          <br />
 
-        <!-- Sortiranje -->
-        <div class="dropdown" style="margin-bottom:20px">
-          <button
-            class="btn btn-secondary dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Sortitaj
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="reservationsCottages.length != 0">
-            <a class="dropdown-item" href="#" @click="sort('CenaRastuce','cottage')"
-              >Cena - rastuce</a
-            >
-            <a class="dropdown-item" href="#" @click="sort('CenaOpadajuce','cottage')"
-              >Cena - opadajuce</a
-            >
-            <a class="dropdown-item" href="#" @click="sort('DatumRastuce','cottage')"
-              >Datum - rastuce</a
-            >
-            <a class="dropdown-item" href="#" @click="sort('DatumOpadajuce','cottage')"
-              >Datum - opadajuce</a
-            >
-            <a class="dropdown-item" href="#" @click="sort('TrajanjeRastuce','cottage')"
-              >Trajanje - rastuce</a
-            >
-            <a class="dropdown-item" href="#" @click="sort('TrajanjeOpadajuce','cottage')"
-              >Trajanje - opadajuce</a
-            >
-          </div>
-        </div>
+            <!-- Sortiranje -->
+            <div class="dropdown" style="margin-bottom:20px">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+              Sortitaj
+            </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="reservationsCottages.length != 0">
+                <a class="dropdown-item" href="#" @click="sort('CenaRastuce','cottage')"
+                  >Cena - rastuce</a
+                >
+                <a class="dropdown-item" href="#" @click="sort('CenaOpadajuce','cottage')"
+                  >Cena - opadajuce</a
+                >
+                <a class="dropdown-item" href="#" @click="sort('DatumRastuce','cottage')"
+                  >Datum - rastuce</a
+                >
+                <a class="dropdown-item" href="#" @click="sort('DatumOpadajuce','cottage')"
+                  >Datum - opadajuce</a
+                >
+                <a class="dropdown-item" href="#" @click="sort('TrajanjeRastuce','cottage')"
+                  >Trajanje - rastuce</a
+                >
+                <a class="dropdown-item" href="#" @click="sort('TrajanjeOpadajuce','cottage')"
+                  >Trajanje - opadajuce</a
+                >
+              </div>
+            </div>
 
             <table
               class="table table-light table-striped table-hover"
@@ -96,10 +96,9 @@
               </tbody>
             </table>
           </div>
-          <div v-if="reservationsCottages.length === 0">
-            <p style="font-size: 20px; margin-bottom:60px">Nemate nijednu rezervaciju.</p>
-          </div>
-          <div id="boats" class="container tab-pane fade">
+        </div>
+
+        <div id="boats" class="container tab-pane fade">
             <br />
 
             <!-- Sortiranje -->
@@ -176,7 +175,7 @@
             <br />
 
             <!-- Sortiranje -->
-        <div class="dropdown" style="margin-bottom:20px" v-if="reservationsAdventures.length != 0">
+        <div class="dropdown" style="margin-bottom:20px" v-if="reservationsBoats.length != 0">
           <button
             class="btn btn-secondary dropdown-toggle"
             type="button"
@@ -243,12 +242,12 @@
               </tbody>
             </table>
             <div v-if="reservationsAdventures.length === 0">
-              <p style="font-size: 20px; margin-bottom:60px">Nemate nijednu rezervaciju.</p>
+              <p style="font-size: 20px; margin-top:60px">Nemate nijednu rezervaciju.</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    
 
   <!-- Modal za pisanje zalbe -->
   <div class="modal fade" id="zalba" role="dialog">

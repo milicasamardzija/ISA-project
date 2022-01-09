@@ -34,6 +34,7 @@ public class Client extends User{
 	private Set<EntityClass> subscribedEntities;
 
 	public Client() {
+		super();
 	}
 
 	public int getPoents() {
@@ -87,5 +88,7 @@ public class Client extends User{
 		this.setPoents(0);
 		this.setLoyalityType(LoyalityType.BRONZE);
 		this.setPenals(0);
+		this.setTelephone(user.getTelephone());
+		this.setAddress(user.getAddress());
 	}
 }
