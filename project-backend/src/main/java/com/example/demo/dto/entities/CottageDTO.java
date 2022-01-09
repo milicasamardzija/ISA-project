@@ -17,8 +17,7 @@ public class CottageDTO {
     private String rules;
     private double grade;
     private Set<Image> images;
-
- private int price; //je l ovo dovoljno za cenovnik
+    private int price; //je l ovo dovoljno za cenovnik
     //slobodni termini sa akcijama za rezervaciju OVO NEMAMO
     
 

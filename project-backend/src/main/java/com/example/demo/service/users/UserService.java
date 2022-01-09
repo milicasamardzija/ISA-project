@@ -1,7 +1,6 @@
 package com.example.demo.service.users;
 
 import com.example.demo.dto.users.UpdateUserDTO;
-import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.users.CottageOwner;
@@ -20,13 +19,14 @@ public class UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private RoleService roleService; 
     private AddressService addressService;
 
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AddressService addressService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AddressService addressService, RoleService roleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.addressService = addressService;
+        this.roleService = roleService;
     }
 
     public User findById(int id) {
@@ -35,20 +35,6 @@ public class UserService {
 
     public User findByEmail(String email) {
         return this.userRepository.findByEmail(email);
-    }
-
-    public User save(UserRequest userRequest){
-        User u = new User();
-        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        u.setName(userRequest.getFirstname());
-        u.setSurname(userRequest.getLastname());
-        u.setTelephone(userRequest.getTelephone());
-        u.setRole(new Role((userRequest.getRole()))); //ovo ce napraviti razlicite role
-        u.setEmail(userRequest.getEmail());
-        u.setEnabled(true);   // odmah odobreno
-        u.setAddress(addressService.save(userRequest.getAddress()));
-        // return this.userRepository.save(u);
-        return u;
     }
 
     public void update(UpdateUserDTO updatedUser) {
@@ -65,8 +51,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-    
-    public User saveClient(UserRequest userRequest){
+    public void deleteById(User user){
+        this.userRepository.delete(user);
+        this.roleService.delete(user.getRole());
+    }
+
+    public User save(UserRequest userRequest){
         User u = new User();
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         u.setName(userRequest.getFirstname());
@@ -75,10 +65,22 @@ public class UserService {
         u.setRole(new Role((userRequest.getRole()))); //ovo ce napraviti razlicite role
         u.setEmail(userRequest.getEmail());
         u.setEnabled(true);   // odmah odobreno
-        u.setAddress(userRequest.getAddress());
+        u.setAddress(addressService.save(userRequest.getAddress()));
+        // return this.userRepository.save(u);
+        return u;
+    }
 
-       return this.userRepository.save(u);
-
+    public User saveClient(UserRequest userRequest){
+        User u = new User();
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        u.setName(userRequest.getFirstname());
+        u.setSurname(userRequest.getLastname());
+        u.setTelephone(userRequest.getTelephone());
+        u.setRole(new Role((userRequest.getRole()))); 
+        u.setEmail(userRequest.getEmail());
+        u.setEnabled(false);   
+        u.setAddress(addressService.save(userRequest.getAddress()));
+        return this.userRepository.save(u);
     }
 
 }

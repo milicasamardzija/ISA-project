@@ -326,18 +326,18 @@ export default {
       }; 
       axios.post("http://localhost:8081/api/auth/login",{ email: this.email, password: this.password }, {headers})
       .then (response => {
-       // if (response.data.enabled === true){
+        if (response.data.enabled === true){
           localStorage.setItem("token", response.data.accessToken);
           localStorage.setItem("role", response.data.role);
           if (localStorage.getItem("role") == "ROLE_CLIENT") {
             this.$router.push({ name: "ClientAllCottages" });
-           // this.$router.go(0);
+            this.$router.go(0);
             console.log(localStorage.getItem("token"));
             console.log(localStorage.getItem("role"));
           } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
             this.$router.push({ name: "HomePageInProfil" });
           } 
-        //} 
+        } 
       })
       .catch( error => {
         console.log(error)
@@ -345,8 +345,7 @@ export default {
       }) 
     },
     async register() {
-    
-      const res = await fetch("http://localhost:8080/api/auth/signup", {
+      const res = await fetch("http://localhost:8081/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

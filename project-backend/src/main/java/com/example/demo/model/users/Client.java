@@ -6,7 +6,6 @@ import com.example.demo.enums.LoyalityType;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.EntityClass;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 import java.util.Set;
@@ -33,6 +32,10 @@ public class Client extends User{
 	@JoinTable(name="subscription", joinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "entity_id", referencedColumnName = "id"))
 	@JsonIgnore
 	private List<EntityClass> subscribedEntities;
+
+	public Client() {
+		super();
+	}
 
 	public int getPoents() {
 		return poents;
@@ -74,7 +77,18 @@ public class Client extends User{
 		this.subscribedEntities = subscribedEntities;
 	}
 
-	public Client(){
-		super();
+	public Client(User user){
+		this.setId(user.getId());
+		this.setName(user.getName());
+		this.setSurname(user.getSurname());
+		this.setEmail(user.getEmail());
+		this.setRole(new Role(user.getRole().getName()));
+		this.setPassword(user.getPassword());
+		this.setEnabled(true);
+		this.setPoents(0);
+		this.setLoyalityType(LoyalityType.BRONZE);
+		this.setPenals(0);
+		this.setTelephone(user.getTelephone());
+		this.setAddress(user.getAddress());
 	}
 }

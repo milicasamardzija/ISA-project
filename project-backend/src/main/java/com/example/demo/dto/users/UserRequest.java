@@ -1,5 +1,4 @@
 package com.example.demo.dto.users;
-
 import com.example.demo.model.entities.Address;
 
 public class UserRequest {
@@ -13,16 +12,11 @@ public class UserRequest {
     private String telephone;
     private String reasonForRegistration;
     private Address address;
+    public Address getAddress(){ return address;}
 
 
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
+    public void setAddress(Address address) { this.address= address; }
+    public String getPassword() {
     public void setReasonForRegistration(String reasonForRegistration) {
         this.reasonForRegistration = reasonForRegistration;
     }
@@ -31,9 +25,7 @@ public class UserRequest {
         return reasonForRegistration;
     }
 
-    public Address getAddress(){ return address;}
-    public void setAddress(Address address) { this.address= address; }
-    public String getPassword() {
+    
         return password;
     }
 

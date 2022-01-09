@@ -2,6 +2,7 @@ package com.example.demo.service.users;
 
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
+import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.EntityRepository;
 import com.example.demo.repository.users.ClientRepository;
 import org.springframework.stereotype.Service;
@@ -74,5 +75,9 @@ public class ClientService {
         clients.add(client);
         entity.setSubscribedClients(clients);
         this.entityRepository.save(entity);
+    }
+
+    public Client save(User user) {
+        return  this.clientRepository.save(new Client(user));
     }
 }

@@ -238,9 +238,11 @@ export default {
             Accept: 'application/json',
           }
         });
-        const data = await localStorage.setItem("token", res.json.accessToken);
-        //localStorage.setItem("token", data.accessToken);
-        console.log(data)
+        const data = await res.json();
+        alert(localStorage.getItem("token"))
+        localStorage.setItem("token", data.accessToken);
+        alert(localStorage.getItem("token"))
+        //this.$router.go(0);
         }
     },
     async sendDeleteRequest(){
