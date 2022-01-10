@@ -3,14 +3,12 @@ package com.example.demo.controller.users;
 import com.example.demo.dto.users.JwtAuthenticationRequest;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.dto.users.UserTokenState;
-import com.example.demo.model.users.Client;
-import com.example.demo.model.users.ClientRegistrationToken;
-import com.example.demo.model.users.User;
+import com.example.demo.model.users.*;
 import com.example.demo.service.email.EmailService;
 import com.example.demo.service.users.ClientRegistrationTokenService;
 import com.example.demo.service.users.ClientService;
-import com.example.demo.model.users.CottageOwner;
 import com.example.demo.service.CottageOwnerService;
+import com.example.demo.service.users.AdministratorService;
 import com.example.demo.service.users.UserService;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +38,16 @@ public class AuthentificationController {
     private EmailService emailService;
     private ClientService clientService;
     private CottageOwnerService cottageOwnerService;
+    private AdministratorService administratorService;
 
-    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CottageOwnerService cottageOwnerService) {
+    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CottageOwnerService cottageOwnerService, AdministratorService administratorService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.tokenUtils = tokenUtils;
         this.emailService = emailService;
         this.clientService = clientService;
         this.cottageOwnerService = cottageOwnerService;
+        this.administratorService = administratorService;
     }
 
     @PostMapping("/login")
@@ -95,11 +95,11 @@ public class AuthentificationController {
                 user = this.userService.saveClient(userRequest);
                 emailService.sendEmailForUserAuthentication(user);
             }
-            if(userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
+            if(userRequest.getRole().equals("ROLE_ADMINISTRATOR")) {
                 user = this.userService.save(userRequest);
-                cottageOwnerService.save(new CottageOwner(user));
+                administratorService.save(new Administrator(user));
             }
-            if(userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
+            if(userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
                 user = this.userService.save(userRequest);
                 cottageOwnerService.save(new CottageOwner(user));
             }
