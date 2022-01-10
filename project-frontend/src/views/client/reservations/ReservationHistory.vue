@@ -271,17 +271,22 @@
                 <table>
                   <tr>
                     <td><label>Ime vlasnika: </label> </td>
-                    <td><label></label> </td>
+                    <td><label>{{this.user.firstname}} {{this.user.lastname}}</label> </td>
                   </tr>
-                  <tr>
+                  <tr v-if="selectedReservationType == 'COTTAGE' || selectedReservationType == 'BOAT'">
                     Komentar na vlasnika:
                   </tr> 
+                  <tr v-if="selectedReservationType == 'ADVENTURE'">
+                    Komentar na instruktora:
+                  </tr>  
                   <tr>
                     <textarea type="text" style="width: 100%; height: 50%">
                     </textarea>
                   </tr>
                   <tr>
-                    <td><label>Naziv vikendice: </label> </td>
+                    <td v-if="this.selectedReservationType === 'COTTAGE'"><label>Naziv vikendice: </label> </td>
+                    <td v-if="this.selectedReservationType === 'BOAT'"><label>Naziv broda: </label> </td>
+                    <td v-if="this.selectedReservationType === 'ADVENTURE'"><label>Naziv avanture: </label> </td>
                     <td><label>{{this.entity.name}}</label> </td>
                   </tr>
                    <tr>
@@ -329,7 +334,7 @@
                 <table>
                   <tr>
                     <td><label>Ime vlasnika: </label> </td>
-                    <td><label>Marko Maric </label> </td>
+                    <td><label>{{this.user.firstname}} {{this.user.lastname}} </label> </td>
                   </tr>
                   <tr v-if="selectedReservationType == 'COTTAGE' || selectedReservationType == 'BOAT'">
                     Komentar na vlasnika:
@@ -345,7 +350,7 @@
                     <td v-if="selectedReservationType == 'COTTAGE'"><label>Naziv vikendice: </label> </td>
                     <td v-if="selectedReservationType == 'BOAT'"><label>Naziv broda: </label> </td>
                     <td v-if="selectedReservationType == 'ADVENTURE'"><label>Naziv avanture: </label> </td>
-                    <td><label>Magicni raj</label> </td>
+                    <td><label>{{this.entity.name}}</label> </td>
                   </tr>
                    <tr v-if="selectedReservationType == 'COTTAGE'">
                     Komentar na vikendicu:
@@ -409,7 +414,7 @@ export default {
       reservationsAdventures: [],
       complaint: "",
       review:"",
-      user: "",
+      user: {},
       entity: {},
       selectedReservationId:0,
       selectedReservationType:"",
@@ -420,8 +425,8 @@ export default {
     async getSelected(id, type){
       this.selectedReservationId = id;
       this.selectedReservationType = type;
-      this.user = this.loadUser();
       this.entity = await this.loadEntity();
+      this.user = await this.loadUser(this.entity.id);
     },
     clear(){
       this.selectedReservationId = 0;
@@ -551,8 +556,16 @@ export default {
       const data = await res.json();
       return data;
     },
-    async loadUser(){
-
+    async loadUser(id){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch(
+        "http://localhost:8081/api/cottageOwner/cottageOwnerUser/" + id,
+        { headers }
+      );
+      const data = await res.json();
+      return data;
     },
     format_date(value){
     if (value) {
