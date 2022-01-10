@@ -1,10 +1,11 @@
 package com.example.demo.model.entities;
 
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import com.example.demo.enums.CancelationType;
+import com.example.demo.model.users.CottageOwner;
+import com.example.demo.model.users.Instructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="adventure")
@@ -21,9 +22,14 @@ public class Adventure extends EntityClass{
 	
 	@Column(name="cancelationType", unique=false, nullable=true)
 	private CancelationType cancelationType;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "instructor_id")
+	@JsonIgnoreProperties("instructor")
+	public Instructor instructor;
+
 	public Adventure() {
-		
+		super();
 	}
 
 	public Adventure(String instructorBiografy, int maxNumberOfPeople, String fishingEquipment,
