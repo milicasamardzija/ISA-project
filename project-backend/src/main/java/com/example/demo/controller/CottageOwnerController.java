@@ -2,18 +2,17 @@ package com.example.demo.controller;
 
 
 import com.example.demo.dto.entities.CottageOwnerDTO;
+import com.example.demo.dto.users.UserDTO;
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.users.CottageOwner;
+import com.example.demo.model.users.User;
 import com.example.demo.service.CottageOwnerService;
 import com.example.demo.service.entities.CottageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,4 +38,9 @@ public class CottageOwnerController {
         return  new ResponseEntity<>(cottages, HttpStatus.OK);
     }
 
+    @GetMapping("/cottageOwnerUser/{id}")
+    public  ResponseEntity<UserDTO> fetchCottageOwnerByCottage(@PathVariable  int id){
+        User user = this.cottageOwnerService.fetchCottageOwnerByCottage(id);
+        return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+    }
 }
