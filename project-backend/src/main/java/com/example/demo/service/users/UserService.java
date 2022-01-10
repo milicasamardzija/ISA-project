@@ -66,7 +66,6 @@ public class UserService {
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);   // odmah odobreno
         u.setAddress(addressService.save(userRequest.getAddress()));
-        // return this.userRepository.save(u);
         return u;
     }
 

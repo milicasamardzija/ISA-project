@@ -336,6 +336,10 @@ export default {
             console.log(localStorage.getItem("role"));
           } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
             this.$router.push({ name: "HomePageInProfil" });
+          }
+          else if (localStorage.getItem("role") == "ROLE_ADMINISTRATOR") {
+            this.$router.push({ name: "AllRegistrationRequests" });
+            this.$router.go(0);
           } 
         } 
       })

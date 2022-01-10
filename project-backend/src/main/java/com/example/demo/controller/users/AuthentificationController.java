@@ -73,7 +73,6 @@ public class AuthentificationController {
         User user = (User) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
-
         if (user.isEnabled() == false){
             return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,user.getRole().getName(), user.isEnabled()));
         }
