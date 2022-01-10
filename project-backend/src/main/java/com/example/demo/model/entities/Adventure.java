@@ -10,10 +10,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name="adventure")
 public class Adventure extends EntityClass{
-	
+	@Column(name="nameOfAdventure", unique=false, nullable=true)
+	private String nameOfAdventure;
+
+	@Column(name="adrress", unique=false, nullable=true)
+	private String adrress;
+
+	@Column(name="description", unique=false, nullable=true)
+	private String description;
+
 	@Column(name="instructorBiografy", unique=false, nullable=true)
 	private String instructorBiografy;
-	
+
+	@Column(name="rules", unique=false, nullable=true)
+	private String rules;
+
 	@Column(name="maxNumberOfPeople", unique=false, nullable=true)
 	private int maxNumberOfPeople;
 	
@@ -32,8 +43,19 @@ public class Adventure extends EntityClass{
 		super();
 	}
 
+	public Adventure(String nameOfAdventure, String adrress, String description, String instructorBiografy, String rules, int maxNumberOfPeople, String fishingEquipment, CancelationType cancelationType) {
+		this.nameOfAdventure = nameOfAdventure;
+		this.adrress = adrress;
+		this.description = description;
+		this.instructorBiografy = instructorBiografy;
+		this.rules = rules;
+		this.maxNumberOfPeople = maxNumberOfPeople;
+		this.fishingEquipment = fishingEquipment;
+		this.cancelationType = cancelationType;
+	}
+
 	public Adventure(String instructorBiografy, int maxNumberOfPeople, String fishingEquipment,
-			CancelationType cancelationType) {
+					 CancelationType cancelationType) {
 		super();
 		this.instructorBiografy = instructorBiografy;
 		this.maxNumberOfPeople = maxNumberOfPeople;

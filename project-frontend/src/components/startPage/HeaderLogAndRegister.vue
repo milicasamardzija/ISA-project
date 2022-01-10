@@ -212,7 +212,19 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group">
+                 <div class="form-group" v-if="newUser.role === 'ROLE_COTTAGE_OWNER' ||  newUser.role === 'ROLE_BOAT_OWNER' || newUser.role === 'ROLE_INSTRUCTOR'">
+                <label for="psw"
+                  ><span class="glyphicon glyphicon-eye-open"></span>
+                  Obrazlozenje registracije</label
+                >
+                <textarea
+                  type="text"
+                  class="form-control"
+                 
+                  placeholder="Unesite obrazlozenje za registraciju"
+                  v-model="newUser.reasonForRegistration"
+                />
+               <div class="form-group">
                 <label for="psw"
                   ><span class="glyphicon glyphicon-eye-open"></span>
                   Lozinka</label
@@ -225,18 +237,6 @@
                   v-model="newUser.password"
                 />
               </div>
-                 <div class="form-group" v-if="newUser.role === 'ROLE_COTTAGE_OWNER' ">
-                <label for="psw"
-                  ><span class="glyphicon glyphicon-eye-open"></span>
-                  Obrazlozenje registracije</label
-                >
-                <textarea
-                  type="text"
-                  class="form-control"
-                 
-                  placeholder="Unesite obrazlozenje za registraciju"
-                  v-model="newUser.reasonForRegistration"
-                />
               </div>
               <div class="form-group">
                 <label for="psw"
