@@ -64,7 +64,7 @@ public class UserService {
         u.setTelephone(userRequest.getTelephone());
         u.setRole(new Role((userRequest.getRole()))); //ovo ce napraviti razlicite role
         u.setEmail(userRequest.getEmail());
-        u.setEnabled(true);   // odmah odobreno
+        u.setEnabled(false);   // odmah odobreno
         u.setAddress(addressService.save(userRequest.getAddress()));
         // return this.userRepository.save(u);
         return u;

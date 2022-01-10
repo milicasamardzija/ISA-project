@@ -97,8 +97,10 @@ public class AuthentificationController {
             }
             if(userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
                 user = this.userService.save(userRequest);
-                //transfer dovde, ne cuva servis usera vec servis cottage ownera
-                //mora se drugacije implementirati kad Lidija bude radila svoje odobravanje registracije
+                cottageOwnerService.save(new CottageOwner(user));
+            }
+            if(userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
+                user = this.userService.save(userRequest);
                 cottageOwnerService.save(new CottageOwner(user));
             }
         } catch (Exception ex) {
