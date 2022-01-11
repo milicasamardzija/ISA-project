@@ -1,7 +1,9 @@
 package com.example.demo.service.users;
 
+import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserRequest;
+import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.Role;
@@ -12,6 +14,7 @@ import com.example.demo.service.entities.AddressService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -70,10 +73,18 @@ public class UserService {
         this.userRepository.save(u);
         return u;
     }
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 
-    public Collection<User> findRequestUser(){
-        Collection<User> users = userRepository.findUsers();
-        return users;
+    public List<User> RequestUser() {
+        List<User> users = new ArrayList<>();
+        for (User user : this.findAll()){
+            if (user.getEnabled()== false) {
+                users.add(user);
+            }
+        }
+        return  users;
     }
 
     public User saveClient(UserRequest userRequest){

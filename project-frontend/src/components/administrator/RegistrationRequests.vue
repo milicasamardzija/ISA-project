@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   el: '#example-2',
   data() {
@@ -37,12 +36,18 @@ export default {
       users: null,
     };
   },
-  mounted () {
-    axios
-      .get('http://localhost:8081/api/user/getRequestUser')
-      .then(response => (this.users = response))
+  methods: {
+    async search() {
+      const res = await fetch("http://localhost:8081/api/users/getRequestUser", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        }
+      });
+      const data = await res.json();
+      this.users = data;
+    },
   }
-
 }
 </script>
 

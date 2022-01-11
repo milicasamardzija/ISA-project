@@ -1,9 +1,11 @@
 package com.example.demo.controller.users;
 
 import com.example.demo.dto.entities.ChangePasswordDTO;
+import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.users.UserTokenState;
+import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.users.User;
 import com.example.demo.service.users.UserService;
 import com.example.demo.utils.TokenUtils;
@@ -52,12 +54,9 @@ public class UserController {
     }
 
     @GetMapping(value = "/getRequestUser")
-    public ResponseEntity<Collection<User>> getCourse() {
-        Collection<User> users = userService.findRequestUser();
-        if (users == null) {
-            return new ResponseEntity<Collection<User>>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<Collection<User>>(users, HttpStatus.OK);
+    public ResponseEntity<List<User>> search() {
+
+        return new ResponseEntity<>(userService.RequestUser(), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN')")

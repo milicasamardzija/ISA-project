@@ -12,7 +12,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByEmail(String email);
     User findById(int id);
     void deleteById(int id);
-
-    @Query("SELECT u FROM User u WHERE u.enabled= false")
-    public Collection<User> findUsers();
 }
