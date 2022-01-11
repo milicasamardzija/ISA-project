@@ -19,6 +19,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "api/user")
 public class UserController {
@@ -46,6 +49,15 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
         return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getRequestUser")
+    public ResponseEntity<Collection<User>> getCourse() {
+        Collection<User> users = userService.findRequestUser();
+        if (users == null) {
+            return new ResponseEntity<Collection<User>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Collection<User>>(users, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN')")

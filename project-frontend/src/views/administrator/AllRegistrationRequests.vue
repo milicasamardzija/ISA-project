@@ -3,6 +3,7 @@
     <NavBarLogOut />
     <HeaderStartPage />
     <NavBarAdministrator />
+    <RegistrationRequests/>
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 import HeaderStartPage from "../../components/startPage/HeaderStartPage";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator";
 import NavBarLogOut from "../../components/administrator/NavBarLogOut";
+import RegistrationRequests from "../../components/administrator/RegistrationRequests"
 
 export default {
   name: "AllRegistrationRequests",
@@ -17,6 +19,7 @@ export default {
     HeaderStartPage,
     NavBarAdministrator,
     NavBarLogOut,
+    RegistrationRequests
   },
 };
 </script>

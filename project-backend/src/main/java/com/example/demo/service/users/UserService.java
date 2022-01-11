@@ -12,6 +12,7 @@ import com.example.demo.service.entities.AddressService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -66,7 +67,13 @@ public class UserService {
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);   // odmah odobreno
         u.setAddress(addressService.save(userRequest.getAddress()));
+        this.userRepository.save(u);
         return u;
+    }
+
+    public Collection<User> findRequestUser(){
+        Collection<User> users = userRepository.findUsers();
+        return users;
     }
 
     public User saveClient(UserRequest userRequest){
