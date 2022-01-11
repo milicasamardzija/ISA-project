@@ -1,5 +1,6 @@
 package com.example.demo.controller.users;
 
+import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.ChangePasswordDTO;
 import com.example.demo.dto.entities.CottageOwnerDTO;
 import com.example.demo.dto.entities.SearchDTO;
@@ -9,6 +10,7 @@ import com.example.demo.dto.users.UserTokenState;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
+import com.example.demo.service.entities.AdventureService;
 import com.example.demo.service.users.UserService;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +32,9 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "api/user")
 public class UserController {
-
     private UserService userService;
     private AuthenticationManager authenticationManager;
     private TokenUtils tokenUtils;
-
     public UserController(UserService userService, AuthenticationManager authenticationManager, TokenUtils tokenUtils){
         this.userService = userService;
         this.authenticationManager = authenticationManager;
@@ -56,7 +56,7 @@ public class UserController {
         return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getAll")
+    @GetMapping()
     public ResponseEntity<List<UserDTO>> getAll(){
         List<User> allUsers = userService.findAll();
         List<UserDTO> users = new ArrayList<>();

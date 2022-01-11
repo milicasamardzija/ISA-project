@@ -27,6 +27,13 @@
                   <td>{{user.role}}</td>
                   <td><button type="button" class="btn btn-success">Prihvati zahtev</button></td>
                   <td><button type="button" class="btn btn-success">Odbij zahtev</button></td></tr>
+                  <h1>{{user.name}}</h1>
+                  <h1> {{user.lastname}}</h1>
+                  <h1>{{user.email}}</h1>
+                  <h1>{{user.telephone}}</h1>
+                  <h1>{{user.role}}</h1>
+                  <h1><button type="button" class="btn btn-success">Prihvati zahtev</button></h1>
+                  <h1><button type="button" class="btn btn-success">Odbij zahtev</button></h1>
                 </div>
     </tbody>
 </table>
@@ -47,18 +54,20 @@ export default {
   },
   data() {
     return {
-      users: [],
+      users: "",
     }
   },
 
   methods: {
-    async findUsers(){
-      const user = await fetch("http://localhost:8080/api/user/getAll");
-      const data = await user.json();
-      this.users = data;
-    },
-  }
- 
+    async getUsers() {
+      const res = await fetch("http://localhost:8081/api/user");
+      const data = await res.json();
+      return data;
+    }
+  },
+  async created() {
+    this.users = await this.getUsers();
+  },
 };
 </script>
 
