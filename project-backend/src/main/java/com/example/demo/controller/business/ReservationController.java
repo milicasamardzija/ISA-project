@@ -2,8 +2,10 @@ package com.example.demo.controller.business;
 
 import com.example.demo.dto.business.ReservationDTO;
 import com.example.demo.dto.entities.AdventureDTO;
+import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.Adventure;
+import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
 import com.example.demo.service.business.ReservationService;
 import com.example.demo.service.entities.AdventureService;
@@ -13,7 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +86,14 @@ public class ReservationController {
         }
 
         return  new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+    @GetMapping("/entity/{id}")
+    public ResponseEntity<EntityDTO> findEntityByReservation(@PathVariable int id){
+
+        EntityClass entity = this.reservationService.findEntityByReservation(id);
+
+        return  new ResponseEntity<>(new EntityDTO(entity), HttpStatus.OK);
     }
 
 }

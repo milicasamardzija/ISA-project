@@ -141,10 +141,6 @@ public class EntityClass {
 		return grade;
 	}
 
-	public void setGrade(int grade) {
-		this.grade = grade;
-	}
-
 	public void setGrade(double grade) {
 		this.grade = grade;
 	}
