@@ -268,35 +268,42 @@
           <div class="modal-body" style="padding: 15px 50px">
             <form role="form" @submit.prevent="Cancel">
               <div class="form-group">
-                <table>
-                  <tr>
-                    <td><label>Ime vlasnika: </label> </td>
-                    <td><label>{{this.user.firstname}} {{this.user.lastname}}</label> </td>
-                  </tr>
-                  <tr v-if="selectedReservationType == 'COTTAGE' || selectedReservationType == 'BOAT'">
-                    Komentar na vlasnika:
-                  </tr> 
-                  <tr v-if="selectedReservationType == 'ADVENTURE'">
-                    Komentar na instruktora:
-                  </tr>  
-                  <tr>
-                    <textarea type="text" style="width: 100%; height: 50%">
-                    </textarea>
-                  </tr>
-                  <tr>
-                    <td v-if="this.selectedReservationType === 'COTTAGE'"><label>Naziv vikendice: </label> </td>
-                    <td v-if="this.selectedReservationType === 'BOAT'"><label>Naziv broda: </label> </td>
-                    <td v-if="this.selectedReservationType === 'ADVENTURE'"><label>Naziv avanture: </label> </td>
-                    <td><label>{{this.entity.name}}</label> </td>
-                  </tr>
-                   <tr>
-                    Komentar na vikendicu:
-                  </tr> 
-                  <tr>
-                    <textarea type="text" style="width: 100%; height: 50%">
-                    </textarea>
-                  </tr>
-                </table>
+                  <table>
+                    <tr>
+                      <td><label>Ime vlasnika: </label> </td>
+                      <td><label>{{this.user.firstname}} {{this.user.lastname}}</label> </td>
+                    </tr>
+                    <tr>
+                      <td v-if="this.selectedReservationType === 'COTTAGE'"><label>Naziv vikendice: </label> </td>
+                      <td v-if="this.selectedReservationType === 'BOAT'"><label>Naziv broda: </label> </td>
+                      <td v-if="this.selectedReservationType === 'ADVENTURE'"><label>Naziv avanture: </label> </td>
+                      <td><label>{{this.entity.name}}</label> </td>
+                    </tr>
+                  
+                    <tr v-if="selectedReservationType == 'COTTAGE' || selectedReservationType == 'BOAT'" >
+                      <td  span="2">
+                      Komentar na vlasnika:
+                      </td>
+                    </tr> 
+                    <tr v-if="selectedReservationType == 'ADVENTURE'">
+                      Komentar na instruktora:
+                    </tr>  
+                    <tr > 
+                      <td  colspan="2">
+                      <textarea type="text" style="width: 100%; height: 50%" v-model="contentUser">
+                      </textarea>
+                      </td>
+                    </tr>
+                    <tr>
+                      Komentar na vikendicu:
+                    </tr> 
+                    <tr>
+                      <td  colspan="2">
+                      <textarea  type="text" style="width: 100%; height: 50%" v-model="contentEntity">
+                      </textarea>
+                      </td>
+                    </tr>
+                  </table>
               </div>
               <table>
                 <tr>
@@ -401,6 +408,7 @@
 <script>
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 import moment from 'moment';
+import axios from 'axios';
 
 export default {
   name: "HistoryReservation",
@@ -418,13 +426,16 @@ export default {
       entity: {},
       selectedReservationId:0,
       selectedReservationType:"",
-      show:false
+      show:false,
+      contentUser: "",
+      contentEntity: ""
     };
   },
   methods: {
     async getSelected(id, type){
       this.selectedReservationId = id;
       this.selectedReservationType = type;
+      alert(type)
       this.entity = await this.loadEntity();
       this.user = await this.loadUser(this.entity.id);
     },
@@ -568,9 +579,19 @@ export default {
       return data;
     },
     format_date(value){
-    if (value) {
-      return moment(value).format('MM/DD/YYYY')
-    }
+      if (value) {
+        return moment(value).format('MM/DD/YYYY')
+      }
+    },
+    sendComplaint(){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.post("http://localhost:8081/api/complaint" ,{contentUser: this.contentUser, contentEntity: this.contentEntity, user: this.user, entity: this.entity},{headers})
+      .then (response => { 
+        console.log(response);
+        alert("Uspesno ste se poslali zalbu!")
+      })
     }
   },
   async created() {
