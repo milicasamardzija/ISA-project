@@ -52,9 +52,9 @@ export default {
   },
 
   methods: {
-    async findAdministrator(){
-      const admin = await fetch("http://localhost:8080/api/user/getAll");
-      const data = await admin.json();
+    async findUsers(){
+      const user = await fetch("http://localhost:8080/api/user/getAll");
+      const data = await user.json();
       this.users = data;
     },
   }
