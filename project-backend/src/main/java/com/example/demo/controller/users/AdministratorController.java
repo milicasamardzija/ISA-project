@@ -1,6 +1,8 @@
 package com.example.demo.controller.users;
 
 import com.example.demo.dto.entities.CottageOwnerDTO;
+import com.example.demo.dto.users.AdministratorDTO;
+import com.example.demo.model.users.Administrator;
 import com.example.demo.model.users.CottageOwner;
 import com.example.demo.service.CottageOwnerService;
 import com.example.demo.service.users.AdministratorService;
@@ -21,5 +23,4 @@ public class AdministratorController {
     public AdministratorController(AdministratorService administratorService) {
         this.administratorService = administratorService;
     }
-
 }

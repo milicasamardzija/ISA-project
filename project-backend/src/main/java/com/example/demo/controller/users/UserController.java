@@ -1,11 +1,13 @@
 package com.example.demo.controller.users;
 
 import com.example.demo.dto.entities.ChangePasswordDTO;
+import com.example.demo.dto.entities.CottageOwnerDTO;
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.users.UserTokenState;
 import com.example.demo.model.entities.Adventure;
+import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
 import com.example.demo.service.users.UserService;
 import com.example.demo.utils.TokenUtils;
@@ -21,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -53,10 +56,14 @@ public class UserController {
         return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getRequestUser")
-    public ResponseEntity<List<User>> search() {
-
-        return new ResponseEntity<>(userService.RequestUser(), HttpStatus.OK);
+    @GetMapping(value = "/getAll")
+    public ResponseEntity<List<UserDTO>> getAll(){
+        List<User> allUsers = userService.findAll();
+        List<UserDTO> users = new ArrayList<>();
+        for(User u : allUsers ) {
+            users.add(new UserDTO(u));
+        }
+        return  new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN')")
