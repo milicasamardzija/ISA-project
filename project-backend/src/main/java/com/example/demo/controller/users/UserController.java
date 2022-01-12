@@ -103,7 +103,7 @@ public class UserController {
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,userAuth.getRole().getName(), user.isEnabled()));
     }
 
-    @DeleteMapping(value = "/confirm/{id}")
+    @PostMapping(value = "/confirm/{id}")
     public ResponseEntity<Void> updateUser1(@PathVariable int id){
 
         User u = this.userService.findById(id);
