@@ -9,14 +9,18 @@
   <div v-if="this.role === 'ROLE_CLIENT'">
     <NavBarClient />
   </div>
-
+  <div v-if="this.role === 'ROLE_ADMIN'">
+    <NavBarLogOut />
+    <HeaderStartPage />
+    <NavBarAdministrator />
+  </div>
   <div>
     <div class="tab-pane active containerInfo">
       <div v-if="this.role === 'ROLE_COTTAGE_OWNER'">
         <Search />
       </div>
 
-      <div class="row-boats" v-if="this.role === 'ROLE_CLIENT' || this.role === 'ROLE_COTTAGE_OWNER'">
+      <div class="row-boats" v-if="this.role === 'ROLE_CLIENT' || this.role === 'ROLE_COTTAGE_OWNER' || this.role === 'ROLE_ADMIN'">
         <div class="col-with-picture" style="margin-right: 5%; margin-top: 1%">
           <div>
             <img
@@ -53,16 +57,20 @@
 </template>
 
 <script>
-import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
+import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue";
+import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
+import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 
 export default {
   name: "EditProfile",
   components: {
     NavBarLogOut,
     NavBarHomePage,
-    NavBarClient
+    NavBarClient,
+    HeaderStartPage,
+    NavBarAdministrator
   },
   data(){
     return {

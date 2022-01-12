@@ -409,7 +409,6 @@
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 import moment from 'moment';
 import axios from 'axios';
-
 export default {
   name: "HistoryReservation",
   components: {
@@ -502,8 +501,6 @@ export default {
         this.reservationsCottages.sort(function (a, b) {
           return b.duration - a.duration;
         });
-
-
       if (sortParam == "CenaRastuce"  && tab == "boat") 
         this.reservationsBoats.sort(function (a, b) {
           return a.price - b.price;
@@ -528,8 +525,6 @@ export default {
         this.reservationsBoats.sort(function (a, b) {
           return b.duration - a.duration;
         });
-
-
       if (sortParam == "CenaRastuce"  && tab == "adventure") 
         this.reservationsAdventures.sort(function (a, b) {
           return a.price - b.price;

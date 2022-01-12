@@ -23,7 +23,7 @@ import ChangePasswordFishingInstructor from "../views/fishingInstructor/ChangePa
 import AvailablePeriod from "../views/fishingInstructor/AvailablePeriod";
 import CottageProfile from "../views/cottageOwner/CottageProfile";
 import ClientSubscription from "../views/client/subscription/ClientSubscription"
-
+import AdminProfile from "../views/administrator/AdminProfile"
 const routes = [
   {
     path: "/",
@@ -109,6 +109,11 @@ const routes = [
     path: "/myProfile",
     name: "MyProfile",
     component: MyProfile,
+  },
+  {
+    path: "/adminProfile",
+    name: "AdminProfile",
+    component: AdminProfile,
   },
   {
     path: "/editProfile",

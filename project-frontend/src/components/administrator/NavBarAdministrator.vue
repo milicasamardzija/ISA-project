@@ -33,7 +33,7 @@
       </li>
       <li class="nav-item">
         <button type="button" class="btn btn-success">
-          <a href="#">Profile</a>
+          <router-link to="/myProfile">Profile</router-link>
         </button>
       </li>
     </ul>

@@ -111,7 +111,7 @@ export default {
         this.$router.push({ name: "AllRegistrationRequests" });
       })  
 
-      alert("Vas nalog jos uvek nije aktiviran ili ste pogresili prilikom unosa kredencijala!")
+      alert("Aktivirali ste nalog!")
       this.$router.go(0);
     },
     RejectRequest() {

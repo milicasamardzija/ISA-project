@@ -3,15 +3,17 @@ package com.example.demo.controller.users;
 import com.example.demo.dto.users.JwtAuthenticationRequest;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.dto.users.UserTokenState;
-import com.example.demo.model.users.*;
+import com.example.demo.model.users.Administrator;
+import com.example.demo.model.users.Client;
+import com.example.demo.model.users.CottageOwner;
+import com.example.demo.model.users.User;
+import com.example.demo.service.CottageOwnerService;
 import com.example.demo.service.email.EmailService;
+import com.example.demo.service.users.AdministratorService;
 import com.example.demo.service.users.ClientRegistrationTokenService;
 import com.example.demo.service.users.ClientService;
-import com.example.demo.service.CottageOwnerService;
-import com.example.demo.service.users.AdministratorService;
 import com.example.demo.service.users.UserService;
 import com.example.demo.utils.TokenUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.UUID;
 
 @Controller
 @RequestMapping(value = "api/auth")
@@ -94,7 +93,7 @@ public class AuthentificationController {
                 user = this.userService.saveClient(userRequest);
                 emailService.sendEmailForUserAuthentication(user);
             }
-            if(userRequest.getRole().equals("ROLE_ADMINISTRATOR")) {
+            if(userRequest.getRole().equals("ROLE_ADMIN")) {
                 user = this.userService.save(userRequest);
                 administratorService.save(new Administrator(user));
             }

@@ -331,14 +331,16 @@ export default {
           localStorage.setItem("role", response.data.role);
           if (localStorage.getItem("role") == "ROLE_CLIENT") {
             this.$router.push({ name: "ClientAllCottages" });
-            //this.$router.go(0);
+            this.$router.go(0);
             console.log(localStorage.getItem("token"));
             console.log(localStorage.getItem("role"));
           } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
             this.$router.push({ name: "HomePageInProfil" });
           }
-          else if (localStorage.getItem("role") == "ROLE_ADMINISTRATOR") {
+          else if (localStorage.getItem("role") == "ROLE_ADMIN") {
             this.$router.push({ name: "AllRegistrationRequests" });
+            console.log(localStorage.getItem("token"));
+            console.log(localStorage.getItem("role"));
             this.$router.go(0);
           } 
         } 

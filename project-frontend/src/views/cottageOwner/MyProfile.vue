@@ -9,7 +9,11 @@
   <div v-if="this.role === 'ROLE_CLIENT'">
     <NavBarClient />
   </div>
- 
+   <div v-if="this.role === 'ROLE_ADMIN'">
+    <NavBarLogOut />
+    <HeaderStartPage />
+    <NavBarAdministrator />
+  </div>
   <div v-if="this.normal">
       <div style="margin-top:80px;margin-left:50px">
         <div class="tab-pane active containerInfo">
@@ -240,9 +244,11 @@
 </template>
 
 <script>
-import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
+import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue";
+import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
+import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 
 export default {
   name: "MyProfile",
@@ -250,7 +256,9 @@ export default {
   components: {
     NavBarLogOut,
     NavBarHomePage,
-    NavBarClient
+    NavBarClient,
+    HeaderStartPage,
+    NavBarAdministrator
   },
   data(){
     return {
