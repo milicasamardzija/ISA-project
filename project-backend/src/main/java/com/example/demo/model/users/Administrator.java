@@ -17,8 +17,6 @@ import java.util.List;
 @DiscriminatorValue("AD")
 public class Administrator extends User{
 
-    @Autowired
-
     public Administrator() {}
 
     public Administrator(String name, String surname, String email, String password, String telephone, Address address) {

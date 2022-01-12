@@ -1,7 +1,9 @@
 package com.example.demo.service.users;
 
+import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserRequest;
+import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.Role;
@@ -12,6 +14,8 @@ import com.example.demo.service.entities.AddressService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -50,12 +54,18 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
     }
-
+    public void updateEnableState(User user) {
+        user.setEnabled(true);
+        userRepository.save(user);
+    }
     public void deleteById(User user){
         this.userRepository.delete(user);
         this.roleService.delete(user.getRole());
     }
-
+    public void deleteUserById(int id){
+        User u = this.userRepository.findById(id);
+        this.userRepository.delete(u);
+    }
     public User save(UserRequest userRequest){
         User u = new User();
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
@@ -64,10 +74,36 @@ public class UserService {
         u.setTelephone(userRequest.getTelephone());
         u.setRole(new Role((userRequest.getRole()))); //ovo ce napraviti razlicite role
         u.setEmail(userRequest.getEmail());
-        u.setEnabled(true);   // odmah odobreno
+        u.setEnabled(false);   // odmah odobreno
         u.setAddress(addressService.save(userRequest.getAddress()));
-        // return this.userRepository.save(u);
+        this.userRepository.save(u);
         return u;
+    }
+    public User saveUser(User user){
+        User u = new User();
+        u.setPassword(passwordEncoder.encode(user.getPassword()));
+        u.setName(user.getName());
+        u.setSurname(user.getSurname());
+        u.setTelephone(user.getTelephone());
+        u.setRole(user.getRole());
+        u.setEmail(user.getEmail());
+        u.setEnabled(true);
+        u.setAddress(addressService.save(user.getAddress()));
+        this.userRepository.save(u);
+        return u;
+    }
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public List<User> RequestUser() {
+        List<User> users = new ArrayList<>();
+        for (User user : this.findAll()){
+            if (user.getEnabled()== false) {
+                users.add(user);
+            }
+        }
+        return  users;
     }
 
     public User saveClient(UserRequest userRequest){
