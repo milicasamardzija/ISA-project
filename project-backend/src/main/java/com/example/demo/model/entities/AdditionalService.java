@@ -1,76 +1,69 @@
 package com.example.demo.model.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import com.example.demo.model.business.Reservation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name="additional_service")
 public class AdditionalService {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id", unique=true, nullable=false)
-	private int id;
-	
-	@Column(name = "name", nullable = false)
-	private String name;
-	
-	@Column(name = "price", nullable = false)
-	private double price;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "entity_id")
-	private EntityClass entity;
-	
-	public AdditionalService() {
-		
-	}
 
-	public AdditionalService(int id, String name, double price, EntityClass entity) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.price = price;
-		//this.entity = entity;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @Column
+    private String name;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column
+    private double price;
 
-	public String getName() {
-		return name;
-	}
+    @ManyToMany(mappedBy = "additionalServices")
+    @JsonIgnore
+    private List<Reservation> reservations;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @ManyToMany(mappedBy = "additionalServices")
+    @JsonIgnore
+    private List<EntityClass> entities;
 
-	public double getPrice() {
-		return price;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	/*public EntityClass getEntity() {
-		return entity;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setEntity(EntityClass entity) {
-		this.entity = entity;
-	}*/
-	
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public List<EntityClass> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(List<EntityClass> entities) {
+        this.entities = entities;
+    }
 }

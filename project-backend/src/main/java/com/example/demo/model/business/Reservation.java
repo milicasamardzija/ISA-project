@@ -1,12 +1,15 @@
 package com.example.demo.model.business;
 
 import com.example.demo.enums.EntityType;
+import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="reservation")
@@ -32,6 +35,9 @@ public class Reservation {
     @Column(name="is_canceled",nullable=false)
     private Boolean isCanceled = false;
 
+    @Column(name="action",nullable=true)
+    private Boolean action = false;
+
     @Column(name="duration", nullable = true)
     private int duration;
 
@@ -44,6 +50,11 @@ public class Reservation {
     @JoinColumn(name = "entity_id")
     @JsonIgnoreProperties("entities")
     private EntityClass entity;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name="reservation_services", joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
+    @JsonIgnore
+    private List<AdditionalService> additionalServices;
 
     public Reservation() {
 
@@ -128,5 +139,21 @@ public class Reservation {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public Boolean getAction() {
+        return action;
+    }
+
+    public void setAction(Boolean action) {
+        this.action = action;
+    }
+
+    public List<AdditionalService> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public void setAdditionalServices(List<AdditionalService> additionalServices) {
+        this.additionalServices = additionalServices;
     }
 }

@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.example.demo.model.business.Reservation;
+import com.example.demo.model.business.ReservedTerm;
 import com.example.demo.model.users.Client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,9 +34,6 @@ public class EntityClass {
 	@JsonIgnoreProperties("entity") //da ne pravi loop
 	private Set<Image> image;
 	
-	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<AdditionalService> additionalServices;
-	
 	@Column(name="rules", unique=false, nullable=false)
 	private String rules;
 	
@@ -47,13 +45,21 @@ public class EntityClass {
 	private double grade;
 
 	@OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	//@JsonIgnoreProperties("entity")
 	@JsonIgnore
 	private Set<Reservation> reservations;
 
 	@ManyToMany(mappedBy = "subscribedEntities")
 	@JsonIgnore
 	private List<Client> subscribedClients;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="entity_services", joinColumns = @JoinColumn(name = "entity_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
+	@JsonIgnore
+	private Set<AdditionalService> additionalServices;
+
+	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<ReservedTerm> reservedTerms;
 	
 	public EntityClass() {
 		super();
@@ -159,5 +165,13 @@ public class EntityClass {
 
 	public void setReservations(Set<Reservation> reservations) {
 		this.reservations = reservations;
+	}
+
+	public List<ReservedTerm> getReservedTerms() {
+		return reservedTerms;
+	}
+
+	public void setReservedTerms(List<ReservedTerm> reservedTerms) {
+		this.reservedTerms = reservedTerms;
 	}
 }
