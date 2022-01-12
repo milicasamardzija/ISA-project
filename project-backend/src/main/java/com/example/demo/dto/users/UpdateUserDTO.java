@@ -2,6 +2,7 @@ package com.example.demo.dto.users;
 
 
 import com.example.demo.model.entities.Address;
+import com.example.demo.model.users.User;
 
 public class UpdateUserDTO {
 
@@ -12,11 +13,22 @@ public class UpdateUserDTO {
     private String lastname;
 
     private Address address;
-
+    private String password;
     private String telephone;
+    private String email;
+    private String role;
 
     public UpdateUserDTO() {}
-
+    public UpdateUserDTO(User user){
+        this.id = user.getId();
+        this.firstname = user.getName();
+        this.lastname = user.getSurname();
+        this.address = user.getAddress();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+        this.telephone = user.getTelephone();
+        this.role = user.getRole().getName();
+    }
     public int getId() {
         return id;
     }

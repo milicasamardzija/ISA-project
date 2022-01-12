@@ -55,7 +55,7 @@ public class User implements UserDetails {
 	private Address address;
 	@Column(name = "enabled")
 	private boolean enabled;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "role_id")
 	private Role role;

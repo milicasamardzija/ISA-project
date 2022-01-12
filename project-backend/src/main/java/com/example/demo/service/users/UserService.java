@@ -54,12 +54,18 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
     }
-
+    public void updateEnableState(User user) {
+        user.setEnabled(true);
+        userRepository.save(user);
+    }
     public void deleteById(User user){
         this.userRepository.delete(user);
         this.roleService.delete(user.getRole());
     }
-
+    public void deleteUserById(int id){
+        User u = this.userRepository.findById(id);
+        this.userRepository.delete(u);
+    }
     public User save(UserRequest userRequest){
         User u = new User();
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
@@ -70,6 +76,19 @@ public class UserService {
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);   // odmah odobreno
         u.setAddress(addressService.save(userRequest.getAddress()));
+        this.userRepository.save(u);
+        return u;
+    }
+    public User saveUser(User user){
+        User u = new User();
+        u.setPassword(passwordEncoder.encode(user.getPassword()));
+        u.setName(user.getName());
+        u.setSurname(user.getSurname());
+        u.setTelephone(user.getTelephone());
+        u.setRole(user.getRole());
+        u.setEmail(user.getEmail());
+        u.setEnabled(true);
+        u.setAddress(addressService.save(user.getAddress()));
         this.userRepository.save(u);
         return u;
     }

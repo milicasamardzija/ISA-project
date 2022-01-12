@@ -8,6 +8,7 @@ import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.users.UserTokenState;
 import com.example.demo.model.entities.Adventure;
+import com.example.demo.model.users.Client;
 import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
 import com.example.demo.service.entities.AdventureService;
@@ -65,6 +66,16 @@ public class UserController {
         }
         return  new ResponseEntity<>(users, HttpStatus.OK);
     }
+    @GetMapping(value = "/getAllRequestUser")
+    public ResponseEntity<List<UserDTO>> getAllRequestUser(){
+        List<User> allUsers = userService.findAll();
+        List<UserDTO> users = new ArrayList<>();
+        for(User u : allUsers ) {
+            if(u.getEnabled()!= true) {
+            users.add(new UserDTO(u));}
+        }
+        return  new ResponseEntity<>(users, HttpStatus.OK);
+    }
 
     @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN')")
    // @PutMapping(value="/changePassword/{password}")
@@ -91,5 +102,28 @@ public class UserController {
 
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,userAuth.getRole().getName(), user.isEnabled()));
     }
+
+    @DeleteMapping(value = "/confirm/{id}")
+    public ResponseEntity<Void> updateUser1(@PathVariable int id){
+
+        User u = this.userService.findById(id);
+        if (u != null){
+            this.userService.updateEnableState(u);
+            return new ResponseEntity<>(HttpStatus.OK);}
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping(value = "/reject/{id}")
+    public ResponseEntity<Void> rejectRegistration(@PathVariable int id){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = (User)authentication.getPrincipal();
+            User u = this.userService.findById(id);
+            if (u != null){
+                userService.deleteUserById(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
 }
