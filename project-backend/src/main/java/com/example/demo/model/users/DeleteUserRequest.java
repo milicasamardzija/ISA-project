@@ -13,8 +13,13 @@ public class DeleteUserRequest {
     @Column(name="explanation")
     private String explanation;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @Column(name="rejected")
+    private Boolean rejected;
+    @Column(name="accepted")
+    private Boolean accepted;
+
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE )
     private User user;
 
     public DeleteUserRequest() {}
@@ -24,6 +29,12 @@ public class DeleteUserRequest {
         this.user = user;
     }
 
+    public DeleteUserRequest(String explanation, int id) {
+        this.explanation = explanation;
+        this.id=id;
+        //this.user = user;
+        //this.reviewedRequest = reviewedRequest;
+    }
     public int getId() {
         return id;
     }
@@ -31,13 +42,24 @@ public class DeleteUserRequest {
     public void setId(int id) {
         this.id = id;
     }
+    public Boolean getRejected() {
+        return rejected;
+    }
 
+    public void setRejected(Boolean rejected) {
+        this.rejected = rejected;
+    }
     public String getExplanation() {
         return explanation;
     }
-
+    public Boolean getAccepted() {
+        return accepted;
+    }
     public void setExplanation(String explanation) {
         this.explanation = explanation;
+    }
+    public void setAccepted(Boolean accepted) {
+        this.accepted = accepted;
     }
 
     public User getUser() {

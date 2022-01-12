@@ -6,6 +6,11 @@
           <router-link to="/administrator">Registration requests</router-link>
         </button>
       </li>
+            <li class="nav-item">
+        <button type="button" class="btn btn-success">
+          <router-link to="/deleteAccountRequests">Delete account requests</router-link>
+        </button>
+      </li>
       <li class="nav-item">
         <button type="button" class="btn btn-success">
           <router-link to="">Add administrator</router-link>

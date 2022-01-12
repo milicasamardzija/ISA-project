@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DeleteUserRequestRepository extends JpaRepository<DeleteUserRequest, Integer> {
-
+    DeleteUserRequest findById(int id);
 }

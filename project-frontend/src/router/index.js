@@ -24,11 +24,17 @@ import AvailablePeriod from "../views/fishingInstructor/AvailablePeriod";
 import CottageProfile from "../views/cottageOwner/CottageProfile";
 import ClientSubscription from "../views/client/subscription/ClientSubscription"
 import AdminProfile from "../views/administrator/AdminProfile"
+import DeleteAccountRequests from "../views/administrator/DeleteAccountRequests"
 const routes = [
   {
     path: "/",
     name: "BoatsStartPage",
     component: BoatsStartPage,
+  },
+  {
+    path: "/deleteAccountRequests",
+    name: "DeleteAccountRequests",
+    component: DeleteAccountRequests,
   },
   {
     path: "/cottages",

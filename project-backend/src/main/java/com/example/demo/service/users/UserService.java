@@ -1,21 +1,15 @@
 package com.example.demo.service.users;
 
-import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserRequest;
-import com.example.demo.model.entities.Adventure;
-import com.example.demo.model.entities.Cottage;
-import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.Role;
 import com.example.demo.model.users.User;
-import com.example.demo.repository.users.CottageOwnerRepository;
 import com.example.demo.repository.users.UserRepository;
 import com.example.demo.service.entities.AddressService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -58,6 +52,7 @@ public class UserService {
         user.setEnabled(true);
         userRepository.save(user);
     }
+
     public void deleteById(User user){
         this.userRepository.delete(user);
         this.roleService.delete(user.getRole());
