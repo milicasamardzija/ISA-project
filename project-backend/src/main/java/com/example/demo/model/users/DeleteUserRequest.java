@@ -19,7 +19,7 @@ public class DeleteUserRequest {
     private Boolean accepted;
 
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE )
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     public DeleteUserRequest() {}

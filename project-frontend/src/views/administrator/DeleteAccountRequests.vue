@@ -20,9 +20,9 @@
     <tbody>
           <tr v-for="(request, index) in requests" :key="index" >
                   <td>{{request.id}}</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>{{request.user.name}}</td>
+                  <td>{{request.user.surname}}</td>
+                  <td>{{request.user.email}}</td>
                   <td>{{request.explanation}}</td>
                   <td><button class="btn btn-success btn-block" data-target="#prihvatanje" data-toggle="modal" @click="SaveID(request.id)">Prihvati zahtev</button></td>
                   <td><button class="btn btn-success btn-block" data-target="#odbijanje" data-toggle="modal" @click="SaveID(request.id)">Odbij zahtev</button></td> 
@@ -123,7 +123,7 @@ name: "DeleteAccountRequests",
       requests: "",
       selectID: 0,
       reason:"",
-      request: { explanation: "", id: 0},
+      request: { explanation: "",user: { id: 0, name: "", surname: "",email: ""}, id: 0},
    
     }
   },
