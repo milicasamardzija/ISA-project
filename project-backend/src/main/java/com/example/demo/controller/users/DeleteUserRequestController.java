@@ -48,9 +48,9 @@ public class DeleteUserRequestController {
             User user = this.userService.findById(id);
             DeleteUserRequestDTO du = new DeleteUserRequestDTO(u);
             du.setUser(user);
-            //if (du.getAccepted()==null && du.getRejected()==null) {
+            if (du.getAccepted()==null && du.getRejected()==null) {
                 requests.add(du);
-           // }
+            }
         }
         return  new ResponseEntity<>(requests, HttpStatus.OK);
     }

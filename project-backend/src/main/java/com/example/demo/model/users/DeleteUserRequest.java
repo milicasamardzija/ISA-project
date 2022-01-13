@@ -19,7 +19,7 @@ public class DeleteUserRequest {
     private Boolean accepted;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private User user;
 
     public DeleteUserRequest() {}
