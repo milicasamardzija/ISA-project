@@ -3,16 +3,10 @@ package com.example.demo.controller.users;
 import com.example.demo.dto.users.JwtAuthenticationRequest;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.dto.users.UserTokenState;
-import com.example.demo.model.users.Administrator;
-import com.example.demo.model.users.Client;
-import com.example.demo.model.users.CottageOwner;
-import com.example.demo.model.users.User;
+import com.example.demo.model.users.*;
 import com.example.demo.service.CottageOwnerService;
 import com.example.demo.service.email.EmailService;
-import com.example.demo.service.users.AdministratorService;
-import com.example.demo.service.users.ClientRegistrationTokenService;
-import com.example.demo.service.users.ClientService;
-import com.example.demo.service.users.UserService;
+import com.example.demo.service.users.*;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -38,8 +32,9 @@ public class AuthentificationController {
     private ClientService clientService;
     private CottageOwnerService cottageOwnerService;
     private AdministratorService administratorService;
+    private InstructorService instructorService;
 
-    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CottageOwnerService cottageOwnerService, AdministratorService administratorService) {
+    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CottageOwnerService cottageOwnerService, AdministratorService administratorService, InstructorService instructorService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.tokenUtils = tokenUtils;
@@ -47,6 +42,7 @@ public class AuthentificationController {
         this.clientService = clientService;
         this.cottageOwnerService = cottageOwnerService;
         this.administratorService = administratorService;
+        this.instructorService = instructorService;
     }
 
     @PostMapping("/login")
@@ -83,23 +79,31 @@ public class AuthentificationController {
     // Endpoint za registraciju novog korisnika
     @RequestMapping(value="/signup", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) {
+        System.out.println("Usla sam");
         User existUser = this.userService.findByEmail(userRequest.getEmail());
         User user = null;
+        System.out.println(existUser.getName());
         if (existUser != null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            if(userRequest.getRole().equals("ROLE_CLIENT")) {
+            if (userRequest.getRole().equals("ROLE_CLIENT")) {
                 user = this.userService.saveClient(userRequest);
                 emailService.sendEmailForUserAuthentication(user);
             }
-            if(userRequest.getRole().equals("ROLE_ADMIN")) {
+            if (userRequest.getRole().equals("ROLE_ADMIN")) {
                 user = this.userService.save(userRequest);
                 administratorService.save(new Administrator(user));
             }
-            if(userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
+            if (userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
                 user = this.userService.save(userRequest);
                 cottageOwnerService.save(new CottageOwner(user));
+            }
+            if (userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
+                System.out.println("Pre cuvanja");
+                user = this.userService.save(userRequest);
+                instructorService.save(new Instructor(user));
+                System.out.println("Posle cuvanja");
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

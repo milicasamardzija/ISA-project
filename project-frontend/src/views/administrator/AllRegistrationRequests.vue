@@ -16,6 +16,8 @@
             <th>Tip registracije</th>
             <th></th>
             <th></th>
+            <th></th>
+            <th></th>            
         </tr>
     </thead>
     <tbody>
@@ -27,26 +29,15 @@
                   <td>{{user.telephone}}</td>
                   <td>{{user.role}}</td>
                   <td><button class="btn btn-success btn-block" @click="confirmRequest(user.id) " >Prihvati zahtev</button></td>
-                  <td><button class="btn btn-success btn-block" data-target="#odbijanje" data-toggle="modal" @click="SaveID(user.id)">Odbij zahtev</button></td></tr>
+                  <td><button class="btn btn-success btn-block" name="odbij" @click="SaveIdAndEmail(user.id,user.email) ">Odbij zahtev</button></td>
+           </tr> 
+
     </tbody>
 </table>
-    </div>
-
-    <div class="modal fade" id="odbijanje" role="dialog">
-      <div class="modal-dialog">
-        <!-- Modal content -->
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5
-              class="modal-title"
-              id="exampleModalLabel"
-              style="color: #0b4025; padding: 5px 35px"
-            >
-              Razlog odbijanja
-            </h5>
-          </div>
-          <div class="modal-body" style="padding: 15px 50px">
-            <form role="form">
+ <div> <div class="form-group" v-if='this.counter== 1'>
+                    
+                      
+             <form role="form">
               <div class="form-group">
                 <label for="name">Obrazlozenje:</label>
                 <input
@@ -58,14 +49,16 @@
               <button
                 type="submit"
                 class="btn btn-success btn-block"
-                 @click="RejectRequest()"
+                 @click="RejectRequest(reason)"
               >
                 <span></span> Posalji
               </button>
             </form>
-          </div>
-        </div>
-      </div>
+
+
+                    
+                </div>
+                  </div>
     </div>
 
 </template>
@@ -85,12 +78,15 @@ export default {
   },
   data() {
     return {
+      counter : 0,
       users: "",
       selectID: 0,
-      reason:"",
+      deleteID:"",
+      userEmail:"",
       role: "",
+      reasonn:"",
       user: { id: 0, firstname: "", lastname: "", address: { id: "", street:"", number: 0, city: "", country: ""}, telephone: ""}
-   
+    
     }
   },
 
@@ -114,21 +110,30 @@ export default {
       alert("Aktivirali ste nalog!")
       this.$router.go(0);
     },
-    RejectRequest() {
+    RejectRequest(reason) {
+      this.counter = 0;
+      this.reasonn = reason;
+      console.log(this.deleteID);
+      console.log(this.userEmail);
+      console.log(this.reasonn);
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.delete("http://localhost:8081/api/user/reject/" + this.selectID,{headers})
+      axios.delete("http://localhost:8081/api/user/reject/" + this.deleteID+"/"+this.reasonn+"/"+this.userEmail ,{headers})
       .then (response => { 
         console.log(response);
         this.$router.push({ name: "AllRegistrationRequests" });
       })  
-
+      alert("Odbili ste zahtev za registraciju!")
+      this.$router.go(0);     
+      
+   },
+   SaveIdAndEmail(id,email) {
+     this.counter = 1;
+     this.deleteID=id;
+     this.userEmail=email;
    },
 
-       async SaveID(id) {
-      this.selectID = id;
-  },
   },
     async created() {
       this.users = await this.getUsers();

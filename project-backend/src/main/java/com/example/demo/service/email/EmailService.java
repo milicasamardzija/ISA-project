@@ -33,4 +33,16 @@ public class EmailService {
 
         System.out.println("Email poslat!");
     }
+
+    public void sendConfirmEmail(String emailAdress) throws MailException, InterruptedException {
+        System.out.println(emailAdress);
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(emailAdress);
+        mail.setFrom("spring.mail.username");
+        mail.setSubject("Confirm your account");
+        mail.setText("Your account confirmed!");
+        javaMailSender.send(mail);
+        System.out.println("Email poslat!");
+    }
 }

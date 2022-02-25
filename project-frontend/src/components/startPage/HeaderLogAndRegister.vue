@@ -224,6 +224,7 @@
                   placeholder="Unesite obrazlozenje za registraciju"
                   v-model="newUser.reasonForRegistration"
                 />
+                </div>
                <div class="form-group">
                 <label for="psw"
                   ><span class="glyphicon glyphicon-eye-open"></span>
@@ -236,7 +237,7 @@
                   placeholder="Unesite lozinku"
                   v-model="newUser.password"
                 />
-              </div>
+              
               </div>
               <div class="form-group">
                 <label for="psw"

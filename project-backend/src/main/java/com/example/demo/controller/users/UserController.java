@@ -5,8 +5,11 @@ import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.users.UserTokenState;
 import com.example.demo.model.users.User;
+import com.example.demo.service.email.EmailSenderService;
+import com.example.demo.service.email.EmailService;
 import com.example.demo.service.users.UserService;
 import com.example.demo.utils.TokenUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.awt.datatransfer.SystemFlavorMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +32,9 @@ public class UserController {
     private UserService userService;
     private AuthenticationManager authenticationManager;
     private TokenUtils tokenUtils;
+    private EmailService emailService;
+    @Autowired
+    private EmailSenderService service;
     public UserController(UserService userService, AuthenticationManager authenticationManager, TokenUtils tokenUtils){
         this.userService = userService;
         this.authenticationManager = authenticationManager;
@@ -64,7 +72,7 @@ public class UserController {
         for(User u : allUsers ) {
             if(u.getEnabled()!= true) {
             users.add(new UserDTO(u));}
-            
+            System.out.print(u.getName());
         }
         return  new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -96,26 +104,31 @@ public class UserController {
     }
 
     @PostMapping(value = "/confirm/{id}")
-    public ResponseEntity<Void> updateUser1(@PathVariable int id){
+    public ResponseEntity<Void> updateUser1(@PathVariable int id) throws InterruptedException, MessagingException {
 
         User u = this.userService.findById(id);
         if (u != null){
+
             this.userService.updateEnableState(u);
+            service.sendEmailWithAttachment(u.getEmail(),
+                    "Your registration request has been accepted ! ",
+                    "Accepting registration");
             return new ResponseEntity<>(HttpStatus.OK);}
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
-    @DeleteMapping(value = "/reject/{id}")
-    public ResponseEntity<Void> rejectRegistration(@PathVariable int id){
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = (User)authentication.getPrincipal();
-            User u = this.userService.findById(id);
+    @DeleteMapping(value = "/reject/{deleteID}/{reasonn}/{userEmail}")
+    public ResponseEntity<Void> rejectRegistration(@PathVariable int deleteID,@PathVariable String reasonn,@PathVariable String userEmail) throws MessagingException {
+        System.out.print(deleteID);
+        System.out.print(reasonn);
+        System.out.print(userEmail);
+        User u = this.userService.findById(deleteID);
             if (u != null){
-                userService.deleteUserById(id);
+                userService.deleteUserById(deleteID);
+                service.sendEmailWithAttachment(userEmail,
+                        reasonn,
+                        "Rejecting registration");
                 return new ResponseEntity<>(HttpStatus.OK);
             }
-
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
 }
