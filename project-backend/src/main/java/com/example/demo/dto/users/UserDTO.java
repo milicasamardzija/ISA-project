@@ -15,6 +15,8 @@ public class UserDTO {
 
     private String email;
 
+    private String reasonForRegistration;
+
     private String role;
 
     private Address address;
@@ -27,6 +29,7 @@ public class UserDTO {
         this.lastname = user.getSurname();
         this.address = user.getAddress();
         this.password = user.getPassword();
+        this.reasonForRegistration = user.getReasonForRegistration();
         this.email = user.getEmail();
         this.telephone = user.getTelephone();
         this.role = user.getRole().getName();
@@ -54,6 +57,13 @@ public class UserDTO {
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
+    }
+
+    public String getReasonForRegistration() {
+        return reasonForRegistration;
+    }
+    public void setReasonForRegistration(String reasonForRegistration) {
+        this.reasonForRegistration = reasonForRegistration;
     }
 
     public String getLastname() {

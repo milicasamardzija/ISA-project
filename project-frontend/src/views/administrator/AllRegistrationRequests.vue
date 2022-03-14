@@ -13,6 +13,7 @@
             <th>Prezime</th>
             <th>Email</th>
             <th>Broj telefona</th>
+            <th>Razlog registracije</th>
             <th>Tip registracije</th>
             <th></th>
             <th></th>
@@ -27,6 +28,7 @@
                   <td> {{user.lastname}}</td>
                   <td>{{user.email}}</td>
                   <td>{{user.telephone}}</td>
+                  <td>{{user.reasonForRegistration}}</td>
                   <td>{{user.role}}</td>
                   <td><button class="btn btn-success btn-block" @click="confirmRequest(user.id) " >Prihvati zahtev</button></td>
                   <td><button class="btn btn-success btn-block" name="odbij" @click="SaveIdAndEmail(user.id,user.email) ">Odbij zahtev</button></td>
@@ -85,7 +87,7 @@ export default {
       userEmail:"",
       role: "",
       reasonn:"",
-      user: { id: 0, firstname: "", lastname: "", address: { id: "", street:"", number: 0, city: "", country: ""}, telephone: ""}
+      user: { id: 0, firstname: "", lastname: "", address: { id: "", street:"", number: 0, city: "", country: ""}, reasonForRegistration:"", telephone: ""}
     
     }
   },

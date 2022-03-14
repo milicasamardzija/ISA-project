@@ -25,11 +25,17 @@ import CottageProfile from "../views/cottageOwner/CottageProfile";
 import ClientSubscription from "../views/client/subscription/ClientSubscription"
 import AdminProfile from "../views/administrator/AdminProfile"
 import DeleteAccountRequests from "../views/administrator/DeleteAccountRequests"
+import Percentage from "../views/administrator/Percentage"
 const routes = [
   {
     path: "/",
     name: "BoatsStartPage",
     component: BoatsStartPage,
+  },
+  {
+    path: "/percentage",
+    name: "Percentage",
+    component: Percentage,
   },
   {
     path: "/deleteAccountRequests",

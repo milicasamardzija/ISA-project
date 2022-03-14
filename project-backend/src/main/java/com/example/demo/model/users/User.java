@@ -38,6 +38,8 @@ public class User implements UserDetails {
 	private String telephone;
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE ) //PRILIKOM REGISTRACIJE NIJE CUVAO USERA, PA SAM PROMENILA CASCADETYPE
 	private Address address;
+	@Column(name = "reasonForRegistration")
+	private String reasonForRegistration;
 	@Column(name = "enabled")
 	private boolean enabled;
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
@@ -97,6 +99,12 @@ public class User implements UserDetails {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getReasonForRegistration() {
+		return reasonForRegistration;
+	}
+	public void setReasonForRegistration(String reasonForRegistration) {
+		this.reasonForRegistration = reasonForRegistration;
 	}
 	public String getSurname() {
 		return surname;

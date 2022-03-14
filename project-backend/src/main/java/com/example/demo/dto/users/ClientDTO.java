@@ -14,6 +14,8 @@ public class ClientDTO {
 
     private String lastname;
 
+    private String reasonForRegistration;
+
     private String email;
 
     private String role;
@@ -35,6 +37,7 @@ public class ClientDTO {
         this.lastname = client.getSurname();
         this.email = client.getEmail();
         this.role = client.getRole().getName();
+        this.reasonForRegistration = client.getReasonForRegistration();
         this.penals = client.getPenals();
         this.loyalityType = client.getLoyalityType();
         this.poents = client.getPoents();
@@ -74,6 +77,12 @@ public class ClientDTO {
         this.lastname = lastname;
     }
 
+    public String getReasonForRegistration() {
+        return reasonForRegistration;
+    }
+    public void setReasonForRegistration(String reasonForRegistration) {
+        this.reasonForRegistration = reasonForRegistration;
+    }
     public String getEmail() {
         return email;
     }
