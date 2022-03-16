@@ -18,6 +18,8 @@ public class EntityService {
         this.entityRepository = entityRepository;
     }
 
+    public EntityClass findById(int id) { return entityRepository.findById(id);}
+
     public List<EntityClass> findAll() {
         return entityRepository.findAll();
     }

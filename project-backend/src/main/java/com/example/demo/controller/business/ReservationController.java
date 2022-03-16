@@ -9,6 +9,7 @@ import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
 import com.example.demo.service.business.ReservationService;
 import com.example.demo.service.entities.AdventureService;
+import com.example.demo.service.entities.EntityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -27,9 +28,11 @@ import java.util.List;
 public class ReservationController {
 
     private ReservationService reservationService;
+    private EntityService entityService;
 
-    public ReservationController(ReservationService reservationService){
+    public ReservationController(ReservationService reservationService,EntityService entityService){
         this.reservationService = reservationService;
+        this.entityService = entityService;
     }
 
     @GetMapping("/scheduledReservations")
@@ -86,6 +89,52 @@ public class ReservationController {
         }
 
         return  new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getSuccessfulBooking")
+    public ResponseEntity<List<ReservationDTO>> getSuccessfulBooking(){
+        List<Reservation> allReservation = reservationService.findAll();
+        List<ReservationDTO> reservations = new ArrayList<>();
+        for(Reservation r : allReservation ) {
+            if (r.getSuccessful()) {
+                 ReservationDTO reservation = new ReservationDTO();
+                 reservation.setId(r.getId());
+                 reservation.setDateStart(r.getDateStart().toString());
+                 reservation.setDateEnd(r.getDateEnd().toString());
+                 reservation.setPrice(r.getPrice());
+                 EntityClass entity = new EntityClass();
+                 entity = entityService.findById(r.getEntity().getId());
+                 reservation.setEntity(entity);
+                 reservations.add(reservation);
+            }
+        }
+        return  new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getTotalEarnings")
+    public ResponseEntity<Double> getTotalEarnings(){
+        System.out.print("Cao1");
+        Double totalEarnings = 0.0;
+        List<Reservation> allReservation = reservationService.findAll();
+        List<ReservationDTO> reservations = new ArrayList<>();
+        for(Reservation r : allReservation ) {
+            if (r.getSuccessful()) {
+                ReservationDTO reservation = new ReservationDTO();
+                reservation.setId(r.getId());
+                reservation.setDateStart(r.getDateStart().toString());
+                reservation.setDateEnd(r.getDateEnd().toString());
+                reservation.setPrice(r.getPrice());
+                EntityClass entity = new EntityClass();
+                entity = entityService.findById(r.getEntity().getId());
+                reservation.setEntity(entity);
+                reservations.add(reservation);
+            }
+        }
+        for( ReservationDTO reservationDTO: reservations) {
+            totalEarnings += reservationDTO.getPrice();
+        }
+        System.out.print("Cao");
+        return  new ResponseEntity<>(totalEarnings, HttpStatus.OK);
     }
 
     @GetMapping("/entity/{id}")

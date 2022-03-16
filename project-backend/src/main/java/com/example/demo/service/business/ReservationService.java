@@ -2,6 +2,7 @@ package com.example.demo.service.business;
 
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.EntityClass;
+import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ReservationRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,10 @@ public class ReservationService {
 
     public ReservationService (ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;
+    }
+
+    public List<Reservation> findAll() {
+        return reservationRepository.findAll();
     }
 
     public List<Reservation> fetchAllFutureReservationsForClient(int clientId) {

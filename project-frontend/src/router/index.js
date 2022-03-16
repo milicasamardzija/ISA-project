@@ -26,6 +26,7 @@ import ClientSubscription from "../views/client/subscription/ClientSubscription"
 import AdminProfile from "../views/administrator/AdminProfile"
 import DeleteAccountRequests from "../views/administrator/DeleteAccountRequests"
 import Percentage from "../views/administrator/Percentage"
+import IncomeRecords from "../views/administrator/IncomeRecords"
 const routes = [
   {
     path: "/",
@@ -36,6 +37,11 @@ const routes = [
     path: "/percentage",
     name: "Percentage",
     component: Percentage,
+  },
+  {
+    path: "/incomeRecords",
+    name: "IncomeRecords",
+    component: IncomeRecords,
   },
   {
     path: "/deleteAccountRequests",

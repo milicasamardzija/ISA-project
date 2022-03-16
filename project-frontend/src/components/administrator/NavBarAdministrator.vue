@@ -28,7 +28,7 @@
       </li>
       <li class="nav-item">
         <button type="button" class="btn btn-success">
-          <router-link to="">Income records</router-link>
+          <router-link to="/incomeRecords">Income records</router-link>
         </button>
       </li>
       <li class="nav-item">

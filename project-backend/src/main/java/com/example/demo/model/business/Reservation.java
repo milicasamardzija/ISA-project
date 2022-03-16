@@ -35,6 +35,9 @@ public class Reservation {
     @Column(name="is_canceled",nullable=false)
     private Boolean isCanceled = false;
 
+    @Column(name="is_successful",nullable=false)
+    private Boolean isSuccessful = false;
+
     @Column(name="action",nullable=true)
     private Boolean action = false;
 
@@ -75,6 +78,14 @@ public class Reservation {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Boolean getSuccessful() {
+        return isSuccessful;
+    }
+
+    public void setSuccessful(Boolean successful) {
+        isSuccessful = successful;
     }
 
     public Date getDateStart() {

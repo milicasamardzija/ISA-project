@@ -21,7 +21,7 @@ public class EntityController {
     public EntityController(EntityService entityService){
         this.entityService = entityService;
     }
-
+    public EntityClass findById(int id) { return entityService.findById(id);}
     @GetMapping
     public ResponseEntity<List<EntityDTO>> getAll(){
         List<EntityClass> allEntities = entityService.findAll();
