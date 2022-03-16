@@ -91,7 +91,7 @@ public class AuthentificationController {
                 user = this.userService.saveClient(userRequest);
                 emailService.sendEmailForUserAuthentication(user);
             }
-            if (userRequest.getRole().equals("ROLE_ADMIN")) {
+            if (userRequest.getRole().equals("ROLE_ADMIN") || userRequest.getRole().equals("ROLE_PREDEF_ADMIN")) {
                 user = this.userService.save(userRequest);
                 administratorService.save(new Administrator(user));
             }

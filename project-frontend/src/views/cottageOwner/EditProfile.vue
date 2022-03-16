@@ -9,10 +9,15 @@
   <div v-if="this.role === 'ROLE_CLIENT'">
     <NavBarClient />
   </div>
-  <div v-if="this.role === 'ROLE_ADMIN'">
+    <div v-if="this.role === 'ROLE_ADMIN'">
     <NavBarLogOut />
     <HeaderStartPage />
-    <NavBarAdministrator />
+    <NavBarAdministrator/>
+  </div>
+  <div v-if="this.role === 'ROLE_PREDEF_ADMIN'">
+    <NavBarLogOut />
+    <HeaderStartPage />
+    <NavBarPredefAdministrator />
   </div>
   <div>
     <div class="tab-pane active containerInfo">
@@ -20,7 +25,7 @@
         <Search />
       </div>
 
-      <div class="row-boats" v-if="this.role === 'ROLE_CLIENT' || this.role === 'ROLE_COTTAGE_OWNER' || this.role === 'ROLE_ADMIN'">
+      <div class="row-boats" v-if="this.role === 'ROLE_CLIENT' || this.role === 'ROLE_COTTAGE_OWNER' || this.role === 'ROLE_ADMIN' || this.role === 'ROLE_PREDEF_ADMIN'">
         <div class="col-with-picture" style="margin-right: 5%; margin-top: 1%">
           <div>
             <img
@@ -62,6 +67,7 @@ import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
+import NavBarPredefAdministrator from "../../components/administrator/NavBarPredefAdministrator.vue"
 
 export default {
   name: "EditProfile",
@@ -70,7 +76,8 @@ export default {
     NavBarHomePage,
     NavBarClient,
     HeaderStartPage,
-    NavBarAdministrator
+    NavBarAdministrator,
+    NavBarPredefAdministrator,
   },
   data(){
     return {

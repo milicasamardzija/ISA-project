@@ -41,14 +41,14 @@ public class UserController {
         this.tokenUtils = tokenUtils;
     }
 
-    @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN','PREDEF_ADMIN')")
     @PostMapping(value="/update",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateUser(@RequestBody UpdateUserDTO updatedUser){
         userService.update(updatedUser);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN','PREDEF_ADMIN')")
     @GetMapping(value = "/userInfo")
     public  ResponseEntity<UserDTO> fetchProfileInfo(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -77,7 +77,7 @@ public class UserController {
         return  new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'SHIP_OWNER', 'INSTRUCTOR','ADMIN','PREDEF_ADMIN')")
    // @PutMapping(value="/changePassword/{password}")
     @PostMapping(value="/changePassword")
     public ResponseEntity<UserTokenState> changePassword(@RequestBody ChangePasswordDTO password){

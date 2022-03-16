@@ -344,6 +344,12 @@ export default {
             console.log(localStorage.getItem("role"));
             this.$router.go(0);
           } 
+          else if (localStorage.getItem("role") == "ROLE_PREDEF_ADMIN") {
+            this.$router.push({ name: "AllRegistrationRequests" });
+            console.log(localStorage.getItem("token"));
+            console.log(localStorage.getItem("role"));
+            this.$router.go(0);
+          }
         } 
       })
       .catch( error => {
