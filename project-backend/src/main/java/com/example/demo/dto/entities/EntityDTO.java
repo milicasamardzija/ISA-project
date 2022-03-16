@@ -35,6 +35,8 @@ public class EntityDTO {
         this.grade = entity.getGrade();
     }
 
+    public EntityDTO() {}
+
     public Integer getId() {
         return id;
     }

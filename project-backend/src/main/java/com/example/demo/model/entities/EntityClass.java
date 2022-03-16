@@ -24,7 +24,7 @@ public class EntityClass {
 	@Column(name="name", unique=false, nullable=false)
 	private String name;
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private Address address;
 	
 	@Column(name="promoDescription", unique=false, nullable=false)

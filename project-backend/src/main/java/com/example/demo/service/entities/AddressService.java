@@ -14,7 +14,7 @@ public class AddressService {
     public  AddressService(AddressRepository repository){ this.addressRepository=repository;}
 
     public List<Address> findAll() { return addressRepository.findAll();}
-    public Address findOne(Integer id) {return addressRepository.findById(id).orElseGet(null);}
+    public Address findById(int id) {return addressRepository.findById(id);}
 
     public Address save(Address course) {
         return addressRepository.save(course);

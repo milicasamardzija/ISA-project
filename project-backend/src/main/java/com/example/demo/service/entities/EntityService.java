@@ -39,4 +39,8 @@ public class EntityService {
     public void remove(Integer id) {
         entityRepository.deleteById(id);
     }
+
+    public void deleteById(Integer id) {
+        entityRepository.deleteById(id);
+    }
 }

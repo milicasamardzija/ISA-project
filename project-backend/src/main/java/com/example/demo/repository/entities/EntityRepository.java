@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface EntityRepository extends JpaRepository<EntityClass, Integer> {
 
     EntityClass findById(int id);
-
+    void deleteById(int id);
 }

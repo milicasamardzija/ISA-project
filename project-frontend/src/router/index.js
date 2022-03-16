@@ -27,6 +27,7 @@ import AdminProfile from "../views/administrator/AdminProfile"
 import DeleteAccountRequests from "../views/administrator/DeleteAccountRequests"
 import Percentage from "../views/administrator/Percentage"
 import IncomeRecords from "../views/administrator/IncomeRecords"
+import SeeAndDeleteEntities from "../views/administrator/SeeAndDeleteEntities"
 const routes = [
   {
     path: "/",
@@ -38,6 +39,7 @@ const routes = [
     name: "Percentage",
     component: Percentage,
   },
+
   {
     path: "/incomeRecords",
     name: "IncomeRecords",
@@ -87,6 +89,11 @@ const routes = [
     path: "/AvailablePeriod",
     name: "AvailablePeriod",
     component: AvailablePeriod,
+  },
+  {
+    path: "/seeAndDeleteEntities",
+    name: "SeeAndDeleteEntities",
+    component: SeeAndDeleteEntities,
   },
   {
     path: "/fishingInstructorProfile",
