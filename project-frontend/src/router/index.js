@@ -28,6 +28,8 @@ import DeleteAccountRequests from "../views/administrator/DeleteAccountRequests"
 import Percentage from "../views/administrator/Percentage"
 import IncomeRecords from "../views/administrator/IncomeRecords"
 import SeeAndDeleteEntities from "../views/administrator/SeeAndDeleteEntities"
+import AddAdministrator from "../views/administrator/AddAdministrator"
+
 const routes = [
   {
     path: "/",
@@ -64,6 +66,11 @@ const routes = [
     path: "/client",
     name: "ClientAllCottages",
     component: ClientAllCottages,
+  },
+  {
+    path: "/addAdministrator",
+    name: "AddAdministrator",
+    component: AddAdministrator,
   },
   {
     path: "/adventurePage",
