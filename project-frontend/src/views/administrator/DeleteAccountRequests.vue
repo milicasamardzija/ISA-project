@@ -1,8 +1,15 @@
 <template>
-     <div>
+  <div>
+  <div v-if="this.userRole === 'ROLE_ADMIN'">
     <NavBarLogOut />
     <HeaderStartPage />
     <NavBarAdministrator />
+  </div>
+    <div v-if="this.userRole === 'ROLE_PREDEF_ADMIN'">
+    <NavBarLogOut />
+    <HeaderStartPage />
+    <NavBarPredefAdministrator />
+  </div>
   </div>
    <div id="#example-2">
         <table class="styled-table">
@@ -110,16 +117,18 @@ import axios from 'axios'
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
-
+import NavBarPredefAdministrator from "../../components/administrator/NavBarPredefAdministrator.vue";
 export default({
 name: "DeleteAccountRequests",
   components: {
     HeaderStartPage,
     NavBarAdministrator,
     NavBarLogOut,
+    NavBarPredefAdministrator,
   },
   data() {
     return {
+      userRole: "",
       requests: "",
       selectID: 0,
       reason:"",
@@ -164,6 +173,7 @@ name: "DeleteAccountRequests",
     },
   },
       async created() {
+      this.userRole = localStorage.getItem("role");
       this.requests = await this.getRequests();
   },
 })

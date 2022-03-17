@@ -1,71 +1,16 @@
 <template>
+  <div>
   <div v-if="this.userRole === 'ROLE_ADMIN'">
     <NavBarLogOut />
     <HeaderStartPage />
     <NavBarAdministrator />
-    <div id="#example-2">
-        <table class="styled-table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Ime</th>
-            <th>Prezime</th>
-            <th>Email</th>
-            <th>Broj telefona</th>
-            <th>Razlog registracije</th>
-            <th>Tip registracije</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>            
-        </tr>
-    </thead>
-    <tbody>
-          <tr v-for="(user, index) in users" :key="index">
-                  <td>{{user.id}}</td>
-                  <td>{{user.firstname}} </td>
-                  <td> {{user.lastname}}</td>
-                  <td>{{user.email}}</td>
-                  <td>{{user.telephone}}</td>
-                  <td>{{user.reasonForRegistration}}</td>
-                  <td>{{user.role}}</td>
-                  <td><button class="btn btn-success btn-block" @click="confirmRequest(user.id) " >Prihvati zahtev</button></td>
-                  <td><button class="btn btn-success btn-block" name="odbij" @click="SaveIdAndEmail(user.id,user.email) ">Odbij zahtev</button></td>
-           </tr> 
-
-    </tbody>
-</table>
- <div> <div class="form-group" v-if='this.counter== 1'>
-                    
-                      
-             <form role="form">
-              <div class="form-group">
-                <label for="name">Obrazlozenje:</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="reason"
-                />
-              </div>
-              <button
-                type="submit"
-                class="btn btn-success btn-block"
-                 @click="RejectRequest(reason)"
-              >
-                <span></span> Posalji
-              </button>
-            </form>
-
-
-                    
-                </div>
-                  </div>
-    </div>
   </div>
     <div v-if="this.userRole === 'ROLE_PREDEF_ADMIN'">
     <NavBarLogOut />
     <HeaderStartPage />
     <NavBarPredefAdministrator />
+  </div>
+  </div>
     <div id="#example-2">
         <table class="styled-table">
     <thead>
@@ -124,8 +69,6 @@
                 </div>
                   </div>
     </div>
-  </div>
-   
 </template>
 
 <script>
@@ -134,7 +77,6 @@ import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
 import NavBarPredefAdministrator from "../../components/administrator/NavBarPredefAdministrator.vue";
-
 
 export default {
   name: "AllRegistrationRequests",

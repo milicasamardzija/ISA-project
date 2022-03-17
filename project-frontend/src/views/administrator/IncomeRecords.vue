@@ -1,8 +1,15 @@
 <template>
-      <div>
+  <div>
+  <div v-if="this.userRole === 'ROLE_ADMIN'">
     <NavBarLogOut />
     <HeaderStartPage />
     <NavBarAdministrator />
+  </div>
+    <div v-if="this.userRole === 'ROLE_PREDEF_ADMIN'">
+    <NavBarLogOut />
+    <HeaderStartPage />
+    <NavBarPredefAdministrator />
+  </div>
   </div>
   <div> 
     <h5>Sve uspesne rezervacije su prikazane u tabeli:</h5>
@@ -43,16 +50,18 @@
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
-
+import NavBarPredefAdministrator from "../../components/administrator/NavBarPredefAdministrator.vue";
 export default {
   name: "IncomeRecords",
   components: {
     HeaderStartPage,
     NavBarAdministrator,
     NavBarLogOut,
+    NavBarPredefAdministrator,
   },
     data() {
     return {
+      userRole: "",
         totalEarnings: 0.0,
         reservations: "",
       reservation: { id:0, dateStart: "", dateEnd: "", entity: { id:0, name: ""}, price: 0}
@@ -71,6 +80,7 @@ export default {
     },
   },
     async created() {
+      this.userRole = localStorage.getItem("role");
       this.reservations = await this.getReservation();
       console.log("Ocitao rezervacije");
       this.totalEarnings = await this.getTotalEarnings();
