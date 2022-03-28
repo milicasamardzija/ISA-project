@@ -1,5 +1,6 @@
 package com.example.demo.model.users;
 
+import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.entities.Address;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -42,6 +43,8 @@ public class User implements UserDetails {
 	private String reasonForRegistration;
 	@Column(name = "enabled")
 	private boolean enabled;
+	@Column(name = "must_change_password")
+	private boolean must_change_password;
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "role_id")
@@ -78,14 +81,22 @@ public class User implements UserDetails {
 	//za pravljenje odredjenog usera  -> ne koristim
 	public User(String name, String surname, String email, String password, String telephone, Address address, String role) {
 		super();
-		this.role= new Role(role); //poslace se u stringu rola
+		this.role = new Role(role); //poslace se u stringu rola
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
 		this.password = password;
 		this.telephone = telephone;
-		this.enabled= true;
+		this.enabled = true;
 		this.address = address;
+	}
+
+	public boolean isMust_change_password() {
+		return must_change_password;
+	}
+
+	public void setMust_change_password(boolean must_change_password) {
+		this.must_change_password = must_change_password;
 	}
 
 	public int getId() {

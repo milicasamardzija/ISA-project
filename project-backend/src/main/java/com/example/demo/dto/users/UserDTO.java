@@ -23,6 +23,8 @@ public class UserDTO {
 
     private String telephone;
 
+    private boolean must_change_password;
+
     public UserDTO(User user){
         this.id = user.getId();
         this.firstname = user.getName();
@@ -33,6 +35,7 @@ public class UserDTO {
         this.email = user.getEmail();
         this.telephone = user.getTelephone();
         this.role = user.getRole().getName();
+        this.must_change_password = user.isMust_change_password();
     }
 
     public int getId() {
@@ -41,6 +44,14 @@ public class UserDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isMust_change_password() {
+        return must_change_password;
+    }
+
+    public void setMust_change_password(boolean must_change_password) {
+        this.must_change_password = must_change_password;
     }
 
     public String getPassword() {
