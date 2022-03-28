@@ -29,6 +29,7 @@ import Percentage from "../views/administrator/Percentage"
 import IncomeRecords from "../views/administrator/IncomeRecords"
 import SeeAndDeleteEntities from "../views/administrator/SeeAndDeleteEntities"
 import AddAdministrator from "../views/administrator/AddAdministrator"
+import ChangePassword from "../views/administrator/ChangePassword"
 
 const routes = [
   {
@@ -136,6 +137,11 @@ const routes = [
     path: "/myCottages",
     name: "MyCottages",
     component: MyCottages,
+  },
+  {
+    path: "/changePassword",
+    name: "ChangePassword",
+    component: ChangePassword,
   },
   {
     path: "/myProfile",

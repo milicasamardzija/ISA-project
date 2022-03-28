@@ -1,15 +1,16 @@
 <template>
   <div>
-  <div v-if="this.userRole === 'ROLE_ADMIN'">
-    <NavBarLogOut />
-    <HeaderStartPage />
-    <NavBarAdministrator />
-  </div>
+    <div v-if="this.userRole === 'ROLE_ADMIN'">
+      <NavBarLogOut />
+      <HeaderStartPage />
+      <NavBarAdministrator />
+    </div>
     <div v-if="this.userRole === 'ROLE_PREDEF_ADMIN'">
     <NavBarLogOut />
     <HeaderStartPage />
     <NavBarPredefAdministrator />
-  </div>
+    </div>
+
   </div>
     <div id="#example-2">
         <table class="styled-table">
@@ -95,6 +96,7 @@ export default {
       userEmail:"",
       role: "",
       userRole: "",
+      name:"",
       reasonn:"",
       user: { id: 0, firstname: "", lastname: "", address: { id: "", street:"", number: 0, city: "", country: ""}, reasonForRegistration:"", telephone: ""}
     

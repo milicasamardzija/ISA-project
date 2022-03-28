@@ -5,17 +5,27 @@ public class UserTokenState {
     private Long expiresIn;
     private String role;
     private Boolean enabled;
+    private Boolean must_change_password;
 
     public UserTokenState() {
         this.accessToken = null;
         this.expiresIn = null;
     }
 
-    public UserTokenState(String accessToken, long expiresIn, String role, boolean enabled) {
+    public UserTokenState(String accessToken, long expiresIn, String role, boolean enabled,boolean must_change_password) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.role = role;
         this.enabled = enabled;
+        this.must_change_password = must_change_password;
+    }
+
+    public boolean isMust_change_password() {
+        return must_change_password;
+    }
+
+    public void setMust_change_password(boolean must_change_password) {
+        this.must_change_password = must_change_password;
     }
 
     public String getAccessToken() {

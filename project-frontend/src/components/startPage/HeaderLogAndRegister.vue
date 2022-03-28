@@ -291,7 +291,7 @@ export default {
         address: { country: "",  city: "", street: "",number:0 },
         role: "",
         reasonForRegistration: "",
-        telephone: ""
+        telephone: "",
       },
     };
   },
@@ -339,10 +339,19 @@ export default {
             this.$router.push({ name: "HomePageInProfil" });
           }
           else if (localStorage.getItem("role") == "ROLE_ADMIN") {
-            this.$router.push({ name: "AllRegistrationRequests" });
-            console.log(localStorage.getItem("token"));
-            console.log(localStorage.getItem("role"));
-            this.$router.go(0);
+            console.log("HELOU" + (response.data.must_change_password));
+              if (response.data.must_change_password === true) {
+              this.$router.push({ name: "ChangePassword" });
+              console.log(localStorage.getItem("token"));
+              console.log(localStorage.getItem("role"));
+              this.$router.go(0);
+                
+              }
+              else {
+              this.$router.push({ name: "AllRegistrationRequests" });
+              console.log(localStorage.getItem("token"));
+              console.log(localStorage.getItem("role"));
+              this.$router.go(0); }
           } 
           else if (localStorage.getItem("role") == "ROLE_PREDEF_ADMIN") {
             this.$router.push({ name: "AllRegistrationRequests" });

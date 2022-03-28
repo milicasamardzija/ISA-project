@@ -100,7 +100,7 @@ public class UserController {
         String jwt = tokenUtils.generateToken(userAuth.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,userAuth.getRole().getName(), user.isEnabled()));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,userAuth.getRole().getName(), user.isEnabled(),user.isMust_change_password()));
     }
 
     @PostMapping(value = "/confirm/{id}")
