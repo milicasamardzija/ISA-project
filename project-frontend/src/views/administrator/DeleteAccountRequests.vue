@@ -128,9 +128,11 @@ name: "DeleteAccountRequests",
   },
   data() {
     return {
+      reasonn: "",
       userRole: "",
       requests: "",
       selectID: 0,
+      ID: 0,
       reason:"",
       request: { explanation: "",user: { id: 0, name: "", surname: "",email: ""}, id: 0},
    
@@ -143,24 +145,30 @@ name: "DeleteAccountRequests",
       return data;
     },
     async AcceptRequest() {
+      this.reasonn = this.reason;
+      this.ID = this.selectID;
+      console.log(this.selectID);
+      console.log(this.reason);
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       axios
-        .post("http://localhost:8081/api/userDeleteReq/confirm/" + this.selectID, {
+        .post("http://localhost:8081/api/userDeleteReq/confirm/" + this.ID + "/" + this.reasonn, {
           headers,
         })
         .then((response) => {
           console.log(response);
         });
       this.$router.push({ name: "DeleteAccountRequests" });
+      this.$router.push(0);
     },
+
     RejectRequest() {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       axios
-        .delete("http://localhost:8081/api/userDeleteReq/reject/" + this.selectID, {
+        .delete("http://localhost:8081/api/userDeleteReq/reject/" + this.request.id + "/" + this.reason, {
           headers,
         })
         .then((response) => {
@@ -174,7 +182,9 @@ name: "DeleteAccountRequests",
   },
       async created() {
       this.userRole = localStorage.getItem("role");
+      console.log(this.userRole);
       this.requests = await this.getRequests();
+      console.log(this.requests.size);
   },
 })
 </script>
