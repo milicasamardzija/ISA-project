@@ -17,9 +17,9 @@ import java.util.Set;
 @DiscriminatorValue("II")
 public class Instructor extends User{
 
-    //@OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   // @JsonIgnore
-    //private Set<Adventure> adventuresList;
+    @OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Adventure> adventuresList;
 
     //public Set<Adventure> getAdventures() {
      //   return adventuresList;

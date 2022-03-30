@@ -34,7 +34,7 @@ public class Adventure extends EntityClass{
 	@Column(name="cancelationType", unique=false, nullable=true)
 	private CancelationType cancelationType;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "instructor_id")
 	@JsonIgnoreProperties("instructor")
 	public Instructor instructor;
