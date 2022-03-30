@@ -6,6 +6,7 @@ import com.example.demo.model.users.User;
 import com.example.demo.service.email.EmailSenderService;
 import com.example.demo.service.users.UserService;
 import com.example.demo.service.users.DeleteUserRequestService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ public class DeleteUserRequestController {
 
     private DeleteUserRequestService deleteUserRequestService;
     private  UserService userService;
+    @Autowired
     private EmailSenderService service;
 
     public DeleteUserRequestController(DeleteUserRequestService deleteUserRequestService,UserService userService){
@@ -57,8 +59,8 @@ public class DeleteUserRequestController {
         }
         return  new ResponseEntity<>(requests, HttpStatus.OK);
     }
-    @PostMapping(value = "/confirm/{selectID}/{reason}")
-    public ResponseEntity<Void> acceptRequest(@PathVariable int selectID,@PathVariable String reason) throws MessagingException {
+    @PostMapping(value = "/confirm/{selectID}/{reason}/{userEmail}")
+    public ResponseEntity<Void> acceptRequest(@PathVariable int selectID,@PathVariable String reason,@PathVariable String userEmail) throws MessagingException {
         System.out.print("USLA !!! ");
         DeleteUserRequest du = this.deleteUserRequestService.findById(selectID);
         System.out.print("LORD SHOW ME WAY" + du.getId());
@@ -67,26 +69,13 @@ public class DeleteUserRequestController {
             System.out.print("Because of you");
             System.out.print(du.getAccepted());
             System.out.print(du.getRejected());
-            System.out.print(du.getUser().getEmail());
-            String userEmail = du.getUser().getEmail();
+            System.out.print("PRE MEJLA");
             service.sendEmailWithAttachment(userEmail,
                     reason,
                     "Accepting request");
+            System.out.print("Posle MEJLA");
             return new ResponseEntity<>(HttpStatus.OK);}
-
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    @DeleteMapping(value = "/reject/{id}/{reason}")
-    public ResponseEntity<Void> rejectRegistration(@PathVariable int id, @PathVariable String reason) throws MessagingException {
-        DeleteUserRequest du = this.deleteUserRequestService.findById(id);
-        if (du != null){
-            this.deleteUserRequestService.rejectRequest(du);
-            String userEmail = du.getUser().getEmail();
-            service.sendEmailWithAttachment(userEmail,
-                    reason,
-                    "Accepting request");
-            return new ResponseEntity<>(HttpStatus.OK);}
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

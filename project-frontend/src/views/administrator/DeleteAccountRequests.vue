@@ -31,8 +31,8 @@
                   <td>{{request.user.surname}}</td>
                   <td>{{request.user.email}}</td>
                   <td>{{request.explanation}}</td>
-                  <td><button class="btn btn-success btn-block" data-target="#prihvatanje" data-toggle="modal" @click="SaveID(request.id)">Prihvati zahtev</button></td>
-                  <td><button class="btn btn-success btn-block" data-target="#odbijanje" data-toggle="modal" @click="SaveID(request.id)">Odbij zahtev</button></td> 
+                  <td><button class="btn btn-success btn-block" data-target="#prihvatanje" data-toggle="modal" @click="SaveIDAndEmail(request.id,request.user.email)">Prihvati zahtev</button></td>
+                  <td><button class="btn btn-success btn-block" data-target="#odbijanje" data-toggle="modal" @click="SaveIDAndEmail(request.id,request.user.email)">Odbij zahtev</button></td> 
                   </tr>
     </tbody>
 </table>
@@ -58,13 +58,12 @@
                 <input
                   type="text"
                   class="form-control"
-                  v-model="reason"
                 />
               </div>
               <button
                 type="submit"
                 class="btn btn-success btn-block"
-                 @click="RejectRequest()"
+                
               >
                 <span></span> Posalji
               </button>
@@ -100,7 +99,7 @@
               <button
                 type="submit"
                 class="btn btn-success btn-block"
-                 @click="AcceptRequest()"
+                 @click="Accept(reason)"
               >
                 <span></span> Posalji
               </button>
@@ -128,11 +127,10 @@ name: "DeleteAccountRequests",
   },
   data() {
     return {
-      reasonn: "",
       userRole: "",
       requests: "",
       selectID: 0,
-      ID: 0,
+      userEmail: "",
       reason:"",
       request: { explanation: "",user: { id: 0, name: "", surname: "",email: ""}, id: 0},
    
@@ -144,47 +142,31 @@ name: "DeleteAccountRequests",
       const data = await res.json();
       return data;
     },
-    async AcceptRequest() {
-      this.reasonn = this.reason;
-      this.ID = this.selectID;
+     async SaveIDAndEmail(identificator,email) {
+      this.selectID = identificator;
+      this.userEmail = email;
+    },
+      Accept(reason) {
+      this.reason = reason;
       console.log(this.selectID);
       console.log(this.reason);
+      console.log(this.userEmail);
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios
-        .post("http://localhost:8081/api/userDeleteReq/confirm/" + this.ID + "/" + this.reasonn, {
-          headers,
-        })
-        .then((response) => {
-          console.log(response);
-        });
-      this.$router.push({ name: "DeleteAccountRequests" });
-      this.$router.push(0);
-    },
-
-    RejectRequest() {
-      const headers = {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      };
-      axios
-        .delete("http://localhost:8081/api/userDeleteReq/reject/" + this.request.id + "/" + this.reason, {
-          headers,
-        })
-        .then((response) => {
-          console.log(response);
-        });
+      axios.post("http://localhost:8081/api/userDeleteReq/confirm/" + this.selectID+"/"+this.reason+"/"+this.userEmail ,{headers})
+      .then (response => { 
+        console.log(response);
         this.$router.push({ name: "DeleteAccountRequests" });
-    },
-        async SaveID(id) {
-      this.selectID = id;
-    },
+      })  
+      alert("Prihvatili ste zahtev!")
+      this.$router.go(0);     
+      
+   }
   },
       async created() {
       this.userRole = localStorage.getItem("role");
-      console.log(this.userRole);
       this.requests = await this.getRequests();
-      console.log(this.requests.size);
   },
 })
 </script>
