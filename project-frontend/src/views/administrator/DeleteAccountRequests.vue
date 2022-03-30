@@ -58,12 +58,13 @@
                 <input
                   type="text"
                   class="form-control"
+                  v-model="reasonn"
                 />
               </div>
               <button
                 type="submit"
                 class="btn btn-success btn-block"
-                
+                @click="Reject(reasonn)"
               >
                 <span></span> Posalji
               </button>
@@ -132,6 +133,7 @@ name: "DeleteAccountRequests",
       selectID: 0,
       userEmail: "",
       reason:"",
+      reasonn: "",
       request: { explanation: "",user: { id: 0, name: "", surname: "",email: ""}, id: 0},
    
     }
@@ -160,8 +162,20 @@ name: "DeleteAccountRequests",
         this.$router.push({ name: "DeleteAccountRequests" });
       })  
       alert("Prihvatili ste zahtev!")
-      this.$router.go(0);     
-      
+      this.$router.go(0);       
+   },
+      Reject(reason) {
+      this.reasonn = reason;
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.delete("http://localhost:8081/api/userDeleteReq/reject/" + this.selectID+"/"+this.reasonn+"/"+this.userEmail ,{headers})
+      .then (response => { 
+        console.log(response);
+        this.$router.push({ name: "DeleteAccountRequests" });
+      })  
+      alert("Odbili ste zahtev!")
+      this.$router.go(0);       
    }
   },
       async created() {

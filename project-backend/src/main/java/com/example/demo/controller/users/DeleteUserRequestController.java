@@ -61,19 +61,25 @@ public class DeleteUserRequestController {
     }
     @PostMapping(value = "/confirm/{selectID}/{reason}/{userEmail}")
     public ResponseEntity<Void> acceptRequest(@PathVariable int selectID,@PathVariable String reason,@PathVariable String userEmail) throws MessagingException {
-        System.out.print("USLA !!! ");
         DeleteUserRequest du = this.deleteUserRequestService.findById(selectID);
-        System.out.print("LORD SHOW ME WAY" + du.getId());
         if (du != null){
             this.deleteUserRequestService.acceptRequest(du);
-            System.out.print("Because of you");
-            System.out.print(du.getAccepted());
-            System.out.print(du.getRejected());
-            System.out.print("PRE MEJLA");
             service.sendEmailWithAttachment(userEmail,
                     reason,
                     "Accepting request");
-            System.out.print("Posle MEJLA");
+            return new ResponseEntity<>(HttpStatus.OK);}
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping(value = "/reject/{selectID}/{reasonn}/{userEmail}")
+    public ResponseEntity<Void> rejectRequest(@PathVariable int selectID,@PathVariable String reasonn,@PathVariable String userEmail) throws MessagingException {
+        DeleteUserRequest du = this.deleteUserRequestService.findById(selectID);
+        if (du != null){
+            this.deleteUserRequestService.rejectRequest(du);
+            service.sendEmailWithAttachment(userEmail,
+                    reasonn,
+                    "Rejecting request");
             return new ResponseEntity<>(HttpStatus.OK);}
         else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

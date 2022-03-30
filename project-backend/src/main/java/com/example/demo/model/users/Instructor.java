@@ -3,11 +3,13 @@ package com.example.demo.model.users;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Adventure;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "instructor")
@@ -15,23 +17,22 @@ import java.util.List;
 @DiscriminatorValue("II")
 public class Instructor extends User{
 
-    @OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("instructor")
-    private List<Adventure> adventuresList;
+    //@OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   // @JsonIgnore
+    //private Set<Adventure> adventuresList;
 
-    public List<Adventure> getAdventures() {
-        return adventuresList;
-    }
+    //public Set<Adventure> getAdventures() {
+     //   return adventuresList;
+    //}
 
-    public void setAdventures(List<Adventure> adventuresList) {
-        this.adventuresList = adventuresList;
-    }
+    //public void setAdventures(Set<Adventure> adventuresList) {
+   //     this.adventuresList = adventuresList;
+   // }
 
     public Instructor() {}
 
-    public Instructor(String name, String surname, String email, String password, String telephone, Address address, List<Adventure> adventuresList) {
+    public Instructor(String name, String surname, String email, String password, String telephone, Address address) {
         super(name, surname, email, password, telephone, address);
-        this.adventuresList = adventuresList;
     }
 
     public Instructor(UserRequest user) {
