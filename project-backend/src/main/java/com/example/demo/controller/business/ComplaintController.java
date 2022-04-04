@@ -1,28 +1,34 @@
 package com.example.demo.controller.business;
 
 import com.example.demo.dto.business.ComplaintClientDTO;
+import com.example.demo.dto.users.UserDTO;
 import com.example.demo.model.business.Complaint;
 import com.example.demo.model.users.User;
 import com.example.demo.service.business.ComplaintService;
 
+import com.example.demo.service.email.EmailSenderService;
+import com.example.demo.service.users.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "api/complaint")
 public class ComplaintController {
 
     private ComplaintService complaintService;
-
-    public ComplaintController(ComplaintService complaintService){
+    private EmailSenderService service;
+    public ComplaintController(ComplaintService complaintService,EmailSenderService service){
         this.complaintService = complaintService;
+        this.service = service;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -38,4 +44,27 @@ public class ComplaintController {
         return new ResponseEntity<ComplaintClientDTO>(new ComplaintClientDTO(), HttpStatus.OK);
     }
 
-}
+    @GetMapping(value = "/getAllComplaints")
+    public ResponseEntity<List<ComplaintClientDTO>> getAllComplaints(){
+        List<Complaint> allComplaints = complaintService.findAll();
+        List<ComplaintClientDTO> complaints = new ArrayList<>();
+        for(Complaint c : allComplaints ) {
+            complaints.add(new ComplaintClientDTO(c));
+
+        }
+        return  new ResponseEntity<>(complaints, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/sendMails/{emailWhoSent}/{emailWhoReceive}/{content}")
+    public ResponseEntity<Void> sendMails(@PathVariable String emailWhoSent,@PathVariable String emailWhoReceive,@PathVariable String content) throws InterruptedException, MessagingException {
+                 service.sendEmailWithAttachment(emailWhoSent,
+                    content,
+                    "Response to complaint");
+
+                service.sendEmailWithAttachment(emailWhoReceive,
+                content,
+                "Response to complaint");
+            return new ResponseEntity<>(HttpStatus.OK);}
+    }
+
+

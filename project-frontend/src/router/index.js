@@ -30,6 +30,7 @@ import IncomeRecords from "../views/administrator/IncomeRecords"
 import SeeAndDeleteEntities from "../views/administrator/SeeAndDeleteEntities"
 import AddAdministrator from "../views/administrator/AddAdministrator"
 import ChangePassword from "../views/administrator/ChangePassword"
+import Complaints from "../views/administrator/Complaints"
 
 const routes = [
   {
@@ -42,7 +43,11 @@ const routes = [
     name: "Percentage",
     component: Percentage,
   },
-
+  {
+    path: "/complaints",
+    name: "Complaints",
+    component: Complaints,
+  },
   {
     path: "/incomeRecords",
     name: "IncomeRecords",

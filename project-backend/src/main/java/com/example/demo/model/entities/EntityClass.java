@@ -21,7 +21,7 @@ public class EntityClass {
 	@Column(name="id", unique=true, nullable=false)
 	private Integer id;
 	
-	@Column(name="name", unique=false, nullable=false)
+	@Column(name="name", nullable=false)
 	private String name;
 	
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

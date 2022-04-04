@@ -6,6 +6,8 @@ import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ComplaintRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ComplaintService {
 
@@ -20,8 +22,13 @@ public class ComplaintService {
         newComplaint.setUser(complaint.getUser());
         newComplaint.setEntity(complaint.getEntity());
         newComplaint.setUserWhoSendsComplaint(userWhoSendsComplaint);
-        newComplaint.setContentUser(complaint.getContentUser());
-        newComplaint.setContentEntity(complaint.getContentEntity());
+        newComplaint.setContent(complaint.getContent());
         return this.complaintRepository.save(newComplaint);
     }
+
+    public List<Complaint> findAll () {
+        return complaintRepository.findAll();
+    }
+
+
 }

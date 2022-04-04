@@ -1,5 +1,6 @@
 package com.example.demo.model.business;
 
+import com.example.demo.enums.ComplaintType;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
 
@@ -13,15 +14,15 @@ public class Complaint {
     private int id;
 
     @Column
-    private String contentUser;
+    private String content;
 
     @Column
-    private String contentEntity;
+    private ComplaintType complaintType;
 
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY )
     private EntityClass entity;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -37,20 +38,20 @@ public class Complaint {
         this.id = id;
     }
 
-    public String getContentUser() {
-        return contentUser;
+    public String getContent() {
+        return content;
     }
 
-    public void setContentUser(String contentUser) {
-        this.contentUser = contentUser;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getContentEntity() {
-        return contentEntity;
+    public ComplaintType getComplaintType() {
+        return complaintType;
     }
 
-    public void setContentEntity(String contentEntity) {
-        this.contentEntity = contentEntity;
+    public void setComplaintType(ComplaintType complaintType) {
+        this.complaintType = complaintType;
     }
 
     public User getUser() {
