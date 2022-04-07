@@ -367,18 +367,29 @@ export default {
       }) 
     },
     async register() {
-      const res = await fetch("http://localhost:8081/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(this.newUser),
-      });
-      const data = await res.json();
-      console.log(data);
-      if (data != null) {
-        alert("Uspesno ste se registrovali!");
-      }
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.post("http://localhost:8081/api/auth/signup",{ firstname : this.newUser.firstname, 
+       lastname : this.newUser.lastname,
+       role: this.newUser.role,
+       reasonForRegistration: this.newUser.reasonForRegistration,
+        email : this.newUser.email,
+        password: this.newUser.password,
+        country: this.newUser.address.country,
+        city: this.newUser.address.city,
+        street: this.newUser.address.street,
+        number: this.newUser.address.number,
+        address: this.newUser.address,
+        telephone: this.newUser.telephone
+       },{
+        headers
+      })
+      .then (response => { 
+        console.log(response);
+      }) 
+
+        alert("Dodali ste admina!")
     },
   },
 };

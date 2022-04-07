@@ -79,10 +79,9 @@ public class AuthentificationController {
     // Endpoint za registraciju novog korisnika
     @RequestMapping(value="/signup", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) {
-        System.out.println("Usla sam");
         User existUser = this.userService.findByEmail(userRequest.getEmail());
+        System.out.print("DA VIDIMO IMA LI ulice"+userRequest.getAddress().getStreet());
         User user = null;
-        System.out.println(existUser.getName());
         if (existUser != null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -100,10 +99,7 @@ public class AuthentificationController {
                 cottageOwnerService.save(new CottageOwner(user));
             }
             if (userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
-                System.out.println("Pre cuvanja");
-                user = this.userService.save(userRequest);
-                instructorService.save(new Instructor(user));
-                System.out.println("Posle cuvanja");
+                this.instructorService.saveInstructor(userRequest);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

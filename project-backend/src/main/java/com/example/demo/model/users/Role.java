@@ -20,6 +20,11 @@ public class Role implements GrantedAuthority {
         this.name=role;
     }
 
+    public Role(Role role) {
+        this.name = role.getName();
+        this.id = role.getId();
+    }
+
     public Role() {}
 
     @JsonIgnore
