@@ -359,6 +359,10 @@ export default {
             console.log(localStorage.getItem("role"));
             this.$router.go(0);
           }
+          else if (localStorage.getItem("role") == "ROLE_INSTRUCTOR") {
+            this.$router.push({ name: "FishingInstructorProfile" });
+            this.$router.go(0);
+          }
         } 
       })
       .catch( error => {

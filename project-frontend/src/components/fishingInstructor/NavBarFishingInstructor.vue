@@ -3,35 +3,35 @@
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link"
-          ><router-link to="/fishingInstructor">Usluge</router-link></a
+          ><router-link to="/fishingInstructor">Services</router-link></a
         >
       </li>
       <li class="nav-item">
         <a class="nav-link"
           ><router-link to="/AvailablePeriod"
-            >Period dostupnosti</router-link
+            >Availability period</router-link
           ></a
         >
       </li>
       <li class="nav-item">
         <a class="nav-link"
-          ><router-link to="">Istorija rezervacija</router-link></a
+          ><router-link to="">Booking history</router-link></a
         >
       </li>
       <li class="nav-item">
-        <a class="nav-link"><router-link to="">Kreiraj akciju</router-link></a>
+        <a class="nav-link"><router-link to="">Create action</router-link></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"><router-link to="">Popuni izvestaj</router-link></a>
+        <a class="nav-link"><router-link to="">Fill in reports</router-link></a>
       </li>
       <li class="nav-item">
         <a class="nav-link"
-          ><router-link to="">Kreiraj rezervaciju</router-link></a
+          ><router-link to="">Create a reservation</router-link></a
         >
       </li>
       <li class="nav-item">
         <a class="nav-link"
-          ><router-link to="">Kalendar zauzetosti</router-link></a
+          ><router-link to="">Occupancy calendar</router-link></a
         >
       </li>
       <li class="nav-item">
