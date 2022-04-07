@@ -1,5 +1,6 @@
 package com.example.demo.model.entities;
 
+import com.example.demo.model.business.Action;
 import com.example.demo.model.business.Reservation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,6 +27,10 @@ public class AdditionalService {
     @ManyToMany(mappedBy = "additionalServices")
     @JsonIgnore
     private List<EntityClass> entities;
+
+    @ManyToMany(mappedBy = "additionalServices")
+    @JsonIgnore
+    private List<Action> actions;
 
     public int getId() {
         return id;
@@ -65,5 +70,13 @@ public class AdditionalService {
 
     public void setEntities(List<EntityClass> entities) {
         this.entities = entities;
+    }
+
+    public List<Action> getActions() {
+        return actions;
+    }
+
+    public void setActions(List<Action> actions) {
+        this.actions = actions;
     }
 }

@@ -14,7 +14,7 @@ public class Adventure extends EntityClass{
 	private String nameOfAdventure;
 
 	@Column(name="adrress", unique=false, nullable=true)
-	private Address adrress;
+	private String adrress;
 
 	@Column(name="description", unique=false, nullable=true)
 	private String description;
@@ -43,7 +43,7 @@ public class Adventure extends EntityClass{
 		super();
 	}
 
-	public Adventure(String nameOfAdventure, Address adrress, String description, String instructorBiografy, String rules, int maxNumberOfPeople, String fishingEquipment, CancelationType cancelationType) {
+	public Adventure(String nameOfAdventure, String adrress, String description, String instructorBiografy, String rules, int maxNumberOfPeople, String fishingEquipment, CancelationType cancelationType) {
 		this.nameOfAdventure = nameOfAdventure;
 		this.adrress = adrress;
 		this.description = description;
