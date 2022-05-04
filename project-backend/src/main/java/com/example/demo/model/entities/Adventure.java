@@ -13,8 +13,9 @@ public class Adventure extends EntityClass{
 	@Column(name="nameOfAdventure", unique=false, nullable=true)
 	private String nameOfAdventure;
 
-	@Column(name="adrress", unique=false, nullable=true)
-	private Address adrress;
+	//@Column(name="adrress", unique=false, nullable=true)
+	@OneToOne(fetch = FetchType.EAGER, cascade= CascadeType.MERGE)
+	private Address address;
 
 	@Column(name="description", unique=false, nullable=true)
 	private String description;
@@ -45,7 +46,7 @@ public class Adventure extends EntityClass{
 
 	public Adventure(String nameOfAdventure, Address adrress, String description, String instructorBiografy, String rules, int maxNumberOfPeople, String fishingEquipment, CancelationType cancelationType) {
 		this.nameOfAdventure = nameOfAdventure;
-		this.adrress = adrress;
+		this.address = adrress;
 		this.description = description;
 		this.instructorBiografy = instructorBiografy;
 		this.rules = rules;
