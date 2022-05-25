@@ -7,7 +7,7 @@
     <div class="tab-pane active containerInfo">
       <table style="width: 80%">
         <tr>
-          <td><Search /></td>
+          <td ><Search /></td>
           <td style="width: 28%">
             <button class="btn btn-danger" style="margin-left: 39%">
               <router-link
@@ -25,8 +25,8 @@
           <td></td>
         </tr>
       </table>
-
-      <div class="row-boats"  v-for="(cottage, index) in cottages" :key="index">
+<div class="containerInfo">
+      <div class="row-boats"  v-for="cottage in cottages" :key="cottage" >
        
         <div class="col-with-picture" style="margin-right: 5%; margin-top: 1%">
           <div>
@@ -38,12 +38,14 @@
             />
           </div>
         </div>
+
         <div class="col-info" style="margin-top: 3%">
           <h4 style="width: 600px" class="text">Promotivni opis:   {{cottage.promoDescription}}</h4>
           <h4 style="width: 600px" class="text">Naziv:   {{cottage.name}}</h4>
           <h4 style="width: 600px" class="text">Adresa: {{ cottage.address.number }}, {{ cottage.address.city }},
               {{ cottage.address.country }}</h4>
           <h4 style="width: 600px" class="text">Prosecna ocena: {{cottage.grade}}</h4>
+           <h4 style="width: 600px" class="text">Cena: {{cottage.price}} din</h4>
         </div>
         <div class="col-info" style="margin-left: 10%; margin-top: 4%">
           <div class="row" style="margin-bottom: 15%">
@@ -56,21 +58,23 @@
             </button>
           </div>
           <div class="row">
-            <button class="btn btn-success">
-              <router-link
-                style="
+            <button class="btn btn-success" @click="showCottage(cottage)" >
+             <!--  <router-link to="{name: 'CottageProfile', params: { id: 'cottage.id'} }"></router-link>
+               <router-link  style="
                   text-decoration: none !important;
                   display: inline-block;
                   color: white;
-                "
-                to="/cottageProfile"
-                >Prikazi vikendicu
-              </router-link>
+                " to="`/cottageProfile/${cottage.id}`"></router-link> -->
+            Prikazi vikendicu
+             
             </button>
           </div>
         </div>
         
       </div>
+<!-- SAMO SA OVIM DOLE PRIKAZUJE???????-->
+      <lable style="color: transparent">{{ cottages[0].name}}</lable>
+</div>
     </div>
 
     <!-- Modal za brisanje-->
@@ -133,19 +137,37 @@ export default {
       cottages: [],
       name: "",
       city: "",
+      cottageOwner: ""
     }
   },
 
   methods: {
     async fetchOwner(){
-      const owner = await fetch("http://localhost:8080/api/cottageOwner");
-      const data = await owner.json();
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/cottageOwner/profileCottageOwner", {headers});
+      const data = await res.json();
+      console.log(data);
       return data;
     },
+
     async getMyCottages(){
-      this.cottages = await this.fetchOwner().cottageList;
-    }
-  }
+      //this.cottages = await this.fetchOwner().cottageList;
+    const res = await fetch("http://localhost:8081/api/cottages/myCottages/"+ this.cottageOwner.id);
+    const data = await res.json();
+      this.cottages = data;
+      console.log(this.cottages)
+   },
+      async showCottage(cottage){
+        this.$router.push({ name: 'CottageProfile', params: { id: cottage.id}})
+   }
+  },
+   async created() {
+     this.cottageOwner = await this.fetchOwner();
+    this.cottages = await this.getMyCottages();
+    
+  },
 };
 
 </script>

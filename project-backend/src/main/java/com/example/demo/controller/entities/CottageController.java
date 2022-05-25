@@ -7,10 +7,7 @@ import com.example.demo.service.entities.CottageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +38,23 @@ public class CottageController {
         return new ResponseEntity<>(cottageService.searchCottages(searchParam), HttpStatus.OK);
     }
 
+    @GetMapping("/myCottages/{id}")
+    public ResponseEntity<List<CottageDTO>> getOwnersCottages(@PathVariable int id){
+        List<Cottage> allOwnerCottages = cottageService.findAllOwnerCottages(id);
+        List<CottageDTO> ret = new ArrayList<>();
+        for(Cottage c : allOwnerCottages){
+            ret.add(new CottageDTO(c));
+        }
+     return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
 
+    @GetMapping("/cottage/{id}")
+    public ResponseEntity<CottageDTO> getById(@PathVariable int id){
+       CottageDTO cottage = new CottageDTO(cottageService.findOne(id));
+
+
+        return  new ResponseEntity<>(cottage, HttpStatus.OK);
+    }
 }
 
 

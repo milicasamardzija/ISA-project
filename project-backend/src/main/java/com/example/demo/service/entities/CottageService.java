@@ -51,4 +51,9 @@ public class CottageService {
         return  ret;
     }
 
+    public List<Cottage> findAllOwnerCottages(int id){
+        List<Cottage> ret = this.cottageRepository.findAllCottagesForOwner(id);
+        return ret;
+    }
+
 }
