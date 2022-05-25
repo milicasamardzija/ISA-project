@@ -2,7 +2,7 @@
   <div>
     <NavBarClient />
   </div>
-    <div class="container">
+    <div class="container"  v-if="reservations.length != 0">
       <h2><i>Zakazane rezervacije:</i></h2>
       <div class="dropdown" style="margin-top: 40px ;margin-bottom:20px">
         <button
@@ -12,6 +12,7 @@
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
+          v-if="reservations.length != 0"
         >
           Sortitaj
         </button>
@@ -67,6 +68,10 @@
         </tbody>
       </table>
     </div>
+
+    <div v-if="reservations.length === 0">
+              <p style="font-size: 20px; margin-top:60px; margin-left:80px">Nemate nijednu zakazanu rezervaciju.</p>
+            </div>
 
 
 <!-- Modal za otkazivanje rezervacije -->

@@ -42,6 +42,7 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
+                v-if="reservationsCottages.length != 0"
               >
               Sortitaj
             </button>
@@ -98,6 +99,9 @@
                 </tr>
               </tbody>
             </table>
+            <div v-if="reservationsCottages.length === 0">
+              <p style="font-size: 20px; margin-top:60px">Nemate nijednu rezervaciju.</p>
+            </div>
           </div>
      
         <!----------------------------------------------------------------------------BOATS-------------------------------------------------------->
@@ -171,7 +175,7 @@
               </tbody>
             </table>
             <div v-if="reservationsBoats.length === 0">
-              <p style="font-size: 20px; margin-bottom:60px">Nemate nijednu rezervaciju.</p>
+              <p style="font-size: 20px; margin-top:60px">Nemate nijednu rezervaciju.</p>
             </div>
       </div>
 

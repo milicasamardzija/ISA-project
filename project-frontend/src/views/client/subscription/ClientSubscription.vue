@@ -2,7 +2,7 @@
   <div>
     <NavBarClient />
   </div>
-  <h2 style="margin-left: 40px; margin-top: 40px">
+  <h2 style="margin-left: 40px; margin-top: 40px" v-if="subscriptions.length != 0">
           <i>Entiteti na koje ste pretplaceni:</i>
         </h2>
   <div class="containerInfo">
@@ -61,6 +61,10 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div v-if="subscriptions.length === 0">
+      <p style="font-size: 20px; margin-top:60px; margin-left:80px">Nemate nijedan enitet na koji ste pretplaceni.</p>
     </div>
 
 </template>

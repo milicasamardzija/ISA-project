@@ -39,6 +39,7 @@
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
+      v-if="boats.length != 0"
     >
       Sortitaj
     </button>
@@ -72,7 +73,7 @@
 
   <!--Filtriranje-->
   <div class="filter" style="margin-left:20px;margin-top: 20px">
-    <div class="dropdown">
+    <div class="dropdown" v-if="boats.length != 0">
         <button class="btn btn-secondary dropdown-toggle drop-btn" ref="btnToggle" id="dropdownMenuButton" data-toggle="dropdown" 
         aria-haspopup="true" aria-expanded="false">
             Filtriraj - ocena &ensp;

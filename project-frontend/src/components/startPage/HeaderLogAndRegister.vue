@@ -390,7 +390,6 @@ export default {
           alert("Vec postoji korisnik sa ovim mejlom!")
         }
       }) 
-
         //alert("Dodali ste admina!") zasto da nam ovo iskace uvek
     },
   },

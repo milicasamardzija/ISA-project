@@ -30,7 +30,7 @@
     </div>
 
   <!-- Sortiranje -->
-  <div class="dropdown" style="margin-bottom:20px; margin-left:20px"  v-if="cottages.length != 0">
+  <div class="dropdown" style="margin-bottom:20px; margin-left:20px"  >
     <button
       class="btn btn-secondary dropdown-toggle"
       type="button"
@@ -38,6 +38,7 @@
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
+      v-if="cottages.length != 0"
     >
       Sortitaj
     </button>
@@ -74,7 +75,7 @@
   <div class="filter" style="margin-left:20px;margin-top: 20px">
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle drop-btn" ref="btnToggle" id="dropdownMenuButton" data-toggle="dropdown" 
-        aria-haspopup="true" aria-expanded="false">
+        aria-haspopup="true" aria-expanded="false" v-if="cottages.length != 0">
             Filtriraj - ocena &ensp;
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

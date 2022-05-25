@@ -43,8 +43,8 @@
                 <h5 style="width: 600px" class="text">Email: {{client.email}}</h5>
                 <h5 style="width: 600px" class="text">Broj telefona: {{client.telephone}}</h5>
                 <h5 style="width: 600px" class="text">Kategorija korisnika: {{client.loyalityType}}</h5>
-                <h5 style="width: 600px" class="text">Kategorija korisnika: {{client.poents}}</h5>
-                <h5 style="width: 600px" class="text">Kategorija korisnika: {{client.penals}}</h5>
+                <h5 style="width: 600px" class="text">Poeni korisnika: {{client.poents}}</h5>
+                <h5 style="width: 600px" class="text">Penali korisnika: {{client.penals}}</h5>
               </div>
 
               <!--VLASNIK VIKENDICE-->
