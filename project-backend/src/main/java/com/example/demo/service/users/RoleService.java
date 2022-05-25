@@ -9,6 +9,8 @@ public class RoleService {
 
     private RoleRepository roleRepository;
 
+    public Role save(Role role) { return this.roleRepository.save(role);}
+
     public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
@@ -24,4 +26,5 @@ public class RoleService {
     public Role findById(int id){ return this.roleRepository.findById(id);}
 
     public Role findByName(String name){ return this.roleRepository.findByName(name);}
+
 }

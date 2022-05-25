@@ -49,6 +49,7 @@ public class UserService {
         user.setMust_change_password(false);
         userRepository.save(user);
     }
+
     public void updateEnableState(User user) {
         user.setEnabled(true);
         userRepository.save(user);
@@ -58,10 +59,12 @@ public class UserService {
         this.userRepository.delete(user);
         this.roleService.delete(user.getRole());
     }
+
     public void deleteUserById(int id){
         User u = this.userRepository.findById(id);
         this.userRepository.delete(u);
     }
+
     public User save(UserRequest userRequest){
         User u = new User();
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
@@ -75,6 +78,7 @@ public class UserService {
         this.userRepository.save(u);
         return u;
     }
+
     public User saveUser(User user){
         User u = new User();
         u.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -108,12 +112,11 @@ public class UserService {
         u.setName(userRequest.getFirstname());
         u.setSurname(userRequest.getLastname());
         u.setTelephone(userRequest.getTelephone());
-        u.setRole(new Role((userRequest.getRole()))); 
+        u.setRole(roleService.save(new Role((userRequest.getRole()))));
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);   
         u.setAddress(addressService.save(userRequest.getAddress()));
         return this.userRepository.save(u);
     }
-
 
 }

@@ -80,7 +80,6 @@ public class AuthentificationController {
     @RequestMapping(value="/signup", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) {
         User existUser = this.userService.findByEmail(userRequest.getEmail());
-        System.out.print("DA VIDIMO IMA LI ulice"+userRequest.getAddress().getStreet());
         User user = null;
         if (existUser != null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

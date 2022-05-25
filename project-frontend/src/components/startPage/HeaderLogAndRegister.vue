@@ -371,9 +371,6 @@ export default {
       }) 
     },
     async register() {
-      const headers = {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      };
       axios.post("http://localhost:8081/api/auth/signup",{ firstname : this.newUser.firstname, 
        lastname : this.newUser.lastname,
        role: this.newUser.role,
@@ -386,14 +383,15 @@ export default {
         number: this.newUser.address.number,
         address: this.newUser.address,
         telephone: this.newUser.telephone
-       },{
-        headers
-      })
+       })
       .then (response => { 
-        console.log(response);
+        console.log(response.status);
+        if (response.status == 400){
+          alert("Vec postoji korisnik sa ovim mejlom!")
+        }
       }) 
 
-        alert("Dodali ste admina!")
+        //alert("Dodali ste admina!") zasto da nam ovo iskace uvek
     },
   },
 };
