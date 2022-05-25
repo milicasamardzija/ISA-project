@@ -1,4 +1,4 @@
-package com.example.demo.dto.entities;
+package com.example.demo.dto.users;
 
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.entities.Address;

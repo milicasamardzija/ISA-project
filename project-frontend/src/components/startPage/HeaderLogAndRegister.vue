@@ -337,6 +337,10 @@ export default {
             console.log(localStorage.getItem("role"));
           } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
             this.$router.push({ name: "HomePageInProfil" });
+             
+            console.log(localStorage.getItem("token"));
+            console.log(localStorage.getItem("role")); 
+                this.$router.go(0);
           }
           else if (localStorage.getItem("role") == "ROLE_ADMIN") {
             console.log("HELOU" + (response.data.must_change_password));
@@ -383,13 +387,13 @@ export default {
         number: this.newUser.address.number,
         address: this.newUser.address,
         telephone: this.newUser.telephone
-       })
-      .then (response => { 
-        console.log(response.status);
-        if (response.status == 400){
-          alert("Vec postoji korisnik sa ovim mejlom!")
-        }
+       }).then(response => { 
+       console.log(response.status);
+        if (response.status == '400'){
+         alert("Vec postoji korisnik sa ovim mejlom!")
+       }
       }) 
+     
 
         //alert("Dodali ste admina!") zasto da nam ovo iskace uvek
     },
