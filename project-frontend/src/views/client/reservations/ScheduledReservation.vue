@@ -70,8 +70,8 @@
     </div>
 
     <div v-if="reservations.length === 0">
-              <p style="font-size: 20px; margin-top:60px; margin-left:80px">Nemate nijednu zakazanu rezervaciju.</p>
-            </div>
+      <p style="font-size: 20px; margin-top:60px; margin-left:80px">Nemate nijednu zakazanu rezervaciju.</p>
+    </div>
 
 
 <!-- Modal za otkazivanje rezervacije -->

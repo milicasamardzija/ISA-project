@@ -438,7 +438,8 @@ export default {
     async getSelected(id, type){
       this.selectedReservationId = id;
       this.selectedReservationType = type;
-      alert(type)
+      alert("ID " + id)
+      alert("TIP " + type)
       this.entity = await this.loadEntity();
       this.user = await this.loadUser(this.entity.id);
     },

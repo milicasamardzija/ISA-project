@@ -14,7 +14,10 @@ public class Complaint {
     private int id;
 
     @Column
-    private String content;
+    private String contentEntity;
+
+    @Column
+    private String contentUser;
 
     @Column
     private ComplaintType complaintType;
@@ -36,14 +39,6 @@ public class Complaint {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public ComplaintType getComplaintType() {
@@ -76,5 +71,21 @@ public class Complaint {
 
     public void setUserWhoSendsComplaint(User userWhoSendsComplaint) {
         this.userWhoSendsComplaint = userWhoSendsComplaint;
+    }
+
+    public String getContentEntity() {
+        return contentEntity;
+    }
+
+    public String getContentUser() {
+        return contentUser;
+    }
+
+    public void setContentEntity(String contentEntity) {
+        this.contentEntity = contentEntity;
+    }
+
+    public void setContentUser(String contentUser) {
+        this.contentUser = contentUser;
     }
 }

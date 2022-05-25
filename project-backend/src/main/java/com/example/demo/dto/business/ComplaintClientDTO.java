@@ -10,7 +10,25 @@ import javax.persistence.*;
 public class ComplaintClientDTO {
 
     private int id;
-    private String content;
+
+    public String getContentEntity() {
+        return contentEntity;
+    }
+
+    public void setContentEntity(String contentEntity) {
+        this.contentEntity = contentEntity;
+    }
+
+    public String getContentUser() {
+        return contentUser;
+    }
+
+    public void setContentUser(String contentUser) {
+        this.contentUser = contentUser;
+    }
+
+    private String contentEntity;
+    private String contentUser;
     private String complaintType;
     private User user;
     private EntityClass entity;
@@ -21,17 +39,14 @@ public class ComplaintClientDTO {
     }
     public ComplaintClientDTO(Complaint complaint) {
         this.id = complaint.getId();
-        this.content = complaint.getContent();
+        this.contentEntity = complaint.getContentEntity();
+        this.contentUser = complaint.getContentUser();
         this.complaintType = complaint.getComplaintType().toString();
         this.user = complaint.getUser();
         this.userWhoSendsComplaint = complaint.getUserWhoSendsComplaint();
     }
     public int getId() {
         return id;
-    }
-
-    public String getContent() {
-        return content;
     }
 
     public String getComplaintType() {
@@ -52,10 +67,6 @@ public class ComplaintClientDTO {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public void setComplaintType(String complaintType) {

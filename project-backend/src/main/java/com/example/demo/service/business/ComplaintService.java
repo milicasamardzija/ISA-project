@@ -22,13 +22,13 @@ public class ComplaintService {
         newComplaint.setUser(complaint.getUser());
         newComplaint.setEntity(complaint.getEntity());
         newComplaint.setUserWhoSendsComplaint(userWhoSendsComplaint);
-        newComplaint.setContent(complaint.getContent());
+        newComplaint.setContentEntity(complaint.getContentEntity()); //komentar na entitet
+        newComplaint.setContentUser(complaint.getContentUser()); //komentar na vlasnika/instruktora
         return this.complaintRepository.save(newComplaint);
     }
 
     public List<Complaint> findAll () {
         return complaintRepository.findAll();
     }
-
 
 }
