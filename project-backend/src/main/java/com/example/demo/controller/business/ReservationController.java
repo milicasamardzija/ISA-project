@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "api/reservation")
@@ -140,9 +141,10 @@ public class ReservationController {
     @GetMapping("/entity/{id}")
     public ResponseEntity<EntityDTO> findEntityByReservation(@PathVariable int id){
 
+        Reservation reservation = this.reservationService.findById(id);
         EntityClass entity = this.reservationService.findEntityByReservation(id);
 
-        return  new ResponseEntity<>(new EntityDTO(entity), HttpStatus.OK);
+        return  new ResponseEntity<>(new EntityDTO(entity, reservation.getEntityType()), HttpStatus.OK);
     }
 
 }

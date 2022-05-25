@@ -1,5 +1,6 @@
 package com.example.demo.dto.entities;
 
+import com.example.demo.enums.EntityType;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.entities.Image;
 import com.example.demo.model.entities.Address;
@@ -23,6 +24,20 @@ public class EntityDTO {
     private int price;
 
     private double grade;
+
+    private EntityType entityType;
+
+    public EntityDTO(EntityClass entity, EntityType type){
+        this.id = entity.getId();
+        this.name = entity.getName();
+        this.address = entity.getAddress();
+        this.promoDescription = entity.getPromoDescription();
+        this.image = entity.getImage();
+        this.rules = entity.getRules();
+        this.price = entity.getPrice();
+        this.grade = entity.getGrade();
+        this.entityType = type;
+    }
 
     public EntityDTO(EntityClass entity){
         this.id = entity.getId();
@@ -101,4 +116,11 @@ public class EntityDTO {
         this.grade = grade;
     }
 
+    public EntityType getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
 }

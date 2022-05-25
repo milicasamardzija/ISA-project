@@ -2,12 +2,12 @@ package com.example.demo.service.business;
 
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.EntityClass;
-import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -40,5 +40,9 @@ public class ReservationService {
 
     public EntityClass findEntityByReservation(int id) {
         return this.reservationRepository.findEntityByReservation(id);
+    }
+
+    public Reservation findById(int id){
+        return this.reservationRepository.findById(id);
     }
 }

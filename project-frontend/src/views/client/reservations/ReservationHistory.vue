@@ -435,12 +435,10 @@ export default {
     };
   },
   methods: {
-    async getSelected(id, type){
+    async getSelected(id){
       this.selectedReservationId = id;
-      this.selectedReservationType = type;
-      alert("ID " + id)
-      alert("TIP " + type)
       this.entity = await this.loadEntity();
+      this.selectedReservationType = this.entity.entityType;
       this.user = await this.loadUser(this.entity.id);
     },
     clear(){
@@ -568,7 +566,8 @@ export default {
       return data;
     },
     async loadUser(id){
-      const headers = {
+      if (this.selectedReservationType === 'COTTAGE') {
+        const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch(
@@ -577,6 +576,7 @@ export default {
       );
       const data = await res.json();
       return data;
+      }
     },
     format_date(value){
       if (value) {
