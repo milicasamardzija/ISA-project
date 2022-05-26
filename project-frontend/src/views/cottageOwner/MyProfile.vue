@@ -338,8 +338,13 @@ export default {
   },
   async created() {
     this.role = localStorage.getItem("role")
-  //  this.client = await this.getClient();
-    this.cottageOwner = await this.getCottageOwner();
+  
+  if(this.role == "ROLE_COTTAGE_OWNER")
+  {   this.cottageOwner = await this.getCottageOwner();}
+  else if(this.role == "ROLE_CLIENT"){
+     this.client = await this.getClient();
+  }
+ 
   },
 };
 </script>

@@ -1,9 +1,11 @@
 package com.example.demo.dto.entities;
 
+import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.entities.Image;
 import com.example.demo.model.entities.Address;
 
+import java.util.List;
 import java.util.Set;
 
 public class CottageDTO {
@@ -18,7 +20,19 @@ public class CottageDTO {
     private double grade;
     private Set<Image> images;
     private int price; //je l ovo dovoljno za cenovnik
+    private List<AdditionalServiceDTO> additionalServices;
     //slobodni termini sa akcijama za rezervaciju OVO NEMAMO
+
+
+    public List<AdditionalServiceDTO> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public void setAdditionalServices(List<AdditionalServiceDTO> additionalServices) {
+        this.additionalServices = additionalServices;
+    }
+
+
     
 
     public CottageDTO(Cottage cottage){
@@ -32,6 +46,7 @@ public class CottageDTO {
         this.price = cottage.getPrice();
         this.grade = cottage.getGrade();
         this.images = cottage.getImage();
+       //this.additionalServices = cottage.getAdditionalServices();
     }
 
     public int getId() {

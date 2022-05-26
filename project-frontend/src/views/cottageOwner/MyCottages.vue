@@ -5,8 +5,9 @@
   </div>
   <div class="">
     <div class="tab-pane active containerInfo">
-      <table style="width: 80%">
+      <table style="width: 90%">
         <tr>
+          <td style="width: 6%"> </td>
           <td ><Search /></td>
           <td style="width: 28%">
             <button class="btn btn-danger" style="margin-left: 39%">
@@ -34,18 +35,19 @@
               src="../../assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
               class="rounded img-thumbnail img-fluid"
               alt="Responsive image"
-              style="max-height: 250px !important; max-width: 300px !important"
+              style="max-height: 300px !important; max-width: 320px !important"
             />
           </div>
         </div>
 
         <div class="col-info" style="margin-top: 3%">
-          <h4 style="width: 600px" class="text">Promotivni opis:   {{cottage.promoDescription}}</h4>
+         
           <h4 style="width: 600px" class="text">Naziv:   {{cottage.name}}</h4>
           <h4 style="width: 600px" class="text">Adresa: {{ cottage.address.number }}, {{ cottage.address.city }},
               {{ cottage.address.country }}</h4>
           <h4 style="width: 600px" class="text">Prosecna ocena: {{cottage.grade}}</h4>
-           <h4 style="width: 600px" class="text">Cena: {{cottage.price}} din</h4>
+           <h4 style="width: 600px" class="text">Cena: {{cottage.price}} din</h4> 
+           <h6 style="width: 600px" class="text">Promotivni opis:   {{cottage.promoDescription}}</h6>
         </div>
         <div class="col-info" style="margin-left: 10%; margin-top: 4%">
           <div class="row" style="margin-bottom: 15%">
@@ -53,6 +55,7 @@
               class="btn btn-secondary"
               data-target="#delete"
               data-toggle="modal"
+              @click="getSelected(cottage.id)"
             >
               Obrisi vikendicu
             </button>
@@ -100,7 +103,7 @@
                 >
               </div>
 
-              <button type="submit" class="btn btn-success btn-block">
+              <button type="submit" class="btn btn-success btn-block" @click="deleteCottage()">
                 <span></span> Potvrdi
               </button>
             </form>
@@ -124,6 +127,7 @@
 import Search from "../../components/cottageOwner/Search.vue";
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
+import axios from 'axios'
 
 export default {
   name: "MyCottages",
@@ -161,6 +165,27 @@ export default {
    },
       async showCottage(cottage){
         this.$router.push({ name: 'CottageProfile', params: { id: cottage.id}})
+   },
+   
+    getSelected(id){
+      this.selectedId = id;
+    },
+   //ne radi
+     deleteCottage(){
+       console.log(this.selectedId)
+         axios.get("http://localhost:8081/api/cottages/delete/"+ this.selectedId).then(
+          
+           response => { 
+        console.log(response);
+        
+        
+           }
+         );
+   
+      this.cottages = this.getMyCottages();
+     // this.$router.go(0);
+
+       
    }
   },
    async created() {

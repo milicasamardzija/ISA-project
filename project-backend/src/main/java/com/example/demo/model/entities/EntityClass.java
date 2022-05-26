@@ -52,10 +52,9 @@ public class EntityClass {
 	@JsonIgnore
 	private List<Client> subscribedClients;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name="entity_services", joinColumns = @JoinColumn(name = "entity_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
-	@JsonIgnore
-	private Set<AdditionalService> additionalServices;
+	@OneToMany(mappedBy= "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("entity")
+	private List<AdditionalService> additionalServices;
 
 	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -66,7 +65,7 @@ public class EntityClass {
 	}
 
 	public EntityClass(int id, String name, Address address, String promoDescription, Set<Image> image,
-			Set<AdditionalService> additionalServices, String rules, int price, double grade) {
+			List<AdditionalService> additionalServices, String rules, int price, double grade) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -119,11 +118,11 @@ public class EntityClass {
 		this.image = image;
 	}
 
-	public Set<AdditionalService> getAdditionalServices() {
+	public List<AdditionalService> getAdditionalServices() {
 		return additionalServices;
 	}
 
-	public void setAdditionalServices(Set<AdditionalService> additionalServices) {
+	public void setAdditionalServices(List<AdditionalService> additionalServices) {
 		this.additionalServices = additionalServices;
 	}
 
