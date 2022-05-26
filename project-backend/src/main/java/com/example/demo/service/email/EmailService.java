@@ -34,6 +34,20 @@ public class EmailService {
         System.out.println("Email poslat!");
     }
 
+    @Async
+    public void sendEmailForReservation(User user) throws MailException, InterruptedException {
+        System.out.println("Slanje emaila...");
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(user.getEmail());
+        mail.setFrom("spring.mail.username");
+        mail.setSubject("Reservation completed");
+        mail.setText("You're reservation was successful!");
+        javaMailSender.send(mail);
+
+        System.out.println("Email poslat!");
+    }
+
     public void sendConfirmEmail(String emailAdress) throws MailException, InterruptedException {
         System.out.println(emailAdress);
 

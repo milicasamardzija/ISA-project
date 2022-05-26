@@ -2,6 +2,7 @@ package com.example.demo.controller.entities;
 
 import com.example.demo.dto.business.ReservationSearchDTO;
 import com.example.demo.dto.entities.CottageDTO;
+import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.entities.EntityClass;
@@ -44,8 +45,14 @@ public class CottageController {
     }
 
     @PostMapping("/reservationSearch")
-    public ResponseEntity<List<EntityClass>> searchReservation(@RequestBody ReservationSearchDTO searchParam){
-        return new ResponseEntity<>(cottageService.searchReservation(searchParam), HttpStatus.OK);
+    public ResponseEntity<List<EntityDTO>> searchReservation(@RequestBody ReservationSearchDTO searchParam){
+        ArrayList<EntityDTO> ret = new ArrayList<>();
+
+        for(EntityClass e : cottageService.searchReservation(searchParam)){
+            ret.add(new EntityDTO(e));
+        }
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller.business;
 
 import com.example.demo.dto.business.ReservationDTO;
+import com.example.demo.dto.business.ReservationNewDTO;
 import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.model.business.Reservation;
@@ -11,6 +12,7 @@ import com.example.demo.service.business.ReservationService;
 import com.example.demo.service.entities.AdventureService;
 import com.example.demo.service.entities.EntityService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -142,6 +144,19 @@ public class ReservationController {
         EntityClass entity = this.reservationService.findEntityByReservation(id);
 
         return  new ResponseEntity<>(new EntityDTO(entity, reservation.getEntityType()), HttpStatus.OK);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HttpStatus> save(@RequestBody ReservationNewDTO reservation) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        this.reservationService.save(reservation, user);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }

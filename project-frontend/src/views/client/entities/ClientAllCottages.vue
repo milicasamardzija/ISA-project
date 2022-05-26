@@ -25,6 +25,12 @@
         />
         <input
           class="form-control mr-sm-2"
+          type="number"
+          placeholder="Broj ljudi"
+          v-model="people"
+        />
+        <input
+          class="form-control mr-sm-2"
           type="text"
           placeholder="Grad"
           v-model="city"
@@ -102,7 +108,7 @@
   </div>
 
   <div class="containerInfo">
-    <div class="tab-pane container active">
+    <div class="tab-pane container active" v-if="this.cottages.length!=0">
       <div class="row-boats" v-for="(cottage, index) in cottages" :key="index">
         <div class="col-with-picture" >
           <div v-if="cottage.images[0].length != 0">
@@ -122,14 +128,54 @@
             {{ cottage.address.city }}, {{ cottage.address.country }}
           </h4>
           <h4 style="width: 600px" class="text">Ocena: {{ cottage.grade }}</h4>
+          <h4 style="width: 600px" class="text">Cena: {{cottage.price}}</h4>
+          <button class="btn btn-success" type="submit" @click="openModal(), getSelected(cottage)">
+            Rezerviši
+          </button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- MODAL -->
+  <div v-if="modalOpened" class="custom-modal-overlay" @click="closeModal()"></div>
+  <div v-if="modalOpened" class="custom-modal">
+    <div class="custom-modal-header">
+      <h1>Rezervisite vikendicu</h1>
+      <button @click="closeModal()">X</button>
+    </div>
+    <div class="custom-modal-content">
+      <h4 style="width: 600px" class="text">Naziv: {{this.selectedEntity.name}}</h4>
+      <h4 style="width: 600px" class="text">
+      Adresa:   {{ this.selectedEntity.address.street }} {{ this.selectedEntity.address.number }},
+            {{ this.selectedEntity.address.city }}, {{ this.selectedEntity.address.country }}
+      </h4>
+      <h4 style="width: 600px" class="text">Ocena: {{this.selectedEntity.grade}}</h4>
+      <h4 style="width: 600px" class="text">Cena: {{this.selectedEntity.price}}</h4>
+      <h4 style="width: 600px" class="text">Datum pocetka: {{this.date}}</h4>
+      <h4 style="width: 600px" class="text">Broj dana: {{this.number}}</h4>
+      <h4 style="width: 600px" class="text">Broj osoba: {{this.people}}</h4>
+      <select width=300 style="width: 350px"
+            size="8" multiple>
+        <option value='blue'>Wi-fi</option>
+        <option value='green'>Klima</option>
+        <option value='red'>Terasa</option>
+      </select>
+      <h4 style="width: 600px" class="text">Konacna cena: {{this.price}}</h4>
+      <button class="btn btn-success" type="submit" style="margin-top:10px" @click="makeReservation()">
+        Rezerviši
+      </button>
+      <button style="margin-left:700px" class="btn" type="submit">
+        Odustani
+      </button>
+    </div>
+  </div>
+
 </template>
 
 <script>
 import NavBarClient from "../../../components/client/NavBarClient.vue";
+import axios from 'axios'
 
 export default {
   name: "ClietAllCottages",
@@ -145,32 +191,74 @@ export default {
       country: "",
       city: "",
       number: "",
-      maxLength:0
+      maxLength:0,
+      modalOpened: false,
+      people: "",
+      selectedEntity: {},
+      price: 2000
     };
   },
 
   methods: {
+    getSelected(entity){
+      this.selectedEntity = entity;
+    },
     async fetchCottages() {
       const res = await fetch("http://localhost:8081/api/cottages");
       const data = await res.json();
       return data;
     },
     async search() {
-      const res = await fetch("http://localhost:8081/api/cottages/reservationSearch", {
+     /* const res = await fetch("http://localhost:8081/api/cottages/reservationSearch", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token"),
         },
         body: JSON.stringify({
           date: this.date,
           time: this.time,
           city: this.city,
           country: this.country,
-          number: this.number
+          number: this.number,
+          people: this.people
+        }),
+      });
+      const data = await res.json();*/
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.post("http://localhost:8081/api/cottages/reservationSearch" ,{
+          date: this.date,
+          time: this.time,
+          city: this.city,
+          country: this.country,
+          number: this.number,
+          people: this.people
+        },{headers})
+      .then (response => { 
+        console.log(response.data);
+        this.cottages = response.data
+        
+      }) 
+    },
+    async makeReservation() {
+      const res = await fetch("http://localhost:8081/api/reservation", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          dateStart: this.date,
+          timeStart: this.time,
+          price: this.price,
+          duration: this.number,
+          entityId: this.selectedEntity.id
         }),
       });
       const data = await res.json();
-      this.cottages = data;
+      console.log(data)
     },
     getImgUrl(img) {
       var images = require.context('../../../assets/cottageImages/', false, /.jpg$/)
@@ -218,6 +306,12 @@ export default {
       if (param == -1) {
         this.cottages =  await this.fetchCottages();
       }
+    },
+    openModal() {
+      this.modalOpened = true;
+    },
+    closeModal() {
+      this.modalOpened = false;
     }
   },
 
@@ -275,5 +369,50 @@ export default {
 .col-with-picture {
   margin-top: 1%;
   margin-bottom: 1%;
+}
+
+.custom-modal-overlay{
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+.custom-modal {
+  width: 50vw;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.custom-modal-header {
+  display: flex;
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgb(202, 202, 202);
+}
+
+.custom-modal-header > h1 {
+  font-size: 2rem;
+}
+
+.custom-modal-header > button {
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+  outline: none;
+}
+
+.custom-modal-content {
+  padding: 1rem 0;
 }
 </style>
