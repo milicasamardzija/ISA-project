@@ -7,21 +7,33 @@
       <nav class="navbar navbar-expand-sm navbar-dark">
         <input
           class="form-control mr-sm-2"
-          type="text"
-          placeholder="Naziv"
-          v-model="name"
+          type="date"
+          placeholder="Datum"
+          v-model="date"
         />
         <input
           class="form-control mr-sm-2"
-          type="text"
-          placeholder="Ulica"
-          v-model="street"
+          type="time"
+          placeholder="Vreme"
+          v-model="time"
+        />
+        <input
+          class="form-control mr-sm-2"
+          type="number"
+          placeholder="Broj dana"
+          v-model="number"
         />
         <input
           class="form-control mr-sm-2"
           type="text"
           placeholder="Grad"
           v-model="city"
+        />
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Drzava"
+          v-model="country"
         />
         <button class="btn btn-success" type="submit" @click="search()">
           Pretrazi
@@ -128,9 +140,11 @@ export default {
   data() {
     return {
       cottages: [],
-      name: "",
-      street: "",
+      date: "",
+      time:"",
+      country: "",
       city: "",
+      number: "",
       maxLength:0
     };
   },
@@ -142,15 +156,17 @@ export default {
       return data;
     },
     async search() {
-      const res = await fetch("http://localhost:8081/api/cottages/search", {
+      const res = await fetch("http://localhost:8081/api/cottages/reservationSearch", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          name: this.name,
-          street: this.street,
+          date: this.date,
+          time: this.time,
           city: this.city,
+          country: this.country,
+          number: this.number
         }),
       });
       const data = await res.json();

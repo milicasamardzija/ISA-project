@@ -1,8 +1,10 @@
 package com.example.demo.controller.entities;
 
+import com.example.demo.dto.business.ReservationSearchDTO;
 import com.example.demo.dto.entities.CottageDTO;
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.entities.Cottage;
+import com.example.demo.model.entities.EntityClass;
 import com.example.demo.service.entities.CottageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,10 @@ public class CottageController {
         return new ResponseEntity<>(cottageService.searchCottages(searchParam), HttpStatus.OK);
     }
 
+    @PostMapping("/reservationSearch")
+    public ResponseEntity<List<EntityClass>> searchReservation(@RequestBody ReservationSearchDTO searchParam){
+        return new ResponseEntity<>(cottageService.searchReservation(searchParam), HttpStatus.OK);
+    }
 
 }
 
