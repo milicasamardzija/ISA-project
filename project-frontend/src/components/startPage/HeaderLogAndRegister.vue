@@ -336,7 +336,7 @@ export default {
             console.log(localStorage.getItem("token"));
             console.log(localStorage.getItem("role"));
           } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
-            this.$router.push({ name: "HomePageInProfil" });
+            this.$router.push({ name: "MyCottages" });
              
             console.log(localStorage.getItem("token"));
             console.log(localStorage.getItem("role")); 

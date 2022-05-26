@@ -46,23 +46,31 @@ public class CottageController {
     @GetMapping("/myCottages/{id}")
     public ResponseEntity<List<CottageDTO>> getOwnersCottages(@PathVariable int id){
         System.out.print("Usla sam u metodu za get vikendica");
-        List<Cottage> allOwnerCottages = cottageService.findAllOwnerCottages(id);
+        List<Cottage> allOwnerCottages = cottageService.findAllOwnerCottages(id); //dobila sve vikendice
         List<CottageDTO> ret = new ArrayList<>();
+        List<AdditionalServiceDTO> services = new ArrayList<>();
+         if(allOwnerCottages.size() != 0){
+                for(Cottage c : allOwnerCottages){
+                    List<AdditionalService> allServices= this.aditionalServices.getServicesForCottage(c.getId()); //uzmem servise
 
-        for(Cottage c : allOwnerCottages){
-            List<AdditionalService> allServices= this.aditionalServices.getServicesForCottage(c.getId()); //uzmem servise
-            List<AdditionalServiceDTO> services = new ArrayList<>();
-            for(AdditionalService a :allServices ){
-                services.add(new AdditionalServiceDTO(a));
-                CottageDTO cottage = new CottageDTO(c);
-                cottage.setAdditionalServices(services);
-                ret.add(cottage);
+                    if( allServices.size() != 0) {
+                        for (AdditionalService a : allServices) {
+                            services.add(new AdditionalServiceDTO(a));
 
+                        }
+                        CottageDTO cottage = new CottageDTO(c);
+                        cottage.setAdditionalServices(services);
+                        ret.add(cottage);
+                    } else{
+                        CottageDTO cottage = new CottageDTO(c);
+                        cottage.setAdditionalServices(services);
+                        ret.add(cottage);
+                    }
+                }
+             return new ResponseEntity<>(ret, HttpStatus.OK);
             }
 
-
-        }
-     return new ResponseEntity<>(ret, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/delete/{id}")

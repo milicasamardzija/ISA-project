@@ -6,9 +6,10 @@
   <div class="">
     <div class="tab-pane active containerInfo">
       <table style="width: 90%">
-        <tr>
+        <tr >
           <td style="width: 6%"> </td>
-          <td ><Search /></td>
+          <td  ><Search /></td>
+        <!-- <td v-if="!notEmpty" ><h4> Jos uvek nemate vikendice. </h4></td> -->
           <td style="width: 28%">
             <button class="btn btn-danger" style="margin-left: 39%">
               <router-link
@@ -26,7 +27,7 @@
           <td></td>
         </tr>
       </table>
-<div class="containerInfo">
+<div class="containerInfo" >
       <div class="row-boats"  v-for="cottage in cottages" :key="cottage" >
        
         <div class="col-with-picture" style="margin-right: 5%; margin-top: 1%">
@@ -141,7 +142,8 @@ export default {
       cottages: [],
       name: "",
       city: "",
-      cottageOwner: ""
+      cottageOwner: "",
+      notEmpty: false
     }
   },
 
@@ -155,14 +157,22 @@ export default {
       console.log(data);
       return data;
     },
-
+   
     async getMyCottages(){
       //this.cottages = await this.fetchOwner().cottageList;
+      //this.cottageOwner = this.fetchOwner();
+     /// if(this.cottageOwner.cottageList != null) {
+      // 
     const res = await fetch("http://localhost:8081/api/cottages/myCottages/"+ this.cottageOwner.id);
     const data = await res.json();
+
+  
       this.cottages = data;
       console.log(this.cottages)
+      
+  
    },
+
       async showCottage(cottage){
         this.$router.push({ name: 'CottageProfile', params: { id: cottage.id}})
    },
