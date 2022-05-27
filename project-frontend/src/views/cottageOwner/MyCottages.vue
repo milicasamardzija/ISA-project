@@ -8,8 +8,8 @@
       <table style="width: 90%">
         <tr >
           <td style="width: 6%"> </td>
-          <td  ><Search /></td>
-        <!-- <td v-if="!notEmpty" ><h4> Jos uvek nemate vikendice. </h4></td> -->
+          <td v-if="cottages.length != 0" ><Search /></td>
+        <td v-if="cottages.length == 0" ><h4> Jos uvek nemate vikendice. </h4></td> 
           <td style="width: 28%">
             <button class="btn btn-danger" style="margin-left: 39%">
               <router-link
@@ -77,7 +77,7 @@
         
       </div>
 <!-- SAMO SA OVIM DOLE PRIKAZUJE???????-->
-      <lable style="color: transparent">{{ cottages[0].name}}</lable>
+      <!-- <lable style="color: transparent">{{ cottages[0].name}}</lable> -->
 </div>
     </div>
 
@@ -154,7 +154,7 @@ export default {
       };
       const res = await fetch("http://localhost:8081/api/cottageOwner/profileCottageOwner", {headers});
       const data = await res.json();
-      console.log(data);
+
       return data;
     },
    
@@ -163,13 +163,10 @@ export default {
       //this.cottageOwner = this.fetchOwner();
      /// if(this.cottageOwner.cottageList != null) {
       // 
-    const res = await fetch("http://localhost:8081/api/cottages/myCottages/"+ this.cottageOwner.id);
-    const data = await res.json();
-
-  
-      this.cottages = data;
-      console.log(this.cottages)
-      
+   
+    fetch("http://localhost:8081/api/cottages/myCottages/"+ this.cottageOwner.id).then( response => response.json()).then(data => this.cottages = data );
+ 
+   
   
    },
 

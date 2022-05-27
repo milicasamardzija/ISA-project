@@ -28,7 +28,8 @@ export default ({
   },
   methods: {
     logOut(){
-      localStorage.clear;
+     localStorage.removeItem("token");
+     localStorage.removeItem("role");
      this.$router.push({ name: "BoatsStartPage"});
     }},
   
