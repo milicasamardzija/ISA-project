@@ -12,6 +12,7 @@ import java.util.List;
 public interface AdditionalServicesRepository  extends JpaRepository<AdditionalService, Integer> {
    AdditionalService findById(int id);
 
+  // List<AdditionalService> saveAll(List<AdditionalService> services); //nisam sigurna radi li
 
    @Query("select ac from AdditionalService ac join fetch ac.entity e  where e.id=?1")
    List<AdditionalService> findAdditionalServicesForCottage(int id);

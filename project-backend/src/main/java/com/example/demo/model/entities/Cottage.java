@@ -1,5 +1,6 @@
 package com.example.demo.model.entities;
 
+import com.example.demo.dto.entities.CottageDTO;
 import com.example.demo.model.users.CottageOwner;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -47,4 +48,19 @@ public class Cottage extends EntityClass {
 	public void setCottageOwner(CottageOwner cottageOwner) {
 		this.cottageOwner = cottageOwner;
 	}
+
+	//koristim za  cuvanje nove vikendice
+	public Cottage(CottageDTO dto){
+		this.setId(dto.getId());
+		this.setName(dto.getName());
+		this.setBedsByRoom(dto.getBedsByRoom());
+		this.setRoomsNumber(dto.getRoomsNumber());
+		this.setPromoDescription(dto.getPromoDescription());
+		this.setImage(dto.getImages());
+		this.setRules(dto.getRules());
+		this.setPrice(dto.getPrice());
+		this.setGrade(dto.getGrade());
+
+	}
+
 }

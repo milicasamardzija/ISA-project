@@ -33,7 +33,7 @@ public class CottageDTO {
     }
 
 
-    
+    public CottageDTO(){}
 
     public CottageDTO(Cottage cottage){
         this.roomsNumber = cottage.getRoomsNumber();
@@ -101,7 +101,7 @@ public class CottageDTO {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(double grade) {
         this.grade = grade;
     }
 
@@ -123,9 +123,7 @@ public class CottageDTO {
         this.id = id;
     }
 
-    public void setGrade(double grade) {
-        this.grade = grade;
-    }
+
 
     public Set<Image> getImages() {
         return images;

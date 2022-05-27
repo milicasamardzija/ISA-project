@@ -5,10 +5,17 @@ import com.example.demo.dto.entities.CottageDTO;
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.Cottage;
+import com.example.demo.model.users.CottageOwner;
+import com.example.demo.model.users.User;
 import com.example.demo.service.entities.AdditionalServicesService;
+import com.example.demo.service.entities.AddressService;
 import com.example.demo.service.entities.CottageService;
+import com.example.demo.service.users.CottageOwnerService;
+import com.example.demo.service.users.CustomUserDetailsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +29,16 @@ public class CottageController {
 
     private CottageService cottageService;
     private AdditionalServicesService aditionalServices;
+    private CottageOwnerService cottageOwnerService;
+    private AddressService addressService;
+    private AdditionalServicesService additionalServicesService;
 
-    public CottageController(CottageService cottageService, AdditionalServicesService adServices){
+    public CottageController(CottageService cottageService, AdditionalServicesService additionalServicesService,  AddressService addressService, CottageOwnerService cottageOwner, AdditionalServicesService adServices){
         this.cottageService = cottageService;
         this.aditionalServices = adServices;
+        this.cottageOwnerService = cottageOwner;
+        this.addressService = addressService;
+        this.additionalServicesService = additionalServicesService;
     }
 
     @GetMapping
@@ -96,6 +109,37 @@ public class CottageController {
             cottage.setAdditionalServices(services);
         }
         return  new ResponseEntity<>(cottage, HttpStatus.OK);
+    }
+
+    @PostMapping("/newCottage")
+    public ResponseEntity<Void> saveCottage(@RequestBody CottageDTO newCottage){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+        CottageOwner owner = cottageOwnerService.finfById(user.getId()); //nasla ownera
+        Cottage cottage = new Cottage( newCottage);
+        cottage.setCottageOwner(owner);
+        cottage.setAddress(addressService.save(newCottage.getAddress()));
+        //cottage.setAdditionalServices(additionalServicesService.);
+        List<AdditionalService> services = new ArrayList<>();
+        if(newCottage.getAdditionalServices().size() != 0){
+            for (AdditionalServiceDTO dto : newCottage.getAdditionalServices()){
+               AdditionalService serv =  new AdditionalService(dto);
+
+                services.add(new AdditionalService(dto));
+            }
+//            for (AdditionalService a: services ) {
+//                a.setEntities(cottage);
+//            }
+            cottage.setAdditionalServices(additionalServicesService.saveAll(services));
+
+        }
+
+        this.cottageService.saveCottage(cottage);
+
+
+
+        return  new ResponseEntity<>( HttpStatus.OK);
+
     }
 }
 

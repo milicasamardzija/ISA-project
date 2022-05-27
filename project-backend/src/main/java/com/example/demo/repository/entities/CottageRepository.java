@@ -12,6 +12,7 @@ public interface CottageRepository extends JpaRepository<Cottage, Integer> {
 
     Cottage findById(int id);
     void deleteById(int id);
+    Cottage save(Cottage cottage);
 
     @Query("select co from Cottage co left join fetch  co.cottageOwner c where c.id=?1")
     List<Cottage> findAllCottagesForOwner(int id);

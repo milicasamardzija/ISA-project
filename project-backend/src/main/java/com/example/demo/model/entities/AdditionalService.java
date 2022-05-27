@@ -1,5 +1,6 @@
 package com.example.demo.model.entities;
 
+import com.example.demo.dto.entities.AdditionalServiceDTO;
 import com.example.demo.model.business.Reservation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -68,4 +69,12 @@ public class AdditionalService {
     public void setEntities(EntityClass entities) {
         this.entity = entities;
     }
+
+    public AdditionalService(AdditionalServiceDTO dto){
+        this.setId(dto.getId());
+        this.setName(dto.getName());
+        this.setPrice(dto.getPrice());
+
+    }
+    public AdditionalService(){}
 }

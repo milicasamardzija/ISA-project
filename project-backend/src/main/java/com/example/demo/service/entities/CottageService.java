@@ -30,10 +30,7 @@ public class CottageService {
     }
 
     public Cottage findOne(Integer id) {
-        List<AdditionalServiceDTO> ret = new ArrayList<>();
-
         Cottage cottage = cottageRepository.findById(id).orElseGet(null);
-
         return cottage;
     }
 
@@ -73,5 +70,9 @@ public class CottageService {
         Cottage c = this.cottageRepository.findById(id);
         System.out.print(c);
         this.cottageRepository.deleteById(id);
+    }
+
+    public Cottage saveCottage(Cottage newCottage){
+        return this.cottageRepository.save(newCottage);
     }
 }
