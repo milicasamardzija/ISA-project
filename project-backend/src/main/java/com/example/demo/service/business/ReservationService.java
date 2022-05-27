@@ -1,6 +1,7 @@
 package com.example.demo.service.business;
 
 import com.example.demo.dto.business.ReservationNewDTO;
+import com.example.demo.enums.EntityType;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
@@ -65,12 +66,20 @@ public class ReservationService {
         String hour = time[0];
         String minutes = time[1];
         Calendar calStart = Calendar.getInstance();
+        calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calStart.setTime(reservation.getDateStart());
-        calStart.add(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
+        calStart.add(Calendar.HOUR_OF_DAY, Integer.parseInt(hour) - 2);
         calStart.add(Calendar.MINUTE, Integer.parseInt(minutes));
         Calendar calEnd = Calendar.getInstance();
+        calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calEnd.setTime(reservation.getDateStart());
         calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
+
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println(calStart.getTime());
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println(calEnd.getTime());
+        System.out.println("--------------------------------------------------------------------------------");
 
         Reservation newReservation = new Reservation();
         newReservation.setDateStart(calStart.getTime());
@@ -78,6 +87,9 @@ public class ReservationService {
         newReservation.setPrice(reservation.getPrice());
         newReservation.setClient(client);
         newReservation.setEntity(entity);
+        newReservation.setEntityType(EntityType.COTTAGE);
+        newReservation.setDuration(reservation.getDuration());
+       // newReservation.setAdditionalServices(new ArrayList<>());
         this.reservationRepository.save(newReservation);
         this.emailService.sendEmailForReservation(user);
     }

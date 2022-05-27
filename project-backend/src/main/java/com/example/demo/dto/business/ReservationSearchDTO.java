@@ -11,6 +11,7 @@ public class ReservationSearchDTO {
     private String city;
     private String country;
     private int number;
+    private int people;
 
     public ReservationSearchDTO() {}
 
@@ -20,12 +21,13 @@ public class ReservationSearchDTO {
         this.country = country;
     }
 
-    public ReservationSearchDTO( Date date, String time, String city, String country, int number) {
+    public ReservationSearchDTO( Date date, String time, String city, String country, int number, int people) {
         this.date = date;
         this.time = time;
         this.city = city;
         this.country = country;
         this.number = number;
+        this.people = people;
     }
 
     public Date getDate() {
@@ -66,5 +68,13 @@ public class ReservationSearchDTO {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public int getPeople() {
+        return people;
+    }
+
+    public void setPeople(int people) {
+        this.people = people;
     }
 }
