@@ -101,7 +101,7 @@
                     
                    
                       type="file" 
-                      v-bind="cottage.images"
+                      v-bind="images"
                       accept="image/jpg, image/png "
                       multiple
                        
@@ -342,7 +342,7 @@
             <div class="col-md-5">
               <div class="md-form mb-2">
                 <div class="input-group">
-                  <button class="btn btn-success">Sacuvaj vikendicu</button>
+                  <button class="btn btn-success" type="button" @click="createCottage()">Sacuvaj vikendicu</button>
                 </div>
               </div>
             </div>
@@ -359,14 +359,16 @@
 <script>
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
+import axios from 'axios';
 //import $ from "jquery";
 
 export default {
   name: "NewCottage",
   data(){
     return {
+      images: "", 
       adServ: {name:"", price: 0},
-      cottage: { name: "",roomsNumber: 0, bedsByRoom: 0, address: { street: "", number: 0, city: "", country: "Srbija"}, promoDescription:"", rules: "", grade: 0 , images: { id: 0, filePath: ""}, price: 0, additionalServices: [] },
+      cottage: {id: 0, name: "",roomsNumber: 0, bedsByRoom: 0, address: { street: "", number: 0, city: "", country: "Srbija", id: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [] },
     }
 
   },
@@ -379,7 +381,16 @@ export default {
      addService(){
       this.cottage.additionalServices.push({ name: this.adServ.name, price: this.adServ.price});
       console.log(this.cottage.additionalServices)
-        }
+        },
+
+      createCottage(){
+              const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      console.log(this.images);
+      axios.post("http://localhost:8081/api/cottages/newCottage/", this.cottage,  {headers}).then( response => response.json());
+  this.$router.push({name: "MyCottages"});
+      }
 
   },
 
