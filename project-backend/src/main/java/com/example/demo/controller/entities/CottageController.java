@@ -115,29 +115,19 @@ public class CottageController {
     public ResponseEntity<Void> saveCottage(@RequestBody CottageDTO newCottage){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
-        CottageOwner owner = cottageOwnerService.finfById(user.getId()); //nasla ownera
-        Cottage cottage = new Cottage( newCottage);
+        CottageOwner owner = cottageOwnerService.finfById(user.getId());
+        Cottage cottage = new Cottage(newCottage);
         cottage.setCottageOwner(owner);
         cottage.setAddress(addressService.save(newCottage.getAddress()));
-        //cottage.setAdditionalServices(additionalServicesService.);
         List<AdditionalService> services = new ArrayList<>();
         if(newCottage.getAdditionalServices().size() != 0){
             for (AdditionalServiceDTO dto : newCottage.getAdditionalServices()){
-               AdditionalService serv =  new AdditionalService(dto);
-
-                services.add(new AdditionalService(dto));
+                AdditionalService additionalService = new AdditionalService(dto);
+                additionalService.setEntities(cottage);
+                cottage.getAdditionalServices().add(additionalService);
             }
-//            for (AdditionalService a: services ) {
-//                a.setEntities(cottage);
-//            }
-            cottage.setAdditionalServices(additionalServicesService.saveAll(services));
-
         }
-
         this.cottageService.saveCottage(cottage);
-
-
-
         return  new ResponseEntity<>( HttpStatus.OK);
 
     }

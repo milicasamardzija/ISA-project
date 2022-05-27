@@ -1,5 +1,6 @@
 package com.example.demo.model.entities;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -54,7 +55,7 @@ public class EntityClass {
 
 	@OneToMany(mappedBy= "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("entity")
-	private List<AdditionalService> additionalServices;
+	private Set<AdditionalService> additionalServices = new HashSet<AdditionalService>();
 
 	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -65,7 +66,7 @@ public class EntityClass {
 	}
 
 	public EntityClass(int id, String name, Address address, String promoDescription, Set<Image> image,
-			List<AdditionalService> additionalServices, String rules, int price, double grade) {
+			Set<AdditionalService> additionalServices, String rules, int price, double grade) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -118,11 +119,11 @@ public class EntityClass {
 		this.image = image;
 	}
 
-	public List<AdditionalService> getAdditionalServices() {
+	public Set<AdditionalService> getAdditionalServices() {
 		return additionalServices;
 	}
 
-	public void setAdditionalServices(List<AdditionalService> additionalServices) {
+	public void setAdditionalServices(Set<AdditionalService> additionalServices) {
 		this.additionalServices = additionalServices;
 	}
 

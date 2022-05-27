@@ -33,4 +33,7 @@ public class AdditionalServicesService {
         return  this.additionalServicesRepository.findAdditionalServicesForCottage(id);
     }
 
+    public AdditionalService save(AdditionalService additionalService) {
+        return this.additionalServicesRepository.save(additionalService);
+    }
 }

@@ -74,7 +74,6 @@ public class AdditionalService {
         this.setId(dto.getId());
         this.setName(dto.getName());
         this.setPrice(dto.getPrice());
-
     }
     public AdditionalService(){}
 }
