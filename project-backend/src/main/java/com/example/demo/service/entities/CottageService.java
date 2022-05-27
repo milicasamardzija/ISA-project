@@ -76,7 +76,6 @@ public class CottageService {
         for (Cottage cottage : this.findAll()){
 
             for (ReservedTerm term : cottage.getReservedTerms()) {
-
                 //  |***term***|
                 //      |----cal---|
                 if (calStart.getTime().after(term.getDateStart()) && calStart.getTime().before(term.getDateEnd()) && calEnd.getTime().after(term.getDateEnd())

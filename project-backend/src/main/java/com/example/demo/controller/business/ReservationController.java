@@ -46,7 +46,7 @@ public class ReservationController {
             ret.add(new ReservationDTO(reservation));
         }
 
-        return  new ResponseEntity<>(ret, HttpStatus.OK);
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
     @GetMapping("/historyReservationsAdventures")
@@ -144,6 +144,16 @@ public class ReservationController {
         EntityClass entity = this.reservationService.findEntityByReservation(id);
 
         return  new ResponseEntity<>(new EntityDTO(entity, reservation.getEntityType()), HttpStatus.OK);
+    }
+
+    @GetMapping("/actions/{id}")
+    public ResponseEntity<List<ReservationDTO>> getActionsForEntity(@PathVariable int id){
+        List<Reservation> reservations = reservationService.getActionsForEntity(id);
+        List<ReservationDTO> ret = new ArrayList<>();
+        for(Reservation reservation : reservations ) {
+            ret.add(new ReservationDTO(reservation));
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

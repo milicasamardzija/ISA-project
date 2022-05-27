@@ -89,8 +89,12 @@ public class ReservationService {
         newReservation.setEntity(entity);
         newReservation.setEntityType(EntityType.COTTAGE);
         newReservation.setDuration(reservation.getDuration());
-       // newReservation.setAdditionalServices(new ArrayList<>());
+       //newReservation.setAdditionalServices(new ArrayList<>());
         this.reservationRepository.save(newReservation);
         this.emailService.sendEmailForReservation(user);
+    }
+
+    public List<Reservation> getActionsForEntity(int id) {
+        return this.reservationRepository.getActionsForEntity(id);
     }
 }
