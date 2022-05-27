@@ -156,6 +156,15 @@ public class ReservationController {
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @PutMapping("/actionReservation/{id}")
+    public ResponseEntity<HttpStatus> actionReservation(@PathVariable int id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+        reservationService.actionReservation(id, user);
+        List<ReservationDTO> ret = new ArrayList<>();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HttpStatus> save(@RequestBody ReservationNewDTO reservation) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -165,7 +174,6 @@ public class ReservationController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         this.reservationService.save(reservation, user);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

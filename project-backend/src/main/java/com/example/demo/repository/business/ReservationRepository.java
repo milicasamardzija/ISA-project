@@ -29,6 +29,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     Reservation findById(int id);
 
-    @Query(value = "select r from Reservation r join fetch r.entity e where e.id = ?1 and r.action = true")
+    @Query(value = "select r from Reservation r join fetch r.entity e where e.id = ?1 and r.action = true and r.client is null")
     List<Reservation> getActionsForEntity(int id);
 }

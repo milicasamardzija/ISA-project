@@ -1,5 +1,6 @@
 package com.example.demo.service.email;
 
+import com.example.demo.model.users.Role;
 import com.example.demo.model.users.User;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -57,6 +58,19 @@ public class EmailService {
         mail.setSubject("Confirm your account");
         mail.setText("Your account confirmed!");
         javaMailSender.send(mail);
+        System.out.println("Email poslat!");
+    }
+
+    public void sendEmailForReservationAction(String email) {
+        System.out.println("Slanje emaila...");
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom("spring.mail.username");
+        mail.setSubject("Reservation completed");
+        mail.setText("You're reservation was successful!");
+        javaMailSender.send(mail);
+
         System.out.println("Email poslat!");
     }
 }

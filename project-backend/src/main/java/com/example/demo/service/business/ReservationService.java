@@ -97,4 +97,12 @@ public class ReservationService {
     public List<Reservation> getActionsForEntity(int id) {
         return this.reservationRepository.getActionsForEntity(id);
     }
+
+    public void actionReservation(int id, User user) {
+        Reservation reservation = this.reservationRepository.findById(id);
+        Client client = this.clientService.findById(user.getEmail());
+        reservation.setClient(client);
+        this.reservationRepository.save(reservation);
+        emailService.sendEmailForReservationAction(user.getEmail());
+    }
 }
