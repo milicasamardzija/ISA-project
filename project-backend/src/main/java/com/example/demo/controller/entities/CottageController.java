@@ -115,7 +115,7 @@ public class CottageController {
     public ResponseEntity<Void> saveCottage(@RequestBody CottageDTO newCottage){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
-        CottageOwner owner = cottageOwnerService.finfById(user.getId());
+        CottageOwner owner = cottageOwnerService.findById(user.getId());
         Cottage cottage = new Cottage(newCottage);
         cottage.setCottageOwner(owner);
         cottage.setAddress(addressService.save(newCottage.getAddress()));

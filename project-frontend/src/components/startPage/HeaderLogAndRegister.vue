@@ -350,6 +350,12 @@ export default {
             console.log(localStorage.getItem("role"));
             this.$router.go(0);
           }
+           else if (localStorage.getItem("role") == "ROLE_BOAT_OWNER") {
+            this.$router.push({ name: "MyBoats" });
+            console.log(localStorage.getItem("token"));
+            console.log(localStorage.getItem("role"));
+            this.$router.go(0);
+          }
           else if (localStorage.getItem("role") == "ROLE_INSTRUCTOR") {
             this.$router.push({ name: "FishingInstructorProfile" });
             this.$router.go(0);

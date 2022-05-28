@@ -23,7 +23,7 @@ public class CottageOwnerService {
         return cottageOwnerRepository.save(cottageOwner);
 
     }
-    public  CottageOwner finfById(int id) {
+    public  CottageOwner findById(int id) {
         return cottageOwnerRepository.getById(id);
     }
     public CottageOwner findByEmail(String id) {
