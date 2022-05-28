@@ -179,9 +179,7 @@ public class ReservationController {
 
     @PutMapping("/cancel/{id}")
     public ResponseEntity<HttpStatus> cancelReservation(@PathVariable int id){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User)authentication.getPrincipal();
-        reservationService.cancelReservation(id, user);
+        reservationService.cancelReservation(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

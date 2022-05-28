@@ -48,7 +48,7 @@ public class CottageService {
         List<Cottage> ret = new ArrayList<>();
 
         for (Cottage cottage : this.findAll()){
-            if (cottage.getName().toLowerCase().contains(searchParam.getName().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().contains(searchParam.getCity().toLowerCase()) && cottage.getAddress().getStreet().toLowerCase().contains(searchParam.getStreet().toLowerCase())){
+            if (cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase())){
                 ret.add(cottage);
             }
         }
@@ -100,19 +100,19 @@ public class CottageService {
                     isNotReserved = false;
                 }
             }
-            if (isNotReserved && cottage.getAddress().getCity().toLowerCase().contains(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCountry().toLowerCase().contains(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber()){
+            if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber()){
                 ret.add(cottage);
             }
             //country + people
-            if (isNotReserved && searchParam.getCity().equals("") && cottage.getAddress().getCountry().toLowerCase().contains(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber()){
+            if (isNotReserved && searchParam.getCity().equals("") && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber()){
                 ret.add(cottage);
             }
             //city + people
-            if (isNotReserved && cottage.getAddress().getCity().toLowerCase().contains(searchParam.getCity().toLowerCase()) && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber()){
+            if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber()){
                 ret.add(cottage);
             }
             //city + country
-            if (isNotReserved && cottage.getAddress().getCity().toLowerCase().contains(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCountry().toLowerCase().contains(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() == 0){
+            if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() == 0){
                 ret.add(cottage);
             }
             //no city, no country, no people
@@ -120,11 +120,11 @@ public class CottageService {
                 ret.add(cottage);
             }
             //country
-            if (isNotReserved && searchParam.getCity().equals("") && cottage.getAddress().getCountry().toLowerCase().contains(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() == 0){
+            if (isNotReserved && searchParam.getCity().equals("") && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() == 0){
                 ret.add(cottage);
             }
             //city
-            if (isNotReserved && cottage.getAddress().getCity().toLowerCase().contains(searchParam.getCity().toLowerCase())  && searchParam.getCountry().equals("") && searchParam.getPeople() == 0){
+            if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())  && searchParam.getCountry().equals("") && searchParam.getPeople() == 0){
                 ret.add(cottage);
             }
             //people

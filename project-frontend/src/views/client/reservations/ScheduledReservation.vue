@@ -61,8 +61,11 @@
               <span v-if="reservation.entityType === 'ADVENTURE'"> h </span>  
             </td>
             <td>{{ reservation.price }}</td>
-            <td v-if="reservation.isCanceled != false">
-              <button class="btn btn-danger"  data-target="#odjava" data-toggle="modal">Otkazi</button>
+            <td v-if="reservation.canceled == false">
+              <button class="btn btn-danger"  data-target="#odjava" data-toggle="modal" @click="getSelected(reservation.id)">Otkazi</button>
+            </td>
+            <td v-if="reservation.canceled == true">
+              OTKAZANA REZERVACIJA
             </td>
           </tr>
         </tbody>
@@ -143,6 +146,7 @@
 <script>
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 import moment from 'moment';
+import axios from 'axios';
 
 export default {
   name: "ScheduledReservation",
@@ -156,6 +160,22 @@ export default {
     };
   },
   methods: {
+     async getSelected(id){
+      this.id = id;
+    },
+    Cancel(){
+       const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.put( "http://localhost:8081/api/reservation/cancel/" + this.id ,
+        { headers }).then(
+          response => {
+            console.log(response);
+            alert("Uspesno ste se otkazali rezervaciju!")
+            this.$router.go(0);
+          }
+        )
+    },
     async fetchScheduledReservations() {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),

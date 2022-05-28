@@ -91,7 +91,6 @@ public class ReservationService {
 
         if (canceledReservation == null){
             entity.getReservedTerms().add(newReservation.getTerm());
-            this.entityService.save(entity);
             this.reservationRepository.save(newReservation);
             this.emailService.sendEmailForReservation(user);
         }
@@ -110,7 +109,7 @@ public class ReservationService {
         emailService.sendEmailForReservationAction(user.getEmail());
     }
 
-    public String cancelReservation(int id, User user) {
+    public String cancelReservation(int id) {
         Reservation reservation = this.reservationRepository.findById(id);
         EntityClass entity = this.reservationRepository.findEntityByReservation(id);
 
@@ -125,12 +124,10 @@ public class ReservationService {
 
             List<ReservedTerm> terms = entity.getReservedTerms();
             for(ReservedTerm t : terms){
-                if (terms.size() != 0){
                     if(t.getId() == reservation.getTerm().getId()){
                         terms.remove(t);
                         break;
                     }
-                }
             }
 
             entity.setReservedTerms(terms);

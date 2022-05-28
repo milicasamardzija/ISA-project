@@ -10,6 +10,7 @@
           type="date"
           placeholder="Datum"
           v-model="date"
+          min="this.today"
         />
         <input
           class="form-control mr-sm-2"
@@ -129,7 +130,7 @@
           </h4>
           <h4 style="width: 600px" class="text">Ocena: {{ cottage.grade }}</h4>
           <h4 style="width: 600px" class="text">Cena: {{cottage.price}}</h4>
-          <button class="btn btn-success" type="submit" @click="openModal(), getSelected(cottage)">
+          <button class="btn btn-success" type="submit" @click="openModal(), getSelected(cottage)" v-if="this.s == true">
             Rezerviši
           </button>
         </div>
@@ -195,7 +196,9 @@ export default {
       modalOpened: false,
       people: "",
       selectedEntity: {},
-      price: 2000
+      price: 2000,
+      s: false,
+      today: ""
     };
   },
 
@@ -208,24 +211,14 @@ export default {
       const data = await res.json();
       return data;
     },
-    async search() {
-     /* const res = await fetch("http://localhost:8081/api/cottages/reservationSearch", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
-          date: this.date,
-          time: this.time,
-          city: this.city,
-          country: this.country,
-          number: this.number,
-          people: this.people
-        }),
-      });
-      const data = await res.json();*/
-      const headers = {
+    async search() { 
+     if (this.date == "" || this.time == "" || this.number == "") {
+        alert("Morate uneti datum, vreme i broj dana!")
+      } else {
+        if(this.date < this.today){
+          alert("Morate izabrati datum koji je danasnji ili posle danasnjeg!")
+        } else {
+          const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       axios.post("http://localhost:8081/api/cottages/reservationSearch" ,{
@@ -239,11 +232,15 @@ export default {
       .then (response => { 
         console.log(response.data);
         this.cottages = response.data
-        
-      }) 
+        this.s = true;
+      }) }
+      }
     },
     async makeReservation() {
-      const res = await fetch("http://localhost:8081/api/reservation", {
+      if (this.date == "" || this.time == "" || this.number == "") {
+        alert("Morate uneti datum, vreme i broj dana!")
+      } else {
+          const res = await fetch("http://localhost:8081/api/reservation", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -259,6 +256,8 @@ export default {
       });
       const data = await res.json();
       console.log(data)
+      this.closeModal();
+      }
     },
     getImgUrl(img) {
       var images = require.context('../../../assets/cottageImages/', false, /.jpg$/)
@@ -312,12 +311,21 @@ export default {
     },
     closeModal() {
       this.modalOpened = false;
+    },
+    dates(){
+      var today = new Date();
+      var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+       var dateTime = date+' '+time;
+      return dateTime;
     }
   },
 
   async created() {
     this.cottages = await this.fetchCottages();
     this.maxLength = this.cottages.length;
+    this.today = this.dates();
+    console.log(this.today)
   }
 };
 </script>
