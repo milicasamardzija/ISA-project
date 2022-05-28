@@ -1,12 +1,13 @@
 package com.example.demo.model.entities;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.example.demo.enums.BoatType;
 import com.example.demo.enums.CancelationType;
+import com.example.demo.model.users.BoatOwner;
+import com.example.demo.model.users.CottageOwner;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="boat")
@@ -38,7 +39,12 @@ public class Boat extends EntityClass{
 	
 	@Column(name="cancelationType", unique=false, nullable=true)
 	private CancelationType cancelationType;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "owner_id") //ovako ce se zvati id polje u bazi
+	@JsonIgnoreProperties("boatOwner")
+	public BoatOwner boatOwner;
+
 	public Boat() {
 		
 	}
@@ -55,6 +61,14 @@ public class Boat extends EntityClass{
 		this.fishingEquipment = fishingEquipment;
 		this.quantity = quantity;
 		this.cancelationType = cancelationType;
+	}
+
+	public BoatOwner getBoatOwner() {
+		return boatOwner;
+	}
+
+	public void setBoatOwner(BoatOwner boatOwner) {
+		this.boatOwner = boatOwner;
 	}
 
 	public BoatType getBoatType() {

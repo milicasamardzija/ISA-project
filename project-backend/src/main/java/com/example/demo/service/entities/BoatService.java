@@ -51,4 +51,9 @@ public class BoatService {
         return  ret;
     }
 
+
+    public List<Boat> findBoatsForBoatOwner(int id){
+        return  boatRepository.findBoatsForBoatOwner(id);
+    }
+
 }

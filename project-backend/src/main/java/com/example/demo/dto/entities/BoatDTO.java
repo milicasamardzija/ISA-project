@@ -6,6 +6,7 @@ import com.example.demo.model.entities.Boat;
 import com.example.demo.model.entities.Image;
 import com.example.demo.model.entities.Address;
 
+import java.util.List;
 import java.util.Set;
 
 public class BoatDTO {
@@ -45,6 +46,7 @@ public class BoatDTO {
     private CancelationType cancelationType;
 
     private Set<Image> images;
+    private List<AdditionalServiceDTO> additionalServices;
 
     public BoatDTO(Boat boat){
         this.id = boat.getId();
@@ -209,5 +211,13 @@ public class BoatDTO {
 
     public void setImages(Set<Image> image) {
         this.image = image;
+    }
+
+    public List<AdditionalServiceDTO> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public void setAdditionalServices(List<AdditionalServiceDTO> additionalServices) {
+        this.additionalServices = additionalServices;
     }
 }

@@ -14,6 +14,7 @@ import MyProfile from "../views/cottageOwner/MyProfile";
 import Statistic from "../views/cottageOwner/Statistic";
 import EditProfile from "../views/cottageOwner/EditProfile";
 import NewCottage from "../views/cottageOwner/NewCottage";
+import NewBoat from "../views/boatOwner/NewBoat";
 import EditCottage from "../views/cottageOwner/EditCottage";
 import AllRegistrationRequests from "../views/administrator/AllRegistrationRequests";
 import MyService from "../views/fishingInstructor/MyService";
@@ -31,6 +32,7 @@ import SeeAndDeleteEntities from "../views/administrator/SeeAndDeleteEntities"
 import AddAdministrator from "../views/administrator/AddAdministrator"
 import ChangePassword from "../views/administrator/ChangePassword"
 import Complaints from "../views/administrator/Complaints"
+import MyBoats from "../views/boatOwner/MyBoats"
 
 const routes = [
   {
@@ -144,6 +146,11 @@ const routes = [
     component: MyCottages,
   },
   {
+    path: "/myBoats",
+    name: "MyBoats",
+    component: MyBoats,
+  },
+  {
     path: "/changePassword",
     name: "ChangePassword",
     component: ChangePassword,
@@ -172,6 +179,11 @@ const routes = [
     path: "/newCottage",
     name: "NewCottage",
     component: NewCottage,
+  },
+  {
+    path: "/newBoat",
+    name: "NewBoat",
+    component: NewBoat,
   },
   {
     path: "/cottageProfile/:id",

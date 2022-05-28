@@ -4,7 +4,10 @@
     <NavBarLogOutCO />
     <NavBarHomePage />
   </div>
-
+    <div v-if="this.role === 'ROLE_BOAT_OWNER'">
+    <NavBarLogOutCO />
+    <NavBarBoatOwner />
+  </div>
   <!--KLIJENT-->
   <div v-if="this.role === 'ROLE_CLIENT'">
     <NavBarClient />
@@ -54,6 +57,16 @@
                 <h5 style="width: 600px" class="text">Adresa: {{cottageOwner.address.street}}  {{cottageOwner.address.number}}, {{cottageOwner.address.city}}, {{cottageOwner.address.country}}</h5>
                 <h5 style="width: 600px" class="text">Email: {{cottageOwner.email}}</h5>
                 <h5 style="width: 600px" class="text">Broj telefona: {{cottageOwner.telephone}}</h5>
+        
+              </div>
+
+                <!--VLASNIK broda-->
+              <div class="col-info" style="margin-top: 2%" v-if="this.role === 'ROLE_BOAT_OWNER'">
+                <h5 style="width: 600px" class="text">Ime:  {{boatOwner.name}}</h5>
+                <h5 style="width: 600px" class="text">Prezime: {{boatOwner.surname}} </h5>
+                 <h5 style="width: 600px" class="text">Adresa: {{boatOwner.address.street}}  {{boatOwner.address.number}}, {{boatOwner.address.city}}, {{boatOwner.address.country}}</h5>
+                <h5 style="width: 600px" class="text">Email: {{boatOwner.email}}</h5>
+                <h5 style="width: 600px" class="text">Broj telefona: {{boatOwner.telephone}}</h5>
         
               </div>
 
@@ -251,6 +264,7 @@
 <script>
 import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
 import NavBarLogOutCO from "../../components/cottageOwner/NavBarLogOut.vue";
+import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
@@ -267,7 +281,8 @@ export default {
     HeaderStartPage,
     NavBarAdministrator,
     NavBarPredefAdministrator,
-    NavBarLogOutCO
+    NavBarLogOutCO,
+    NavBarBoatOwner,
   },
   data(){
     return {
@@ -278,7 +293,8 @@ export default {
       repeatPassword: "",
       explanation: "",
       normal: true, 
-      cottageOwner: ""
+      cottageOwner: "",
+      boatOwner: "",
     }
   },
   methods: {
@@ -298,6 +314,14 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch("http://localhost:8081/api/cottageOwner/profileCottageOwner", {headers});
+      const data = await res.json();
+      return data;
+    },
+      async getBoatOwner() {
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/boatOwner/profileBoatOwner", {headers});
       const data = await res.json();
       return data;
     },
@@ -352,10 +376,12 @@ export default {
   async created() {
     this.role = localStorage.getItem("role")
   
-  if(this.role == "ROLE_COTTAGE_OWNER")
-  {   this.cottageOwner = await this.getCottageOwner();}
-  else if(this.role == "ROLE_CLIENT"){
+  if(this.role == "ROLE_COTTAGE_OWNER") {
+    this.cottageOwner = await this.getCottageOwner();
+  } else if(this.role == "ROLE_CLIENT"){
      this.client = await this.getClient();
+  } else if(this.role =="ROLE_BOAT_OWNER"){
+    this.boatOwner = await this.getBoatOwner();
   }
  
   },

@@ -4,7 +4,10 @@
     <NavBarLogOutCO />
     <NavBarHomePage />
   </div>
-
+  <div v-if="this.role === 'ROLE_BOAT_OWNER'">
+    <NavBarLogOutCO />
+    <NavBarBoatOwner />
+  </div>
   <!--KLIJENT-->
   <div v-if="this.role === 'ROLE_CLIENT'">
     <NavBarClient />
@@ -21,11 +24,8 @@
   </div>
   <div>
     <div class="tab-pane active containerInfo">
-      <div v-if="this.role === 'ROLE_COTTAGE_OWNER'">
-        <Search />
-      </div>
 
-      <div class="row-boats" v-if="this.role === 'ROLE_CLIENT' || this.role === 'ROLE_COTTAGE_OWNER' || this.role === 'ROLE_ADMIN' || this.role === 'ROLE_PREDEF_ADMIN'">
+      <div class="row-boats" v-if="this.role === 'ROLE_CLIENT' || this.role === 'ROLE_COTTAGE_OWNER' || this.role === 'ROLE_BOAT_OWNER'  || this.role === 'ROLE_ADMIN' || this.role === 'ROLE_PREDEF_ADMIN'">
         <div class="col-with-picture" style="margin-right: 5%; margin-top: 1%">
           <div>
             <img
@@ -37,19 +37,19 @@
         </div>
         <div class="col-info" style="margin-top: 2%">
           <h5 style="width: 600px" class="text">Ime:</h5>
-          <input type="text" class="form-control" v-model="user.firstname"/>
+          <input type="text" class="form-control" v-model="this.user.firstname"/>
           <h5 style="width: 600px" class="text">Prezime:</h5>
-          <input type="text" class="form-control" v-model="user.lastname"/>
+          <input type="text" class="form-control" v-model="this.user.lastname"/>
           <h5 style="width: 600px" class="text">Broj telefona:</h5>
-          <input type="text" class="form-control" v-model="user.telephone"/>
+          <input type="text" class="form-control" v-model="this.user.telephone"/>
           <h5 style="width: 600px" class="text">Ulica:</h5>
-          <input type="text" class="form-control" v-model="user.address.street"/>
-          <h5 style="width: 600px" class="text">Broj:</h5>
-          <input type="text" class="form-control" v-model="user.address.number"/>
+          <input type="text" class="form-control" v-model="this.user.address.street"/> 
+           <h5 style="width: 600px" class="text">Broj:</h5>
+          <input type="text" class="form-control" v-model="this.user.address.number"/>
           <h5 style="width: 600px" class="text">Grad:</h5>
-          <input type="text" class="form-control"  v-model="user.address.city"/>
+          <input type="text" class="form-control"  v-model="this.user.address.city"/>
           <h5 style="width: 600px" class="text">Drzava:</h5>
-          <input type="text" class="form-control" v-model="user.address.country"/>
+          <input type="text" class="form-control" v-model="this.user.address.country"/>
           <button class="btn btn-secondary"  @click="edit()" style="margin-top:40px">Potvrdi</button>
           <button class="btn btn-secondary" @click="cancel()" style="margin-top:40px; margin-left:430px">Odustani</button>
         </div>
@@ -65,7 +65,7 @@
 import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import NavBarLogOutCO from "../../components/cottageOwner/NavBarLogOut.vue";
-
+import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
@@ -81,6 +81,7 @@ export default {
     NavBarAdministrator,
     NavBarPredefAdministrator,
     NavBarLogOutCO,
+    NavBarBoatOwner
 
    
   },
@@ -106,17 +107,20 @@ export default {
       this.$router.push({ name: "MyProfile" });
     },
     async getUser() {
+      console.log("USAO SAM U GET USER")
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         "Access-Control-Allow-Origin": "*"
       };
       const res = await fetch("http://localhost:8081/api/user/userInfo", {headers});
       const data = await res.json();
+      console.log(data)
       return data;
     }
   },
   async created() {
     this.role = localStorage.getItem("role")
+    console.log(this.role);
     this.user = await this.getUser();
   },
 };
