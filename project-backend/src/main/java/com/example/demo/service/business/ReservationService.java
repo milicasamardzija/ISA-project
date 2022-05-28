@@ -121,24 +121,12 @@ public class ReservationService {
             reservation.setCanceled(true);
 
             ReservedTerm term = this.reservedTermService.findTermWithEntity(entity.getId());
+            term.setCanceled(true);
 
-            List<ReservedTerm> terms = entity.getReservedTerms();
-            for(ReservedTerm t : terms){
-                    if(t.getId() == reservation.getTerm().getId()){
-                        terms.remove(t);
-                        break;
-                    }
-            }
-
-            entity.setReservedTerms(terms);
-            term.setEntity(null);
-
-           this.entityService.save(entity);
            this.reservedTermService.save(term);
            this.reservationRepository.save(reservation);
         }
 
         return "You can cancel your reservation no later than three days before the start!";
-
     }
 }

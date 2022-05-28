@@ -17,8 +17,8 @@ public class ReservedTermService {
         this.reservedTermRepository.delete(reservedTerm);
     }
 
-    public ReservedTerm save(ReservedTerm reservedTerm){
-       return this.reservedTermRepository.save(reservedTerm);
+    public void save(ReservedTerm reservedTerm){
+       this.reservedTermRepository.save(reservedTerm);
     }
 
     public ReservedTerm findById(int id) {

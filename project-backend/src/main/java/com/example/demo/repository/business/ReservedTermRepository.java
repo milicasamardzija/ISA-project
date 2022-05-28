@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface ReservedTermRepository extends JpaRepository<ReservedTerm, Integer> {
     ReservedTerm findById(int id);
 
-    ReservedTerm save(ReservedTerm reservedTerm);
-
     @Query("select t from ReservedTerm t join fetch t.entity e where e.id = ?1")
     ReservedTerm findTermWithEntity(int id);
 }

@@ -74,30 +74,31 @@ public class CottageService {
 
         Boolean isNotReserved = true;
         for (Cottage cottage : this.findAll()){
-
             for (ReservedTerm term : cottage.getReservedTerms()) {
-                //  |***term***|
-                //      |----cal---|
-                if (calStart.getTime().after(term.getDateStart()) && calStart.getTime().before(term.getDateEnd()) && calEnd.getTime().after(term.getDateEnd())
-                ) {
-                    isNotReserved = false;
-                }
-                //  |----cal---|
-                //     |***term***|
-                if (calStart.getTime().before(term.getDateStart()) && calEnd.getTime().before(term.getDateEnd()) && calEnd.getTime().after(term.getDateStart())) {
-                    isNotReserved = false;
-                }
-                //  |------cal------|
-                //     |***term***|
-                if (calStart.getTime().before(term.getDateStart()) && calEnd.getTime().after(term.getDateEnd())
-                ) {
-                    isNotReserved = false;
-                }
-                //    |----cal----|
-                //  |******term******|
-                if (calStart.getTime().after(term.getDateStart()) && calEnd.getTime().before(term.getDateEnd())
-                ) {
-                    isNotReserved = false;
+                if (!term.isCanceled()) {
+                    //  |***term***|
+                    //      |----cal---|
+                    if (calStart.getTime().after(term.getDateStart()) && calStart.getTime().before(term.getDateEnd()) && calEnd.getTime().after(term.getDateEnd())
+                    ) {
+                        isNotReserved = false;
+                    }
+                    //  |----cal---|
+                    //     |***term***|
+                    if (calStart.getTime().before(term.getDateStart()) && calEnd.getTime().before(term.getDateEnd()) && calEnd.getTime().after(term.getDateStart())) {
+                        isNotReserved = false;
+                    }
+                    //  |------cal------|
+                    //     |***term***|
+                    if (calStart.getTime().before(term.getDateStart()) && calEnd.getTime().after(term.getDateEnd())
+                    ) {
+                        isNotReserved = false;
+                    }
+                    //    |----cal----|
+                    //  |******term******|
+                    if (calStart.getTime().after(term.getDateStart()) && calEnd.getTime().before(term.getDateEnd())
+                    ) {
+                        isNotReserved = false;
+                    }
                 }
             }
             if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber()){
@@ -128,7 +129,7 @@ public class CottageService {
                 ret.add(cottage);
             }
             //people
-            if (isNotReserved && searchParam.getCity().equals("") && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber()){
+            if (isNotReserved && searchParam.getCity().equals("") && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber() && searchParam.getPeople() > 0) {
                 ret.add(cottage);
             }
             isNotReserved = true;

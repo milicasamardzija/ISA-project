@@ -215,7 +215,9 @@ export default {
      if (this.date == "" || this.time == "" || this.number == "") {
         alert("Morate uneti datum, vreme i broj dana!")
       } else {
-        if(this.date < this.today){
+        if(this.date > this.today){
+          alert(this.date)
+          alert(this.today)
           alert("Morate izabrati datum koji je danasnji ili posle danasnjeg!")
         } else {
           const headers = {
@@ -240,7 +242,7 @@ export default {
       if (this.date == "" || this.time == "" || this.number == "") {
         alert("Morate uneti datum, vreme i broj dana!")
       } else {
-          const res = await fetch("http://localhost:8081/api/reservation", {
+        const res = await fetch("http://localhost:8081/api/reservation", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -316,7 +318,7 @@ export default {
       var today = new Date();
       var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
       var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-       var dateTime = date+' '+time;
+      var dateTime = date+' '+time;
       return dateTime;
     }
   },

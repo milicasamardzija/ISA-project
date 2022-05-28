@@ -20,6 +20,8 @@ public class ReservedTerm {
     @JoinColumn(name = "entity_id")
     @JsonIgnoreProperties("entities")
     private EntityClass entity;
+    @Column
+    private boolean isCanceled;
 
     public int getId() {
         return id;
@@ -53,11 +55,27 @@ public class ReservedTerm {
         this.entity = entity;
     }
 
+    public boolean isCanceled() {
+        return isCanceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        isCanceled = canceled;
+    }
+
     public ReservedTerm() {}
 
     public ReservedTerm(Date dateStart, Date dateEnd, EntityClass entity) {
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.entity = entity;
+    }
+
+    public ReservedTerm(int id, Date dateStart, Date dateEnd, EntityClass entity, boolean isCanceled) {
+        this.id = id;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.entity = entity;
+        this.isCanceled = isCanceled;
     }
 }
