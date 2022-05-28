@@ -119,8 +119,8 @@ public class CottageController {
         Cottage cottage = new Cottage(newCottage);
         cottage.setCottageOwner(owner);
         cottage.setAddress(addressService.save(newCottage.getAddress()));
-        List<AdditionalService> services = new ArrayList<>();
         if(newCottage.getAdditionalServices().size() != 0){
+
             for (AdditionalServiceDTO dto : newCottage.getAdditionalServices()){
                 AdditionalService additionalService = new AdditionalService(dto);
                 additionalService.setEntities(cottage);

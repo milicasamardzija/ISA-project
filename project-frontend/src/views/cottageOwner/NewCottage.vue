@@ -389,7 +389,7 @@ export default {
       };
       console.log(this.images);
       axios.post("http://localhost:8081/api/cottages/newCottage/", this.cottage,  {headers}).then( response => response.json());
-  this.$router.push({name: "MyCottages"});
+   this.$router.push({name: "MyCottages"});
       }
 
   },

@@ -85,7 +85,7 @@
       <table>
         <tr>
           <td>
-                <label ><span class="glyphicon glyphicon-eye-open"></span> Nova
+                <label ><span class="glyphicon glyphicon-eye-open"></span> Stara
                   lozinka</label
                 ></td>
                 <td> <input
@@ -93,6 +93,7 @@
                   class="form-control"
                   id="psw"
                   placeholder="Stara lozinka" 
+                  v-model="oldPassword"
                 /></td></tr>
         <tr>
           <td>
@@ -104,6 +105,7 @@
                   class="form-control"
                   id="psw"
                   placeholder="Nova lozinka" 
+                  v-model="this.newPassword"
                 /></td></tr>
                  <tr><td><label for="psw"
                   ><span class="glyphicon glyphicon-eye-open"></span> Ponovite
@@ -254,6 +256,7 @@ import NavBarClient from "../../components/client/NavBarClient.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarPredefAdministrator from "../../components/administrator/NavBarPredefAdministrator.vue";
+import Swal from 'sweetalert2';
 export default {
   name: "MyProfile",
 
@@ -271,6 +274,7 @@ export default {
       role: "",
       client: "",
       newPassword: "",
+      oldPassword: "",
       repeatPassword: "",
       explanation: "",
       normal: true, 
@@ -303,7 +307,10 @@ export default {
     async changePassword(){
       console.log(localStorage.getItem("token"))
       if (this.repeatPassword != this.newPassword){
-        alert("Niste dobro uneli ponovljenu sifru!Probajte ponovo!");
+        console.log("nova sifra: "+this.newPassword)
+            console.log("ponovljena sifra: "+this.repeatPassword)
+       // alert("");
+        return new Swal('Niste dobro uneli ponovljenu sifru!Probajte ponovo!');
       } else {
         const res = await fetch("http://localhost:8081/api/user/changePassword" , {
           method: "POST",
@@ -316,8 +323,14 @@ export default {
         });
         const data = await res.json();
         localStorage.setItem("token", data.accessToken);
-        alert("Molimo ulogujte se ponovo sa novom sifrom!")
-        this.$router.push({ name: "BoatsStartPage" });
+       // alert("")
+  
+            return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Molimo ulogujte se ponovo sa novom sifrom!'
+           }).then(this.$router.push({ name: "BoatsStartPage" }));
+        
         }
     },
     async sendDeleteRequest(){
@@ -328,7 +341,7 @@ export default {
            Authorization: "Bearer " + localStorage.getItem("token")
         },
         body: JSON.stringify({explanation: this.explanation})
-      });
+      });''
      const ret = await res.data
      console.log(ret)
     },

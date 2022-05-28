@@ -34,7 +34,7 @@
     <div class="tab-pane container active">
       <div class="row-boats" v-for="(cottage, index) in cottages" :key="index">
         <div class="col-with-picture" >
-          <div v-if="cottage.images[0].length != 0">
+         <div v-if="cottage.images.length != 0">
             <img
               :src="getImgUrl(cottage.images[0].filePath)"
               style="height: 250px !important; width: 300px !important"  @click="goToCottage()"

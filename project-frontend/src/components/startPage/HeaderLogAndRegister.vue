@@ -277,7 +277,12 @@
 
 <script>
 import axios from 'axios'
+
+import Swal from 'sweetalert2';
+
 export default {
+
+
   data() {
     return {
       userAddress: { country: "",  city: "", street: "",number:0 },
@@ -301,6 +306,7 @@ export default {
     },
   },
   methods: {
+   
     async Login() {
      /* const res = await fetch("http://localhost:8081/api/auth/login", {
         method: "POST",
@@ -371,7 +377,12 @@ export default {
       })
       .catch( error => {
         console.log(error)
-        alert("Vas nalog jos uvek nije aktiviran ili ste pogresili prilikom unosa kredencijala!")
+         return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Vas nalog jos uvek nije aktiviran ili ste pogresili prilikom unosa kredencijala!'
+           });
+       // alert("")
       }) 
     },
     async register() {
@@ -390,7 +401,13 @@ export default {
        }).then(response => { 
        console.log(response.status);
         if (response.status == '400'){
-         alert("Vec postoji korisnik sa ovim mejlom!")
+           this.$swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Vec postoji korisnik sa ovim mejlom!'
+           });
+           
+         //alert("")
        }
       }) 
      
