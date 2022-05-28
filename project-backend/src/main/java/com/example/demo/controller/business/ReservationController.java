@@ -161,7 +161,6 @@ public class ReservationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
         reservationService.actionReservation(id, user);
-        List<ReservationDTO> ret = new ArrayList<>();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -177,4 +176,11 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<HttpStatus> cancelReservation(@PathVariable int id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+        reservationService.cancelReservation(id, user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
