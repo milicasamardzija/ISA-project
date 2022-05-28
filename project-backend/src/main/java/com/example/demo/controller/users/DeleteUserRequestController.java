@@ -1,9 +1,13 @@
 package com.example.demo.controller.users;
 
+import com.example.demo.dto.users.CottageOwnerDTO;
 import com.example.demo.dto.users.DeleteUserRequestDTO;
+import com.example.demo.dto.users.UserDTO;
+import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.DeleteUserRequest;
 import com.example.demo.model.users.User;
 import com.example.demo.service.email.EmailSenderService;
+import com.example.demo.service.users.CustomUserDetailsService;
 import com.example.demo.service.users.UserService;
 import com.example.demo.service.users.DeleteUserRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,5 +87,33 @@ public class DeleteUserRequestController {
             return new ResponseEntity<>(HttpStatus.OK);}
         else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @Controller
+    @RequestMapping(value = "api/cottageOwner")
+    public static class CottageOwnerController {
+
+
+        private CustomUserDetailsService.CottageOwnerService cottageOwnerService;
+
+        public CottageOwnerController(CustomUserDetailsService.CottageOwnerService cottageOwnerService) {
+            this.cottageOwnerService = cottageOwnerService;
+        }
+
+        @GetMapping
+        public ResponseEntity<List<CottageOwnerDTO>> getAll(){
+            List<CottageOwner> allOwners = cottageOwnerService.findAll();
+            List<CottageOwnerDTO> cottages = new ArrayList<>();
+            for(CottageOwner owner : allOwners ) {
+               cottages.add(new CottageOwnerDTO(owner));
+            }
+            return  new ResponseEntity<>(cottages, HttpStatus.OK);
+        }
+
+        @GetMapping("/cottageOwnerUser/{id}")
+        public  ResponseEntity<UserDTO> fetchCottageOwnerByCottage(@PathVariable  int id){
+            User user = this.cottageOwnerService.fetchCottageOwnerByCottage(id);
+            return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+        }
     }
 }

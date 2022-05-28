@@ -10,11 +10,28 @@
       </a>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item" style="margin-right: 15px">
-          <button type="button" class="btn btn-outline-success">
-            <router-link to=""> </router-link>Odjavi se
+          <button type="button" class="btn btn-outline-success" @click="logOut">
+            <router-link to="/"> </router-link>Odjavi se
           </button>
         </li>
       </ul>
     </div>
   </nav>
 </template>
+
+<script>
+
+
+export default ({
+  setup() {
+    
+  },
+  methods: {
+    logOut(){
+     localStorage.removeItem("token");
+     localStorage.removeItem("role");
+     this.$router.push({ name: "BoatsStartPage"});
+    }},
+  
+})
+</script>

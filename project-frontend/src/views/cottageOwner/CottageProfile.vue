@@ -19,11 +19,12 @@
   <div>
     <div class="tab-pane active containerInfo">
       <div class="row">
-        <div class="column" style="width: 24rem; height: 3rem">
-          <h4>pakao od zivota</h4>
+        <div class="column" style="width: 22rem; height: 3rem">
+          <h4>{{this.cottage.name}}</h4>
+          
         </div>
-        <div class="column" style="width: 40rem; height: 3rem">
-          <h4>Na kraju sveta 45, Negde Daleko</h4>
+        <div class="column" style="width: 35rem; height: 3rem">
+          <h4>{{cottage.address.street}} {{cottage.address.number}}, {{cottage.address.city}}, {{cottage.address.country}},</h4>
         </div>
         <div class="column" style="width: 18rem; height: 3rem">
           <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'">
@@ -38,7 +39,7 @@
             </router-link>
           </button>
         </div>
-        <div class="column" style="width: 30rem; height: 3rem" >
+        <div class="column" style="width: 28rem; height: 3rem" >
           <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'">Dodaj akciju</button>
           <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'">Pretplati se</button>
         </div>
@@ -52,10 +53,10 @@
           />
         </div>
 
-        <div class="column" style="width: 65rem">
+        <div class="column" style="width: 50rem">
           <div class="row">
             <!-- 1. red malih slika-->
-            <div class="column columnSmall" style="width: 60rem; height: 14em">
+            <div class="column columnSmall" style="width:60rem; height: 14em">
               <div class="images">
                 <figure>
                   <img
@@ -126,24 +127,7 @@
         <div class="column columnAbout">
           <h4>Opis smestaja</h4>
           <label>
-            Vikendica Pustolov na Uvcu nalazi se uz obalu Sjeničkog (Uvačkog
-            jezera), na Zlatar planini. Udaljena je od grada Sjenice 40 km, a od
-            Nove Varoši 17 km. Vikendica poseduje sopstveno ogradjeno dvorište,
-            slobodno za parking gostiju. Na ulazu u vikendicu nalazi se terasa
-            pogodna za sedenje i sunčanje, odakle se pruža i direktan pogled na
-            jezero kao i šume u okolini. U prizemlju vikendice su dnevni boravak
-            sa TV-om i free WiFi-om, kaučima za uživanje ili spavanje, kuhinja
-            sa frižiderom i komplet opremljena za spremanje hrane kao i kanister
-            sa pijaćom vodom. Kupatilo je takodje opremljeno kozmetičkim i
-            higijenskim preparatima i fenom za kosu. Na spratu su dve spavaće
-            sobe sa krevetima, čivilucima i prozorima sa pogledom na
-            jezero/šumu. Svaki gost dobija svoju posteljinu i po dva peškira
-            (veliki i mali) i papuče. Moguće je poručiti domaću hranu koja se
-            donosi u vikendicu. Kapacitet je 6 osoba. Vikendica je petfriendly i
-            pušenje je dozvoljeno. U okolini je moguće iznajmiti čamce kao i
-            zakupiti dnevne ture krstarenja jezerom i meandrima reke Uvac. Pored
-            vodenih aktivnosti teren je pogodan i za planinarenje do prelepih
-            vidikovaca koji gledaju na meandre idealne za fotografisanje.
+           {{cottage.promoDescription}}
           </label>
         </div>
 
@@ -151,23 +135,28 @@
           <h4>Informacije</h4>
           <div class="row" style="height: 20rem; background: whitesmoke">
             <div class="column" style="width: 20rem">
-              <p>Cena:</p>
-              <p>Ocena:</p>
-              <p>Maksimalan broj osoba:</p>
-              <p>Broj soba:</p>
-              <p>Broj kreveta po sobi:</p>
-              <p>Pravila ponasanja:</p>
+              <p>Cena: {{cottage.price}}</p>
+              <p>Ocena: {{cottage.grade}}</p>
+              <p>Maksimalan broj osoba: {{capacity}}</p>
+              <p>Broj soba: {{cottage.roomsNumber}}</p>
+              <p>Broj kreveta po sobi: {{cottage.bedsByRoom}}</p>
+              <p>Pravila ponasanja: {{cottage.rules}}</p>
             </div>
 
-            <div
+            <div 
               class="column"
-              style="width: 10rem; height: 18rem; background: white"
-            >
-              <p class="pStyle">dodatne usluge:</p>
-              <p>WIFI</p>
-              <p>Dva parking mesta</p>
-              <p>Klima</p>
+              style="width: 12rem; height: 18rem; background: white"
+            > 
+            <p class="pStyle">dodatne usluge:</p>
+             <div class="row" style="height: 2rem; background: white" v-for="service in cottage.additionalServices" :key="service">
+           
+            
+              <p>{{ service.name}} : {{service.price}}</p> 
             </div>
+            </div>
+
+             
+         
           </div>
         </div>
       </div>
@@ -181,7 +170,8 @@ import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue"
 import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
-import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue'
+import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue';
+
 
 
 export default {
@@ -196,18 +186,36 @@ export default {
   },
   data() {
     return {
-      role:""
+      role:"",
+      id: "",
+      cottage: "",
+      capacity: 0
     };
   },
   async created() {
-    this.role = localStorage.getItem("role");
+        this.role = localStorage.getItem("role");
+      this.id = this.$route.params.id;
+  
+     this.cottage = this.getCottage(this.id); 
+    
   },
+  methods: {
+    async getCottage(id) {
+      const res = await fetch("http://localhost:8081/api/cottages/cottage/" + id);
+      const data = await res.json();  
+       console.log(data) ;
+       this.cottage= data;  //samo u created nije radilo
+       this.capacity = this.cottage.bedsByRoom * this.cottage.roomsNumber;
+      return data;
+    },
+  },
+  
 };
 </script>
 
 <style scoped>
 .containerInfo {
-  margin-left: 5%;
+  margin-left: 3%;
   margin-top: 2%;
 }
 .row-boats {
@@ -218,7 +226,7 @@ export default {
 }
 .mainImage {
   height: 30em;
-  width: 45em;
+  width: 43em;
 }
 .aboutCottage {
   margin-top: 3.5em;
@@ -226,27 +234,27 @@ export default {
 }
 .column {
   float: left;
-  width: 45em;
-  padding: 10px;
+  width: 43em;
+  padding: 9px;
   height: 28em;
 }
 .columnAbout {
   float: left;
-  width: 55em;
+  width: 50em;
   padding: 10px;
   height: 28em;
 }
 .columnSmall {
   float: left;
   width: 45em;
-  margin-left: 10px;
+  margin-left: 5px;
   margin-top: -12px;
   height: 14em;
 }
 .columnSmall2 {
   float: left;
   width: 45em;
-  margin-left: 10px;
+  margin-left: 5px;
   margin-top: 15px;
   height: 14em;
 }
@@ -274,7 +282,7 @@ export default {
   border-width: 2px;
   margin: 3px;
   height: 15em;
-  width: 18em;
+  width: 16em;
   overflow: hidden;
   text-align: center;
 }

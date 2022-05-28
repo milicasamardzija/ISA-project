@@ -1,7 +1,7 @@
 <template>
-
+  <!--Vlasnik vikendice-->
   <div v-if="this.role === 'ROLE_COTTAGE_OWNER'">
-    <NavBarLogOut />
+    <NavBarLogOutCO />
     <NavBarHomePage />
   </div>
 
@@ -49,14 +49,12 @@
 
               <!--VLASNIK VIKENDICE-->
               <div class="col-info" style="margin-top: 2%" v-if="this.role === 'ROLE_COTTAGE_OWNER'">
-                <h5 style="width: 600px" class="text">Ime: </h5>
-                <h5 style="width: 600px" class="text">Prezime: </h5>
-                <h5 style="width: 600px" class="text">Adresa: </h5>
-                <h5 style="width: 600px" class="text">Email:</h5>
-                <h5 style="width: 600px" class="text">Broj telefona:</h5>
-                <h5 style="width: 600px" class="text">Kategorija korisnika: </h5>
-                <h5 style="width: 600px" class="text">Kategorija korisnika: </h5>
-                <h5 style="width: 600px" class="text">Kategorija korisnika: </h5>
+                <h5 style="width: 600px" class="text">Ime:  {{cottageOwner.name}}</h5>
+                <h5 style="width: 600px" class="text">Prezime: {{cottageOwner.surname}} </h5>
+                <h5 style="width: 600px" class="text">Adresa: {{cottageOwner.address.street}}  {{cottageOwner.address.number}}, {{cottageOwner.address.city}}, {{cottageOwner.address.country}}</h5>
+                <h5 style="width: 600px" class="text">Email: {{cottageOwner.email}}</h5>
+                <h5 style="width: 600px" class="text">Broj telefona: {{cottageOwner.telephone}}</h5>
+        
               </div>
 
               <div style="margin-top:40px">
@@ -87,7 +85,7 @@
       <table>
         <tr>
           <td>
-                <label ><span class="glyphicon glyphicon-eye-open"></span> Nova
+                <label ><span class="glyphicon glyphicon-eye-open"></span> Stara
                   lozinka</label
                 ></td>
                 <td> <input
@@ -95,6 +93,7 @@
                   class="form-control"
                   id="psw"
                   placeholder="Stara lozinka" 
+                  v-model="oldPassword"
                 /></td></tr>
         <tr>
           <td>
@@ -106,6 +105,7 @@
                   class="form-control"
                   id="psw"
                   placeholder="Nova lozinka" 
+                  v-model="this.newPassword"
                 /></td></tr>
                  <tr><td><label for="psw"
                   ><span class="glyphicon glyphicon-eye-open"></span> Ponovite
@@ -250,11 +250,13 @@
 
 <script>
 import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
+import NavBarLogOutCO from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarPredefAdministrator from "../../components/administrator/NavBarPredefAdministrator.vue";
+import Swal from 'sweetalert2';
 export default {
   name: "MyProfile",
 
@@ -265,15 +267,18 @@ export default {
     HeaderStartPage,
     NavBarAdministrator,
     NavBarPredefAdministrator,
+    NavBarLogOutCO
   },
   data(){
     return {
       role: "",
       client: "",
       newPassword: "",
+      oldPassword: "",
       repeatPassword: "",
       explanation: "",
-      normal: true
+      normal: true, 
+      cottageOwner: ""
     }
   },
   methods: {
@@ -288,13 +293,24 @@ export default {
       const data = await res.json();
       return data;
     },
+    async getCottageOwner() {
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/cottageOwner/profileCottageOwner", {headers});
+      const data = await res.json();
+      return data;
+    },
     changePass(){
       this.normal = false;
     },
     async changePassword(){
       console.log(localStorage.getItem("token"))
       if (this.repeatPassword != this.newPassword){
-        alert("Niste dobro uneli ponovljenu sifru!Probajte ponovo!");
+        console.log("nova sifra: "+this.newPassword)
+            console.log("ponovljena sifra: "+this.repeatPassword)
+       // alert("");
+        return new Swal('Niste dobro uneli ponovljenu sifru!Probajte ponovo!');
       } else {
         const res = await fetch("http://localhost:8081/api/user/changePassword" , {
           method: "POST",
@@ -307,8 +323,14 @@ export default {
         });
         const data = await res.json();
         localStorage.setItem("token", data.accessToken);
-        alert("Molimo ulogujte se ponovo sa novom sifrom!")
-        this.$router.push({ name: "BoatsStartPage" });
+       // alert("")
+  
+            return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Molimo ulogujte se ponovo sa novom sifrom!'
+           }).then(this.$router.push({ name: "BoatsStartPage" }));
+        
         }
     },
     async sendDeleteRequest(){
@@ -319,7 +341,7 @@ export default {
            Authorization: "Bearer " + localStorage.getItem("token")
         },
         body: JSON.stringify({explanation: this.explanation})
-      });
+      });''
      const ret = await res.data
      console.log(ret)
     },
@@ -329,7 +351,13 @@ export default {
   },
   async created() {
     this.role = localStorage.getItem("role")
-    this.client = await this.getClient();
+  
+  if(this.role == "ROLE_COTTAGE_OWNER")
+  {   this.cottageOwner = await this.getCottageOwner();}
+  else if(this.role == "ROLE_CLIENT"){
+     this.client = await this.getClient();
+  }
+ 
   },
 };
 </script>

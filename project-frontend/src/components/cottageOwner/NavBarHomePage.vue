@@ -1,9 +1,9 @@
 <template>
   <div style="color: whitesmoke">
     <ul class="nav nav-tabs navbar-light bg-light">
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="#">Pocetna </a>
-      </li>
+      </li> -->
       <li class="nav-item">
         <a
           class="nav-link"

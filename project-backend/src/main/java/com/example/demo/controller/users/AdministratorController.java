@@ -1,25 +1,14 @@
 package com.example.demo.controller.users;
 
-import com.example.demo.dto.entities.CottageOwnerDTO;
-import com.example.demo.dto.users.AdministratorDTO;
 import com.example.demo.dto.users.UserRequest;
-import com.example.demo.model.entities.Address;
 import com.example.demo.model.users.Administrator;
-import com.example.demo.model.users.CottageOwner;
-import com.example.demo.model.users.Instructor;
 import com.example.demo.model.users.User;
-import com.example.demo.service.CottageOwnerService;
 import com.example.demo.service.entities.AddressService;
 import com.example.demo.service.users.AdministratorService;
-import com.example.demo.service.users.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "api/administrator")

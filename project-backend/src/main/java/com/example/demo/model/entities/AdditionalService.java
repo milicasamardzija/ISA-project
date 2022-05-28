@@ -1,7 +1,9 @@
 package com.example.demo.model.entities;
 
+import com.example.demo.dto.entities.AdditionalServiceDTO;
 import com.example.demo.model.business.Reservation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,9 +25,10 @@ public class AdditionalService {
     @JsonIgnore
     private List<Reservation> reservations;
 
-    @ManyToMany(mappedBy = "additionalServices")
-    @JsonIgnore
-    private List<EntityClass> entities;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name= "entity_id")
+    @JsonIgnoreProperties("entity")
+    private EntityClass entity;
 
     public int getId() {
         return id;
@@ -59,11 +62,18 @@ public class AdditionalService {
         this.reservations = reservations;
     }
 
-    public List<EntityClass> getEntities() {
-        return entities;
+    public EntityClass getEntities() {
+        return entity;
     }
 
-    public void setEntities(List<EntityClass> entities) {
-        this.entities = entities;
+    public void setEntities(EntityClass entities) {
+        this.entity = entities;
     }
+
+    public AdditionalService(AdditionalServiceDTO dto){
+        this.setId(dto.getId());
+        this.setName(dto.getName());
+        this.setPrice(dto.getPrice());
+    }
+    public AdditionalService(){}
 }

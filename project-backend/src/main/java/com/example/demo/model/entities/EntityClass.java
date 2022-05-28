@@ -1,5 +1,6 @@
 package com.example.demo.model.entities;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,10 +53,9 @@ public class EntityClass {
 	@JsonIgnore
 	private List<Client> subscribedClients;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name="entity_services", joinColumns = @JoinColumn(name = "entity_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
-	@JsonIgnore
-	private Set<AdditionalService> additionalServices;
+	@OneToMany(mappedBy= "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("entity")
+	private Set<AdditionalService> additionalServices = new HashSet<AdditionalService>();
 
 	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnore

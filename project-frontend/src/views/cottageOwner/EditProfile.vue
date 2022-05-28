@@ -1,7 +1,7 @@
 <template>
 
   <div v-if="this.role === 'ROLE_COTTAGE_OWNER'">
-    <NavBarLogOut />
+    <NavBarLogOutCO />
     <NavBarHomePage />
   </div>
 
@@ -64,6 +64,8 @@
 <script>
 import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
+import NavBarLogOutCO from "../../components/cottageOwner/NavBarLogOut.vue";
+
 import NavBarClient from "../../components/client/NavBarClient.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
@@ -73,11 +75,14 @@ export default {
   name: "EditProfile",
   components: {
     NavBarLogOut,
-    NavBarHomePage,
+  NavBarHomePage,
     NavBarClient,
     HeaderStartPage,
     NavBarAdministrator,
     NavBarPredefAdministrator,
+    NavBarLogOutCO,
+
+   
   },
   data(){
     return {

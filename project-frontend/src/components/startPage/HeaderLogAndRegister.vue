@@ -44,7 +44,11 @@
           </li>
            <li class="nav-item"> <button  type="button" class="btn btn-success"><router-link to="/cottageOwnerHomePage">Vlasnik vik</router-link></button> </li>
           -->
-        
+          <li class="nav-item">
+            <button type="button" class="btn btn-success">
+              <router-link to="/cottageOwnerHomePage">Vlasnik vik</router-link>
+            </button>
+          </li>
         </ul>
       </div>
     </nav>
@@ -273,7 +277,12 @@
 
 <script>
 import axios from 'axios'
+
+import Swal from 'sweetalert2';
+
 export default {
+
+
   data() {
     return {
       userAddress: { country: "",  city: "", street: "",number:0 },
@@ -297,6 +306,7 @@ export default {
     },
   },
   methods: {
+   
     async Login() {
      /* const res = await fetch("http://localhost:8081/api/auth/login", {
         method: "POST",
@@ -332,7 +342,11 @@ export default {
             console.log(localStorage.getItem("token"));
             console.log(localStorage.getItem("role"));
           } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
-            this.$router.push({ name: "HomePageInProfil" });
+            this.$router.push({ name: "MyCottages" });
+             
+            console.log(localStorage.getItem("token"));
+            console.log(localStorage.getItem("role")); 
+                this.$router.go(0);
           }
           else if (localStorage.getItem("role") == "ROLE_ADMIN") {
             console.log("HELOU" + (response.data.must_change_password));
@@ -363,7 +377,12 @@ export default {
       })
       .catch( error => {
         console.log(error)
-        alert("Vas nalog jos uvek nije aktiviran ili ste pogresili prilikom unosa kredencijala!")
+         return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Vas nalog jos uvek nije aktiviran ili ste pogresili prilikom unosa kredencijala!'
+           });
+       // alert("")
       }) 
     },
     async register() {
@@ -379,14 +398,19 @@ export default {
         number: this.newUser.address.number,
         address: this.newUser.address,
         telephone: this.newUser.telephone
-       })
-      .then (response => { 
-        console.log(response.status);
-        if (response.status == 400){
-          alert("Vec postoji korisnik sa ovim mejlom!")
-        }
+       }).then(response => { 
+       console.log(response.status);
+        if (response.status == '400'){
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Vec postoji korisnik sa ovim mejlom!'
+           });
+           
+         
+       }
       }) 
-        //alert("Dodali ste admina!") zasto da nam ovo iskace uvek
+     
     },
   },
 };

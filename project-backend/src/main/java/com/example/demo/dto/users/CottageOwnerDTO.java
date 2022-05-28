@@ -1,4 +1,4 @@
-package com.example.demo.dto.entities;
+package com.example.demo.dto.users;
 
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.entities.Address;
@@ -91,7 +91,7 @@ public class CottageOwnerDTO {
         this.password = owner.getPassword();
         this.telephone =  owner.getTelephone();
         this.address =  owner.getAddress();
-        this.cottageList = owner.getCottageList();
+       //this.cottageList = owner.getCottageList();    //ZAKOMENTARISANO ZBOG 500 ER I LAZY LOADINGA
     }
 
     public CottageOwnerDTO(int id, String name, String surname, String email, String password, String telephone, Address address, List<Cottage> cottageList) {

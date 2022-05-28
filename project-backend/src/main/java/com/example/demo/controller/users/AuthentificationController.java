@@ -4,7 +4,6 @@ import com.example.demo.dto.users.JwtAuthenticationRequest;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.dto.users.UserTokenState;
 import com.example.demo.model.users.*;
-import com.example.demo.service.CottageOwnerService;
 import com.example.demo.service.email.EmailService;
 import com.example.demo.service.users.*;
 import com.example.demo.utils.TokenUtils;
@@ -30,11 +29,11 @@ public class AuthentificationController {
     private TokenUtils tokenUtils;
     private EmailService emailService;
     private ClientService clientService;
-    private CottageOwnerService cottageOwnerService;
+    private CustomUserDetailsService.CottageOwnerService cottageOwnerService;
     private AdministratorService administratorService;
     private InstructorService instructorService;
 
-    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CottageOwnerService cottageOwnerService, AdministratorService administratorService, InstructorService instructorService) {
+    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CustomUserDetailsService.CottageOwnerService cottageOwnerService, AdministratorService administratorService, InstructorService instructorService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.tokenUtils = tokenUtils;

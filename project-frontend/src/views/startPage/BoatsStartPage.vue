@@ -33,7 +33,7 @@
     <div class="tab-pane container active">
       <div class="row-boats" v-for="(boat, index) in boats" :key="index">
         <div class="col-with-picture">
-          <div v-if="boat.images[0].length != 0">
+          <div v-if="boat.images.length != 0">
             <img
               :src="getImgUrl(boat.images[0].filePath)"
               style="height: 250px !important; width: 300px !important"

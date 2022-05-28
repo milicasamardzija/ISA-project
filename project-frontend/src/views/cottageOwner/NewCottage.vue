@@ -24,12 +24,14 @@
               </div>
 
               <!--Grid column-->
-              <div class="col-md-6">
+              <div class="col-md-7">
                 <div class="md-form mb-0">
                   <input
                     type="text"
                     id="name"
                     name="name"
+                    placeholder="Naziv"
+                    v-model="cottage.name"
                     class="form-control"
                   />
                 </div>
@@ -52,16 +54,20 @@
                     id="name"
                     name="name"
                     class="form-control"
+                    placeholder="Ulica"
+                      v-model="cottage.address.street"
                   />
                 </div>
               </div>
-              <div class="col-md-1">
-                <div class="md-form mb-0">
+              <div class="col-md-2">
+                <div class="md-form mb-2">
                   <input
-                    type="text"
+                    type="number"
                     id="name"
                     name="name"
                     class="form-control"
+                    placeholder="broj"
+                      v-model="cottage.address.number"
                   />
                 </div>
               </div>
@@ -72,6 +78,8 @@
                     id="name"
                     name="name"
                     class="form-control"
+                    placeholder="Grad"
+                      v-model="cottage.address.city"
                   />
                 </div>
               </div>
@@ -85,16 +93,18 @@
                   <label for="name" class="">Slike</label>
                 </div>
               </div>
-              <!--Grid column-->
+              <!--Grid column   id="input-b6"  name="input-b6[]"-->
               <div class="col-md-6">
                 <div class="md-form mb-0">
                   <div class="file-loading">
                     <input
-                      id="input-b6"
-                      name="input-b6[]"
-                      type="file"
+                    
+                   
+                      type="file" 
+                      v-bind="images"
                       accept="image/jpg, image/png "
                       multiple
+                       
                     />
                   </div>
                 </div>
@@ -124,7 +134,7 @@
                 </div>
               </div>
               <!--Grid column-->
-              <div class="col-md-6">
+              <div class="col-md-7">
                 <div class="md-form">
                   <textarea
                     type="text"
@@ -132,6 +142,7 @@
                     name="message"
                     rows="4"
                     class="form-control md-textarea"
+                      v-model="cottage.promoDescription"
                   ></textarea>
                 </div>
               </div>
@@ -146,7 +157,7 @@
                 </div>
               </div>
               <!--Grid column-->
-              <div class="col-md-6">
+              <div class="col-md-7">
                 <div class="md-form">
                   <textarea
                     type="text"
@@ -154,6 +165,7 @@
                     name="message"
                     rows="2"
                     class="form-control md-textarea"
+                      v-model="cottage.rules"
                   ></textarea>
                 </div>
               </div>
@@ -166,7 +178,45 @@
                   <label for="name" class="">Dodatne usluge</label>
                 </div>
               </div>
-              <!--Grid column-->
+                     <!--Grid column-->
+              <div class="col-md-4">
+                <div class="md-form">
+                  <input
+                    type="text"
+                    id="message"
+                    name="message"
+                    placeholder="naziv"
+                    rows="2"
+                    class="form-control "
+                      v-model="adServ.name"
+                 /> 
+                </div>
+              </div>
+                         <!--Grid column-->
+                 <!--Grid column-->
+            <div class="col-md-2">
+              <div class="md-form mb-2">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                      v-model="adServ.price"
+                    aria-label="Amount (to the nearest dollar)"
+                  />
+                  <div class="input-group-append">
+                    <span class="input-group-text">RSD</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+             
+               <div class="col-md-1">
+                <div class="md-form">
+                 <button class="btn btn-secondary" type="button" @click="addService()">  Dodaj </button>
+                </div>
+                
+              </div>
+              <!--Grid column
               <div class="col-md-6">
                 <div class="md-form">
                   <textarea
@@ -175,9 +225,49 @@
                     name="message"
                     rows="2"
                     class="form-control md-textarea"
+                      v-model="cottage.additionalServices"
                   ></textarea>
                 </div>
+              </div>-->
+            </div>
+
+
+            <!--Tabela za ispis dodatih dodatnih usluga-->
+         
+            <!--Grid row-->
+            <div class="row" style="margin-bottom: 1%;">
+              <!--Grid column-->
+              <div class="col-md-2">
+                <div class="md-form mb-0">
+                  <label for="name" class=""></label>
+                </div>
               </div>
+                     <!--Grid column v-if="cottage.additionalServices.length != 0"-->
+              <div class="col-md-10" >
+                <div class="form control" v-for="adS in cottage.additionalServices" :key="adS">
+                 <table> 
+                   <tr style="width: 55rem"> <td >Naziv dodatne usluge:  </td><td style="width: 5rem"> </td> <td>Cena </td> </tr>
+                   
+                    <tr> <td>{{adS.name}} </td> <td> </td><td>{{adS.price}} din  </td> </tr>
+                   </table> 
+                </div>
+              </div>
+             
+             
+               
+              <!--Grid column
+              <div class="col-md-6">
+                <div class="md-form">
+                  <textarea
+                    type="text"
+                    id="message"
+                    name="message"
+                    rows="2"
+                    class="form-control md-textarea"
+                      v-model="cottage.additionalServices"
+                  ></textarea>
+                </div>
+              </div>-->
             </div>
           </form>
         </div>
@@ -202,6 +292,7 @@
                   <input
                     type="text"
                     class="form-control"
+                      v-model="cottage.price"
                     aria-label="Amount (to the nearest dollar)"
                   />
                   <div class="input-group-append">
@@ -223,7 +314,7 @@
             <div class="col-md-4">
               <div class="md-form mb-2">
                 <div class="input-group">
-                  <input type="text" class="form-control" />
+                  <input type="text" class="form-control"   v-model="cottage.roomsNumber"/>
                 </div>
               </div>
             </div>
@@ -239,7 +330,7 @@
             <div class="col-md-4">
               <div class="md-form mb-2">
                 <div class="input-group">
-                  <input type="text" class="form-control" />
+                  <input type="text" class="form-control" v-model="cottage.bedsByRoom"/>
                 </div>
               </div>
             </div>
@@ -251,7 +342,7 @@
             <div class="col-md-5">
               <div class="md-form mb-2">
                 <div class="input-group">
-                  <button class="btn btn-success">Sacuvaj vikendicu</button>
+                  <button class="btn btn-success" type="button" @click="createCottage()">Sacuvaj vikendicu</button>
                 </div>
               </div>
             </div>
@@ -268,23 +359,51 @@
 <script>
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
-import $ from "jquery";
+import axios from 'axios';
+//import $ from "jquery";
 
 export default {
   name: "NewCottage",
-  components: {
+  data(){
+    return {
+      images: "", 
+      adServ: {name:"", price: 0},
+      cottage: {id: 0, name: "",roomsNumber: 0, bedsByRoom: 0, address: { street: "", number: 0, city: "", country: "Srbija", id: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [] },
+    }
+
+  },
+  
+    components: {
     NavBarLogOut,
     NavBarHomePage,
   },
+  methods: {
+     addService(){
+      this.cottage.additionalServices.push({ name: this.adServ.name, price: this.adServ.price});
+      console.log(this.cottage.additionalServices)
+        },
+
+      createCottage(){
+              const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      console.log(this.images);
+      axios.post("http://localhost:8081/api/cottages/newCottage/", this.cottage,  {headers}).then( response => response.json());
+   this.$router.push({name: "MyCottages"});
+      }
+
+  },
+
 };
-$(document).ready(function () {
-  $("#input-b6").fileinput({
-    showUpload: true,
-    dropZoneEnabled: false,
-    maxFileCount: 7,
-    mainClass: "input-group-lg",
-  });
-});
+
+// $(document).ready(function () {
+//   $("#input-b6").fileinput({
+//     showUpload: true,
+//     dropZoneEnabled: false,
+//     maxFileCount: 7,
+//     mainClass: "input-group-lg",
+//   });
+// });
 </script>
 
 <style scoped>

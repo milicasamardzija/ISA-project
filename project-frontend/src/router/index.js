@@ -174,7 +174,7 @@ const routes = [
     component: NewCottage,
   },
   {
-    path: "/cottageProfile",
+    path: "/cottageProfile/:id",
     name: "CottageProfile",
     component: CottageProfile,
   },
