@@ -87,8 +87,8 @@
                 <tr
                   v-for="(reservation, index) in reservationsCottages"
                   :key="index">
-                  <td>{{ format_date(reservation.dateStart) }}</td>
-                  <td>{{ format_date(reservation.dateEnd) }}</td>
+                  <td>{{ format_date(reservation.term.dateStart) }}</td>
+                  <td>{{ format_date(reservation.term.dateEnd) }}</td>
                   <td>{{ reservation.duration }} 
                     <span v-if="reservation.entityType === 'COTTAGE' || reservation.entityType === 'BOAT'"> dana </span>
                     <span v-if="reservation.entityType === 'ADVENTURE'"> h </span>  
@@ -162,8 +162,8 @@
                   v-for="(reservation, index) in reservationsBoats"
                   :key="index"
                 >
-                  <td>{{ format_date(reservation.dateStart) }}</td>
-                  <td>{{ format_date(reservation.dateEnd) }}</td>
+                  <td>{{ format_date(reservation.term.dateStart) }}</td>
+                  <td>{{ format_date(reservation.term.dateEnd) }}</td>
                   <td>{{ reservation.duration }} 
                     <span v-if="reservation.entityType === 'COTTAGE' || reservation.entityType === 'BOAT'"> dana </span>
                     <span v-if="reservation.entityType === 'ADVENTURE'"> h </span>  
@@ -239,8 +239,8 @@
                   v-for="(reservation, index) in reservationsAdventures"
                   :key="index"
                 >
-                  <td>{{ format_date(reservation.dateStart) }}</td>
-                  <td>{{ format_date(reservation.dateEnd) }}</td>
+                  <td>{{ format_date(reservation.term.dateStart) }}</td>
+                  <td>{{ format_date(reservation.term.dateEnd) }}</td>
                   <td>{{ reservation.duration }} 
                     <span v-if="reservation.entityType === 'COTTAGE' || reservation.entityType === 'BOAT'"> dana </span>
                     <span v-if="reservation.entityType === 'ADVENTURE'"> h </span>  
@@ -490,11 +490,11 @@ export default {
         });
       if (sortParam == "DatumRastuce" && tab == "cottage")
         this.reservationsCottages.sort(function (a, b) {
-          return a.dateStart - b.dateStart;
+          return a.term.dateStart - b.term.dateStart;
         });
       if (sortParam == "DatumOpadajuce" && tab == "cottage")
         this.reservationsCottages.sort(function (a, b) {
-          return b.dateStart - a.dateStart;
+          return b.term.dateStart - a.term.dateStart;
         });
        if (sortParam == "TrajanjeRastuce")
         this.reservationsCottages.sort(function (a, b) {
@@ -514,11 +514,11 @@ export default {
         });
       if (sortParam == "DatumRastuce" && tab == "boat")
         this.reservationsBoats.sort(function (a, b) {
-          return a.dateStart - b.dateStart;
+          return a.term.dateStart - b.term.dateStart;
         });
       if (sortParam == "DatumOpadajuce" && tab == "boat")
         this.reservationsBoats.sort(function (a, b) {
-          return b.dateStart - a.dateStart;
+          return b.term.dateStart - a.term.dateStart;
         });
       if (sortParam == "TrajanjeRastuce")
         this.reservationsBoats.sort(function (a, b) {
@@ -538,11 +538,11 @@ export default {
         });
       if (sortParam == "DatumRastuce" && tab == "adventure")
         this.reservationsAdventures.sort(function (a, b) {
-          return a.dateStart - b.dateStart;
+          return a.term.dateStart - b.term.dateStart;
         });
       if (sortParam == "DatumOpadajuce" && tab == "adventure")
         this.reservationsAdventures.sort(function (a, b) {
-          return b.dateStart - a.dateStart;
+          return b.term.dateStart - a.term.dateStart;
         });
       if (sortParam == "TrajanjeRastuce")
         this.reservationsAdventures.sort(function (a, b) {

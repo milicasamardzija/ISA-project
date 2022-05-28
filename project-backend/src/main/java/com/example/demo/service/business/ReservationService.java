@@ -79,8 +79,7 @@ public class ReservationService {
         calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
 
         Reservation newReservation = new Reservation();
-        newReservation.setDateStart(calStart.getTime());
-        newReservation.setDateEnd(calEnd.getTime());
+        newReservation.setTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity));
         newReservation.setPrice(reservation.getPrice());
         newReservation.setClient(client);
         newReservation.setEntity(entity);
@@ -88,11 +87,10 @@ public class ReservationService {
         newReservation.setDuration(reservation.getDuration());
        //newReservation.setAdditionalServices(new ArrayList<>());
 
-        Reservation canceledReservation = this.reservationRepository.getCanceledReservation(client.getId() ,entity.getId(), newReservation.getDateStart(), newReservation.getDateEnd());
+        Reservation canceledReservation = this.reservationRepository.getCanceledReservation(client.getId(), entity.getId(), newReservation.getTerm().getDateStart(), newReservation.getTerm().getDateEnd());
 
-        ReservedTerm reservedTerm = new ReservedTerm(newReservation.getDateStart(), newReservation.getDateEnd(), entity);
         if (canceledReservation == null){
-            entity.getReservedTerms().add(reservedTerm);
+            entity.getReservedTerms().add(newReservation.getTerm());
             this.entityService.save(entity);
             this.reservationRepository.save(newReservation);
             this.emailService.sendEmailForReservation(user);
@@ -120,11 +118,27 @@ public class ReservationService {
         cal.setTime(new Date());
         cal.add(Calendar.DAY_OF_YEAR, 3);
 
-        if (cal.getTime().before(reservation.getDateStart())){
+        if (cal.getTime().before(reservation.getTerm().getDateStart())){
             reservation.setCanceled(true);
-            this.reservationRepository.save(reservation);
-            //entity.getReservedTerms().remove(reservation.getTerm());
-            //this.entityService.save(entity);
+
+            ReservedTerm term = this.reservedTermService.findTermWithEntity(entity.getId());
+
+            List<ReservedTerm> terms = entity.getReservedTerms();
+            for(ReservedTerm t : terms){
+                if (terms.size() != 0){
+                    if(t.getId() == reservation.getTerm().getId()){
+                        terms.remove(t);
+                        break;
+                    }
+                }
+            }
+
+            entity.setReservedTerms(terms);
+            term.setEntity(null);
+
+           this.entityService.save(entity);
+           this.reservedTermService.save(term);
+           this.reservationRepository.save(reservation);
         }
 
         return "You can cancel your reservation no later than three days before the start!";

@@ -5,6 +5,7 @@ import com.example.demo.dto.business.ReservationNewDTO;
 import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.model.business.Reservation;
+import com.example.demo.model.business.ReservedTerm;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
@@ -99,8 +100,8 @@ public class ReservationController {
             if (r.getSuccessful()) {
                  ReservationDTO reservation = new ReservationDTO();
                  reservation.setId(r.getId());
-                 reservation.setDateStart(r.getDateStart().toString());
-                 reservation.setDateEnd(r.getDateEnd().toString());
+                 //reservation.setDateStart(r.getTerm().getDateStart().toString());
+                 //reservation.setDateEnd(r.getTerm().getDateEnd().toString());
                  reservation.setPrice(r.getPrice());
                  EntityClass entity = new EntityClass();
                  entity = entityService.findById(r.getEntity().getId());
@@ -121,8 +122,8 @@ public class ReservationController {
             if (r.getSuccessful()) {
                 ReservationDTO reservation = new ReservationDTO();
                 reservation.setId(r.getId());
-                reservation.setDateStart(r.getDateStart().toString());
-                reservation.setDateEnd(r.getDateEnd().toString());
+                //reservation.setDateStart(r.getTerm().getDateStart().toString());
+                //reservation.setDateEnd(r.getTerm().getDateEnd().toString());
                 reservation.setPrice(r.getPrice());
                 EntityClass entity = new EntityClass();
                 entity = entityService.findById(r.getEntity().getId());

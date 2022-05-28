@@ -20,11 +20,8 @@ public class Reservation {
     @Column(name="id", unique=true, nullable=false)
     private int id;
 
-    @Column(name="dateStart", unique=false, nullable=false)
-    private Date dateStart;
-
-    @Column(name="dateEnd", unique=false, nullable=false)
-    private Date dateEnd;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private ReservedTerm term;
 
     @Column(name="price", unique=false, nullable=false)
     private double price;
@@ -63,10 +60,9 @@ public class Reservation {
 
     }
 
-    public Reservation(int id, Date dateStart, Date dateEnd, double price, Client client, int duration) {
+    public Reservation(int id, ReservedTerm term , double price, Client client, int duration) {
         this.id = id;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
+        this.term = term;
         this.price = price;
         this.client = client;
         this.duration = duration;
@@ -86,22 +82,6 @@ public class Reservation {
 
     public void setSuccessful(Boolean successful) {
         isSuccessful = successful;
-    }
-
-    public Date getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public Date getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
     }
 
     public double getPrice() {
@@ -166,5 +146,13 @@ public class Reservation {
 
     public void setAdditionalServices(List<AdditionalService> additionalServices) {
         this.additionalServices = additionalServices;
+    }
+
+    public ReservedTerm getTerm() {
+        return term;
+    }
+
+    public void setTerm(ReservedTerm term) {
+        this.term = term;
     }
 }
