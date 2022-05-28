@@ -81,7 +81,7 @@ public class CottageService {
     calEnd.add(Calendar.DAY_OF_YEAR, searchParam.getNumber());
 
     Boolean isNotReserved = true;
-    for (Cottage cottage : this.findAll()){
+    for (Cottage cottage : this.findAll()) {
         for (ReservedTerm term : cottage.getReservedTerms()) {
             if (!term.isCanceled()) {
                 //  |***term***|
@@ -108,39 +108,42 @@ public class CottageService {
                     isNotReserved = false;
                 }
             }
+
         }
-        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber()){
+        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber()) {
             ret.add(cottage);
         }
         //country + people
-        if (isNotReserved && searchParam.getCity().equals("") && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber()){
+        if (isNotReserved && searchParam.getCity().equals("") && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber()) {
             ret.add(cottage);
         }
         //city + people
-        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber()){
+        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber()) {
             ret.add(cottage);
         }
         //city + country
-        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() == 0){
+        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() == 0) {
             ret.add(cottage);
         }
         //no city, no country, no people
-        if (isNotReserved && searchParam.getCity().equals("") && searchParam.getCountry().equals("") && searchParam.getPeople() == 0){
+        if (isNotReserved && searchParam.getCity().equals("") && searchParam.getCountry().equals("") && searchParam.getPeople() == 0) {
             ret.add(cottage);
         }
         //country
-        if (isNotReserved && searchParam.getCity().equals("") && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() == 0){
+        if (isNotReserved && searchParam.getCity().equals("") && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() == 0) {
             ret.add(cottage);
         }
         //city
-        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())  && searchParam.getCountry().equals("") && searchParam.getPeople() == 0){
+        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && searchParam.getCountry().equals("") && searchParam.getPeople() == 0) {
             ret.add(cottage);
         }
         //people
-        if (isNotReserved && searchParam.getCity().equals("") && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom()*cottage.getRoomsNumber() && searchParam.getPeople() > 0) {
+        if (isNotReserved && searchParam.getCity().equals("") && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber() && searchParam.getPeople() > 0) {
             ret.add(cottage);
         }
         isNotReserved = true;
+    }
+        return ret;
     }
 
     public List<Cottage> findAllOwnerCottages(int id){
