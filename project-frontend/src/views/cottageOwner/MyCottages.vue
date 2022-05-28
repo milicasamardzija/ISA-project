@@ -8,8 +8,8 @@
       <table style="width: 90%">
         <tr >
           <td style="width: 6%"> </td>
-          <td v-if="cottages.length != 0" ><Search /></td>
-        <td v-if="cottages.length == 0" ><h4> Jos uvek nemate vikendice. </h4></td> 
+          <td v-if="this.cottages.length != 0" ><Search /></td>
+        <td v-if="this.cottages.length == 0" ><h4> Jos uvek nemate vikendice. </h4></td> 
           <td style="width: 28%">
             <button class="btn btn-danger" style="margin-left: 39%">
               <router-link
@@ -76,8 +76,6 @@
         </div>
         
       </div>
-<!-- SAMO SA OVIM DOLE PRIKAZUJE???????-->
-      <!-- <lable style="color: transparent">{{ cottages[0].name}}</lable> -->
 </div>
     </div>
 
