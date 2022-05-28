@@ -112,7 +112,7 @@
     <div class="tab-pane container active" v-if="this.cottages.length!=0">
       <div class="row-boats" v-for="(cottage, index) in cottages" :key="index">
         <div class="col-with-picture" >
-          <div v-if="cottage.images[0].length != 0">
+          <div v-if="cottage.images.length != 0">
             <img
               :src="getImgUrl(cottage.images[0].filePath)"
               style="height: 250px !important; width: 300px !important"  @click="goToCottage()"
@@ -133,6 +133,7 @@
           <button class="btn btn-success" type="submit" @click="openModal(), getSelected(cottage)" v-if="this.s == true">
             Rezerviši
           </button>
+          <button class="btn btn-success" @click="showCottage(cottage)">Prikazi vikendicu</button>
         </div>
       </div>
     </div>
@@ -210,6 +211,9 @@ export default {
       const res = await fetch("http://localhost:8081/api/cottages");
       const data = await res.json();
       return data;
+    },
+    async showCottage(cottage){
+        this.$router.push({ name: 'CottageProfile', params: { id: cottage.id}})
     },
     async search() { 
      if (this.date == "" || this.time == "" || this.number == "") {

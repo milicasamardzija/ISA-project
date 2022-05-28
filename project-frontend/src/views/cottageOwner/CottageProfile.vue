@@ -41,7 +41,8 @@
         </div>
         <div class="column" style="width: 28rem; height: 3rem" >
           <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'">Dodaj akciju</button>
-          <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'">Pretplati se</button>
+          <button class="btn btn-success" data-target="#pretplata" data-toggle="modal" v-if="this.role === 'ROLE_CLIENT'" @click="subscribeModal()">Pretplati se</button>
+          <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'" style="margin-left:40px" @click="showActions()">Akcije</button>
         </div>
       </div>
 
@@ -162,6 +163,43 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Modal za pretplatu -->
+  <div class="modal fade" id="pretplata" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="color: #0b4025; padding: 5px 35px">
+              Rezervacija
+            </h5>
+          </div>
+          <div class="modal-body" style="padding: 15px 50px">
+            <form role="form" @submit.prevent="Cancel">
+              <div class="form-group">
+                <label for="name">Da li ste sigurni da zelite da se pretplatite ?</label>
+              </div>
+              <table>
+                <tr>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" @click="subscribe()" style="width:80px; margin-bottom:20px">
+                      Potvrdi
+                    </button>
+                  </td>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
+                      Otkazi
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </template>
 
 <script>
@@ -171,7 +209,7 @@ import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue"
 import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
 import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue';
-
+import axios from "axios"
 
 
 export default {
@@ -193,13 +231,27 @@ export default {
     };
   },
   async created() {
-        this.role = localStorage.getItem("role");
-      this.id = this.$route.params.id;
-  
-     this.cottage = this.getCottage(this.id); 
-    
+    this.role = localStorage.getItem("role");
+    this.id = this.$route.params.id;
+    this.cottage = this.getCottage(this.id);  
   },
   methods: {
+    showActions(){
+      this.$router.push({ name: 'CottageActions', params: { id: this.id}})
+    },
+    subscribe(){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.get( "http://localhost:8081/api/client/" + this.id ,
+        { headers }).then(
+          response => {
+            console.log(response);
+            alert("Uspesno ste se pretplatili!")
+            this.$router.go(0);
+          }
+        )
+    },
     async getCottage(id) {
       const res = await fetch("http://localhost:8081/api/cottages/cottage/" + id);
       const data = await res.json();  

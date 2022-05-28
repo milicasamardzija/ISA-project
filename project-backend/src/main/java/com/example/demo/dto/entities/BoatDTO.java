@@ -19,8 +19,6 @@ public class BoatDTO {
 
     private String promoDescription;
 
-    private Set<Image> image;
-
     private String rules;
 
     private int price;
@@ -53,7 +51,7 @@ public class BoatDTO {
         this.name = boat.getName();
         this.address = boat.getAddress();
         this.promoDescription = boat.getPromoDescription();
-        this.image = boat.getImage();
+        this.images = boat.getImage();
         this.rules = boat.getRules();
         this.price = boat.getPrice();
         this.grade = boat.getGrade();
@@ -102,11 +100,11 @@ public class BoatDTO {
     }
 
     public Set<Image> getImage() {
-        return image;
+        return images;
     }
 
     public void setImage(Set<Image> image) {
-        this.image = image;
+        this.images = image;
     }
 
     public String getRules() {
@@ -206,11 +204,11 @@ public class BoatDTO {
     }
 
     public Set<Image> getImages() {
-        return image;
+        return images;
     }
 
     public void setImages(Set<Image> image) {
-        this.image = image;
+        this.images = image;
     }
 
     public List<AdditionalServiceDTO> getAdditionalServices() {
