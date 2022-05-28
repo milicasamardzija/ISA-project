@@ -74,7 +74,7 @@
     </div>
 
 
-<!-- Modal za otkazivanje rezervacije -->
+<!-- Modal za rezervaciju -->
   <div class="modal fade" id="odjava" role="dialog">
       <div class="modal-dialog">
         <!-- Modal content -->
@@ -108,6 +108,8 @@
         </div>
       </div>
     </div>
+
+
 
 </template>
 

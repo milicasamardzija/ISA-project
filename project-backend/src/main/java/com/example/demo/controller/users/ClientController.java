@@ -67,7 +67,7 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping(value = "/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Void> addSubscription(@PathVariable int id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
