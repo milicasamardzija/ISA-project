@@ -2,6 +2,7 @@ package com.example.demo.dto.business;
 
 import com.example.demo.enums.EntityType;
 import com.example.demo.model.business.Reservation;
+import com.example.demo.model.business.ReservedTerm;
 import com.example.demo.model.entities.EntityClass;
 
 import java.util.Date;
@@ -10,9 +11,7 @@ public class ReservationDTO {
 
     private int id;
 
-    private String dateStart;
-
-    private String dateEnd;
+    private ReservedTermDTO term;
 
     private double price;
 
@@ -32,28 +31,12 @@ public class ReservationDTO {
         this.id = id;
     }
 
-    public String getDateStart() {
-        return dateStart;
-    }
-
     public void setEntity(EntityClass entity) {
         this.entity = entity;
     }
 
     public EntityClass getEntity() {
         return entity;
-    }
-
-    public void setDateStart(String dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public String getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(String dateEnd) {
-        this.dateEnd = dateEnd;
     }
 
     public double getPrice() {
@@ -88,10 +71,17 @@ public class ReservationDTO {
         this.duration = duration;
     }
 
+    public ReservedTermDTO getTerm() {
+        return term;
+    }
+
+    public void setTerm(ReservedTermDTO term) {
+        this.term = term;
+    }
+
     public ReservationDTO(Reservation reservation) {
         this.id = reservation.getId();
-        this.dateStart = reservation.getDateStart().toString();
-        this.dateEnd = reservation.getDateEnd().toString();
+        this.term = new ReservedTermDTO(reservation.getTerm().getDateStart(), reservation.getTerm().getDateEnd() );
         this.price = reservation.getPrice();
         this.entityType = reservation.getEntityType();
         this.isCanceled = reservation.getCanceled();

@@ -1,9 +1,11 @@
 package com.example.demo.controller.business;
 
 import com.example.demo.dto.business.ReservationDTO;
+import com.example.demo.dto.business.ReservationNewDTO;
 import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.model.business.Reservation;
+import com.example.demo.model.business.ReservedTerm;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
@@ -11,14 +13,12 @@ import com.example.demo.service.business.ReservationService;
 import com.example.demo.service.entities.AdventureService;
 import com.example.demo.service.entities.EntityService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class ReservationController {
             ret.add(new ReservationDTO(reservation));
         }
 
-        return  new ResponseEntity<>(ret, HttpStatus.OK);
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
     @GetMapping("/historyReservationsAdventures")
@@ -100,8 +100,8 @@ public class ReservationController {
             if (r.getSuccessful()) {
                  ReservationDTO reservation = new ReservationDTO();
                  reservation.setId(r.getId());
-                 reservation.setDateStart(r.getDateStart().toString());
-                 reservation.setDateEnd(r.getDateEnd().toString());
+                 //reservation.setDateStart(r.getTerm().getDateStart().toString());
+                 //reservation.setDateEnd(r.getTerm().getDateEnd().toString());
                  reservation.setPrice(r.getPrice());
                  EntityClass entity = new EntityClass();
                  entity = entityService.findById(r.getEntity().getId());
@@ -122,8 +122,8 @@ public class ReservationController {
             if (r.getSuccessful()) {
                 ReservationDTO reservation = new ReservationDTO();
                 reservation.setId(r.getId());
-                reservation.setDateStart(r.getDateStart().toString());
-                reservation.setDateEnd(r.getDateEnd().toString());
+                //reservation.setDateStart(r.getTerm().getDateStart().toString());
+                //reservation.setDateEnd(r.getTerm().getDateEnd().toString());
                 reservation.setPrice(r.getPrice());
                 EntityClass entity = new EntityClass();
                 entity = entityService.findById(r.getEntity().getId());
@@ -147,4 +147,39 @@ public class ReservationController {
         return  new ResponseEntity<>(new EntityDTO(entity, reservation.getEntityType()), HttpStatus.OK);
     }
 
+    @GetMapping("/actions/{id}")
+    public ResponseEntity<List<ReservationDTO>> getActionsForEntity(@PathVariable int id){
+        List<Reservation> reservations = reservationService.getActionsForEntity(id);
+        List<ReservationDTO> ret = new ArrayList<>();
+        for(Reservation reservation : reservations ) {
+            ret.add(new ReservationDTO(reservation));
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+    @PutMapping("/actionReservation/{id}")
+    public ResponseEntity<HttpStatus> actionReservation(@PathVariable int id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+        reservationService.actionReservation(id, user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HttpStatus> save(@RequestBody ReservationNewDTO reservation) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        this.reservationService.save(reservation, user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<HttpStatus> cancelReservation(@PathVariable int id){
+        reservationService.cancelReservation(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

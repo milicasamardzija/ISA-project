@@ -54,15 +54,18 @@
         <tbody>
           <tr v-for="(reservation, index) in reservations" :key="index">
             <td>{{ reservation.entityType }}</td>
-            <td>{{ format_date(reservation.dateStart) }}</td>
-            <td>{{ format_date(reservation.dateEnd) }}</td>
+            <td>{{ format_date(reservation.term.dateStart) }}</td>
+            <td>{{ format_date(reservation.term.dateEnd) }}</td>
             <td>{{ reservation.duration }} 
               <span v-if="reservation.entityType === 'COTTAGE' || reservation.entityType === 'BOAT'"> dana </span>
               <span v-if="reservation.entityType === 'ADVENTURE'"> h </span>  
             </td>
             <td>{{ reservation.price }}</td>
-            <td v-if="reservation.isCanceled != false">
-              <button class="btn btn-danger"  data-target="#odjava" data-toggle="modal">Otkazi</button>
+            <td v-if="reservation.canceled == false">
+              <button class="btn btn-danger"  data-target="#odjava" data-toggle="modal" @click="getSelected(reservation.id)">Otkazi</button>
+            </td>
+            <td v-if="reservation.canceled == true">
+              OTKAZANA REZERVACIJA
             </td>
           </tr>
         </tbody>
@@ -143,6 +146,7 @@
 <script>
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 import moment from 'moment';
+import axios from 'axios';
 
 export default {
   name: "ScheduledReservation",
@@ -156,6 +160,22 @@ export default {
     };
   },
   methods: {
+     async getSelected(id){
+      this.id = id;
+    },
+    Cancel(){
+       const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.put( "http://localhost:8081/api/reservation/cancel/" + this.id ,
+        { headers }).then(
+          response => {
+            console.log(response);
+            alert("Uspesno ste se otkazali rezervaciju!")
+            this.$router.go(0);
+          }
+        )
+    },
     async fetchScheduledReservations() {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -183,11 +203,11 @@ export default {
         });
       if (sortParam == "DatumRastuce")
         this.reservations.sort(function (a, b) {
-          return a.dateStart - b.dateStart;
+          return a.term.dateStart - b.term.dateStart;
         });
       if (sortParam == "DatumOpadajuce")
         this.reservations.sort(function (a, b) {
-          return b.dateStart - a.dateStart;
+          return b.term.dateStart - a.term.dateStart;
         });
       if (sortParam == "TrajanjeRastuce")
         this.reservations.sort(function (a, b) {
