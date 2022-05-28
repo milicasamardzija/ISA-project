@@ -97,7 +97,7 @@
           :key="index"
         >
           <div class="col-with-picture">
-            <div v-if="adventure.images[0].length != 0">
+            <div v-if="adventure.images.length != 0">
               <img
                 :src="getImgUrl(adventure.images[0].filePath)"
                 style="height: 250px !important; width: 300px !important" @click="goToAdventure()"
