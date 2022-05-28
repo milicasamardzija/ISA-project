@@ -52,4 +52,12 @@ public class ReservedTerm {
     public void setEntity(EntityClass entity) {
         this.entity = entity;
     }
+
+    public ReservedTerm() {}
+
+    public ReservedTerm(Date dateStart, Date dateEnd, EntityClass entity) {
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.entity = entity;
+    }
 }

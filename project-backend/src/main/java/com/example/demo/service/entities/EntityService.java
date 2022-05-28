@@ -43,4 +43,8 @@ public class EntityService {
     public void deleteById(Integer id) {
         entityRepository.deleteById(id);
     }
+
+    public void save(EntityClass entity) {
+        this.entityRepository.save(entity);
+    }
 }

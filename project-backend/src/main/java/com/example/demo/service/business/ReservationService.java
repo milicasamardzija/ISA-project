@@ -22,12 +22,14 @@ public class ReservationService {
     private EmailService emailService;
     private ClientService clientService;
     private EntityService entityService;
+    private ReservedTermService reservedTermService;
 
-    public ReservationService (ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService) {
+    public ReservationService (ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService) {
         this.reservationRepository = reservationRepository;
         this.emailService = emailService;
         this.clientService = clientService;
         this.entityService = entityService;
+        this.reservedTermService = reservedTermService;
     }
 
     public List<Reservation> findAll() {
@@ -87,9 +89,11 @@ public class ReservationService {
        //newReservation.setAdditionalServices(new ArrayList<>());
 
         Reservation canceledReservation = this.reservationRepository.getCanceledReservation(client.getId() ,entity.getId(), newReservation.getDateStart(), newReservation.getDateEnd());
-        System.out.println(canceledReservation);
 
+        ReservedTerm reservedTerm = new ReservedTerm(newReservation.getDateStart(), newReservation.getDateEnd(), entity);
         if (canceledReservation == null){
+            entity.getReservedTerms().add(reservedTerm);
+            this.entityService.save(entity);
             this.reservationRepository.save(newReservation);
             this.emailService.sendEmailForReservation(user);
         }
@@ -111,7 +115,6 @@ public class ReservationService {
     public String cancelReservation(int id, User user) {
         Reservation reservation = this.reservationRepository.findById(id);
         EntityClass entity = this.reservationRepository.findEntityByReservation(id);
-       // ArrayList<ReservedTerm> terms = this.entityService.findReservedTermsEntity(entity.getId());
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
@@ -120,7 +123,8 @@ public class ReservationService {
         if (cal.getTime().before(reservation.getDateStart())){
             reservation.setCanceled(true);
             this.reservationRepository.save(reservation);
-
+            //this.reservedTermService.delete();
+            //entity.getReservedTerms().remove();
         }
 
         return "You can cancel your reservation no later than three days before the start!";
