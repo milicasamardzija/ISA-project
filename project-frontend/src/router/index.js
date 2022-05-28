@@ -33,6 +33,7 @@ import AddAdministrator from "../views/administrator/AddAdministrator"
 import ChangePassword from "../views/administrator/ChangePassword"
 import Complaints from "../views/administrator/Complaints"
 import MyBoats from "../views/boatOwner/MyBoats"
+import CottageActions from "../views/client/reservations/CottageActions"
 
 const routes = [
   {
@@ -199,6 +200,11 @@ const routes = [
     path: "/ClientSubscription",
     name: "ClientSubscription",
     component: ClientSubscription,
+  },
+  {
+    path: "/cottageActions/:id",
+    name: "CottageActions",
+    component: CottageActions,
   },
 ];
 
