@@ -157,7 +157,7 @@ public class ReservationController {
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
-    @PutMapping("/actionReservation/{id}")
+    @GetMapping("/actionReservation/{id}")
     public ResponseEntity<HttpStatus> actionReservation(@PathVariable int id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();

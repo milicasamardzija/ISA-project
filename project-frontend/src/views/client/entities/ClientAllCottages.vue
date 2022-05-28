@@ -133,6 +133,7 @@
           <button class="btn btn-success" type="submit" @click="openModal(), getSelected(cottage)" v-if="this.s == true">
             Rezerviši
           </button>
+          <button class="btn btn-success" @click="showCottage(cottage)">Prikazi vikendicu</button>
         </div>
       </div>
     </div>
@@ -210,6 +211,9 @@ export default {
       const res = await fetch("http://localhost:8081/api/cottages");
       const data = await res.json();
       return data;
+    },
+    async showCottage(cottage){
+        this.$router.push({ name: 'CottageProfile', params: { id: cottage.id}})
     },
     async search() { 
      if (this.date == "" || this.time == "" || this.number == "") {

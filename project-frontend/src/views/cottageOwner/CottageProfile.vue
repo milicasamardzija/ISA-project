@@ -42,6 +42,7 @@
         <div class="column" style="width: 28rem; height: 3rem" >
           <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'">Dodaj akciju</button>
           <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'">Pretplati se</button>
+          <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'" style="margin-left:40px" @click="showActions()">Akcije</button>
         </div>
       </div>
 
@@ -193,13 +194,14 @@ export default {
     };
   },
   async created() {
-        this.role = localStorage.getItem("role");
-      this.id = this.$route.params.id;
-  
-     this.cottage = this.getCottage(this.id); 
-    
+    this.role = localStorage.getItem("role");
+    this.id = this.$route.params.id;
+    this.cottage = this.getCottage(this.id);  
   },
   methods: {
+    showActions(){
+      this.$router.push({ name: 'CottageActions', params: { id: this.id}})
+    },
     async getCottage(id) {
       const res = await fetch("http://localhost:8081/api/cottages/cottage/" + id);
       const data = await res.json();  
