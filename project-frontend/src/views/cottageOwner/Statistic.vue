@@ -34,7 +34,8 @@ export default {
   methods:{
 
    
-  },   async created() {
+  },  
+   async created() {
     this.role = localStorage.getItem("role");
   
  

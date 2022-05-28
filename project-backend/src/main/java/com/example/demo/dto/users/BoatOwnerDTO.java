@@ -35,7 +35,7 @@ public class BoatOwnerDTO {
     }
     public  BoatOwnerDTO(BoatOwner b){
         this.address = b.getAddress();
-        this.boatList = b.getBoatList();
+      //  this.boatList = b.getBoatList();
         this.email = b.getEmail();
         this.password = b.getPassword();
         this.name = b.getName();

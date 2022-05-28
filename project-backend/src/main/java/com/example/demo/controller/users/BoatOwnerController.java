@@ -40,8 +40,8 @@ public class BoatOwnerController {
 
         if (user.getRole().getName().equals("ROLE_BOAT_OWNER")){
             BoatOwner boatOwner = boatOwnerService.findByEmail(user.getEmail());
-            boatOwner.setBoatList(boatService.findBoatsForBoatOwner(boatOwner.getId()));
-            BoatOwnerDTO dto = new BoatOwnerDTO(boatOwner);
+            //boatOwner.setBoatList(boatService.findBoatsForBoatOwner(boatOwner.getId()));
+            BoatOwnerDTO dto = new BoatOwnerDTO(boatOwner); //bez liste brodova
 
             return new ResponseEntity<>(dto, HttpStatus.OK);
         }

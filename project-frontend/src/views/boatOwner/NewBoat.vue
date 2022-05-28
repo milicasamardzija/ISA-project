@@ -12,7 +12,7 @@
 
       <div class="row" style="margin-bottom: 1%">
         <!--Grid column-->
-        <div class="col-md-8 mb-md-0 mb-3">
+        <div class="col-md-7 mb-md-0 mb-3">
           <form id="contact-form" name="contact-form">
             <!--Grid row-->
             <div class="row" style="margin-bottom: 1%">
@@ -300,10 +300,10 @@
             <div class="status"></div>      -->
 
         <!--Grid column-->
-        <div class="col-md-4">
+        <div class="col-md-5">
           <div class="row">
             <!--Grid column-->
-            <div class="col-md-2">
+            <div class="col-md-4">
               <div class="md-form mb-0">
                 <label for="name" class="">Cena:</label>
               </div>
@@ -328,7 +328,7 @@
 
           <div class="row">
             <!--Grid column-->
-            <div class="col-md-2">
+            <div class="col-md-4">
               <div class="md-form mb-0">
                 <label for="name" class="">Broj motora:</label>
               </div>
@@ -344,7 +344,7 @@
           </div>
           <div class="row">
             <!--Grid column-->
-            <div class="col-md-2">
+            <div class="col-md-4">
               <div class="md-form mb-0">
                 <label for="name" class="">Snaga:</label>
               </div>
@@ -361,7 +361,7 @@
 
                 <div class="row">
             <!--Grid column-->
-            <div class="col-md-2">
+            <div class="col-md-4">
               <div class="md-form mb-0">
                 <label for="name" class="">Kapacitet ljudi:</label>
               </div>
@@ -377,7 +377,7 @@
           </div>
            <div class="row">
             <!--Grid column-->
-            <div class="col-md-2">
+            <div class="col-md-4">
               <div class="md-form mb-0">
                 <label for="name" class="">Duzina:</label>
               </div>
@@ -396,7 +396,7 @@
                    <!--Grid row-->
             <div class="row" >
               <!--Grid column-->
-              <div class="col-md-2">
+              <div class="col-md-4">
                 <div class="md-form mb-0">
                   <label for="name" class="">Tip broda</label>
                 </div>
@@ -404,7 +404,7 @@
               <!--Grid column-->
               <div class="col-md-4">
                 <div class="md-form">
-             <select class="form-select" aria-label="Default select example" v-model="boat.boatType" style="height:2rem; width: 10rem; ">
+             <select class="form-select" aria-label="Default select example" v-model="boat.boatType" style="height:2rem; width: 13rem;margin-bottom: 0.8rem; background-color: rgb(241, 241, 241); ">
                     <option selected>Izaberite tip</option>
                     <option value="JAHTA">jahta</option>
                     <option value="CAMAC">camac</option>
@@ -418,7 +418,7 @@
                        <!--Grid row-->
             <div class="row" >
               <!--Grid column-->
-              <div class="col-md-2">
+              <div class="col-md-4">
                 <div class="md-form mb-0">
                   <label for="name" class="">Navigaciona oprema</label>
                 </div>
@@ -426,7 +426,7 @@
               <!--Grid column-->
               <div class="col-md-5">
                 <div class="md-form ">
-             <select class="form-select" style="height:2rem; width: 10rem; " aria-label="Default select example" v-model="boat.navigationEquipment">
+             <select class="form-select" style="height:2rem; width: 13rem; margin-bottom: 0.8rem; background-color: rgb(241, 241, 241); " aria-label="Default select example" v-model="boat.navigationEquipment">
                    
                     <option value="GPS">Gps</option>
                     <option value="radar">radar</option>
@@ -440,7 +440,7 @@
         
          <div class="row">
             <!--Grid column-->
-            <div class="col-md-2">
+            <div class="col-md-4">
               <div class="md-form mb-0">
                 <label for="name" class="">Max brzina:</label>
               </div>
@@ -455,7 +455,7 @@
             </div>
           </div>
 
- <div class="row" style="margin-left: 8em; margin-top: 3em">
+ <div class="row" style="margin-left: 19.5em; margin-top: 5em">
             <!--Grid column-->
             <div class="col-md-5">
               <div class="md-form mb-2">
@@ -533,5 +533,6 @@ export default {
 
 table {
   max-width: 50%;
+  background-color: rgb(241, 241, 241);
 }
 </style>
