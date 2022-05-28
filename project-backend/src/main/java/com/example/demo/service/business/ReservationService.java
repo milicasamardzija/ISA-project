@@ -123,8 +123,8 @@ public class ReservationService {
         if (cal.getTime().before(reservation.getDateStart())){
             reservation.setCanceled(true);
             this.reservationRepository.save(reservation);
-            //this.reservedTermService.delete();
-            //entity.getReservedTerms().remove();
+            //entity.getReservedTerms().remove(reservation.getTerm());
+            //this.entityService.save(entity);
         }
 
         return "You can cancel your reservation no later than three days before the start!";
