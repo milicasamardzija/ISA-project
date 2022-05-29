@@ -404,11 +404,11 @@
               <!--Grid column-->
               <div class="col-md-4">
                 <div class="md-form">
-             <select class="form-select" aria-label="Default select example" v-model="boat.boatType" style="height:2rem; width: 13rem;margin-bottom: 0.8rem; background-color: rgb(241, 241, 241); ">
+             <select class="form-select" aria-label="Default select example" v-model="boatTypeString" style="height:2rem; width: 13rem;margin-bottom: 0.8rem; background-color: rgb(241, 241, 241); ">
                     <option selected>Izaberite tip</option>
-                    <option value="JAHTA">jahta</option>
-                    <option value="CAMAC">camac</option>
-                    <option value="BROD">brod</option>
+                    <option value="0">jahta</option>
+                    <option value="1">camac</option>
+                    <option value="2">brod</option>
                     </select>
                 </div>
               </div>
@@ -426,7 +426,7 @@
               <!--Grid column-->
               <div class="col-md-5">
                 <div class="md-form ">
-             <select class="form-select" style="height:2rem; width: 13rem; margin-bottom: 0.8rem; background-color: rgb(241, 241, 241); " aria-label="Default select example" v-model="boat.navigationEquipment">
+             <select class="form-select" v-model="equipment" style="height:2rem; width: 13rem; margin-bottom: 0.8rem; background-color: rgb(241, 241, 241); " aria-label="Default select example" >
                    
                     <option value="GPS">Gps</option>
                     <option value="radar">radar</option>
@@ -484,10 +484,11 @@ export default {
   name: "NewBoat",
   data(){
     return {
-
+        boatTypeString: "",
+        equipment: "",
       images: "", 
       adServ: {name:"", price: 0},
-      boat: {id: 0, name: "", address: { street: "", number: 0, city: "", country: "Srbija", id: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [], boatType: "", lenght: 0, motorNumber: 0, power: 0, maxSpeed: 0, navigationEquipment: "", fishingEquipment: "", quantity: 0, cancelationType: "" },
+      boat: {id: 0, name: "", address: { street: "", number: 0, city: "", country: "Srbija", id: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [], boatType: 0, lenght: 0, motorNumber: 0, power: 0, maxSpeed: 0, navigationEquipment: "", fishingEquipment: "", quantity: 0, cancelationType: 0 },
     }
 
   },
@@ -506,9 +507,13 @@ export default {
               const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
+      this.boat.boatType = parseInt(this.boatTypeString);
+      console.log( this.boat.boatType )
+    this.boat.navigationEquipment = this.equipment
+    console.log(this.boat.navigationEquipment)
       console.log(this.images);
-      axios.post("http://localhost:8081/api/boats/newBoat/", this.boat,  {headers}).then( response => response.json());
-   this.$router.push({name: "MyBoats"});
+      axios.post("http://localhost:8081/api/boats/newBoat", this.boat,  {headers}).then( response => response.json());
+  this.$router.push({name: "MyBoats"});
       }
 
   },
