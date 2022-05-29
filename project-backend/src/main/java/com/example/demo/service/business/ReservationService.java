@@ -120,7 +120,7 @@ public class ReservationService {
         if (cal.getTime().before(reservation.getTerm().getDateStart())){
             reservation.setCanceled(true);
 
-            ReservedTerm term = this.reservedTermService.findTermWithEntity(entity.getId());
+            ReservedTerm term = reservation.getTerm();
             term.setCanceled(true);
 
            this.reservedTermService.save(term);
