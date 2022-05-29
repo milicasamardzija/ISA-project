@@ -147,6 +147,7 @@
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 import moment from 'moment';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   name: "ScheduledReservation",
@@ -171,10 +172,14 @@ export default {
         { headers }).then(
           response => {
             console.log(response);
-            alert("Uspesno ste se otkazali rezervaciju!")
-            this.$router.go(0);
+             return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text: response.data,
+           });
           }
         )
+        this.$router.go(0);
     },
     async fetchScheduledReservations() {
       const headers = {

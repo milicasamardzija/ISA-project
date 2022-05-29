@@ -178,8 +178,7 @@ public class ReservationController {
     }
 
     @PutMapping("/cancel/{id}")
-    public ResponseEntity<HttpStatus> cancelReservation(@PathVariable int id){
-        reservationService.cancelReservation(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> cancelReservation(@PathVariable int id){
+        return new ResponseEntity<>(reservationService.cancelReservation(id), HttpStatus.OK);
     }
 }

@@ -111,7 +111,6 @@ public class ReservationService {
 
     public String cancelReservation(int id) {
         Reservation reservation = this.reservationRepository.findById(id);
-        EntityClass entity = this.reservationRepository.findEntityByReservation(id);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
@@ -125,6 +124,7 @@ public class ReservationService {
 
            this.reservedTermService.save(term);
            this.reservationRepository.save(reservation);
+           return "Reservation is canceled!";
         }
 
         return "You can cancel your reservation no later than three days before the start!";
