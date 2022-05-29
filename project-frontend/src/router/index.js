@@ -34,7 +34,8 @@ import ChangePassword from "../views/administrator/ChangePassword"
 import Complaints from "../views/administrator/Complaints"
 import MyBoats from "../views/boatOwner/MyBoats"
 import CottageActions from "../views/client/reservations/CottageActions"
-
+import BoatProfile from "../views/boatOwner/BoatProfile"
+import EditBoat from "../views/boatOwner/EditBoat"
 const routes = [
   {
     path: "/",
@@ -191,10 +192,20 @@ const routes = [
     name: "CottageProfile",
     component: CottageProfile,
   },
+   {
+    path: "/boatProfile/:id",
+    name: "BoatProfile",
+    component: BoatProfile,
+  },
   {
     path: "/editCottage",
     name: "EditCottage",
     component: EditCottage,
+  },
+  {
+    path: "/editBoat/:id",
+    name: "EditBoat",
+    component: EditBoat,
   },
   {
     path: "/ClientSubscription",

@@ -58,18 +58,18 @@
               data-toggle="modal"
               @click="getSelected(cottage.id)"
             >
-              Obrisi vikendicu
+              Obrisi brod
             </button>
           </div>
           <div class="row">
-            <button class="btn btn-success" @click="showCottage(cottage)" >
+            <button class="btn btn-success" @click="showBoat(cottage)" >
              <!--  <router-link to="{name: 'CottageProfile', params: { id: 'cottage.id'} }"></router-link>
                <router-link  style="
                   text-decoration: none !important;
                   display: inline-block;
                   color: white;
                 " to="`/cottageProfile/${cottage.id}`"></router-link> -->
-            Prikazi vikendicu
+            Prikazi brod
              
             </button>
           </div>
@@ -98,11 +98,11 @@
               <div class="form-group">
                 <label for="psw"
                   ><span class="glyphicon glyphicon-eye-open"></span> Da li ste
-                  sigurni da zelite da obrisete ovu vikendicu?</label
+                  sigurni da zelite da obrisete ovaj brod?</label
                 >
               </div>
 
-              <button type="submit" class="btn btn-success btn-block" @click="deleteCottage()">
+              <button type="submit" class="btn btn-success btn-block" @click="deleteBoat()">
                 <span></span> Potvrdi
               </button>
             </form>
@@ -129,7 +129,7 @@ import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 import axios from 'axios'
 
 export default {
-  name: "MyCottages",
+  name: "MyBoats",
   components: {
     Search,
     NavBarLogOut,
@@ -169,15 +169,15 @@ export default {
   
    },
 
-      async showCottage(cottage){
-        this.$router.push({ name: 'CottageProfile', params: { id: cottage.id}})
+      async showBoat(cottage){
+        this.$router.push({ name: 'BoatProfile', params: { id: cottage.id}})
    },
    
     getSelected(id){
       this.selectedId = id;
     },
    //ne radi
-     deleteCottage(){
+     deleteBoat(){
        console.log(this.selectedId)
          axios.get("http://localhost:8081/api/cottages/delete/"+ this.selectedId).then(
           
@@ -188,7 +188,7 @@ export default {
            }
          );
    
-      this.cottages = this.getMyCottages();
+      this.cottages = this.getMyBoats();
      // this.$router.go(0);
 
        

@@ -106,4 +106,21 @@ public class BoatController {
 
     }
 
+    @GetMapping("/boat/{id}")
+    public ResponseEntity<BoatDTO> getById(@PathVariable int id){
+        BoatDTO boat = new BoatDTO(boatService.findOne(id));
+        List<AdditionalService> allServices= this.additionalServicesService.getServicesForCottage(id); //uzmem servise
+        Set<AdditionalServiceDTO> services = new HashSet<>();
+        if( allServices.size() != 0 ) {
+            for (AdditionalService a : allServices) {
+
+                services.add(new AdditionalServiceDTO(a));
+                boat.setAdditionalServices(services);
+            }
+        } else{
+            boat.setAdditionalServices(services);
+        }
+        return  new ResponseEntity<>(boat, HttpStatus.OK);
+    }
+
     }
