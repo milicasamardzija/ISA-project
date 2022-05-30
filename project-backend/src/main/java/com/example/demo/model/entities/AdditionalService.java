@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class AdditionalService {
@@ -21,9 +23,10 @@ public class AdditionalService {
     @Column
     private double price;
 
-    @ManyToMany(mappedBy = "additionalServices")
-    @JsonIgnore
-    private List<Reservation> reservations;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "reservation_id")
+    @JsonIgnoreProperties("reservation")
+    private Reservation reservation;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name= "entity_id")
@@ -54,12 +57,12 @@ public class AdditionalService {
         this.price = price;
     }
 
-    public List<Reservation> getReservations() {
-        return reservations;
+    public Reservation getReservations() {
+        return reservation;
     }
 
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
+    public void setReservations(Reservation reservation) {
+        this.reservation = reservation;
     }
 
     public EntityClass getEntities() {
@@ -75,5 +78,14 @@ public class AdditionalService {
         this.setName(dto.getName());
         this.setPrice(dto.getPrice());
     }
+
+    public AdditionalService(int id, String name, double price, Reservation reservation, EntityClass entity) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.reservation = reservation;
+        this.entity = entity;
+    }
+
     public AdditionalService(){}
 }

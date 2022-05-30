@@ -1,14 +1,19 @@
 package com.example.demo.service.business;
 
+import com.example.demo.dto.business.PriceDTO;
 import com.example.demo.dto.business.ReservationNewDTO;
+import com.example.demo.dto.entities.AdditionalServiceDTO;
 import com.example.demo.enums.EntityType;
 import com.example.demo.model.business.Reservation;
+import com.example.demo.model.business.ReservationServices;
 import com.example.demo.model.business.ReservedTerm;
+import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ReservationRepository;
 import com.example.demo.service.email.EmailService;
+import com.example.demo.service.entities.AdditionalServicesService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.ClientService;
 import org.springframework.stereotype.Service;
@@ -23,13 +28,17 @@ public class ReservationService {
     private ClientService clientService;
     private EntityService entityService;
     private ReservedTermService reservedTermService;
+    private AdditionalServicesService additionalService;
+    private ReservationServicesService reservationServicesService;
 
-    public ReservationService (ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService) {
+    public ReservationService (ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService) {
         this.reservationRepository = reservationRepository;
         this.emailService = emailService;
         this.clientService = clientService;
         this.entityService = entityService;
         this.reservedTermService = reservedTermService;
+        this.additionalService = additionalService;
+        this.reservationServicesService = reservationServicesService;
     }
 
     public List<Reservation> findAll() {
@@ -85,13 +94,29 @@ public class ReservationService {
         newReservation.setEntity(entity);
         newReservation.setEntityType(EntityType.COTTAGE);
         newReservation.setDuration(reservation.getDuration());
-       //newReservation.setAdditionalServices(new ArrayList<>());
+
+        ArrayList<ReservationServices> services = new ArrayList<>();
+
+        for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
+            ReservationServices a = new ReservationServices(as);
+            services.add(a);
+            this.reservationServicesService.save(a);
+        }
+
+        newReservation.setReservationServices(services);
 
         Reservation canceledReservation = this.reservationRepository.getCanceledReservation(client.getId(), entity.getId(), newReservation.getTerm().getDateStart(), newReservation.getTerm().getDateEnd());
 
         if (canceledReservation == null){
             entity.getReservedTerms().add(newReservation.getTerm());
             this.reservationRepository.save(newReservation);
+
+            for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
+                ReservationServices a = new ReservationServices(as);
+                a.setReservation(newReservation);
+                this.reservationServicesService.save(a);
+            }
+
             this.emailService.sendEmailForReservation(user);
         }
         //vrati poruku
@@ -128,5 +153,15 @@ public class ReservationService {
         }
 
         return "You can cancel your reservation no later than three days before the start!";
+    }
+
+    public Double getTotalPrice(PriceDTO price) {
+        double ret = price.getEntityPrice();
+
+        for(AdditionalServiceDTO as : price.getServices()) {
+            ret = ret + as.getPrice();
+        }
+
+        return  ret;
     }
 }

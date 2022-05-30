@@ -1,5 +1,6 @@
 package com.example.demo.controller.business;
 
+import com.example.demo.dto.business.PriceDTO;
 import com.example.demo.dto.business.ReservationDTO;
 import com.example.demo.dto.business.ReservationNewDTO;
 import com.example.demo.dto.entities.AdventureDTO;
@@ -166,6 +167,7 @@ public class ReservationController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+
     public ResponseEntity<HttpStatus> save(@RequestBody ReservationNewDTO reservation) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
@@ -180,5 +182,10 @@ public class ReservationController {
     @PutMapping("/cancel/{id}")
     public ResponseEntity<String> cancelReservation(@PathVariable int id){
         return new ResponseEntity<>(reservationService.cancelReservation(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/totalPrice")
+    public ResponseEntity<Double> getTotalPrice(@RequestBody PriceDTO price){
+        return new ResponseEntity<>(this.reservationService.getTotalPrice(price), HttpStatus.OK);
     }
 }

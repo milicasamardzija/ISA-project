@@ -1,5 +1,8 @@
 package com.example.demo.dto.business;
 
+import com.example.demo.dto.entities.AdditionalServiceDTO;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ReservationNewDTO {
@@ -9,15 +12,17 @@ public class ReservationNewDTO {
     private double price;
     private int duration;
     private int entityId;
+    private ArrayList<AdditionalServiceDTO> additionalServices;
 
     public ReservationNewDTO() {}
 
-    public ReservationNewDTO(Date dateStart, String timeStart, double price, int duration, int entityId) {
+    public ReservationNewDTO(Date dateStart, String timeStart, double price, int duration, int entityId, ArrayList<AdditionalServiceDTO> additionalServices) {
         this.dateStart = dateStart;
         this.timeStart = timeStart;
         this.price = price;
         this.duration = duration;
         this.entityId = entityId;
+        this.additionalServices = additionalServices;
     }
 
     public Date getDateStart() {
@@ -66,5 +71,13 @@ public class ReservationNewDTO {
 
     public void setTimeStart(String timeStart) {
         this.timeStart = timeStart;
+    }
+
+    public ArrayList<AdditionalServiceDTO> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public void setAdditionalServices(ArrayList<AdditionalServiceDTO> additionalServices) {
+        this.additionalServices = additionalServices;
     }
 }

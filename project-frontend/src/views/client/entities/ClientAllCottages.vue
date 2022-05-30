@@ -130,10 +130,10 @@
           </h4>
           <h4 style="width: 600px" class="text">Ocena: {{ cottage.grade }}</h4>
           <h4 style="width: 600px" class="text">Cena: {{cottage.price}}</h4>
-          <button class="btn btn-success" type="submit" @click="openModal(), getSelected(cottage)" v-if="this.s == true">
+          <button class="btn btn-success" type="submit" @click="openModal(cottage), getSelected(cottage)" v-if="this.s == true">
             Rezerviši
           </button>
-          <button class="btn btn-success" @click="showCottage(cottage)">Prikazi vikendicu</button>
+          <button class="btn btn-success" @click="showCottage(cottage)" style="margin-left:40px">Prikazi vikendicu</button>
         </div>
       </div>
     </div>
@@ -156,13 +156,33 @@
       <h4 style="width: 600px" class="text">Cena: {{this.selectedEntity.price}}</h4>
       <h4 style="width: 600px" class="text">Datum pocetka: {{this.date}}</h4>
       <h4 style="width: 600px" class="text">Broj dana: {{this.number}}</h4>
-      <h4 style="width: 600px" class="text">Broj osoba: {{this.people}}</h4>
-      <select width=300 style="width: 350px"
-            size="8" multiple>
-        <option value='blue'>Wi-fi</option>
-        <option value='green'>Klima</option>
-        <option value='red'>Terasa</option>
-      </select>
+      <h4 style="width: 600px" class="text" v-if="this.people > 0 ">Broj osoba: {{this.people}}</h4>
+      <h4 style="width: 600px" class="text" v-if="this.people <= 0 ">Broj osoba: <input type="number" v-model="this.people"> </h4>
+      
+      <!--<select width=300 style="width: 350px" 
+            size="8" multiple v-model="this.additionalServicesReservation" >
+        <option  v-bind:value="a.id" v-for="(a, index) in this.additionalServices" :key="index" @click="getPrice()">{{a.name}}  {{a.price}} rsd</option>
+      </select>-->
+      <div> 
+        <label style="width: 600px" v-if="this.additionalServices.length != 0">Izaberite zeljene dodatne usluge:</label>
+        <table v-if="this.additionalServices.length != 0">
+          <tr  v-for="(as, index) in additionalServices" :key="index">
+            <td> {{as.name}} </td>
+            <td> {{as.price}} </td>
+            <td><button class="btn btn-secondary" @click="addService(as, index)">+</button></td>
+          </tr>
+        </table>
+      </div>
+      <div v-if="this.additionalServicesReservation.length != 0"> 
+        <label style="width: 600px" v-if="this.additionalServicesReservation.length != 0">Izaberali ste:</label>
+        <table v-if="this.additionalServicesReservation.length != 0">
+          <tr  v-for="(as, index) in additionalServicesReservation" :key="index">
+            <td> {{as.name}} </td>
+            <td> {{as.price}} </td>
+            <td><button class="btn btn-secondary" @click="removeService(as, index)">-</button></td>
+          </tr>
+        </table>
+      </div>
       <h4 style="width: 600px" class="text">Konacna cena: {{this.price}}</h4>
       <button class="btn btn-success" type="submit" style="margin-top:10px" @click="makeReservation()">
         Rezerviši
@@ -178,6 +198,8 @@
 <script>
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 import axios from 'axios'
+import Swal from 'sweetalert2';
+import moment from 'moment';
 
 export default {
   name: "ClietAllCottages",
@@ -195,15 +217,40 @@ export default {
       number: "",
       maxLength:0,
       modalOpened: false,
-      people: "",
+      people: 0,
       selectedEntity: {},
-      price: 2000,
+      price: "",
       s: false,
-      today: ""
+      today: "",
+      additionalServices : [],
+      additionalServicesReservation: []
     };
   },
 
   methods: {
+    addService(service, index){
+      this.additionalServicesReservation.push(service);
+      this.additionalServices.splice(index, 1)
+      this.price = this.getPrice();
+    },
+    removeService(service, index){
+      this.additionalServices.push(service);
+      this.additionalServicesReservation.splice(index, 1);
+      this.price = this.getPrice();
+    },
+    getPrice(){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        };
+        axios.post("http://localhost:8081/api/reservation/totalPrice" ,{
+          entityPrice: this.selectedEntity.price,
+          services: this.additionalServicesReservation,
+        },{headers})
+      .then (response => { 
+        console.log(response.data);
+        this.price = response.data;
+      });
+    },
     getSelected(entity){
       this.selectedEntity = entity;
     },
@@ -216,15 +263,24 @@ export default {
         this.$router.push({ name: 'CottageProfile', params: { id: cottage.id}})
     },
     async search() { 
+    this.today = this.dates()
+    var t = this.format_date(this.today)
+    var dt = this.format_date(this.date)
      if (this.date == "" || this.time == "" || this.number == "") {
-        alert("Morate uneti datum, vreme i broj dana!")
+        return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate uneti datum, vreme i broj dana!'
+           });
       } else {
-        if(this.date > this.today){
-          alert(this.date)
-          alert(this.today)
-          alert("Morate izabrati datum koji je danasnji ili posle danasnjeg!")
+        if(dt < t){
+           return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate izabrati datum koji je danasnji ili posle danasnjeg!'
+           });
         } else {
-          const headers = {
+        const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       axios.post("http://localhost:8081/api/cottages/reservationSearch" ,{
@@ -243,27 +299,28 @@ export default {
       }
     },
     async makeReservation() {
+      console.log(this.date)
+      console.log(this.time)
+      console.log(this.number)
       if (this.date == "" || this.time == "" || this.number == "") {
         alert("Morate uneti datum, vreme i broj dana!")
       } else {
-        const res = await fetch("http://localhost:8081/api/reservation", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
+        const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        };
+        axios.post("http://localhost:8081/api/reservation" ,{
           dateStart: this.date,
           timeStart: this.time,
           price: this.price,
           duration: this.number,
-          entityId: this.selectedEntity.id
-        }),
+          entityId: this.selectedEntity.id,
+          additionalServices : this.additionalServicesReservation
+        },{headers})
+      .then (response => { 
+        console.log(response.data);
       });
-      const data = await res.json();
-      console.log(data)
-      this.closeModal();
-      }
+       this.closeModal();
+    }
     },
     getImgUrl(img) {
       var images = require.context('../../../assets/cottageImages/', false, /.jpg$/)
@@ -312,21 +369,48 @@ export default {
         this.cottages =  await this.fetchCottages();
       }
     },
-    openModal() {
+    openModal(cottage) {
       this.modalOpened = true;
+      this.selectedEntity = cottage;
+      this.price = this.selectedEntity.price;
+      this.additionalServices = this.getAdditionalServices();
     },
     closeModal() {
       this.modalOpened = false;
+      this.date = "";
+      this.name = "";
+      this.country = "";
+      this.city = "";
+      this.number = "";
+      this.price = "";
+      this.today = "";
+      this.additionalServices = [];
+      this.additionalServicesReservation = [];
     },
     dates(){
       var today = new Date();
       var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(); 
       var dateTime = date+' '+time;
       return dateTime;
+    },
+    format_date(value){
+      if (value) {
+        return moment(value).format('MM/DD/YYYY')
+      }
+    },
+    getAdditionalServices(){
+      const headers = {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + localStorage.getItem("token"),
+      };
+      axios.get("http://localhost:8081/api/additionalService/services/" + this.selectedEntity.id ,{headers})
+      .then (response => { 
+        console.log(response.data);
+        this.additionalServices = response.data;
+      })
     }
   },
-
   async created() {
     this.cottages = await this.fetchCottages();
     this.maxLength = this.cottages.length;

@@ -36,4 +36,12 @@ public class AdditionalServicesService {
     public AdditionalService save(AdditionalService additionalService) {
         return this.additionalServicesRepository.save(additionalService);
     }
+
+    public List<AdditionalService> getAll(){
+        return  this.additionalServicesRepository.findAll();
+    }
+
+    public AdditionalService findById(int id) {
+        return this.additionalServicesRepository.findById(id);
+    }
 }

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,10 +52,17 @@ public class Reservation {
     @JsonIgnoreProperties("entities")
     private EntityClass entity;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name="reservation_services", joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
-    @JsonIgnore
-    private List<AdditionalService> additionalServices;
+    public List<ReservationServices> getReservationServices() {
+        return reservationServices;
+    }
+
+    public void setReservationServices(List<ReservationServices> reservationServices) {
+        this.reservationServices = reservationServices;
+    }
+
+    @OneToMany(mappedBy= "reservation", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JsonIgnoreProperties("reservation")
+    private List<ReservationServices> reservationServices = new ArrayList<>();
 
     public Reservation() {
 
@@ -138,14 +146,6 @@ public class Reservation {
 
     public void setAction(Boolean action) {
         this.action = action;
-    }
-
-    public List<AdditionalService> getAdditionalServices() {
-        return additionalServices;
-    }
-
-    public void setAdditionalServices(List<AdditionalService> additionalServices) {
-        this.additionalServices = additionalServices;
     }
 
     public ReservedTerm getTerm() {
