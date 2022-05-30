@@ -230,6 +230,7 @@
                   class="form-control"
                   id="psw"
                   placeholder="Potvrdite lozinku"
+                  v-model="passwordRepeat"
                 />
               </div>
               <button
@@ -279,6 +280,7 @@ export default {
         reasonForRegistration: "",
         telephone: "",
       },
+      passwordRepeat:""
     };
   },
   computed: {
@@ -287,28 +289,7 @@ export default {
     },
   },
   methods: {
-   
     async Login() {
-     /* const res = await fetch("http://localhost:8081/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ email: this.email, password: this.password }),
-      });
-      const data = await res.json();
-      localStorage.setItem("token", data.accessToken);
-      localStorage.setItem("role", data.role);
-      console.log(localStorage.getItem("token"));
-      console.log(localStorage.getItem("role"));
-      if (localStorage.getItem("role") == "ROLE_CLIENT") {
-        this.$router.push({ name: "ClientAllCottages" });
-        this.$router.go(0);
-        console.log(localStorage.getItem("token"));
-        console.log(localStorage.getItem("role"));
-      } else if (localStorage.getItem("role") == "ROLE_COTTAGE_OWNER") {
-        this.$router.push({ name: "HomePageInProfil" });
-      }*/
       const headers ={
         "Content-type": "application/json",
       }; 
@@ -369,10 +350,18 @@ export default {
              type: "warning",
              text:'Vas nalog jos uvek nije aktiviran ili ste pogresili prilikom unosa kredencijala!'
            });
-       // alert("")
       }) 
     },
     async register() {
+
+      if (this.newUser.password != this.passwordRepeat){
+        return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Sifre se ne poklapaju!'
+           });
+      } else {
+
       axios.post("http://localhost:8081/api/auth/signup",{ firstname : this.newUser.firstname, 
        lastname : this.newUser.lastname,
        role: this.newUser.role,
@@ -397,7 +386,7 @@ export default {
          
        }
       }) 
-     
+    }
     },
   },
 };
