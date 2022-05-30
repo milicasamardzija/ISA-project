@@ -109,7 +109,7 @@
             </h5>
           </div>
           <div class="modal-body" style="padding: 15px 50px">
-            <form role="form">
+            <form role="form"  @submit.prevent="register()">
               <div class="form-group">
                 <label for="name">Ime</label>
                 <input
@@ -233,7 +233,7 @@
                 />
               </div>
               <button
-                type="submit"
+               type="submit"
                 class="btn btn-success btn-block"
                 @click="register()"
               >
@@ -369,11 +369,12 @@ export default {
              type: "warning",
              text:'Vas nalog jos uvek nije aktiviran ili ste pogresili prilikom unosa kredencijala!'
            });
-       // alert("")
+      
       }) 
     },
-    async register() {
-      axios.post("http://localhost:8081/api/auth/signup",{ firstname : this.newUser.firstname, 
+     register() {
+    
+          axios.post("http://localhost:8081/api/auth/signup",{ firstname : this.newUser.firstname, 
        lastname : this.newUser.lastname,
        role: this.newUser.role,
        reasonForRegistration: this.newUser.reasonForRegistration,
@@ -385,18 +386,21 @@ export default {
         number: this.newUser.address.number,
         address: this.newUser.address,
         telephone: this.newUser.telephone
-       }).then(response => { 
-       console.log(response.status);
-        if (response.status == '400'){
-            return new Swal({
+       }).catch( response => {
+         console.log(response)
+           
+                 return new Swal({
              title:"Nije uspesno",
              type: "warning",
-             text:'Vec postoji korisnik sa ovim mejlom!'
+             text:'Vec postoji korisnik sa ovim mejlom!',
+               timer: 6000
            });
-           
-         
-       }
-      }) 
+              
+       })
+    
+        
+    
+    
      
     },
   },
