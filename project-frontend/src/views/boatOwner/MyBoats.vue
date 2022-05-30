@@ -5,11 +5,29 @@
   </div>
   <div class="">
     <div class="tab-pane active containerInfo">
+
       <table style="width: 90%">
         <tr >
           <td style="width: 6%"> </td>
-          <td v-if="this.cottages.length != 0" ><Search /></td>
-        <td v-if="this.cottages.length == 0" ><h4> Jos uvek nemate brodove. </h4></td> 
+          <!-- <td v-if="this.cottages.length != 0" ><Search /></td> -->
+                    <nav class="navbar navbar-expand-sm navbar-dark">
+    <form class="form-inline" @submit.prevent="searchBoats()">
+      <div class="row">
+        <div class="">
+          <input
+            class="form-control mr-bg-4 mr-sm-4"
+            type="text"
+            placeholder="naziv broda"
+            v-model="search.name"
+          />
+          <input class="form-control mr-sm-2" type="text" placeholder="ulica" v-model="search.street"/>
+           <input class="form-control mr-sm-2" type="text" placeholder="grad" v-model="search.city"/>
+          <button class="btn btn-success" type="submit" @click="searchBoats()">Search</button>
+        </div>
+      </div>
+    </form>
+  </nav>
+        <td v-if="this.cottages.length == 0" ><h4> Nemate brodove. </h4></td> 
           <td style="width: 28%">
             <button class="btn btn-danger" style="margin-left: 39%">
               <router-link
@@ -123,7 +141,7 @@
 </template>
 
 <script>
-import Search from "../../components/cottageOwner/Search.vue";
+// import Search from "../../components/cottageOwner/Search.vue";
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 import axios from 'axios'
@@ -131,7 +149,7 @@ import axios from 'axios'
 export default {
   name: "MyBoats",
   components: {
-    Search,
+    // Search,
     NavBarLogOut,
 
     NavBarBoatOwner
@@ -142,7 +160,8 @@ export default {
       name: "",
       city: "",
       boatOwner: "",
-      notEmpty: false
+      notEmpty: false,
+       search: { name: "", street: "", city: ""},
     }
   },
 
@@ -167,6 +186,17 @@ export default {
  
    
   
+   },
+      searchBoats(){
+       const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.post("http://localhost:8081/api/boats/searchBoatOwner", this.search, {headers}).then( response=> {
+         console.log(response);
+         this.cottages = response.data
+      }
+      
+      )
    },
 
       async showBoat(cottage){

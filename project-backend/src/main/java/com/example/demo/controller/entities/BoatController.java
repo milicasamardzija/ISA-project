@@ -50,11 +50,26 @@ public class BoatController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<Boat>> search(@RequestBody SearchDTO searchParam) {
-
-        return new ResponseEntity<>(boatService.searchBoats(searchParam), HttpStatus.OK);
+    public ResponseEntity<List<BoatDTO>> searchStartPage(@RequestBody SearchDTO searchParam) {
+        List<BoatDTO> ret = new ArrayList<>();
+        if( boatService.searchBoatsStartPage(searchParam).size() != 0) {
+            for (Boat c : boatService.searchBoatsStartPage(searchParam)) {
+                ret.add(new BoatDTO(c));
+            }
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @PostMapping("/searchBoatOwner")
+    public ResponseEntity<List<BoatDTO>> searchBoatOwner(@RequestBody SearchDTO searchParam) {
+        List<BoatDTO> ret = new ArrayList<>();
+        if( boatService.searchBoatsStartPage(searchParam).size() != 0) {
+            for (Boat c : boatService.searchBoatsOwner(searchParam)) {
+                ret.add(new BoatDTO(c));
+            }
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
     @GetMapping("/myBoats/{id}")
     public ResponseEntity<List<BoatDTO>> getOwnersBoats(@PathVariable int id) {
 

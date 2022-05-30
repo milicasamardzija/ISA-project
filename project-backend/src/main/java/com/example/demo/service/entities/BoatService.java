@@ -5,10 +5,14 @@ import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.entities.AdditionalService;
 
 import com.example.demo.model.entities.Boat;
+import com.example.demo.model.entities.Cottage;
+import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.AdditionalServicesRepository;
 import com.example.demo.repository.entities.BoatRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,18 +51,110 @@ public class BoatService {
         boatRepository.deleteById(id);
     }
 
-    public List<Boat> searchBoats(SearchDTO searchParam) {
+    public List<Boat> searchBoatsStartPage(SearchDTO searchParam) {
         List<Boat> ret = new ArrayList<>();
 
-        for (Boat boat : this.findAll()){
-            if (boat.getName().toLowerCase().contains(searchParam.getName().toLowerCase()) && boat.getAddress().getCity().toLowerCase().contains(searchParam.getCity().toLowerCase()) && boat.getAddress().getStreet().toLowerCase().contains(searchParam.getStreet().toLowerCase())){
-                ret.add(boat);
+        for (Boat cottage : this.findAll()) {
+
+            //prazno sve
+            if( searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                ret.add(cottage);
+            }
+            //prazno ime
+            else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                if( cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+                    ret.add(cottage);
+                }
+            }
+            //prazno ime i ulica
+            else if(searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                if(cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+                    ret.add(cottage);
+                }
+            }
+            //prazno ime i grad
+            else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                if( cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase())){
+                    ret.add(cottage);
+                }
+            }
+            //prazna ulica i grad
+            else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) ){
+                    ret.add(cottage);
+                }
+            }
+            //prazno grad
+            else if(!searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) ){
+                    ret.add(cottage);
+                }
+            }
+            //prazna ulica
+            else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) ){
+                    ret.add(cottage);
+                }
             }
         }
+
 
         return  ret;
     }
 
+    public List<Boat> searchBoatsOwner(SearchDTO searchParam) {
+        List<Boat> ret = new ArrayList<>();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+        if(user.getRole().getName().equals("ROLE_BOAT_OWNER")){
+            List<Boat> ownersCottages = this.findBoatsForBoatOwner(user.getId());
+            for (Boat c : ownersCottages ) {
+                //prazno sve
+                if( searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                    //vratice sve
+                    ret.add(c);
+                }
+                //prazno ime
+                else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                    if( c.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) && c.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+                        ret.add(c);
+                    }
+                }
+                //prazno ime i ulica
+                else if(searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                    if(c.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+                        ret.add(c);
+                    }
+                }
+                //prazno ime i grad
+                else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                    if( c.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase())){
+                        ret.add(c);
+                    }
+                }
+                //prazna ulica i grad
+                else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                    if(c.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) ){
+                        ret.add(c);
+                    }
+                }
+                //prazno grad
+                else if(!searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                    if(c.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && c.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) ){
+                        ret.add(c);
+                    }
+                }
+                //prazna ulica
+                else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                    if(c.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && c.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) ){
+                        ret.add(c);
+                    }
+                }
+            }
+        }
+        return  ret;
+    }
 
     public List<Boat> findBoatsForBoatOwner(int id){
         return  boatRepository.findBoatsForBoatOwner(id);
