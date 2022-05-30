@@ -1,6 +1,7 @@
 package com.example.demo.service.entities;
 
 import com.example.demo.dto.entities.AdditionalServiceDTO;
+import com.example.demo.dto.entities.CottageDTO;
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.Cottage;
@@ -14,11 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 
 @Service
 public class CottageService {
@@ -27,8 +24,9 @@ public class CottageService {
 
     private  AdditionalServicesService aditionalServicesService;
 
-    public CottageService(CottageRepository cottageRepository){
+    public CottageService(CottageRepository cottageRepository, AdditionalServicesService additionalServicesService){
         this.cottageRepository = cottageRepository;
+        this.aditionalServicesService = additionalServicesService;
     }
 
     public List<Cottage> findAll() {
@@ -160,5 +158,33 @@ public class CottageService {
     public Cottage saveCottage(Cottage newCottage){
         return this.cottageRepository.save(newCottage);
     }
-    
+
+    public void update(CottageDTO editCottage, Set<AdditionalService> newServices) {
+        Cottage newCottageState = this.cottageRepository.getCottageWithServices(editCottage.getId());
+
+        newCottageState.setAddress(editCottage.getAddress());
+        newCottageState.setName(editCottage.getName());
+        newCottageState.setPrice(editCottage.getPrice());
+        newCottageState.setPromoDescription(editCottage.getPromoDescription());
+        newCottageState.setRules(editCottage.getRules());
+        newCottageState.setRoomsNumber(editCottage.getRoomsNumber());
+        newCottageState.setBedsByRoom(newCottageState.getBedsByRoom());
+        newCottageState.setImage(editCottage.getImages());
+
+        if (editCottage.getAdditionalServices().size() != 0) {
+            for (AdditionalService a :
+                    newCottageState.getAdditionalServices()) {
+                aditionalServicesService.deleteById(a.getId());
+            }
+        }
+        newCottageState.setAdditionalServices(new HashSet<>());
+
+        if (newServices.size() != 0) {
+            for (AdditionalService newA : newServices) {
+                //newA.setEntities(boatNewState);
+                newCottageState.getAdditionalServices().add(newA);
+            }
+        }
+        cottageRepository.save(newCottageState);
+    }
 }

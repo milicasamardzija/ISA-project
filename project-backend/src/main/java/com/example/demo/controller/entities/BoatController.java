@@ -123,4 +123,22 @@ public class BoatController {
         return  new ResponseEntity<>(boat, HttpStatus.OK);
     }
 
+    @PostMapping("/editBoat")
+    public ResponseEntity<Void> editBoat(@RequestBody BoatDTO editBoat){
+        Set<AdditionalService> newServices = new HashSet<>();
+        Boat boat = boatService.findOne(editBoat.getId());
+        if(editBoat.getAdditionalServices().size() != 0){
+
+            for (AdditionalServiceDTO dto : editBoat.getAdditionalServices()){
+                AdditionalService additionalService = new AdditionalService(dto);
+                additionalService.setEntities(boat);
+                newServices.add(additionalService);
+
+            }
+        }
+        this.boatService.update(editBoat, newServices);
+        return  new ResponseEntity<>( HttpStatus.OK);
+
+    }
+
     }

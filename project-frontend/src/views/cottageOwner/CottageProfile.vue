@@ -27,16 +27,8 @@
           <h4>{{cottage.address.street}} {{cottage.address.number}}, {{cottage.address.city}}, {{cottage.address.country}},</h4>
         </div>
         <div class="column" style="width: 18rem; height: 3rem">
-          <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'">
-            <router-link
-              style="
-                text-decoration: none !important;
-                display: inline-block;
-                color: white;
-              "
-              to="/editCottage" 
-              >Izmeni vikendicu
-            </router-link>
+          <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'" @click="showCottage(cottage)">
+        Izmeni vikendicu
           </button>
         </div>
         <div class="column" style="width: 28rem; height: 3rem" >
@@ -260,6 +252,10 @@ export default {
        this.capacity = this.cottage.bedsByRoom * this.cottage.roomsNumber;
       return data;
     },
+    
+      async showCottage(cottage){
+        this.$router.push({ name: 'EditCottage', params: { id: cottage.id}})
+   },
   },
   
 };

@@ -1,6 +1,7 @@
 package com.example.demo.repository.entities;
 
 import com.example.demo.model.entities.AdditionalService;
+import com.example.demo.model.entities.Boat;
 import com.example.demo.model.entities.Cottage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,5 @@ public interface AdditionalServicesRepository  extends JpaRepository<AdditionalS
 
    @Query("select ac from AdditionalService ac join fetch ac.entity e  where e.id=?1")
    List<AdditionalService> findAdditionalServicesForCottage(int id);
+
 }

@@ -28,16 +28,8 @@
         </div>
         <div class="column" style="width: 18rem; height: 3rem; margin-left: 17rem">
             <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; ">Dodaj akciju</button>
-          <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; margin-left:2rem">
-            <router-link
-              style="
-                text-decoration: none !important;
-                display: inline-block;
-                color: white;
-              "
-              to="/editBoat" 
-              >Izmeni brod
-            </router-link>
+          <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; margin-left:2rem" @click="editBoat()">Izmeni brod
+      
           </button>  
         </div>
         <div class="column" style="width: 28rem; height: 3rem" >
@@ -266,6 +258,10 @@ export default {
        this.capacity = this.boat.quantity;
       return data;
     },
+
+    async editBoat(){
+          this.$router.push({ name: 'EditBoat', params: { id: this.id}})
+    }
   },
   
 };

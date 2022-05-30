@@ -198,7 +198,7 @@ const routes = [
     component: BoatProfile,
   },
   {
-    path: "/editCottage",
+    path: "/editCottage/:id",
     name: "EditCottage",
     component: EditCottage,
   },

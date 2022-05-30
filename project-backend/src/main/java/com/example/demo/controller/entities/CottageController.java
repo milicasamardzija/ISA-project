@@ -1,11 +1,9 @@
 package com.example.demo.controller.entities;
 
-import com.example.demo.dto.entities.AdditionalServiceDTO;
+import com.example.demo.dto.entities.*;
 import com.example.demo.dto.business.ReservationSearchDTO;
-import com.example.demo.dto.entities.CottageDTO;
-import com.example.demo.dto.entities.EntityDTO;
-import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.entities.AdditionalService;
+import com.example.demo.model.entities.Boat;
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
@@ -23,7 +21,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -142,6 +142,24 @@ public class CottageController {
             }
         }
         this.cottageService.saveCottage(cottage);
+        return  new ResponseEntity<>( HttpStatus.OK);
+
+    }
+
+    @PostMapping("/editCottage")
+    public ResponseEntity<Void> editCottage(@RequestBody CottageDTO editCottage){
+        Set<AdditionalService> newServices = new HashSet<>();
+        Cottage cottage = cottageService.findOne(editCottage.getId());
+        if(editCottage.getAdditionalServices().size() != 0){
+
+            for (AdditionalServiceDTO dto : editCottage.getAdditionalServices()){
+                AdditionalService additionalService = new AdditionalService(dto);
+                additionalService.setEntities(cottage);
+                newServices.add(additionalService);
+
+            }
+        }
+        this.cottageService.update(editCottage, newServices);
         return  new ResponseEntity<>( HttpStatus.OK);
 
     }

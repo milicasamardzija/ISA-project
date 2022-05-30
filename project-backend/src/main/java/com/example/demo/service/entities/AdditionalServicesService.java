@@ -32,7 +32,9 @@ public class AdditionalServicesService {
     public List<AdditionalService> getServicesForCottage(int id){
         return  this.additionalServicesRepository.findAdditionalServicesForCottage(id);
     }
-
+    public void deleteById(int id) {
+        this.additionalServicesRepository.deleteById(id);
+    }
     public AdditionalService save(AdditionalService additionalService) {
         return this.additionalServicesRepository.save(additionalService);
     }
