@@ -110,15 +110,15 @@ public class CottageService {
             }
 
         }
-        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber()) {
+        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber()  && searchParam.getPeople() > 0) {
             ret.add(cottage);
         }
         //country + people
-        if (isNotReserved && searchParam.getCity().equals("") && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber()) {
+        if (isNotReserved && searchParam.getCity().equals("") && cottage.getAddress().getCountry().toLowerCase().equals(searchParam.getCountry().toLowerCase()) && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber()  && searchParam.getPeople() > 0) {
             ret.add(cottage);
         }
         //city + people
-        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber()) {
+        if (isNotReserved && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber()  && searchParam.getPeople() > 0) {
             ret.add(cottage);
         }
         //city + country
