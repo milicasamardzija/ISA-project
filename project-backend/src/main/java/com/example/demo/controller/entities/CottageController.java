@@ -31,14 +31,14 @@ import java.util.Set;
 public class CottageController {
 
     private CottageService cottageService;
-    private AdditionalServicesService aditionalServices;
+
     private CottageOwnerService cottageOwnerService;
     private AddressService addressService;
     private AdditionalServicesService additionalServicesService;
 
-    public CottageController(CottageService cottageService, AdditionalServicesService additionalServicesService,  AddressService addressService, CottageOwnerService cottageOwner, AdditionalServicesService adServices){
+    public CottageController(CottageService cottageService, AdditionalServicesService additionalServicesService,  AddressService addressService, CottageOwnerService cottageOwner){
         this.cottageService = cottageService;
-        this.aditionalServices = adServices;
+
         this.cottageOwnerService = cottageOwner;
         this.addressService = addressService;
         this.additionalServicesService = additionalServicesService;
@@ -55,10 +55,25 @@ public class CottageController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<Cottage>> search(@RequestBody SearchDTO searchParam) {
-        return new ResponseEntity<>(cottageService.searchCottages(searchParam), HttpStatus.OK);
+    public ResponseEntity<List<CottageDTO>> search(@RequestBody SearchDTO searchParam) {
+        List<CottageDTO> ret = new ArrayList<>();
+        if( cottageService.searchStartPage(searchParam).size() != 0) {
+            for (Cottage c : cottageService.searchStartPage(searchParam)) {
+                ret.add(new CottageDTO(c));
+            }
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
-
+    @PostMapping("/searchCottageOwner")
+    public ResponseEntity<List<CottageDTO>> searchCottageOwner(@RequestBody SearchDTO searchParam) {
+        List<CottageDTO> ret = new ArrayList<>();
+        if( cottageService.searchCottages(searchParam).size() != 0) {
+            for (Cottage c : cottageService.searchCottages(searchParam)) {
+                    ret.add(new CottageDTO(c));
+            }
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
     @PostMapping("/reservationSearch")
     public ResponseEntity<List<EntityDTO>> searchReservation(@RequestBody ReservationSearchDTO searchParam){
         ArrayList<EntityDTO> ret = new ArrayList<>();
@@ -79,7 +94,7 @@ public class CottageController {
         List<AdditionalServiceDTO> services = new ArrayList<>();
          if(allOwnerCottages.size() != 0){
                 for(Cottage c : allOwnerCottages){
-                    List<AdditionalService> allServices= this.aditionalServices.getServicesForCottage(c.getId()); //uzmem servise
+                    List<AdditionalService> allServices= this.additionalServicesService.getServicesForCottage(c.getId()); //uzmem servise
                     if( allServices.size() != 0) {
                         for (AdditionalService a : allServices) {
                             services.add(new AdditionalServiceDTO(a));
@@ -111,7 +126,7 @@ public class CottageController {
     @GetMapping("/cottage/{id}")
     public ResponseEntity<CottageDTO> getById(@PathVariable int id){
         CottageDTO cottage = new CottageDTO(cottageService.findOne(id));
-        List<AdditionalService> allServices= this.aditionalServices.getServicesForCottage(id); //uzmem servise
+        List<AdditionalService> allServices= this.additionalServicesService.getServicesForCottage(id); //uzmem servise
          List<AdditionalServiceDTO> services = new ArrayList<>();
         if( allServices.size() != 0 ) {
             for (AdditionalService a : allServices) {

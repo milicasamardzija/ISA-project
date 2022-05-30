@@ -3,9 +3,7 @@ package com.example.demo.dto.users;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Boat;
 import com.example.demo.model.users.BoatOwner;
-import com.example.demo.model.users.Role;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public class BoatOwnerDTO {

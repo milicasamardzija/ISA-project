@@ -3,6 +3,7 @@ package com.example.demo.model.users;
 import javax.persistence.*;
 
 import com.example.demo.enums.LoyalityType;
+import com.example.demo.enums.Role;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.EntityClass;
 import com.fasterxml.jackson.annotation.JsonIgnore;

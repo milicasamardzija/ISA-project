@@ -1,4 +1,4 @@
-package com.example.demo.model.users;
+package com.example.demo.enums;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;

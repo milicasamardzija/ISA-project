@@ -5,10 +5,29 @@
   </div>
   <div class="">
     <div class="tab-pane active containerInfo">
-      <table style="width: 90%">
+      <div> 
+
+         <table style="width: 90%">
         <tr >
           <td style="width: 6%"> </td>
-          <td v-if="this.cottages.length != 0" ><Search /></td>
+          <!-- <td v-if="this.cottages.length != 0" ><Search /></td> -->
+            <nav class="navbar navbar-expand-sm navbar-dark">
+    <form class="form-inline" @submit.prevent="searchCottages()">
+      <div class="row">
+        <div class="">
+          <input
+            class="form-control mr-bg-4 mr-sm-4"
+            type="text"
+            placeholder="naziv vikendice"
+            v-model="search.name"
+          />
+          <input class="form-control mr-sm-2" type="text" placeholder="ulica" v-model="search.street"/>
+           <input class="form-control mr-sm-2" type="text" placeholder="grad" v-model="search.city"/>
+          <button class="btn btn-success" type="submit" @click="searchCottages()">Search</button>
+        </div>
+      </div>
+    </form>
+  </nav>
         <td v-if="this.cottages.length == 0" ><h4> Jos uvek nemate vikendice. </h4></td> 
           <td style="width: 28%">
             <button class="btn btn-danger" style="margin-left: 39%">
@@ -27,6 +46,8 @@
           <td></td>
         </tr>
       </table>
+      </div>
+     
 <div class="containerInfo" >
       <div class="row-boats"  v-for="cottage in cottages" :key="cottage" >
        
@@ -44,7 +65,7 @@
         <div class="col-info" style="margin-top: 3%">
          
           <h4 style="width: 600px" class="text">Naziv:   {{cottage.name}}</h4>
-          <h4 style="width: 600px" class="text">Adresa: {{ cottage.address.number }}, {{ cottage.address.city }},
+          <h4 style="width: 600px" class="text">Adresa: {{ cottage.address.street }}, {{ cottage.address.number }},{{ cottage.address.city }},
               {{ cottage.address.country }}</h4>
           <h4 style="width: 600px" class="text">Prosecna ocena: {{cottage.grade}}</h4>
            <h4 style="width: 600px" class="text">Cena: {{cottage.price}} din</h4> 
@@ -123,7 +144,7 @@
 </template>
 
 <script>
-import Search from "../../components/cottageOwner/Search.vue";
+// import Search from "../../components/cottageOwner/Search.vue";
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import axios from 'axios'
@@ -131,13 +152,14 @@ import axios from 'axios'
 export default {
   name: "MyCottages",
   components: {
-    Search,
+    // Search,
     NavBarLogOut,
     NavBarHomePage,
   },
   data() {
     return {
       cottages: [],
+      search: { name: "", street: "", city: ""},
       name: "",
       city: "",
       cottageOwner: "",
@@ -191,6 +213,17 @@ export default {
      // this.$router.go(0);
 
        
+   },
+   searchCottages(){
+       const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.post("http://localhost:8081/api/cottages/searchCottageOwner", this.search, {headers}).then( response=> {
+         console.log(response);
+         this.cottages = response.data
+      }
+      
+      )
    }
   },
    async created() {
