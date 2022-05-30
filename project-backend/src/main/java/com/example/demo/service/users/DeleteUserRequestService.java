@@ -36,4 +36,8 @@ public class DeleteUserRequestService {
     public List<DeleteUserRequest> findAll() {
         return deleteUserRequestRepository.findAll();
     }
+
+    public void deleteRequest(DeleteUserRequest du) {
+        this.deleteUserRequestRepository.delete(du);
+    }
 }

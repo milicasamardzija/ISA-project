@@ -57,7 +57,6 @@ public class UserService {
 
     public void deleteById(User user){
         this.userRepository.delete(user);
-        this.roleService.delete(user.getRole());
     }
 
     public void deleteUserById(int id){
@@ -119,4 +118,9 @@ public class UserService {
         return this.userRepository.save(u);
     }
 
+    public void deleteByUserEmail(String userEmail) {
+        User user = this.userRepository.findByEmail(userEmail);
+        System.out.print("userov id je "+user.getId()+" CCC");
+        this.deleteById(user);
+    }
 }

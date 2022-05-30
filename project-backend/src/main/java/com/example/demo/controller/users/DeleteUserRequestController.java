@@ -69,8 +69,11 @@ public class DeleteUserRequestController {
         if (du != null){
             this.deleteUserRequestService.acceptRequest(du);
             service.sendEmailWithAttachment(userEmail,
-                    reason,
-                    "Accepting request");
+                    "Razlog prihvatanja:"+reason,
+                    "Prihvatanje zahteva za brisanje naloga!");
+            this.deleteUserRequestService.deleteRequest(du);
+            System.out.print("ID je" + du.getUser().getId());
+            this.userService.deleteUserById(du.getUser().getId());
             return new ResponseEntity<>(HttpStatus.OK);}
         else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -82,8 +85,8 @@ public class DeleteUserRequestController {
         if (du != null){
             this.deleteUserRequestService.rejectRequest(du);
             service.sendEmailWithAttachment(userEmail,
-                    reasonn,
-                    "Rejecting request");
+                    "Razlog odbijanja:"+reasonn,
+                    "Odbijanje zahteva za brisanje naloga!");
             return new ResponseEntity<>(HttpStatus.OK);}
         else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
