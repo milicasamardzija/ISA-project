@@ -59,7 +59,8 @@
               <button
                 type="submit"
                 class="btn btn-success btn-block"
-                 @click="RejectRequest(reason)"
+                @click="RejectRequest(reason)"
+
               >
                 <span></span> Posalji
               </button>
@@ -78,7 +79,7 @@ import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
 import NavBarPredefAdministrator from "../../components/administrator/NavBarPredefAdministrator.vue";
-
+import Swal from 'sweetalert2';
 export default {
   name: "AllRegistrationRequests",
   components: {
@@ -119,8 +120,12 @@ export default {
         console.log(response);
         this.$router.push({ name: "AllRegistrationRequests" });
       })  
-
-      alert("Aktivirali ste nalog!")
+            new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Prihvatili ste zahtev za registraciju!',
+           });
+      
       this.$router.go(0);
     },
     RejectRequest(reason) {
@@ -137,7 +142,11 @@ export default {
         console.log(response);
         this.$router.push({ name: "AllRegistrationRequests" });
       })  
-      alert("Odbili ste zahtev za registraciju!")
+      new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Odbili  ste zahtev za registraciju!',
+           });
       this.$router.go(0);     
       
    },

@@ -237,7 +237,6 @@
               <button
                 type="submit"
                 class="btn btn-success btn-block"
-                @click="register()"
               >
                 <span></span> Registruj se
               </button>
@@ -427,6 +426,8 @@ export default {
        })
        .then(response => { 
        console.log(response.status);
+       this.$router.push({ name: "BoatsStartPage" });
+       this.$router.go(0);
       }) 
             .catch( error => {
         console.log(error)

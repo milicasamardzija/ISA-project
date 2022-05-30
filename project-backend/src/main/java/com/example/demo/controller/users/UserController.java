@@ -111,7 +111,7 @@ public class UserController {
 
             this.userService.updateEnableState(u);
             service.sendEmailWithAttachment(u.getEmail(),
-                    "Your registration request has been accepted ! ",
+                    "Tvoj zahtev za registraciju je prihvacen ! ",
                     "Accepting registration");
             return new ResponseEntity<>(HttpStatus.OK);}
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -125,8 +125,8 @@ public class UserController {
             if (u != null){
                 userService.deleteUserById(deleteID);
                 service.sendEmailWithAttachment(userEmail,
-                        reasonn,
-                        "Rejecting registration");
+                        "Razlog odbijanja zahteva za registraciju:"+reasonn,
+                        "Odbijanje registracije");
                 return new ResponseEntity<>(HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
