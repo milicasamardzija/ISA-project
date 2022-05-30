@@ -396,7 +396,7 @@ export default {
             new Swal({
              title:"Nije uspesno",
              type: "warning",
-             text:'Sifra nije u dobroj formi!',
+             text:'Sifra nije u dobroj formi! Sifra mora da sadrzi bar jedno malo,jedno veliko slovo,specijalni karakter i jedan broj!',
            });     
            } else if (this.newUser.password != this.passwordAgain ) {
             new Swal({
@@ -404,6 +404,12 @@ export default {
              type: "warning",
              text:'Ne podudaraju se sifre!',
            });   
+           } else if (!this.validPhoneNumber()) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Broj telefona ne sadrzi space-ove i slova!',
+           });  
            }
       else{
       axios.post("http://localhost:8081/api/auth/signup",{ firstname : this.newUser.firstname, 
@@ -459,6 +465,14 @@ export default {
       if (this.newUser.lastname.length < 1) {
         return false;
       }
+      return true;
+    },
+    validPhoneNumber() {
+      if (this.newUser.telephone.match(/[a-zA-Z]/g)) {
+        return false;
+      } else if (this.newUser.telephone.match(/[ ]/g)) {
+        return false;
+      } 
       return true;
     },
     validEmail() {
