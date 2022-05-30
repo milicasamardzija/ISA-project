@@ -13,6 +13,7 @@ import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.ClientService;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 @Service
@@ -24,7 +25,7 @@ public class ReservationService {
     private EntityService entityService;
     private ReservedTermService reservedTermService;
 
-    public ReservationService (ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService) {
+    public ReservationService(ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService) {
         this.reservationRepository = reservationRepository;
         this.emailService = emailService;
         this.clientService = clientService;
@@ -56,7 +57,7 @@ public class ReservationService {
         return this.reservationRepository.findEntityByReservation(id);
     }
 
-    public Reservation findById(int id){
+    public Reservation findById(int id) {
         return this.reservationRepository.findById(id);
     }
 
@@ -85,11 +86,11 @@ public class ReservationService {
         newReservation.setEntity(entity);
         newReservation.setEntityType(EntityType.COTTAGE);
         newReservation.setDuration(reservation.getDuration());
-       //newReservation.setAdditionalServices(new ArrayList<>());
+        //newReservation.setAdditionalServices(new ArrayList<>());
 
         Reservation canceledReservation = this.reservationRepository.getCanceledReservation(client.getId(), entity.getId(), newReservation.getTerm().getDateStart(), newReservation.getTerm().getDateEnd());
 
-        if (canceledReservation == null){
+        if (canceledReservation == null) {
             entity.getReservedTerms().add(newReservation.getTerm());
             this.reservationRepository.save(newReservation);
             this.emailService.sendEmailForReservation(user);
@@ -117,16 +118,29 @@ public class ReservationService {
         cal.setTime(new Date());
         cal.add(Calendar.DAY_OF_YEAR, 3);
 
-        if (cal.getTime().before(reservation.getTerm().getDateStart())){
+        if (cal.getTime().before(reservation.getTerm().getDateStart())) {
             reservation.setCanceled(true);
 
             ReservedTerm term = this.reservedTermService.findTermWithEntity(entity.getId());
             term.setCanceled(true);
 
-           this.reservedTermService.save(term);
-           this.reservationRepository.save(reservation);
+            this.reservedTermService.save(term);
+            this.reservationRepository.save(reservation);
         }
 
         return "You can cancel your reservation no later than three days before the start!";
+    }
+
+    public List<Reservation> getAllReservationsForCottageOwner(int id_owner) {
+    List<Reservation> res = new ArrayList<>();
+
+            res= this.reservationRepository.findAllReservationsForCottageOwner(id_owner);
+
+
+    return res;
+    }
+
+    public Client findClientForReservation(int id){
+        return this.reservationRepository.findClientFromReservation(id);
     }
 }

@@ -187,17 +187,13 @@ public class BoatService {
 
      }
         boatNewState.setAdditionalServices(new HashSet<>());
-     if(services.size() != 0) {
-         for (AdditionalService newA : services ) {
-             //newA.setEntities(boatNewState);
-             boatNewState.getAdditionalServices().add(newA);
+         if(services.size() != 0) {
+             for (AdditionalService newA : services ) {
+                 //newA.setEntities(boatNewState);
+                 boatNewState.getAdditionalServices().add(newA);
+             }
          }
-
-
-     }
-
-
-        boatRepository.save(boatNewState);
+          boatRepository.save(boatNewState);
 
     }
 

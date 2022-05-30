@@ -29,18 +29,19 @@
         <a
           class="nav-link dropdown-toggle"
           data-toggle="dropdown"
-          href="#"
+         
           role="button"
           aria-haspopup="true"
           aria-expanded="false"
-          >Rezervacije</a
-        >
+      
+    
+          >Rezervacije</a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Prethodne</a>
-          <a class="dropdown-item" href="#">Predstojece</a>
-          <a class="dropdown-item" href="#">Trenutne</a>
+          <a class="dropdown-item" > <router-link to="/lastReservations">  Prosle</router-link></a>
+          <a class="dropdown-item" href="#"><router-link to="/nextReservations"> Predstojece</router-link></a>
+        
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Sve rezervacije</a>
+          <a class="dropdown-item" href="/reservations"><router-link to="/reservations"> Sve rezervacije</router-link> </a>
         </div>
       </li>
     </ul>

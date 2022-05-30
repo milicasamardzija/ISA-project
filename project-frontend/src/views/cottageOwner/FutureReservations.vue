@@ -44,9 +44,9 @@ import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import moment from "moment";
 
 export default {
-  name: "MyCottages",
+  name: "FutureReservations",
   components: {
-    // Search,
+    
     NavBarLogOut,
     NavBarHomePage,
   },

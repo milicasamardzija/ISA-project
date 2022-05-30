@@ -9,6 +9,9 @@ import ClientAllAdventures from "../views/client/entities/ClientAllAdventures";
 import ScheduledReservation from "../views/client/reservations/ScheduledReservation";
 import ReservationHistory from "../views/client/reservations/ReservationHistory";
 import HomePageInProfil from "../views/cottageOwner/HomePageInProfil";
+import Reservations from "../views/cottageOwner/Reservations";
+import LastReservations from "../views/cottageOwner/LastReservations";
+import NextReservations from "../views/cottageOwner/LastReservations";
 import MyCottages from "../views/cottageOwner/MyCottages";
 import MyProfile from "../views/cottageOwner/MyProfile";
 import Statistic from "../views/cottageOwner/Statistic";
@@ -217,6 +220,22 @@ const routes = [
     name: "CottageActions",
     component: CottageActions,
   },
+  {
+    path: "/reservations",
+    name: "Reservations",
+    component: Reservations,
+  },
+  {
+    path: "/lastReservations",
+    name: "LastReservations",
+    component: LastReservations,
+  },
+  {
+    path: "/nextReservations",
+    name: "NextReservations",
+    component: NextReservations,
+  },
+
 ];
 
 const router = createRouter({

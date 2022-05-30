@@ -35,7 +35,5 @@ public class SearchDTO {
         this.street = street;
         this.city = city;
     }
-    public SearchDTO(){
-
-    }
+    public SearchDTO(){ }
 }
