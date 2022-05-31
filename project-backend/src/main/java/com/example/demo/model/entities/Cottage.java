@@ -16,7 +16,7 @@ public class Cottage extends EntityClass {
 	@Column(name="bedsByRoom", unique=false, nullable=true)
 	private int bedsByRoom;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "owner_id") //ovako ce se zvati id polje u bazi
 	@JsonIgnoreProperties("cottageOwner")
 	public CottageOwner cottageOwner;

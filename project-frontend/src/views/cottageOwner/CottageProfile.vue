@@ -27,7 +27,7 @@
           <h4>{{cottage.address.street}} {{cottage.address.number}}, {{cottage.address.city}}, {{cottage.address.country}},</h4>
         </div>
         <div class="column" style="width: 18rem; height: 3rem">
-          <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'" @click="showCottage(cottage)">
+          <button type="button" class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'" @click="editCottage(cottage)">
         Izmeni vikendicu
           </button>
         </div>
@@ -202,6 +202,7 @@ import NavBarClient from "../../components/client/NavBarClient.vue"
 import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
 import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue';
 import axios from "axios"
+import Swal from "sweetalert2"
 
 
 export default {
@@ -253,8 +254,22 @@ export default {
       return data;
     },
     
-      async showCottage(cottage){
+      async editCottage(cottage){
+                axios.get("http://localhost:8081/api/reservation/check/"+ this.cottage.id).then( 
+           response => { 
+             console.log(response)
         this.$router.push({ name: 'EditCottage', params: { id: cottage.id}})
+         }
+         ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce izmeniti vikendicu jer imate rezervacije u narednom periodu!'
+           });
+         }
+         )
+      
    },
   },
   

@@ -218,4 +218,30 @@ public class ReservationController {
         return  new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+
+    @GetMapping("/allReservationsBoatOwner")
+    public ResponseEntity<List<ReservationForOwnerDTO>> allReservationsBoatOwner()  {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+
+        List<Reservation> allReservations = reservationService.getAllReservationsForBoatOwner(user.getId());
+        List<ReservationForOwnerDTO> ret = new ArrayList<>();
+        for(Reservation reservation : allReservations ) {
+            Client c = reservationService.findClientForReservation(reservation.getId());
+            ClientProfileDTO client = new ClientProfileDTO(c);
+            ret.add(new ReservationForOwnerDTO(reservation,client));
+        }
+
+        return  new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+    @GetMapping("/check/{id}")
+    public ResponseEntity<HttpStatus> checkIfFutureReservationExist(@PathVariable int id){
+        if(this.reservationService.findFutureReservationsForEntity(id)){
+            return  new ResponseEntity<>( HttpStatus.OK);
+        }else{
+            return  new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

@@ -1,7 +1,11 @@
 <template>
-  <div>
+  <div v-if="role==='ROLE_COTTAGE_OWNER'">
     <NavBarLogOut />
     <NavBarHomePage />
+  </div>
+  <div v-if="role==='ROLE_BOAT_OWNER'">
+    <NavBarLogOut />
+    <NavBarBoatOwner />
   </div>
   <div class="">
     <div class="tab-pane active containerInfo">
@@ -9,7 +13,7 @@
      
 <div class="containerInfo" >
    <div class="containerInfo" >
-   
+   <div v-if="reservations.length == 0"> <h5> Nemate rezervacije u narednom periodu </h5> </div>
       <div class="card-group">
         <div  v-for="reservation in this.reservations" :key="reservation"> 
   <div class="card" v-if="reservation.term.dateEnd > dt" >
@@ -18,7 +22,7 @@
     <div class="card-body ">
       <h5 class="card-title">{{reservation.entity.name}}</h5>
       <p class="card-text"> Termin vazenja: {{ dateTime(reservation.term.dateStart) }}  do {{ dateTime(reservation.term.dateEnd) }}  </p>
-       <p class="card-text"> Adresa: {{reservation.entity.address.street}}  do {{reservation.entity.address.number}}, {{reservation.entity.address.country}}  </p>
+       <p class="card-text"> Adresa: {{reservation.entity.address.street}}  do {{reservation.entity.address.number}}, {{reservation.entity.address.city}}, {{reservation.entity.address.country}}  </p>
       <p class="card-text"> Cena: {{reservation.price}} din</p>
        <p class="card-text"> Klijent: {{reservation.user.name}}  {{reservation.user.surname }} </p>
           <p class="card-text">Email:   {{reservation.user.email }} </p>
@@ -39,6 +43,7 @@
 // import Search from "../../components/cottageOwner/Search.vue";
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
+import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 // import axios from 'axios'
 import moment from "moment";
 
@@ -48,11 +53,14 @@ export default {
     
     NavBarLogOut,
     NavBarHomePage,
+    NavBarBoatOwner,
   },
   data() {
     return {
         reservations: "",
         cottageOwner: "",
+          boatOwner: "",
+        role: "",
         dt: new Date(),
     }
   },
@@ -66,6 +74,27 @@ export default {
       const data = await res.json();
 
       return data;
+    },
+    
+        async fetchBoatOwner(){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/boatOwner/profileBoatOwner", {headers});
+      const data = await res.json();
+
+      return data;
+    },
+    
+      async getAllReservationsBO(){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/reservation/allReservationsBoatOwner", {headers});
+      const data = await res.json();
+ this.reservations = data;
+      return data;
+     
     },
        async getAllReservations(){
       const headers = {
@@ -89,11 +118,17 @@ export default {
   },
   },
    async created() {
-   
+   this.role = localStorage.getItem("role");
+    if(this.role =="ROLE_COTTAGE_OWNER"){
     this.cottageOwner = this.fetchOwner();
     this.reservations = this.getAllReservations();
-    console.log(this.reservations);
-    
+  
+     }
+    else{
+      this.boatOwner = this.fetchBoatOwner();
+      this.reservations= this.getAllReservationsBO();
+
+    }
   },
 
 };

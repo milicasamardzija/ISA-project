@@ -19,6 +19,7 @@ import com.example.demo.service.users.ClientService;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.DateTimeException;
 import java.util.*;
 
 @Service
@@ -167,15 +168,38 @@ public class ReservationService {
     }
 
     public List<Reservation> getAllReservationsForCottageOwner(int id_owner) {
-    List<Reservation> res = new ArrayList<>();
+        return   this.reservationRepository.findAllReservationsForCottageOwner(id_owner);
 
-            res= this.reservationRepository.findAllReservationsForCottageOwner(id_owner);
+    }
 
-
-    return res;
+    public List<Reservation> getAllReservationsForBoatOwner(int id_owner) {
+        return   this.reservationRepository.findAllReservationsForBoatOwner(id_owner);
     }
 
     public Client findClientForReservation(int id){
         return this.reservationRepository.findClientFromReservation(id);
+    }
+
+    public boolean findFutureReservationsForEntity(int id) {
+        List<Reservation> allReservations = this.reservationRepository.getReservationsForEntity(id);
+        //Date today = new Date();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        List<Reservation> futureReservations = new ArrayList<>();
+        if (allReservations.size() != 0) {
+            for (Reservation r : allReservations) {
+                Calendar cal2 = Calendar.getInstance();
+                cal2.setTime(r.getTerm().getDateEnd());
+                if (cal.before(cal2)) {
+                    futureReservations.add(r);
+                }
+            }
+        }
+        if(futureReservations.size() != 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 }

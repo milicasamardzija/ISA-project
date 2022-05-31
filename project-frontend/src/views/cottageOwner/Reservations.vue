@@ -1,5 +1,9 @@
 <template>
-  <div>
+<div v-if="role==='ROLE_BOAT_OWNER'">
+    <NavBarLogOut />
+    <NavBarBoatOwner />
+  </div>
+  <div v-if="role==='ROLE_COTTAGE_OWNER'">
     <NavBarLogOut />
     <NavBarHomePage />
   </div>
@@ -9,7 +13,7 @@
      
 <div class="containerInfo" >
    <div class="containerInfo" >
-   
+   <div v-if="reservations.length == 0"> <h5> Nemate rezervacije </h5> </div>
       <div class="card-group">
   <div class="card"  v-for="reservation in this.reservations" :key="reservation" >
     <!-- <img class="card-img-top"  alt="Card image cap"> -->
@@ -17,13 +21,13 @@
     <div class="card-body">
       <h5 class="card-title">{{reservation.entity.name}}</h5>
       <p class="card-text"> Termin vazenja: {{ dateTime(reservation.term.dateStart) }}  do {{ dateTime(reservation.term.dateEnd) }}  </p>
-       <p class="card-text"> Adresa: {{reservation.entity.address.street}}  {{reservation.entity.address.number}}, {{reservation.entity.address.country}}  </p>
+       <p class="card-text"> Adresa: {{reservation.entity.address.street}}  {{reservation.entity.address.number}}, {{reservation.entity.address.city}}, {{reservation.entity.address.country}}  </p>
       <p class="card-text"> Cena: {{reservation.price}} din</p>
        <p class="card-text"> Klijent: {{reservation.user.name}}  {{reservation.user.surname }} </p>
           <p class="card-text">Email:   {{reservation.user.email }} </p>
       <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
        <div class="card-footer bg-transparent border-success" ><button class="btn btn-success" v-if="reservation.term.dateEnd < d" type="button"  @click="makeComplaint(reservation)">
-            Napisi zalbu
+            Napisi izvestaj
             </button>
       </div>
     </div>
@@ -41,6 +45,7 @@
 // import Search from "../../components/cottageOwner/Search.vue";
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
+import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 // import axios from 'axios'
 import moment from "moment";
 import Swal from 'sweetalert2';
@@ -51,11 +56,14 @@ export default {
     // Search,
     NavBarLogOut,
     NavBarHomePage,
+    NavBarBoatOwner
   },
   data() {
     return {
         reservations: "",
         cottageOwner: "",
+        boatOwner: "",
+        role: "",
           d : new Date(),
         
     }
@@ -71,11 +79,30 @@ export default {
 
       return data;
     },
+        async fetchBoatOwner(){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/boatOwner/profileBoatOwner", {headers});
+      const data = await res.json();
+
+      return data;
+    },
        async getAllReservations(){
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch("http://localhost:8081/api/reservation/allReservationsCottageOwner", {headers});
+      const data = await res.json();
+ this.reservations = data;
+      return data;
+     
+    },
+      async getAllReservationsBO(){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/reservation/allReservationsBoatOwner", {headers});
       const data = await res.json();
  this.reservations = data;
       return data;
@@ -108,9 +135,17 @@ export default {
    },
   },
    async created() {
-   
-    this.cottageOwner = this.fetchOwner();
+   this.role = localStorage.getItem("role");
+
+   if(this.role =="ROLE_COTTAGE_OWNER"){
+     this.cottageOwner = this.fetchOwner();
     this.reservations = this.getAllReservations();
+   }
+    else{
+      this.boatOwner = this.fetchBoatOwner();
+      this.reservations= this.getAllReservationsBO();
+
+    }
     console.log(this.reservations);
     
   },
