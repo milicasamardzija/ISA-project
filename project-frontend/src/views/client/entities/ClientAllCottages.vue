@@ -2,6 +2,7 @@
   <div>
     <NavBarClient />
   </div>
+  <div v-if="this.r === false">
   <!--Pretraga-->
     <div style="width: 1000px;margin-top:20px;margin-bottom:20px" v-if="cottages.length != 0">
       <nav class="navbar navbar-expand-sm navbar-dark">
@@ -140,7 +141,7 @@
   </div>
 
   <!-- MODAL -->
-  <div v-if="modalOpened" class="custom-modal-overlay" @click="closeModal()"></div>
+ <!-- <div v-if="modalOpened" class="custom-modal-overlay" @click="closeModal()"></div>
   <div v-if="modalOpened" class="custom-modal">
     <div class="custom-modal-header">
       <h1>Rezervisite vikendicu</h1>
@@ -159,10 +160,10 @@
       <h4 style="width: 600px" class="text" v-if="this.people > 0 ">Broj osoba: {{this.people}}</h4>
       <h4 style="width: 600px" class="text" v-if="this.people <= 0 ">Broj osoba: <input type="number" v-model="this.people"> </h4>
       
-      <!--<select width=300 style="width: 350px" 
+      <select width=300 style="width: 350px" 
             size="8" multiple v-model="this.additionalServicesReservation" >
         <option  v-bind:value="a.id" v-for="(a, index) in this.additionalServices" :key="index" @click="getPrice()">{{a.name}}  {{a.price}} rsd</option>
-      </select>-->
+      </select>
       <div> 
         <label style="width: 600px" v-if="this.additionalServices.length != 0">Izaberite zeljene dodatne usluge:</label>
         <table v-if="this.additionalServices.length != 0">
@@ -191,7 +192,143 @@
         Odustani
       </button>
     </div>
+  </div>-->
   </div>
+  <div v-if="this.r === true" style="margin-top:50px; margin-left:50px">
+  <h4 style="margin-top:50px; margin-left:10px; margin-bottom:20px"><i> Rezervisi vikendicu:</i> </h4>
+   <!-- Nav tabs -->
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#home">Podaci</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu1">Dodatne usluge</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu2">Potvrda rezervacije</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane container active" id="home">
+      <div style="margin-top:50px; margin-bottom:50px">
+        <table>
+          <tr>
+            <td><p style="font-family:Helvetica " class="text"> <i>Naziv:</i></p></td>
+            <td><p>{{this.selectedEntity.name}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica " class="text"> <i>Adresa:</i> </p></td>
+            <td> <p>
+              {{ this.selectedEntity.address.street }} {{ this.selectedEntity.address.number }},
+              {{ this.selectedEntity.address.city }}, {{ this.selectedEntity.address.country }}
+            </p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Ocena:</i></p></td>
+            <td><p>{{this.selectedEntity.grade}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Cena:</i></p></td>
+            <td><p>{{this.selectedEntity.price}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Datum pocetka:</i></p></td>
+            <td><p><input type="date" v-model="this.date" style="width:120px"></p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Broj dana: </i></p></td>
+            <td><p><input type="number" v-model="this.number" style="width:120px"></p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Datum kraja:</i></p></td>
+            <td><p><input type="date" v-model="this.dateEnd" style="width:120px"></p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Broj osoba: </i></p></td>
+            <td><p><input type="number" v-model="this.people" style="width:120px">  Maksimalan broj ljudi: 10 </p></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="tab-pane container fade" id="menu1">
+       <div style="margin-left:50px;margin-top:50px;"> 
+        <label  style="width: 600px; font-family:Helvetica;width: 600px" v-if="this.additionalServices.length != 0"><i>Izaberite zeljene dodatne usluge:</i></label>
+        <table v-if="this.additionalServices.length != 0">
+          <tr  v-for="(as, index) in additionalServices" :key="index">
+            <td style="width:40%"> {{as.name}} </td>
+            <td style="width:40%"> {{as.price}} din.</td>
+            <td style="width:20%"><button class="btn btn-secondary" @click="addService(as, index)">+</button></td>
+          </tr>
+        </table>
+      </div>
+
+      <div v-if="this.additionalServicesReservation.length != 0"  style="margin-left:50px;margin-top:50px;"> 
+        <label style="width: 600px; font-family:Helvetica;width: 600px " v-if="this.additionalServicesReservation.length != 0"><i>Izabrali ste:</i></label>
+        <table v-if="this.additionalServicesReservation.length != 0">
+          <tr  v-for="(as, index) in additionalServicesReservation" :key="index">
+            <td style="width:40%"> {{as.name}} </td>
+            <td style="width:40%"> {{as.price}} din.</td>
+            <td style="width:20%"><button class="btn btn-secondary" @click="removeService(as, index)">-</button></td>
+          </tr>
+        </table>
+      </div>
+      <div v-if="this.additionalServicesReservation.length == 0" style="margin-left:50px;margin-top:50px;width: 600px;"> 
+        Nema dodatnih usluga trenutno u ponudi.
+      </div>
+      <h4 style="margin-left:50px;margin-top:50px;" class="text" ><i>Konacna cena:</i> {{this.price}} din.</h4>
+    </div>
+    <div class="tab-pane container fade" id="menu2">
+      <div style="margin-top:50px; margin-bottom:50px">
+        <table>
+          <tr>
+            <td><p style="font-family:Helvetica" class="text"> <i>Naziv:</i></p></td>
+            <td><p style="margin-top:10px">{{this.selectedEntity.name}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica " class="text"> <i>Adresa:</i> </p></td>
+            <td> <p style="margin-top:10px">
+              {{ this.selectedEntity.address.street }} {{ this.selectedEntity.address.number }},
+              {{ this.selectedEntity.address.city }}, {{ this.selectedEntity.address.country }}
+            </p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Ocena:</i></p></td>
+            <td><p style="margin-top:10px"> {{this.selectedEntity.grade}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Cena:</i></p></td>
+            <td><p style="margin-top:10px">{{this.price}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Datum pocetka:</i></p></td>
+            <td><p style="margin-top:12px">{{this.date}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Broj dana: </i></p></td>
+            <td><p style="margin-top:10px">{{this.number}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Datum kraja:</i></p></td>
+            <td><p style="margin-top:10px">{{this.dateEnd}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Broj osoba: </i></p></td>
+            <td><p style="margin-top:10px"> {{this.people}} </p></td>
+          </tr>
+          <tr>
+            <td><button class="btn btn-success" type="submit" style="margin-top:10px" @click="makeReservation()"> Rezerviši</button>
+            </td><button  class="btn btn-secondary" style="margin-top:10px" type="submit" @click="goToCottages()">  Odustani </button>
+            <td>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
+
 
 </template>
 
@@ -223,11 +360,17 @@ export default {
       s: false,
       today: "",
       additionalServices : [],
-      additionalServicesReservation: []
+      additionalServicesReservation: [],
+      r: false,
     };
   },
 
   methods: {
+    goToCottages(){
+      //this.closeModal();
+      this.r = false;
+      this.$router.go(0);
+    },
     addService(service, index){
       this.additionalServicesReservation.push(service);
       this.additionalServices.splice(index, 1)
@@ -320,6 +463,7 @@ export default {
         console.log(response.data);
       });
        this.closeModal();
+       this.goToCottages();
     }
     },
     getImgUrl(img) {
@@ -370,13 +514,16 @@ export default {
       }
     },
     openModal(cottage) {
-      this.modalOpened = true;
+      console.log(cottage)
+      //this.modalOpened = true;
       this.selectedEntity = cottage;
       this.price = this.selectedEntity.price;
       this.additionalServices = this.getAdditionalServices();
+      this.r = true;
     },
     closeModal() {
       this.modalOpened = false;
+      this.r = false;
       this.date = "";
       this.name = "";
       this.country = "";
