@@ -4,15 +4,16 @@ import com.example.demo.dto.business.ComplaintClientDTO;
 import com.example.demo.dto.business.EvaluateDTO;
 import com.example.demo.model.business.Complaint;
 import com.example.demo.model.business.Evaluate;
+import com.example.demo.model.users.DeleteUserRequest;
 import com.example.demo.service.business.ComplaintService;
 import com.example.demo.service.business.EvaluateService;
 import com.example.demo.service.email.EmailSenderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,33 @@ public class EvaluateController {
             }
         }
         return  new ResponseEntity<>(evaluates, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/accept/{id}/{email}")
+    public ResponseEntity<Void> acceptRequest(@PathVariable int id, @PathVariable String email) throws MessagingException {
+        Evaluate e = this.evaluateService.findById(id);
+        System.out.print("email je "+ email);
+        if (e != null){
+            this.evaluateService.acceptEvaluate(e);
+            service.sendEmailWithAttachment(email,
+                    "Postovani,pisana je revizija za vas entitet. Upravo je odobrena. ",
+                    "Prihvatanje revizije za vas i vas entitet!");
+            return new ResponseEntity<>(HttpStatus.OK);}
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(value = "/reject/{id}/{email}")
+    public ResponseEntity<Void> rejectRequest(@PathVariable int id, @PathVariable String email) throws MessagingException {
+        Evaluate e = this.evaluateService.findById(id);
+        if (e != null){
+            this.evaluateService.rejectEvaluate(e);
+            service.sendEmailWithAttachment(email,
+                    "Postovani,pisana je revizija za vas entitet. Upravo je odbijena. ",
+                    "Odbijanje revizije za vas i vas entitet!");
+            return new ResponseEntity<>(HttpStatus.OK);}
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

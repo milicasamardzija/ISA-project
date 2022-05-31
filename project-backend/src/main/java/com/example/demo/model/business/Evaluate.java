@@ -90,7 +90,7 @@ public class Evaluate {
     }
 
     public void setAccepted(Boolean accepted) {
-        accepted = accepted;
+        this.accepted = accepted;
     }
 
     public String getContentEntity() {

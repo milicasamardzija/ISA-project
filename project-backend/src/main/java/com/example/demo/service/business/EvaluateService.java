@@ -18,4 +18,19 @@ public class EvaluateService {
     public List<Evaluate> findAll() {
         return evaluateRepository.findAll();
     }
+
+    public Evaluate findById(int id) {
+        return evaluateRepository.findById(id);
+    }
+
+    public void acceptEvaluate(Evaluate e) {
+        Evaluate evaluate = this.evaluateRepository.findById(e.getId());
+        evaluate.setAccepted(true);
+        this.evaluateRepository.save(evaluate);
+    }
+
+    public void rejectEvaluate(Evaluate e) {
+        e.setAccepted(false);
+        this.evaluateRepository.save(e);
+    }
 }

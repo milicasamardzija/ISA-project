@@ -35,8 +35,8 @@
                   <td> {{evaluate.gradeForEntity}}</td> 
                   <td>{{evaluate.userWhoSendsComplaint.name}} {{evaluate.userWhoSendsComplaint.surname}}</td>
                   <td>{{evaluate.user.name}} {{evaluate.user.surname}}</td>
-                  <td><button class="btn btn-success btn-block">Odobri</button></td>
-                  <td><button class="btn btn-success btn-block">Odbij</button></td>
+                  <td v-if="evaluate.accepted === null"><button class="btn btn-success btn-block" @click="Accept(evaluate.id,evaluate.user.email)">Odobri</button></td>
+                  <td v-if="evaluate.accepted === null"><button class="btn btn-success btn-block" @click="Reject(evaluate.id,evaluate.user.email)">Odbij</button></td>
                   <td ></td>
            </tr> 
 
@@ -50,6 +50,9 @@ import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
 import NavBarPredefAdministrator from "../../components/administrator/NavBarPredefAdministrator.vue";
+import Swal from 'sweetalert2';
+import axios from 'axios';
+
 export default ({
     name: "Evaluate",
     components: {
@@ -61,6 +64,7 @@ export default ({
     data() {
         return {
             id:0,
+            email:"",
             emailWhoSent:"",
             emailWhoReceive: "",
             userRole: "",
@@ -68,7 +72,7 @@ export default ({
             content1: "",
             content2: "",
             evaluates: "",
-            evaluate: {id:0, isAccepted: true, contentEntity:"",contentUser:"", gradeForUser: 0, gradeForEntity:0,      
+            evaluate: {id:0, accepted: null, contentEntity:"",contentUser:"", gradeForUser: 0, gradeForEntity:0,      
             user: { id: 0, name: "", surname: "",email:"", address: { id: "", street:"", number: 0, city: "", country: ""}, reasonForRegistration:"", telephone: ""},
             userWhoSendsComplaint: { id: 0, name: "",email:"", surname: "", address: { id: "", street:"", number: 0, city: "", country: ""}, reasonForRegistration:"", telephone: ""}}
         }
@@ -79,6 +83,44 @@ export default ({
             const data = await res.json();
             return data;
         },
+        async Accept(id,email) {
+            this.id = id;
+            this.email = email;
+        const headers = {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+            };
+            axios.post("http://localhost:8081/api/evaluate/accept/"+this.id+"/"+this.email,{headers})
+            .then (response => { 
+                console.log(response);
+                this.$router.push({ name: "Evaluate" });
+                this.$router.go(0)
+            })  
+                  return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Odobrili ste reviziju!'
+           });
+            
+        },
+                async Reject(id,email) {
+            this.id = id;
+            this.email = email;
+        const headers = {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+            };
+            axios.post("http://localhost:8081/api/evaluate/reject/"+this.id+"/"+this.email,{headers})
+            .then (response => { 
+                console.log(response);
+                this.$router.push({ name: "Evaluate" });
+                this.$router.go(0)
+            })  
+                  return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Odbili ste reviziju!'
+           });
+
+        }
     },
       async created() {
       this.userRole = localStorage.getItem("role");
