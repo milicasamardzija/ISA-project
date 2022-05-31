@@ -1,8 +1,15 @@
 package com.example.demo.service.entities;
 
 
+import com.example.demo.model.business.Complaint;
+import com.example.demo.model.business.Evaluate;
+import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.repository.entities.EntityRepository;
+import com.example.demo.service.business.ComplaintService;
+import com.example.demo.service.business.EvaluateService;
+import com.example.demo.service.business.ReservationService;
+import com.example.demo.service.business.ReservedTermService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,9 +21,11 @@ public class EntityService {
 
     private EntityRepository entityRepository;
 
-    public EntityService(EntityRepository entityRepository){
+
+    public EntityService(EntityRepository entityRepository) {
         this.entityRepository = entityRepository;
     }
+
 
     public EntityClass findById(int id) { return entityRepository.findById(id);}
 
@@ -40,9 +49,6 @@ public class EntityService {
         entityRepository.deleteById(id);
     }
 
-    public void deleteById(Integer id) {
-        entityRepository.deleteById(id);
-    }
 
     public void save(EntityClass entity) {
         this.entityRepository.save(entity);

@@ -129,4 +129,13 @@ public class ReservationService {
 
         return "You can cancel your reservation no later than three days before the start!";
     }
+
+    public void deleteById(int id) {
+        Reservation r = this.reservationRepository.findById(id);
+        this.reservationRepository.delete(r);
+    }
+
+    public void delete(Reservation r) {
+        this.reservationRepository.delete(r);
+    }
 }

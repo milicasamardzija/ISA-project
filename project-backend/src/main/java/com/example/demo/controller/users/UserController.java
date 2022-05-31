@@ -4,6 +4,7 @@ import com.example.demo.dto.entities.ChangePasswordDTO;
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.users.UserTokenState;
+import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
 import com.example.demo.service.email.EmailSenderService;
 import com.example.demo.service.email.EmailService;
@@ -61,10 +62,25 @@ public class UserController {
         List<User> allUsers = userService.findAll();
         List<UserDTO> users = new ArrayList<>();
         for(User u : allUsers ) {
-            users.add(new UserDTO(u));
+            UserDTO userDTO = new UserDTO(u);
+            System.out.print(userDTO.getRole());
+            users.add(userDTO);
         }
         return  new ResponseEntity<>(users, HttpStatus.OK);
     }
+    @DeleteMapping(value = "/deleteUser/{deleteId}")
+    public ResponseEntity<Void> deleteUser (@PathVariable int deleteId) {
+        List<User> users = userService.findAll();
+        for(User u : users) {
+            if (u.getId()== deleteId) {
+                userService.deleteUserById(u.getId());
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping(value = "/getAllRequestUser")
     public ResponseEntity<List<UserDTO>> getAllRequestUser(){
         List<User> allUsers = userService.findAll();

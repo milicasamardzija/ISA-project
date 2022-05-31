@@ -33,4 +33,9 @@ public class EvaluateService {
         e.setAccepted(false);
         this.evaluateRepository.save(e);
     }
+
+    public void deleteById(int id) {
+        Evaluate e = this.evaluateRepository.findById(id);
+        this.evaluateRepository.delete(e);
+    }
 }

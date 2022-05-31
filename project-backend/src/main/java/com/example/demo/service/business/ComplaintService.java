@@ -37,4 +37,9 @@ public class ComplaintService {
         c.setIsAnswered(true);
         this.complaintRepository.save(c);
     }
+
+    public void deleteById(int id) {
+        Complaint c = this.complaintRepository.findById(id);
+        this.complaintRepository.delete(c);
+    }
 }
