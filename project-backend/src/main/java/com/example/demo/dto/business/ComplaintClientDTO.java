@@ -33,6 +33,15 @@ public class ComplaintClientDTO {
     private User user;
     private EntityClass entity;
     private User userWhoSendsComplaint;
+    private boolean isAnswered;
+
+    public boolean getIsAnswered() {
+        return isAnswered;
+    }
+
+    public void setIsAnswered(boolean answered) {
+        isAnswered = answered;
+    }
 
     public ComplaintClientDTO() {
 
@@ -44,6 +53,7 @@ public class ComplaintClientDTO {
         this.complaintType = complaint.getComplaintType().toString();
         this.user = complaint.getUser();
         this.userWhoSendsComplaint = complaint.getUserWhoSendsComplaint();
+        this.isAnswered = complaint.getIsAnswered();
     }
     public int getId() {
         return id;

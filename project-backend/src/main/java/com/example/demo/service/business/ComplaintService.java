@@ -31,4 +31,10 @@ public class ComplaintService {
         return complaintRepository.findAll();
     }
 
+    public void changeComplaint(int id) {
+        Complaint c = this.complaintRepository.findById(id);
+        System.out.print("OVDE SAM STIGAO"+c.getIsAnswered());
+        c.setIsAnswered(true);
+        this.complaintRepository.save(c);
+    }
 }

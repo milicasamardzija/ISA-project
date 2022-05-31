@@ -20,6 +20,9 @@ public class Complaint {
     private String contentUser;
 
     @Column
+    private boolean isAnswered;
+
+    @Column
     private ComplaintType complaintType;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -73,6 +76,14 @@ public class Complaint {
         this.userWhoSendsComplaint = userWhoSendsComplaint;
     }
 
+    public boolean getIsAnswered() {
+        return isAnswered;
+    }
+
+    public void setIsAnswered(boolean answered) {
+        isAnswered = answered;
+    }
+
     public String getContentEntity() {
         return contentEntity;
     }
@@ -89,3 +100,4 @@ public class Complaint {
         this.contentUser = contentUser;
     }
 }
+
