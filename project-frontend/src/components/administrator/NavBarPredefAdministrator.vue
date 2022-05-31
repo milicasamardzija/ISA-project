@@ -11,6 +11,11 @@
           <router-link to="/deleteAccountRequests">Delete account requests</router-link>
         </button>
       </li>
+                  <li class="nav-item">
+        <button type="button" class="btn btn-success">
+          <router-link to="/evaluate">Revision</router-link>
+        </button>
+      </li>
                         <li class="nav-item">
         <button type="button" class="btn btn-success">
           <router-link to="/complaints">Complaints</router-link>

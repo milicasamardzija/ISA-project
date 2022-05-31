@@ -34,7 +34,7 @@ import ChangePassword from "../views/administrator/ChangePassword"
 import Complaints from "../views/administrator/Complaints"
 import MyBoats from "../views/boatOwner/MyBoats"
 import CottageActions from "../views/client/reservations/CottageActions"
-
+import Evaluate from "../views/administrator/Evaluate"
 const routes = [
   {
     path: "/",
@@ -50,6 +50,11 @@ const routes = [
     path: "/complaints",
     name: "Complaints",
     component: Complaints,
+  },
+  {
+    path: "/evaluate",
+    name: "Evaluate",
+    component: Evaluate,
   },
   {
     path: "/incomeRecords",
