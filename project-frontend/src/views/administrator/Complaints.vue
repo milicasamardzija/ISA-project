@@ -15,7 +15,8 @@
         <tr>
             <th>ID</th>
             <th>Tip</th>
-            <th>Sadrzaj</th>
+            <th>Sadrzaj zalbe za entitet</th>
+            <th>Sadrzaj zalbe za osobu</th>
             <th>Korisnik koji salje prijavu</th>
             <th>Korisnik za koga je prijava</th>
             <th></th>
@@ -26,7 +27,8 @@
           <tr v-for="(complaint, index) in complaints" :key="index">
                   <td>{{complaint.id}}</td>
                   <td>{{complaint.complaintType}} </td>
-                  <td> {{complaint.content}}</td>
+                  <td> {{complaint.contentEntity}}</td>
+                  <td> {{complaint.contentUser}}</td>
                   <td>{{complaint.userWhoSendsComplaint.name}} {{complaint.userWhoSendsComplaint.surname}}</td>
                   <td>{{complaint.user.name}} {{complaint.user.surname}}</td>
                   <td><button class="btn btn-success btn-block" @click="SaveEmails(complaint.userWhoSendsComplaint.email,complaint.user.email)">Odgovori na zalbu</button></td>
@@ -65,7 +67,7 @@ import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
 import NavBarPredefAdministrator from "../../components/administrator/NavBarPredefAdministrator.vue";
-
+import Swal from 'sweetalert2';
 export default ({
     name: "Complaints",
     components: {
@@ -82,7 +84,7 @@ export default ({
             counter: 0,
             content: "",
             complaints: "",
-            complaint: {id:0, content:"", complaintType: "",      
+            complaint: {id:0, contentEntity:"",contentUser:"", complaintType: "",      
             user: { id: 0, name: "", surname: "",email:"", address: { id: "", street:"", number: 0, city: "", country: ""}, reasonForRegistration:"", telephone: ""},
             userWhoSendsComplaint: { id: 0, name: "",email:"", surname: "", address: { id: "", street:"", number: 0, city: "", country: ""}, reasonForRegistration:"", telephone: ""}}
         }
@@ -104,8 +106,11 @@ export default ({
                 console.log(response);
                 this.$router.push({ name: "Complaints" });
             })  
-            alert("Odgovorili ste na zalbu!")
-            this.$router.go(0);
+                  return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Odgovor na zahtev je poslat!'
+           });
             },
 
             SaveEmails(email1,email2) {
