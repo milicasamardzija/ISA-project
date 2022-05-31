@@ -1,5 +1,6 @@
 package com.example.demo.service.business;
 
+import com.example.demo.dto.business.DateDTO;
 import com.example.demo.dto.business.PriceDTO;
 import com.example.demo.dto.business.ReservationNewDTO;
 import com.example.demo.dto.entities.AdditionalServiceDTO;
@@ -8,12 +9,14 @@ import com.example.demo.model.business.Reservation;
 import com.example.demo.model.business.ReservationServices;
 import com.example.demo.model.business.ReservedTerm;
 import com.example.demo.model.entities.AdditionalService;
+import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ReservationRepository;
 import com.example.demo.service.email.EmailService;
 import com.example.demo.service.entities.AdditionalServicesService;
+import com.example.demo.service.entities.CottageService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.ClientService;
 import org.springframework.stereotype.Service;
@@ -31,8 +34,9 @@ public class ReservationService {
     private ReservedTermService reservedTermService;
     private AdditionalServicesService additionalService;
     private ReservationServicesService reservationServicesService;
+    private CottageService cottageService;
 
-    public ReservationService (ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService) {
+    public ReservationService (ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService, CottageService cottageService) {
         this.reservationRepository = reservationRepository;
         this.emailService = emailService;
         this.clientService = clientService;
@@ -40,6 +44,7 @@ public class ReservationService {
         this.reservedTermService = reservedTermService;
         this.additionalService = additionalService;
         this.reservationServicesService = reservationServicesService;
+        this.cottageService = cottageService;
     }
 
     public List<Reservation> findAll() {
@@ -70,9 +75,59 @@ public class ReservationService {
         return this.reservationRepository.findById(id);
     }
 
-    public void save(ReservationNewDTO reservation, User user) throws Exception {
+    public Boolean checkDate(DateDTO searchParam){
+        String[] time = searchParam.getTime().split(":");
+        String hour = time[0];
+        String minutes = time[1];
+
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calStart.setTime(searchParam.getDate());
+        calStart.add(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
+        calStart.add(Calendar.MINUTE, Integer.parseInt(minutes));
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calEnd.setTime(searchParam.getDate());
+        calEnd.add(Calendar.DAY_OF_YEAR, searchParam.getNumber());
+
+        Boolean isNotReserved = true;
+        EntityClass cottage = this.entityService.findById(searchParam.getId());
+            for (ReservedTerm term : cottage.getReservedTerms()) {
+                if (!term.isCanceled()) {
+                    //  |***term***|
+                    //      |----cal---|
+                    if (calStart.getTime().after(term.getDateStart()) && calStart.getTime().before(term.getDateEnd()) && calEnd.getTime().after(term.getDateEnd())
+                    ) {
+                        isNotReserved = false;
+                    }
+                    //  |----cal---|
+                    //     |***term***|
+                    if (calStart.getTime().before(term.getDateStart()) && calEnd.getTime().before(term.getDateEnd()) && calEnd.getTime().after(term.getDateStart())) {
+                        isNotReserved = false;
+                    }
+                    //  |------cal------|
+                    //     |***term***|
+                    if (calStart.getTime().before(term.getDateStart()) && calEnd.getTime().after(term.getDateEnd())
+                    ) {
+                        isNotReserved = false;
+                    }
+                    //    |----cal----|
+                    //  |******term******|
+                    if (calStart.getTime().after(term.getDateStart()) && calEnd.getTime().before(term.getDateEnd())
+                    ) {
+                        isNotReserved = false;
+                    }
+                }
+
+            }
+            return  isNotReserved;
+    }
+
+    public Boolean save(ReservationNewDTO reservation, User user) throws Exception {
         Client client = this.clientService.findById(user.getEmail());
         EntityClass entity = this.entityService.findById(reservation.getEntityId());
+
+        boolean alreadyReserved = false;
 
         //getting start and end date
         String[] time = reservation.getTimeStart().split(":");
@@ -119,8 +174,11 @@ public class ReservationService {
             }
 
             this.emailService.sendEmailForReservation(user);
+        } else {
+            alreadyReserved = true;
         }
-        //vrati poruku
+
+        return alreadyReserved;
     }
 
     public List<Reservation> getActionsForEntity(int id) {
@@ -167,15 +225,33 @@ public class ReservationService {
     }
 
     public List<Reservation> getAllReservationsForCottageOwner(int id_owner) {
-    List<Reservation> res = new ArrayList<>();
-
+        List<Reservation> res = new ArrayList<>();
             res= this.reservationRepository.findAllReservationsForCottageOwner(id_owner);
-
-
-    return res;
+        return res;
     }
 
     public Client findClientForReservation(int id){
         return this.reservationRepository.findClientFromReservation(id);
+    }
+
+    public Integer getMaxPeople(int id) {
+        Cottage cottage = this.cottageService.findOne(id);
+        return cottage.getRoomsNumber() * cottage.getBedsByRoom();
+    }
+
+    public Date getDateEnd(DateDTO date) {
+        String[] time = date.getTime().split(":");
+        String hour = time[0];
+        String minutes = time[1];
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calStart.setTime(date.getDate());
+        calStart.add(Calendar.HOUR_OF_DAY, Integer.parseInt(hour) - 2);
+        calStart.add(Calendar.MINUTE, Integer.parseInt(minutes));
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calEnd.setTime(date.getDate());
+        calEnd.add(Calendar.DAY_OF_YEAR, date.getNumber());
+        return calEnd.getTime();
     }
 }

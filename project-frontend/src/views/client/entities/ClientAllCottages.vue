@@ -22,12 +22,14 @@
         <input
           class="form-control mr-sm-2"
           type="number"
+          min="0"
           placeholder="Broj dana"
           v-model="number"
         />
         <input
           class="form-control mr-sm-2"
           type="number"
+          min="0"
           placeholder="Broj ljudi"
           v-model="people"
         />
@@ -235,19 +237,23 @@
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Datum pocetka:</i></p></td>
-            <td><p><input type="date" v-model="this.date" style="width:120px"></p></td>
+            <td><p><input type="date"  v-model="this.date" style="width:120px"></p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Vreme:</i></p></td>
+            <td><p><input type="time" v-model="this.time" style="width:120px"></p></td>
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Broj dana: </i></p></td>
-            <td><p><input type="number" v-model="this.number" style="width:120px"></p></td>
+            <td><p><input type="number" v-model="this.number" min="0"  @change="checkDate()" style="width:120px"></p></td>
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Datum kraja:</i></p></td>
-            <td><p><input type="date" v-model="this.dateEnd" style="width:120px"></p></td>
+            <td><p>{{this.format_date(this.dateEnd)}}</p></td>
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Broj osoba: </i></p></td>
-            <td><p><input type="number" v-model="this.people" style="width:120px">  Maksimalan broj ljudi: 10 </p></td>
+            <td><p><input type="number" v-model="this.people" min="0" style="width:120px">  Maksimalan broj ljudi: {{this.maxPeople}} </p></td>
           </tr>
         </table>
       </div>
@@ -303,7 +309,7 @@
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Datum pocetka:</i></p></td>
-            <td><p style="margin-top:12px">{{this.date}}</p></td>
+            <td><p style="margin-top:12px">{{this.format_date(this.date)}}</p></td>
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Broj dana: </i></p></td>
@@ -311,7 +317,7 @@
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Datum kraja:</i></p></td>
-            <td><p style="margin-top:10px">{{this.dateEnd}}</p></td>
+            <td><p style="margin-top:10px">{{this.format_date( this.dateEnd)}}</p></td>
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Broj osoba: </i></p></td>
@@ -354,14 +360,16 @@ export default {
       number: "",
       maxLength:0,
       modalOpened: false,
-      people: 0,
+      people: "",
       selectedEntity: {},
       price: "",
       s: false,
       today: "",
       additionalServices : [],
       additionalServicesReservation: [],
+      maxPeople: "",
       r: false,
+      dateEnd: ""
     };
   },
 
@@ -380,6 +388,73 @@ export default {
       this.additionalServices.push(service);
       this.additionalServicesReservation.splice(index, 1);
       this.price = this.getPrice();
+    },
+    getDateEnd(){
+       const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        };
+        axios.post("http://localhost:8081/api/reservation/getDateEnd" ,{
+         date: this.date,
+         time: this.time,
+         number: this.number,
+         id: this.selectedEntity.id
+        },{headers})
+      .then (response => { 
+        console.log(response.data);
+        this.dateEnd = response.data;
+      })
+    },
+    getNumberPeople(){
+       const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        };
+        axios.get("http://localhost:8081/api/reservation/getMaxPeople/" + this.selectedEntity.id ,{headers})
+        .then (response => { 
+          console.log(response.data);
+          this.maxPeople = response.data;
+        })
+    },
+    checkDate(){
+    this.today = this.dates()
+    var t = this.format_date(this.today)
+    var dt = this.format_date(this.date)
+     if (this.date == "" || this.time == "" || this.number == "") {
+        return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate uneti datum, vreme i broj dana!'
+           });
+      } else {
+        if(dt < t){
+           return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate izabrati datum koji je danasnji ili posle danasnjeg!'
+           });
+        } else {
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        };
+        axios.post("http://localhost:8081/api/reservation/checkDate" ,{
+         date: this.date,
+         time: this.time,
+         number: this.number,
+         id: this.selectedEntity.id
+        },{headers})
+      .then (response => { 
+        console.log(response.data);
+        this.price = response.data;
+      })
+      .catch(
+        error => {
+        console.log(error)
+         return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate izabrati drugi datum!Vikendica je zauzeta u ovom periodu!'
+           });
+      })
+        }}
     },
     getPrice(){
       const headers = {
@@ -448,6 +523,7 @@ export default {
       if (this.date == "" || this.time == "" || this.number == "") {
         alert("Morate uneti datum, vreme i broj dana!")
       } else {
+        this.checkDate();
         const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
@@ -461,6 +537,14 @@ export default {
         },{headers})
       .then (response => { 
         console.log(response.data);
+      }).catch(
+        error => {
+        console.log(error)
+         return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Vec ste jednom zapazali i otkazali ovu vikendicu u ovom periodu!Ne mozete ponovo!'
+           });
       });
        this.closeModal();
        this.goToCottages();
@@ -519,6 +603,8 @@ export default {
       this.selectedEntity = cottage;
       this.price = this.selectedEntity.price;
       this.additionalServices = this.getAdditionalServices();
+      this.maxPeople = this.getNumberPeople();
+      this.dateEnd = this.getDateEnd();
       this.r = true;
     },
     closeModal() {

@@ -47,4 +47,5 @@ public class EntityService {
     public void save(EntityClass entity) {
         this.entityRepository.save(entity);
     }
+
 }

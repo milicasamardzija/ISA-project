@@ -1,9 +1,6 @@
 package com.example.demo.controller.business;
 
-import com.example.demo.dto.business.PriceDTO;
-import com.example.demo.dto.business.ReservationDTO;
-import com.example.demo.dto.business.ReservationForOwnerDTO;
-import com.example.demo.dto.business.ReservationNewDTO;
+import com.example.demo.dto.business.*;
 import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.dto.users.ClientProfileDTO;
@@ -29,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -178,7 +176,6 @@ public class ReservationController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-
     public ResponseEntity<HttpStatus> save(@RequestBody ReservationNewDTO reservation) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
@@ -186,8 +183,11 @@ public class ReservationController {
         if (user == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        this.reservationService.save(reservation, user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        if (this.reservationService.save(reservation, user)){
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/cancel/{id}")
@@ -216,6 +216,25 @@ public class ReservationController {
         }
 
         return  new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+    @PostMapping("/checkDate")
+    public ResponseEntity<Boolean> checkDate(@RequestBody DateDTO date){
+        if (this.reservationService.checkDate(date)){
+            return new ResponseEntity<>(true,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/getMaxPeople/{id}")
+    public ResponseEntity<Integer> getMaxPeople( @PathVariable int id){
+        return new ResponseEntity<>(this.reservationService.getMaxPeople(id),HttpStatus.OK);
+    }
+
+    @PostMapping("/getDateEnd")
+    public ResponseEntity<Date> getDateEnd(@RequestBody DateDTO date){
+        return new ResponseEntity<>(this.reservationService.getDateEnd(date),HttpStatus.OK);
     }
 
 }
