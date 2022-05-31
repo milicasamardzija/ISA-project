@@ -2,6 +2,8 @@ package com.example.demo.service.entities;
 
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.entities.Boat;
+import com.example.demo.model.entities.Cottage;
+import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.BoatRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,9 +53,9 @@ public class BoatService {
         return  ret;
     }
 
-
     public List<Boat> findBoatsForBoatOwner(int id){
         return  boatRepository.findBoatsForBoatOwner(id);
     }
+
 
 }

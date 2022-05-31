@@ -2,7 +2,10 @@ package com.example.demo.service.entities;
 
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.entities.Adventure;
+import com.example.demo.model.entities.Boat;
+import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.AdventureRepository;
+import com.example.demo.service.users.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,9 +17,11 @@ import java.util.List;
 public class AdventureService {
 
     private AdventureRepository adventureRepository;
+    private UserService userService;
 
-    public AdventureService(AdventureRepository adventureRepository){
+    public AdventureService(AdventureRepository adventureRepository, UserService userService){
         this.adventureRepository = adventureRepository;
+        this.userService = userService;
     }
 
     public List<Adventure> findAll() {
@@ -47,5 +52,10 @@ public class AdventureService {
         }
 
         return  ret;
+    }
+
+    public User fetchInstructorByAdventure(int id) {
+        Adventure a = this.adventureRepository.fetchInstructor(id);
+        return this.userService.findByEmail(a.getInstructor().getEmail());
     }
 }

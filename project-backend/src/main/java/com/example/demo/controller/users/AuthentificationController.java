@@ -29,11 +29,11 @@ public class AuthentificationController {
     private TokenUtils tokenUtils;
     private EmailService emailService;
     private ClientService clientService;
-    private CustomUserDetailsService.CottageOwnerService cottageOwnerService;
+    private CottageOwnerService cottageOwnerService;
     private AdministratorService administratorService;
     private InstructorService instructorService;
 
-    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CustomUserDetailsService.CottageOwnerService cottageOwnerService, AdministratorService administratorService, InstructorService instructorService) {
+    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CottageOwnerService cottageOwnerService, AdministratorService administratorService, InstructorService instructorService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.tokenUtils = tokenUtils;

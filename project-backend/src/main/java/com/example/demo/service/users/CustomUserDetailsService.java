@@ -34,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
-    @Service
+    /*@Service
     public static class CottageOwnerService {
 
         @Autowired
@@ -67,5 +67,5 @@ public class CustomUserDetailsService implements UserDetailsService {
             Cottage cottage = this.cottageOwnerRepository.fetchCottageOwnerByCottage(idCottage);
             return this.userService.findByEmail(cottage.getCottageOwner().getEmail());
         }
-    }
+    }*/
 }

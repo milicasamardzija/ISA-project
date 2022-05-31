@@ -273,8 +273,12 @@
             <form role="form" @submit.prevent="Cancel">
               <div class="form-group">
                   <table>
-                    <tr>
+                    <tr v-if="selectedReservationType === 'COTTAGE' || selectedReservationType === 'BOAT'">
                       <td><label>Ime vlasnika: </label> </td>
+                      <td><label>{{this.user.firstname}} {{this.user.lastname}}</label> </td>
+                    </tr>
+                    <tr v-if="selectedReservationType === 'ADVENTURE'">
+                      <td><label>Ime instruktora: </label> </td>
                       <td><label>{{this.user.firstname}} {{this.user.lastname}}</label> </td>
                     </tr>
                     <tr>
@@ -284,12 +288,12 @@
                       <td><label>{{this.entity.name}}</label> </td>
                     </tr>
                   
-                    <tr v-if="selectedReservationType == 'COTTAGE' || selectedReservationType == 'BOAT'" >
+                    <tr v-if="selectedReservationType === 'COTTAGE' || selectedReservationType === 'BOAT'" >
                       <td  span="2">
                       Komentar na vlasnika:
                       </td>
                     </tr> 
-                    <tr v-if="selectedReservationType == 'ADVENTURE'">
+                    <tr v-if="this.selectedReservationType === 'ADVENTURE'">
                       Komentar na instruktora:
                     </tr>  
                     <tr > 
@@ -298,9 +302,15 @@
                       </textarea>
                       </td>
                     </tr>
-                    <tr>
+                    <tr v-if="selectedReservationType === 'COTTAGE'">
                       Komentar na vikendicu:
                     </tr> 
+                    <tr v-if="selectedReservationType === 'BOAT'">
+                      Komentar na brod:
+                    </tr>
+                    <tr v-if="selectedReservationType === 'ADVENTURE'">
+                      Komentar na avanturu:
+                    </tr>
                     <tr>
                       <td  colspan="2">
                       <textarea  type="text" style="width: 100%; height: 50%" v-model="contentEntity">
@@ -312,12 +322,12 @@
               <table>
                 <tr>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block" @click="sendComplaint()" style="width:80px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" @click="sendComplaint()" style="width:80px; margin-bottom:20px">
                       Potvrdi
                     </button>
                   </td>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px" @click="clear()">
                       Otkazi
                     </button>
                   </td>
@@ -413,6 +423,8 @@
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 import moment from 'moment';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+
 export default {
   name: "HistoryReservation",
   components: {
@@ -445,6 +457,8 @@ export default {
       this.selectedReservationId = 0;
       this.user = "";
       this.entity = "";
+      this.contentUser = "";
+      this.contentEntity = "";
     },
     async fetchCottageReservations() {
       const headers = {
@@ -577,6 +591,28 @@ export default {
       const data = await res.json();
       return data;
       }
+      if (this.selectedReservationType === 'BOAT') {
+        const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch(
+        "http://localhost:8081/api/boatOwner/boatOwnerUser/" + id,
+        { headers }
+      );
+      const data = await res.json();
+      return data;
+      }
+      if (this.selectedReservationType === 'ADVENTURE') {
+        const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch(
+        "http://localhost:8081/api/adventures/instructorUser/" + id,
+        { headers }
+      );
+      const data = await res.json();
+      return data;
+      }
     },
     format_date(value){
       if (value) {
@@ -590,8 +626,13 @@ export default {
       axios.post("http://localhost:8081/api/complaint" ,{contentUser: this.contentUser, contentEntity: this.contentEntity, user: this.user, entity: this.entity},{headers})
       .then (response => { 
         console.log(response);
-        alert("Uspesno ste se poslali zalbu!")
-      })
+       return new Swal({
+             title:"Uspesno",
+             type: "warning",
+             text:'Vasa zalba je poslata!'
+           });
+      });
+       this.clear()
     }
   },
   async created() {

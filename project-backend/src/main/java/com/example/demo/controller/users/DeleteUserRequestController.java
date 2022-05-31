@@ -89,7 +89,7 @@ public class DeleteUserRequestController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @Controller
+    /*@Controller
     @RequestMapping(value = "api/cottageOwner")
     public static class CottageOwnerController {
 
@@ -115,5 +115,5 @@ public class DeleteUserRequestController {
             User user = this.cottageOwnerService.fetchCottageOwnerByCottage(id);
             return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
         }
-    }
+    }*/
 }

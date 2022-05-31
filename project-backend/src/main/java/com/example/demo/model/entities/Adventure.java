@@ -96,5 +96,38 @@ public class Adventure extends EntityClass{
 	public void setCancelationType(CancelationType cancelationType) {
 		this.cancelationType = cancelationType;
 	}
-		
+
+	public String getNameOfAdventure() {
+		return nameOfAdventure;
+	}
+
+	public void setNameOfAdventure(String nameOfAdventure) {
+		this.nameOfAdventure = nameOfAdventure;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@Override
+	public String getRules() {
+		return rules;
+	}
+
+	@Override
+	public void setRules(String rules) {
+		this.rules = rules;
+	}
+
+	public Instructor getInstructor() {
+		return instructor;
+	}
+
+	public void setInstructor(Instructor instructor) {
+		this.instructor = instructor;
+	}
 }

@@ -2,6 +2,7 @@ package com.example.demo.controller.users;
 
 import com.example.demo.dto.users.BoatOwnerDTO;
 import com.example.demo.dto.users.CottageOwnerDTO;
+import com.example.demo.dto.users.UserDTO;
 import com.example.demo.model.users.BoatOwner;
 import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -47,6 +49,12 @@ public class BoatOwnerController {
         }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/boatOwnerUser/{id}")
+    public  ResponseEntity<UserDTO> fetchBoatOwnerByBoat(@PathVariable int id){
+        User user = this.boatOwnerService.fetchBoatOwnerByBoat(id);
+        return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
     }
 
 }
