@@ -38,5 +38,9 @@ public class BoatOwnerService {
         Boat boat = this.boatOwnerRepository.fetchBoatOwnerByBoat(idBoat);
         return this.userService.findByEmail(boat.getBoatOwner().getEmail());
     }
+    public BoatOwner getOwnerWithBoats(int id) {
+        return boatOwnerRepository.findOwnerWithBoats(id);
+}
+
 
 }

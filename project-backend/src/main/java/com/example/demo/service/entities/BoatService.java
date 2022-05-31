@@ -6,9 +6,12 @@ import com.example.demo.model.entities.AdditionalService;
 
 import com.example.demo.model.entities.Boat;
 import com.example.demo.model.entities.Cottage;
+import com.example.demo.model.users.BoatOwner;
+import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.AdditionalServicesRepository;
 import com.example.demo.repository.entities.BoatRepository;
+import com.example.demo.service.users.BoatOwnerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -25,10 +28,12 @@ public class BoatService {
 
     private BoatRepository boatRepository;
     private AdditionalServicesRepository additionalServicesRepository;
+    private BoatOwnerService boatOwnerService;
 
-    public BoatService(BoatRepository boatRepository, AdditionalServicesRepository additionalServicesRepository){
+    public BoatService(BoatRepository boatRepository,BoatOwnerService ownerService, AdditionalServicesRepository additionalServicesRepository){
         this.boatRepository = boatRepository;
         this.additionalServicesRepository =additionalServicesRepository;
+        this.boatOwnerService = ownerService;
     }
 
     public List<Boat> findAll() {
@@ -197,5 +202,30 @@ public class BoatService {
 
     }
 
+    public BoatOwner findOwnerForBoat(int id) {
+        return boatRepository.findBoatOwner(id);
+    }
 
+    public void deleteById(int id) {
+        Boat boat = this.boatRepository.findBoatWithServices(id);
+        BoatOwner owner = this.findOwnerForBoat(id);
+        BoatOwner ownerWithBoats = boatOwnerService.getOwnerWithBoats(owner.getId()); //zasto vrati samo 1
+
+
+        for(Boat c : ownerWithBoats.getBoatList()){
+            if(c.getId() == id) {
+                ownerWithBoats.getBoatList().remove(c);
+                boatOwnerService.save(ownerWithBoats);
+                break;
+            }
+        }
+        //brisem sve servise u kom je boat id strani kljuc
+        for(AdditionalService a: boat.getAdditionalServices()){
+            if(a.getEntities().getId() == id ){
+                additionalServicesRepository.deleteById(a.getId());
+            }
+        }
+
+        this.boatRepository.delete(boat);
+    }
 }

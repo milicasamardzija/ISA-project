@@ -251,12 +251,17 @@ public class CottageService {
     }
 
     public void deleteById(int id) {
-        Cottage cottage = this.cottageRepository.findById(id);
+        Cottage cottage = this.cottageRepository.getCottageWithServices(id);
         CottageOwner owner = this.findCottageOwner(id);
 
         for(Cottage c: cottage.getCottageOwner().getCottageList()){
             if(c.getId() == id) {
                 c.getCottageOwner().getCottageList().remove(c);
+                for(AdditionalService a : c.getAdditionalServices() ){
+                    if(a.getEntities().getId() == id ){
+                        aditionalServicesService.deleteById(a.getId()); //oni su one to many, tako da se brisu odmah
+                    }
+                }
                 ownerService.save(owner);
                 break;
             }
