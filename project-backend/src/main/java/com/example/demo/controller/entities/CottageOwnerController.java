@@ -1,5 +1,6 @@
 package com.example.demo.controller.entities;
 
+import com.example.demo.controller.users.DeleteUserRequestController;
 import com.example.demo.dto.users.ClientDTO;
 import com.example.demo.dto.users.CottageOwnerDTO;
 import com.example.demo.dto.users.UserDTO;
@@ -26,6 +27,7 @@ public class CottageOwnerController {
 
     private CottageOwnerService cottageOwnerService;
     private CottageService cottageService;
+
 
     public CottageOwnerController(CottageOwnerService cottageOwnerService, CottageService cottageServ){
         this.cottageOwnerService= cottageOwnerService;

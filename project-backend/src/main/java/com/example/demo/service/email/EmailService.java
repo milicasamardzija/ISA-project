@@ -1,6 +1,5 @@
 package com.example.demo.service.email;
 
-import com.example.demo.model.users.Role;
 import com.example.demo.model.users.User;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;

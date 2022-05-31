@@ -3,6 +3,7 @@ package com.example.demo.model.entities;
 
 import javax.persistence.*;
 
+import com.example.demo.dto.entities.BoatDTO;
 import com.example.demo.enums.BoatType;
 import com.example.demo.enums.CancelationType;
 import com.example.demo.model.users.BoatOwner;
@@ -63,6 +64,28 @@ public class Boat extends EntityClass{
 		this.cancelationType = cancelationType;
 	}
 
+	public  Boat(BoatDTO dto){
+		this.setId( dto.getId());
+		this.setName(dto.getName());
+		this.setAddress(dto.getAddress());
+		this.setPromoDescription(dto.getPromoDescription());
+		this.setImage(dto.getImages());
+		this.setRules(dto.getRules());
+		this.setPrice(dto.getPrice());
+		this.setGrade(dto.getGrade());
+		this.setBoatType(dto.getBoatType());
+		this.setLenght(dto.getLenght());
+		this.setMotorNumber(dto.getMotorNumber());
+		this.setPower(dto.getPower());
+		this.setMaxSpeed(dto.getMaxSpeed());
+		this.setNavigationEquipment(dto.getNavigationEquipment());
+		this.setFishingEquipment(dto.getFishingEquipment());
+		this.setQuantity(dto.getQuantity());
+		this.setCancelationType(dto.getCancelationType());
+		//fale additional services
+
+
+	}
 	public BoatOwner getBoatOwner() {
 		return boatOwner;
 	}

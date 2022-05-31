@@ -6,6 +6,7 @@ import com.example.demo.model.entities.Boat;
 import com.example.demo.model.entities.Image;
 import com.example.demo.model.entities.Address;
 
+import java.net.PortUnreachableException;
 import java.util.List;
 import java.util.Set;
 
@@ -44,14 +45,13 @@ public class BoatDTO {
     private CancelationType cancelationType;
 
     private Set<Image> images;
-    private List<AdditionalServiceDTO> additionalServices;
-
+    private Set<AdditionalServiceDTO> additionalServices;
+    public  BoatDTO(){}
     public BoatDTO(Boat boat){
         this.id = boat.getId();
         this.name = boat.getName();
         this.address = boat.getAddress();
         this.promoDescription = boat.getPromoDescription();
-        this.images = boat.getImage();
         this.rules = boat.getRules();
         this.price = boat.getPrice();
         this.grade = boat.getGrade();
@@ -65,6 +65,7 @@ public class BoatDTO {
         this.quantity =  boat.getQuantity();
         this.cancelationType =  boat.getCancelationType();
         this.images = boat.getImage();
+        //this.additionalServices = boat.getAdditionalServices();
     }
 
     public Integer getId() {
@@ -99,13 +100,7 @@ public class BoatDTO {
         this.promoDescription = promoDescription;
     }
 
-    public Set<Image> getImage() {
-        return images;
-    }
 
-    public void setImage(Set<Image> image) {
-        this.images = image;
-    }
 
     public String getRules() {
         return rules;
@@ -211,11 +206,11 @@ public class BoatDTO {
         this.images = image;
     }
 
-    public List<AdditionalServiceDTO> getAdditionalServices() {
+    public Set<AdditionalServiceDTO> getAdditionalServices() {
         return additionalServices;
     }
 
-    public void setAdditionalServices(List<AdditionalServiceDTO> additionalServices) {
+    public void setAdditionalServices(Set<AdditionalServiceDTO> additionalServices) {
         this.additionalServices = additionalServices;
     }
 }

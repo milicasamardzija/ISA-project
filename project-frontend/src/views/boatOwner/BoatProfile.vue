@@ -1,7 +1,7 @@
 <template>
-  <div v-if="this.role === 'ROLE_COTTAGE_OWNER'">
+  <div v-if="this.role === 'ROLE_BOAT_OWNER'">
     <NavBarLogOut />
-    <NavBarHomePage />
+    <NavBarBoatOwner />
   </div>
 
   <!--OBICNI KORISNIK-->
@@ -20,21 +20,22 @@
     <div class="tab-pane active containerInfo">
       <div class="row">
         <div class="column" style="width: 22rem; height: 3rem">
-          <h4>{{this.cottage.name}}</h4>
+          <h4>{{this.boat.name}}</h4>
           
         </div>
         <div class="column" style="width: 35rem; height: 3rem">
-          <h4>{{cottage.address.street}} {{cottage.address.number}}, {{cottage.address.city}}, {{cottage.address.country}},</h4>
+          <h4>{{boat.address.street}} {{boat.address.number}}, {{boat.address.city}}, {{boat.address.country}},</h4>
         </div>
-        <div class="column" style="width: 18rem; height: 3rem">
-          <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'" @click="showCottage(cottage)">
-        Izmeni vikendicu
-          </button>
+        <div class="column" style="width: 18rem; height: 3rem; margin-left: 17rem">
+            <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; ">Dodaj akciju</button>
+          <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; margin-left:2rem" @click="editBoat()">Izmeni brod
+      
+          </button>  
         </div>
         <div class="column" style="width: 28rem; height: 3rem" >
-          <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'">Dodaj akciju</button>
+        
           <button class="btn btn-success" data-target="#pretplata" data-toggle="modal" v-if="this.role === 'ROLE_CLIENT'" @click="subscribeModal()">Pretplati se</button>
-          <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'" style="margin-left:40px" @click="showActions()">Akcije</button>
+          <!-- <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'" style="margin-left:40px" @click="showActions()">Akcije</button> -->
         </div>
       </div>
 
@@ -120,28 +121,33 @@
         <div class="column columnAbout">
           <h4>Opis smestaja</h4>
           <label>
-           {{cottage.promoDescription}}
+           {{boat.promoDescription}}
           </label>
+          <h4> Pravila ponasanja</h4>
+          <label> {{boat.rules}} </label>
         </div>
 
         <div class="column" style="padding-left: 10rem">
           <h4>Informacije</h4>
-          <div class="row" style="height: 20rem; background: whitesmoke">
+          <div class="row" style="height: 25rem; background: whitesmoke">
             <div class="column" style="width: 20rem">
-              <p>Cena: {{cottage.price}}</p>
-              <p>Ocena: {{cottage.grade}}</p>
+              <p>Cena: {{boat.price}}</p>
+              <p>Ocena: {{boat.grade}}</p>
               <p>Maksimalan broj osoba: {{capacity}}</p>
-              <p>Broj soba: {{cottage.roomsNumber}}</p>
-              <p>Broj kreveta po sobi: {{cottage.bedsByRoom}}</p>
-              <p>Pravila ponasanja: {{cottage.rules}}</p>
+              <p>Tip broda: {{boat.typeBoat}}</p>
+              <p>Navigaciona oprema: {{boat.navigationEquipment}}</p>
+              <p>Max brzina: {{boat.maxSpeed}}</p>
+                <p>Broj motora: {{boat.motorNumber}}</p>
+                  <p>Snaga: {{boat.power}}</p>
+                    <p>Duzina: {{boat.lenght}}</p>
             </div>
 
             <div 
               class="column"
-              style="width: 12rem; height: 18rem; background: white"
+              style="width: 13rem; height: 18rem; background: white"
             > 
             <p class="pStyle">dodatne usluge:</p>
-             <div class="row" style="height: 2rem; background: white" v-for="service in cottage.additionalServices" :key="service">
+             <div class="row" style="height: 2rem; margin-left: 2rem; margin-right: 2rem; background: white" v-for="service in boat.additionalServices" :key="service">
            
             
               <p>{{ service.name}} : {{service.price}}</p> 
@@ -175,9 +181,9 @@
               <table>
                 <tr>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block" @click="subscribe()" style="width:80px; margin-bottom:20px">
-                      Potvrdi
-                    </button>
+                    <!-- <button type="submit" class="btn btn-success btn-block" @click="subscribe()" style="width:80px; margin-bottom:20px">
+                       Potvrdi
+                    </button> -->
                   </td>
                   <td>
                     <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
@@ -196,19 +202,19 @@
 
 <script>
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
-import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
+import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue"
 import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
 import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue';
-import axios from "axios"
+//import axios from "axios"
 
 
 export default {
-  name: "CottageProfile",
+  name: "BoatProfile",
   components: {
     NavBarLogOut,
-    NavBarHomePage,
+    NavBarBoatOwner,
     HeaderStartPage,
     NavBarClient,
     HeaderLogAndRegister,
@@ -218,44 +224,44 @@ export default {
     return {
       role:"",
       id: "",
-      cottage: "",
+      boat: "",
       capacity: 0
     };
   },
   async created() {
     this.role = localStorage.getItem("role");
     this.id = this.$route.params.id;
-    this.cottage = this.getCottage(this.id);  
+    this.boat = this.getBoat(this.id);  
   },
   methods: {
-    showActions(){
-      this.$router.push({ name: 'CottageActions', params: { id: this.id}})
-    },
-    subscribe(){
-      const headers = {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      };
-      axios.get( "http://localhost:8081/api/client/" + this.id ,
-        { headers }).then(
-          response => {
-            console.log(response);
-            alert("Uspesno ste se pretplatili!")
-            this.$router.go(0);
-          }
-        )
-    },
-    async getCottage(id) {
-      const res = await fetch("http://localhost:8081/api/cottages/cottage/" + id);
+    // showActions(){
+    //   this.$router.push({ name: 'CottageActions', params: { id: this.id}})
+    // },
+    // subscribe(){
+    //   const headers = {
+    //     Authorization: "Bearer " + localStorage.getItem("token"),
+    //   };
+    //   axios.get( "http://localhost:8081/api/client/" + this.id ,
+    //     { headers }).then(
+    //       response => {
+    //         console.log(response);
+    //         alert("Uspesno ste se pretplatili!")
+    //         this.$router.go(0);
+    //       }
+    //     )
+    // },
+    async getBoat(id) {
+      const res = await fetch("http://localhost:8081/api/boats/boat/" + id);
       const data = await res.json();  
        console.log(data) ;
-       this.cottage= data;  //samo u created nije radilo
-       this.capacity = this.cottage.bedsByRoom * this.cottage.roomsNumber;
+       this.boat= data;  //samo u created nije radilo
+       this.capacity = this.boat.quantity;
       return data;
     },
-    
-      async showCottage(cottage){
-        this.$router.push({ name: 'EditCottage', params: { id: cottage.id}})
-   },
+
+    async editBoat(){
+          this.$router.push({ name: 'EditBoat', params: { id: this.id}})
+    }
   },
   
 };

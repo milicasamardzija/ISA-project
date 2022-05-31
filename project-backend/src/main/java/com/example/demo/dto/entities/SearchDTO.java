@@ -29,4 +29,11 @@ public class SearchDTO {
     public void setCity(String city) {
         this.city = city;
     }
+
+    public SearchDTO(String name, String street, String city) {
+        this.name = name;
+        this.street = street;
+        this.city = city;
+    }
+    public SearchDTO(){ }
 }

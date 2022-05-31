@@ -9,6 +9,9 @@ import ClientAllAdventures from "../views/client/entities/ClientAllAdventures";
 import ScheduledReservation from "../views/client/reservations/ScheduledReservation";
 import ReservationHistory from "../views/client/reservations/ReservationHistory";
 import HomePageInProfil from "../views/cottageOwner/HomePageInProfil";
+import Reservations from "../views/cottageOwner/Reservations";
+import LastReservations from "../views/cottageOwner/LastReservations";
+import NextReservations from "../views/cottageOwner/FutureReservations";
 import MyCottages from "../views/cottageOwner/MyCottages";
 import MyProfile from "../views/cottageOwner/MyProfile";
 import Statistic from "../views/cottageOwner/Statistic";
@@ -34,7 +37,8 @@ import ChangePassword from "../views/administrator/ChangePassword"
 import Complaints from "../views/administrator/Complaints"
 import MyBoats from "../views/boatOwner/MyBoats"
 import CottageActions from "../views/client/reservations/CottageActions"
-
+import BoatProfile from "../views/boatOwner/BoatProfile"
+import EditBoat from "../views/boatOwner/EditBoat"
 const routes = [
   {
     path: "/",
@@ -191,10 +195,20 @@ const routes = [
     name: "CottageProfile",
     component: CottageProfile,
   },
+   {
+    path: "/boatProfile/:id",
+    name: "BoatProfile",
+    component: BoatProfile,
+  },
   {
-    path: "/editCottage",
+    path: "/editCottage/:id",
     name: "EditCottage",
     component: EditCottage,
+  },
+  {
+    path: "/editBoat/:id",
+    name: "EditBoat",
+    component: EditBoat,
   },
   {
     path: "/ClientSubscription",
@@ -206,6 +220,22 @@ const routes = [
     name: "CottageActions",
     component: CottageActions,
   },
+  {
+    path: "/reservations",
+    name: "Reservations",
+    component: Reservations,
+  },
+  {
+    path: "/lastReservations",
+    name: "LastReservations",
+    component: LastReservations,
+  },
+  {
+    path: "/nextReservations",
+    name: "NextReservations",
+    component: NextReservations,
+  },
+
 ];
 
 const router = createRouter({

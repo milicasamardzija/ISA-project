@@ -1,9 +1,11 @@
 package com.example.demo.service.entities;
 
 import com.example.demo.dto.entities.AdditionalServiceDTO;
+import com.example.demo.dto.entities.CottageDTO;
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.Cottage;
+import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.AdditionalServicesRepository;
 import com.example.demo.dto.business.ReservationSearchDTO;
 import com.example.demo.dto.entities.SearchDTO;
@@ -12,13 +14,11 @@ import com.example.demo.model.entities.EntityClass;
 import com.example.demo.repository.entities.CottageRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 
 @Service
 public class CottageService {
@@ -27,8 +27,9 @@ public class CottageService {
 
     private  AdditionalServicesService aditionalServicesService;
 
-    public CottageService(CottageRepository cottageRepository){
+    public CottageService(CottageRepository cottageRepository, AdditionalServicesService additionalServicesService){
         this.cottageRepository = cottageRepository;
+        this.aditionalServicesService = additionalServicesService;
     }
 
     public List<Cottage> findAll() {
@@ -52,16 +53,107 @@ public class CottageService {
         cottageRepository.deleteById(id);
     }
 
-    public List<Cottage> searchCottages(SearchDTO searchParam){
+    public List<Cottage> searchStartPage(SearchDTO searchParam){
         List<Cottage> ret = new ArrayList<>();
+        for (Cottage cottage : this.findAll()) {
 
-        for (Cottage cottage : this.findAll()){
-            if (cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) && cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase())){
+            //prazno sve
+            if( searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
                 ret.add(cottage);
+            }
+            //prazno ime
+            else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                if( cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+                    ret.add(cottage);
+                }
+            }
+            //prazno ime i ulica
+            else if(searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                if(cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+                    ret.add(cottage);
+                }
+            }
+            //prazno ime i grad
+            else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                if( cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase())){
+                    ret.add(cottage);
+                }
+            }
+            //prazna ulica i grad
+            else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) ){
+                    ret.add(cottage);
+                }
+            }
+            //prazno grad
+            else if(!searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) ){
+                    ret.add(cottage);
+                }
+            }
+            //prazna ulica
+            else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) ){
+                    ret.add(cottage);
+                }
             }
         }
 
         return  ret;
+    }
+
+    public List<Cottage> searchCottages(SearchDTO searchParam){
+        List<Cottage> ret = new ArrayList<>();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+        if(user.getRole().getName().equals("ROLE_COTTAGE_OWNER")){
+            List<Cottage> ownersCottages = this.findAllOwnerCottages(user.getId());
+            for (Cottage c : ownersCottages ) {
+                //prazno sve
+                if( searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                   //vratice sve
+                        ret.add(c);
+                  }
+                //prazno ime
+                else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                    if( c.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) && c.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+                        ret.add(c);
+                    }
+                }
+                //prazno ime i ulica
+                else if(searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                    if(c.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+                        ret.add(c);
+                    }
+                }
+                //prazno ime i grad
+                else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                    if( c.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase())){
+                        ret.add(c);
+                    }
+                }
+                //prazna ulica i grad
+                else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                    if(c.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) ){
+                        ret.add(c);
+                    }
+                }
+                //prazno grad
+                else if(!searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                    if(c.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && c.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) ){
+                        ret.add(c);
+                    }
+                }
+                //prazna ulica
+                else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                    if(c.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && c.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) ){
+                        ret.add(c);
+                    }
+                }
+            }
+        }
+        return  ret;
+
     }
 
     public List<EntityClass> searchReservation(ReservationSearchDTO searchParam){
@@ -160,5 +252,33 @@ public class CottageService {
     public Cottage saveCottage(Cottage newCottage){
         return this.cottageRepository.save(newCottage);
     }
-    
+
+    public void update(CottageDTO editCottage, Set<AdditionalService> newServices) {
+        Cottage newCottageState = this.cottageRepository.getCottageWithServices(editCottage.getId());
+
+        newCottageState.setAddress(editCottage.getAddress());
+        newCottageState.setName(editCottage.getName());
+        newCottageState.setPrice(editCottage.getPrice());
+        newCottageState.setPromoDescription(editCottage.getPromoDescription());
+        newCottageState.setRules(editCottage.getRules());
+        newCottageState.setRoomsNumber(editCottage.getRoomsNumber());
+        newCottageState.setBedsByRoom(newCottageState.getBedsByRoom());
+        newCottageState.setImage(editCottage.getImages());
+
+        if (editCottage.getAdditionalServices().size() != 0) {
+            for (AdditionalService a :
+                    newCottageState.getAdditionalServices()) {
+                aditionalServicesService.deleteById(a.getId());
+            }
+        }
+        newCottageState.setAdditionalServices(new HashSet<>());
+
+        if (newServices.size() != 0) {
+            for (AdditionalService newA : newServices) {
+                //newA.setEntities(boatNewState);
+                newCottageState.getAdditionalServices().add(newA);
+            }
+        }
+        cottageRepository.save(newCottageState);
+    }
 }

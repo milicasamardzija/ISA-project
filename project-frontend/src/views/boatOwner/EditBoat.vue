@@ -268,11 +268,11 @@
               </div>
                      <!--Grid column v-if="cottage.additionalServices.length != 0"-->
               <div class="col-md-10" >
-                <div class="form control" v-for="adS in boat.additionalServices" :key="adS">
+                <div class="form control" v-for="(adS, index) in boat.additionalServices" :key="index">
                  <table> 
                    <tr style="width: 55rem"> <td >Naziv dodatne usluge:  </td><td style="width: 5rem"> </td> <td>Cena </td> </tr>
                    
-                    <tr> <td>{{adS.name}} </td> <td> </td><td>{{adS.price}} din  </td> </tr>
+                    <tr> <td>{{adS.name}} </td> <td> </td><td>{{adS.price}} din  </td>  <td> <button type="button" @click="remove(index)">x </button></td> </tr>
                    </table> 
                 </div>
               </div>
@@ -414,6 +414,27 @@
               </div>
             </div>
 
+              <!--Grid row-->
+            <div class="row" >
+              <!--Grid column-->
+              <div class="col-md-4">
+                <div class="md-form mb-0">
+                  <label for="name" class="">Odustanak od rezervacije: </label>
+                </div>
+              </div>
+              <!--Grid column-->
+              <div class="col-md-4">
+                <div class="md-form">
+             <select class="form-select" aria-label="Default select example" v-model="boatCancelType" style="height:2rem; width: 13rem;margin-bottom: 0.8rem; background-color: rgb(241, 241, 241); ">
+                    <option selected>Izaberite tip</option>
+                    <option value="0">besplatno</option>
+                    <option value="1">sa procentom</option>
+                   
+                    </select>
+                </div>
+              </div>
+            </div>
+
 
                        <!--Grid row-->
             <div class="row" >
@@ -460,7 +481,7 @@
             <div class="col-md-5">
               <div class="md-form mb-2">
                 <div class="input-group">
-                  <button class="btn btn-success" type="button" @click="createBoat()">Sacuvaj brod</button>
+                  <button class="btn btn-success" type="button" @click="saveBoat()">Sacuvaj izmene</button>
                 </div>
               </div>
             </div>
@@ -481,10 +502,11 @@ import axios from 'axios';
 //import $ from "jquery";
 
 export default {
-  name: "NewBoat",
+  name: "EditBoat",
   data(){
     return {
         boatTypeString: "",
+        boatCancelType: "",
         equipment: "",
       images: "", 
       adServ: {name:"", price: 0},
@@ -503,20 +525,50 @@ export default {
       console.log(this.boat.additionalServices)
         },
 
-      createBoat(){
+      saveBoat(){
               const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
+
       this.boat.boatType = parseInt(this.boatTypeString);
+      this.boat.cancelationType = parseInt(this.boatCancelType);
       console.log( this.boat.boatType )
-    this.boat.navigationEquipment = this.equipment
-    console.log(this.boat.navigationEquipment)
+      this.boat.navigationEquipment = this.equipment
+      console.log(this.boat.navigationEquipment)
+
       console.log(this.images);
-      axios.post("http://localhost:8081/api/boats/newBoat", this.boat,  {headers}).then( response => response.json());
-  this.$router.push({name: "MyBoats"});
-      }
+      axios.post("http://localhost:8081/api/boats/editBoat", this.boat,  {headers}).then( response => response.json());
+       this.$router.push({name: "MyBoats"});
+      },
+
+      async getBoat(id) {
+      const res = await fetch("http://localhost:8081/api/boats/boat/" + id);
+      const data = await res.json();  
+       console.log(data) ;
+       this.boat= data;  //samo u created nije radilo
+       this.capacity = this.boat.quantity;
+      return data;
+    },
+    removeService(service){
+      console.log(service)
+        this.boat.additionalServices.forEach(element => {
+        if(service.name == element.name){
+          this.$delete(service)
+          console.log(this.boat.additionalServices);
+        }
+      });
+    },
+    remove(index){
+      this.boat.additionalServices.splice(index, 1);
+    }
 
   },
+  async created(){
+  this.role = localStorage.getItem("role");
+    this.id = this.$route.params.id;
+    this.boat = this.getBoat(this.id);  
+    console.log(this.boat)
+  }
 
 };
 

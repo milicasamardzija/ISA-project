@@ -2,7 +2,7 @@ package com.example.demo.service.users;
 
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserRequest;
-import com.example.demo.model.users.Role;
+import com.example.demo.enums.Role;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.users.UserRepository;
 import com.example.demo.service.entities.AddressService;

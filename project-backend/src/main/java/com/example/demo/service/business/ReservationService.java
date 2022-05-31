@@ -18,6 +18,7 @@ import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.ClientService;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 @Service
@@ -65,7 +66,7 @@ public class ReservationService {
         return this.reservationRepository.findEntityByReservation(id);
     }
 
-    public Reservation findById(int id){
+    public Reservation findById(int id) {
         return this.reservationRepository.findById(id);
     }
 
@@ -107,7 +108,7 @@ public class ReservationService {
 
         Reservation canceledReservation = this.reservationRepository.getCanceledReservation(client.getId(), entity.getId(), newReservation.getTerm().getDateStart(), newReservation.getTerm().getDateEnd());
 
-        if (canceledReservation == null){
+        if (canceledReservation == null) {
             entity.getReservedTerms().add(newReservation.getTerm());
             this.reservationRepository.save(newReservation);
 
@@ -141,7 +142,7 @@ public class ReservationService {
         cal.setTime(new Date());
         cal.add(Calendar.DAY_OF_YEAR, 3);
 
-        if (cal.getTime().before(reservation.getTerm().getDateStart())){
+        if (cal.getTime().before(reservation.getTerm().getDateStart())) {
             reservation.setCanceled(true);
 
             ReservedTerm term = reservation.getTerm();
@@ -163,5 +164,18 @@ public class ReservationService {
         }
 
         return  ret;
+    }
+
+    public List<Reservation> getAllReservationsForCottageOwner(int id_owner) {
+    List<Reservation> res = new ArrayList<>();
+
+            res= this.reservationRepository.findAllReservationsForCottageOwner(id_owner);
+
+
+    return res;
+    }
+
+    public Client findClientForReservation(int id){
+        return this.reservationRepository.findClientFromReservation(id);
     }
 }

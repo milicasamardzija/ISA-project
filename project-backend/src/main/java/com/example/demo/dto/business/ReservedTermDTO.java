@@ -1,5 +1,7 @@
 package com.example.demo.dto.business;
 
+import com.example.demo.model.business.ReservedTerm;
+
 import java.util.Date;
 
 public class ReservedTermDTO {
@@ -27,5 +29,11 @@ public class ReservedTermDTO {
     public ReservedTermDTO(Date dateStart, Date dateEnd) {
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
+    }
+
+    public ReservedTermDTO(ReservedTerm t) {
+        this.dateStart = t.getDateStart();
+        this.dateEnd= t.getDateEnd();
+
     }
 }

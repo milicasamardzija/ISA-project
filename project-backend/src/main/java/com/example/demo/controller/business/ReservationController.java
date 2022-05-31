@@ -2,17 +2,23 @@ package com.example.demo.controller.business;
 
 import com.example.demo.dto.business.PriceDTO;
 import com.example.demo.dto.business.ReservationDTO;
+import com.example.demo.dto.business.ReservationForOwnerDTO;
 import com.example.demo.dto.business.ReservationNewDTO;
 import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.EntityDTO;
+import com.example.demo.dto.users.ClientProfileDTO;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.business.ReservedTerm;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.EntityClass;
+import com.example.demo.model.users.Client;
+import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
 import com.example.demo.service.business.ReservationService;
 import com.example.demo.service.entities.AdventureService;
 import com.example.demo.service.entities.EntityService;
+import com.example.demo.service.users.CottageOwnerService;
+import com.example.demo.service.users.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,10 +38,14 @@ public class ReservationController {
 
     private ReservationService reservationService;
     private EntityService entityService;
+    private CottageOwnerService cottageOwnerService;
+    private ClientService  clientService;
 
-    public ReservationController(ReservationService reservationService,EntityService entityService){
+    public ReservationController(ReservationService reservationService,EntityService entityService, CottageOwnerService cottageOwnerService,ClientService clientService ){
         this.reservationService = reservationService;
         this.entityService = entityService;
+        this.cottageOwnerService = cottageOwnerService;
+        this.clientService = clientService;
     }
 
     @GetMapping("/scheduledReservations")
@@ -188,4 +199,23 @@ public class ReservationController {
     public ResponseEntity<Double> getTotalPrice(@RequestBody PriceDTO price){
         return new ResponseEntity<>(this.reservationService.getTotalPrice(price), HttpStatus.OK);
     }
+
+    //cottage owner
+    @GetMapping("/allReservationsCottageOwner")
+    public ResponseEntity<List<ReservationForOwnerDTO>> allReservationsCottageOwner()  {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+       // CottageOwner cottageOwner = cottageOwnerService.findById(user.getId());
+
+        List<Reservation> allReservations = reservationService.getAllReservationsForCottageOwner(user.getId());
+        List<ReservationForOwnerDTO> ret = new ArrayList<>();
+        for(Reservation reservation : allReservations ) {
+            Client c = reservationService.findClientForReservation(reservation.getId());
+            ClientProfileDTO client = new ClientProfileDTO(c);
+            ret.add(new ReservationForOwnerDTO(reservation,client));
+        }
+
+        return  new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
 }
