@@ -17,14 +17,15 @@
     <div class="card-body">
       <h5 class="card-title">{{reservation.entity.name}}</h5>
       <p class="card-text"> Termin vazenja: {{ dateTime(reservation.term.dateStart) }}  do {{ dateTime(reservation.term.dateEnd) }}  </p>
-       <p class="card-text"> Adresa: {{reservation.entity.address.street}}  do {{reservation.entity.address.number}}, {{reservation.entity.address.country}}  </p>
+       <p class="card-text"> Adresa: {{reservation.entity.address.street}}  {{reservation.entity.address.number}}, {{reservation.entity.address.country}}  </p>
       <p class="card-text"> Cena: {{reservation.price}} din</p>
        <p class="card-text"> Klijent: {{reservation.user.name}}  {{reservation.user.surname }} </p>
           <p class="card-text">Email:   {{reservation.user.email }} </p>
       <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
-       <div class="card-footer bg-transparent border-success"><button class="btn btn-success"  >
+       <div class="card-footer bg-transparent border-success" ><button class="btn btn-success" v-if="reservation.term.dateEnd < d" type="button"  @click="makeComplaint(reservation)">
             Napisi zalbu
-            </button></div>
+            </button>
+      </div>
     </div>
   </div>
 
@@ -42,6 +43,7 @@ import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 // import axios from 'axios'
 import moment from "moment";
+import Swal from 'sweetalert2';
 
 export default {
   name: "MyCottages",
@@ -54,6 +56,8 @@ export default {
     return {
         reservations: "",
         cottageOwner: "",
+          d : new Date(),
+        
     }
   },
 
@@ -87,6 +91,21 @@ export default {
       return moment(value).format("DD-MM-YYYY");
   
   },
+    makeComplaint(reservation){
+            // alert("CAO");
+            // console.log("HJE")
+             var  d= new Date();
+            //  alert(d)
+            //  alert(reservation.term.dateEnd)
+            // alert(reservation.term.dateEnd > d)
+       if(reservation.term.dateEnd > d){
+             return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nemate pravo da ostavite zalbu jer rezervacija nije prosla',
+           });
+       }
+   },
   },
    async created() {
    

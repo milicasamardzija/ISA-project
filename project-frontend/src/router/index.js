@@ -11,7 +11,7 @@ import ReservationHistory from "../views/client/reservations/ReservationHistory"
 import HomePageInProfil from "../views/cottageOwner/HomePageInProfil";
 import Reservations from "../views/cottageOwner/Reservations";
 import LastReservations from "../views/cottageOwner/LastReservations";
-import NextReservations from "../views/cottageOwner/LastReservations";
+import NextReservations from "../views/cottageOwner/FutureReservations";
 import MyCottages from "../views/cottageOwner/MyCottages";
 import MyProfile from "../views/cottageOwner/MyProfile";
 import Statistic from "../views/cottageOwner/Statistic";

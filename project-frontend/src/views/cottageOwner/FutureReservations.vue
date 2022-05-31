@@ -11,10 +11,11 @@
    <div class="containerInfo" >
    
       <div class="card-group">
-  <div class="card"  v-for="reservation in this.reservations" :key="reservation" >
+        <div  v-for="reservation in this.reservations" :key="reservation"> 
+  <div class="card" v-if="reservation.term.dateEnd > dt" >
     <!-- <img class="card-img-top"  alt="Card image cap"> -->
      <div class="card-header bg-transparent border-success"> {{reservation.entity.name}}</div>
-    <div class="card-body">
+    <div class="card-body ">
       <h5 class="card-title">{{reservation.entity.name}}</h5>
       <p class="card-text"> Termin vazenja: {{ dateTime(reservation.term.dateStart) }}  do {{ dateTime(reservation.term.dateEnd) }}  </p>
        <p class="card-text"> Adresa: {{reservation.entity.address.street}}  do {{reservation.entity.address.number}}, {{reservation.entity.address.country}}  </p>
@@ -22,12 +23,10 @@
        <p class="card-text"> Klijent: {{reservation.user.name}}  {{reservation.user.surname }} </p>
           <p class="card-text">Email:   {{reservation.user.email }} </p>
       <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
-       <div class="card-footer bg-transparent border-success"><button class="btn btn-success"  >
-            Napisi zalbu
-            </button></div>
+       <div class="card-footer bg-transparent border-success"></div>
     </div>
   </div>
-
+</div>
 </div>
 </div>
 </div>
@@ -54,6 +53,7 @@ export default {
     return {
         reservations: "",
         cottageOwner: "",
+        dt: new Date(),
     }
   },
 
