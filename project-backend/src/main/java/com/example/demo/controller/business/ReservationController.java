@@ -1,9 +1,6 @@
 package com.example.demo.controller.business;
 
-import com.example.demo.dto.business.PriceDTO;
-import com.example.demo.dto.business.ReservationDTO;
-import com.example.demo.dto.business.ReservationForOwnerDTO;
-import com.example.demo.dto.business.ReservationNewDTO;
+import com.example.demo.dto.business.*;
 import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.dto.users.ClientProfileDTO;
@@ -242,6 +239,19 @@ public class ReservationController {
         }else{
             return  new ResponseEntity<>( HttpStatus.NOT_FOUND);
         }
+    }
+
+
+    @PostMapping("/checkAvailability")
+    public ResponseEntity<HttpStatus> checkAvailability(@RequestBody ActionReservationDTO action){
+
+        return  new ResponseEntity<>( HttpStatus.OK);
+    }
+
+
+    @PostMapping("/action")
+    public ResponseEntity<HttpStatus> createActionReservation(@RequestBody ActionReservationDTO action){
+        return  new ResponseEntity<>( HttpStatus.OK);
     }
 
 }

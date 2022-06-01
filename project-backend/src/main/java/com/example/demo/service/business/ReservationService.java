@@ -1,5 +1,6 @@
 package com.example.demo.service.business;
 
+import com.example.demo.dto.business.ActionReservationDTO;
 import com.example.demo.dto.business.PriceDTO;
 import com.example.demo.dto.business.ReservationNewDTO;
 import com.example.demo.dto.entities.AdditionalServiceDTO;
@@ -201,5 +202,31 @@ public class ReservationService {
         }else{
             return true;
         }
+    }
+
+
+    public boolean checkAvailability(ActionReservationDTO action) {
+        List<Reservation> allReservations = this.reservationRepository.getReservationsForEntity(action.getEntityId());
+        String[] time = action.getTimeStart().split(":");
+        String hour = time[0];
+        String minutes = time[1];
+
+        Calendar calStartAction = Calendar.getInstance();
+        Calendar calEndAction = Calendar.getInstance();
+        calStartAction.setTime(action.getDateStart());
+        calEndAction.setTime(action.getDateEnd());
+        Boolean isNotReserved = true;
+
+        if (allReservations.size() != 0) {
+            for (Reservation r : allReservations) {
+                Calendar calStart = Calendar.getInstance();
+                calStart.setTime(r.getTerm().getDateStart());
+
+                Calendar calEnd = Calendar.getInstance();
+                calEnd.setTime(r.getTerm().getDateEnd());
+
+            }
+        }
+return isNotReserved;
     }
 }
