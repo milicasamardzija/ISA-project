@@ -49,21 +49,24 @@ public class ComplaintController {
         List<Complaint> allComplaints = complaintService.findAll();
         List<ComplaintClientDTO> complaints = new ArrayList<>();
         for(Complaint c : allComplaints ) {
-            complaints.add(new ComplaintClientDTO(c));
-
+            ComplaintClientDTO com = new ComplaintClientDTO(c);
+            System.out.print("da li je ?"+com.getIsAnswered());
+            complaints.add(com);
         }
         return  new ResponseEntity<>(complaints, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/sendMails/{emailWhoSent}/{emailWhoReceive}/{content}")
-    public ResponseEntity<Void> sendMails(@PathVariable String emailWhoSent,@PathVariable String emailWhoReceive,@PathVariable String content) throws InterruptedException, MessagingException {
+    @PostMapping(value = "/sendMails/{emailWhoSent}/{emailWhoReceive}/{content1}/{content2}/{id}")
+    public ResponseEntity<Void> sendMails(@PathVariable String emailWhoSent,@PathVariable String emailWhoReceive,@PathVariable String content1,@PathVariable String content2,@PathVariable int id) throws InterruptedException, MessagingException {
                  service.sendEmailWithAttachment(emailWhoSent,
-                    content,
-                    "Response to complaint");
+                    content1,
+                    "Odgovor na zalbu");
 
                 service.sendEmailWithAttachment(emailWhoReceive,
-                content,
-                "Response to complaint");
+                content2,
+                "Odgovor na zalbu");
+                System.out.print("Id zalbe je "+id+"CCC");
+                this.complaintService.changeComplaint(id);
             return new ResponseEntity<>(HttpStatus.OK);}
     }
 

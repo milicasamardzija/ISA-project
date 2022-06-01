@@ -39,6 +39,9 @@ import MyBoats from "../views/boatOwner/MyBoats"
 import CottageActions from "../views/client/reservations/CottageActions"
 import BoatProfile from "../views/boatOwner/BoatProfile"
 import EditBoat from "../views/boatOwner/EditBoat"
+import Evaluate from "../views/administrator/Evaluate"
+import BuisinessReport from "../views/administrator/BuisinessReport"
+
 const routes = [
   {
     path: "/",
@@ -50,10 +53,21 @@ const routes = [
     name: "Percentage",
     component: Percentage,
   },
+
+  {
+    path: "/buisinessReport",
+    name: "BuisinessReport",
+    component: BuisinessReport,
+  },
   {
     path: "/complaints",
     name: "Complaints",
     component: Complaints,
+  },
+  {
+    path: "/evaluate",
+    name: "Evaluate",
+    component: Evaluate,
   },
   {
     path: "/incomeRecords",
@@ -235,7 +249,6 @@ const routes = [
     name: "NextReservations",
     component: NextReservations,
   },
-
 ];
 
 const router = createRouter({

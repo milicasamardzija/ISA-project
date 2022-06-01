@@ -118,6 +118,7 @@ import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
 import NavBarLogOut from "../../components/administrator/NavBarLogOut.vue";
 import NavBarPredefAdministrator from "../../components/administrator/NavBarPredefAdministrator.vue";
+import Swal from 'sweetalert2';
 export default({
 name: "DeleteAccountRequests",
   components: {
@@ -161,8 +162,11 @@ name: "DeleteAccountRequests",
         console.log(response);
         this.$router.push({ name: "DeleteAccountRequests" });
       })  
-      alert("Prihvatili ste zahtev!")
-      this.$router.go(0);       
+      return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Prihvatili ste zahtev za brisanje profila!'
+           });
    },
       Reject(reason) {
       this.reasonn = reason;
@@ -174,8 +178,11 @@ name: "DeleteAccountRequests",
         console.log(response);
         this.$router.push({ name: "DeleteAccountRequests" });
       })  
-      alert("Odbili ste zahtev!")
-      this.$router.go(0);       
+      return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Odbili ste zahtev za brisanje profila!'
+           });      
    }
   },
       async created() {

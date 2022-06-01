@@ -109,7 +109,9 @@
             </h5>
           </div>
           <div class="modal-body" style="padding: 15px 50px">
-            <form role="form"  @submit.prevent="register()">
+
+            <form role="form" @submit.prevent="register()">
+
               <div class="form-group">
                 <label for="name">Ime</label>
                 <input
@@ -222,7 +224,8 @@
               </div>
               <div class="form-group">
                 <label for="psw"
-                  ><span class="glyphicon glyphicon-eye-open"></span> Ponovite
+                  ><span class="glyphicon glyphicon-eye-open"
+                  ></span> Ponovite
                   unos lozinke</label
                 >
                 <input
@@ -230,13 +233,12 @@
                   class="form-control"
                   id="psw"
                   placeholder="Potvrdite lozinku"
-                  v-model="passwordRepeat"
+                  v-model="passwordAgain"
                 />
               </div>
               <button
                type="submit"
                 class="btn btn-success btn-block"
-                @click="register()"
               >
                 <span></span> Registruj se
               </button>
@@ -259,17 +261,14 @@
 
 <script>
 import axios from 'axios'
-
 import Swal from 'sweetalert2';
-
 export default {
-
-
   data() {
     return {
       userAddress: { country: "",  city: "", street: "",number:0 },
       email: "",
       password: "",
+      passwordAgain:"",
       newUser: {
         firstname: "",
         lastname: "",
@@ -353,15 +352,46 @@ export default {
       }) 
     },
     async register() {
-
-      if (this.newUser.password != this.passwordRepeat){
-        return new Swal({
+      if ( !this.validFirstname()) {
+        new Swal({
              title:"Nije uspesno",
              type: "warning",
-             text:'Sifre se ne poklapaju!'
+             text:'Ime mora da sadrzi bar jedan karakter!'
            });
-      } else {
+      } else if (!this.validLastname()) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Prezime mora da sadrzi bar jedan karakter!',
+           });
+      }  else if (!this.validEmail()) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Email adresa nije u dobroj formi!',
 
+           });     
+           } 
+           else if (!this.validPassword()) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Sifra nije u dobroj formi! Sifra mora da sadrzi bar jedno malo,jedno veliko slovo,specijalni karakter i jedan broj!',
+           });     
+           } else if (this.newUser.password != this.passwordAgain ) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Ne podudaraju se sifre!',
+           });   
+           } else if (!this.validPhoneNumber()) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Broj telefona ne sadrzi space-ove i slova!',
+           });  
+           }
+      else{
       axios.post("http://localhost:8081/api/auth/signup",{ firstname : this.newUser.firstname, 
        lastname : this.newUser.lastname,
        role: this.newUser.role,
@@ -374,20 +404,70 @@ export default {
         number: this.newUser.address.number,
         address: this.newUser.address,
         telephone: this.newUser.telephone
-       }).catch( response => {
-         console.log(response)
-           
-                 return new Swal({
+       })
+       .then(response => { 
+       console.log(response.status);
+       this.$router.push({ name: "BoatsStartPage" });
+       this.$router.go(0);
+      }) 
+            .catch( error => {
+        console.log(error)
+         return new Swal({
              title:"Nije uspesno",
              type: "warning",
-             text:'Vec postoji korisnik sa ovim mejlom!',
-               timer: 6000
+             text:'Vec postoji user sa istim email-om!'
            });
-           
-         
-     
+       // alert("")
       }) 
     }
+    },
+        validFirstname() {
+      if (this.newUser.firstname.length < 1) {
+        return false;
+      }
+      return true;
+    },
+        validPassword() {
+      if (this.newUser.password.length < 8) {
+        return false;
+      } else if (this.newUser.password.length > 30) {
+        return false;
+      } else if (!this.newUser.password.match(/[a-z]/g)) {
+        return false;
+      } else if (!this.newUser.password.match(/[A-Z]/g)) {
+        return false;
+      } else if (!this.newUser.password.match(/[0-9]/g)) {
+        return false;
+      } else if (!this.newUser.password.match(/[!@#$%^&*.,:'+-/\\"]/g)) {
+        return false;
+      }
+      return true;
+    },
+            validLastname() {
+      if (this.newUser.lastname.length < 1) {
+        return false;
+      }
+      return true;
+    },
+    validPhoneNumber() {
+      if (this.newUser.telephone.match(/[a-zA-Z]/g)) {
+        return false;
+      } else if (this.newUser.telephone.match(/[ ]/g)) {
+        return false;
+      } 
+      return true;
+    },
+    validEmail() {
+      if (
+        !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+          this.newUser.email
+        )
+      ) {
+        return false;
+      } else if (this.newUser.email.length > 35) {
+        return false;
+      }
+      return true;
     },
   },
 };

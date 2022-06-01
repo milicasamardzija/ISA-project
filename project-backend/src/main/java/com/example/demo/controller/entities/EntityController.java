@@ -7,6 +7,7 @@ import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
 import com.example.demo.service.entities.AddressService;
 import com.example.demo.service.entities.EntityService;
+import com.example.demo.service.users.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,9 +24,12 @@ public class EntityController {
 
     private EntityService entityService;
     private AddressService addressService;
+    private UserService userService;
 
-    public EntityController(EntityService entityService){
+    public EntityController(EntityService entityService,AddressService addressService,UserService userService){
         this.entityService = entityService;
+        this.addressService=addressService;
+        this.userService= userService;
     }
     public EntityClass findById(int id) { return entityService.findById(id);}
 
@@ -51,11 +55,11 @@ public class EntityController {
 
     @DeleteMapping(value = "/deleteEntity/{deleteId}")
     public ResponseEntity<Void> deleteEntity (@PathVariable int deleteId) {
-        System.out.print("Usla sam u funkciju");
         List<EntityClass> entities = entityService.findAll();
         for(EntityClass e : entities) {
             if (e.getId()== deleteId) {
-                entityService.deleteById(e.getId());
+                System.out.print("Usla sam heeeereee");
+                this.userService.deleteEntityById(e.getId());
                 return new ResponseEntity<>(HttpStatus.OK);
             }
 

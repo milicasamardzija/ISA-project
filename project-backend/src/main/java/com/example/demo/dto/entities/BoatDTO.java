@@ -100,8 +100,6 @@ public class BoatDTO {
         this.promoDescription = promoDescription;
     }
 
-
-
     public String getRules() {
         return rules;
     }

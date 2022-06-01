@@ -3,8 +3,19 @@ package com.example.demo.service.users;
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.enums.Role;
+
+import com.example.demo.model.business.Complaint;
+import com.example.demo.model.business.Evaluate;
+import com.example.demo.model.business.Reservation;
+import com.example.demo.model.business.ReservedTerm;
+import com.example.demo.model.users.Role;
 import com.example.demo.model.users.User;
+import com.example.demo.repository.entities.EntityRepository;
 import com.example.demo.repository.users.UserRepository;
+import com.example.demo.service.business.ComplaintService;
+import com.example.demo.service.business.EvaluateService;
+import com.example.demo.service.business.ReservationService;
+import com.example.demo.service.business.ReservedTermService;
 import com.example.demo.service.entities.AddressService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,12 +30,22 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     private RoleService roleService; 
     private AddressService addressService;
+    private ComplaintService complaintService;
+    private EvaluateService evaluateService;
+    private ReservationService reservationService;
+    private EntityRepository entityRepository;
+    private ReservedTermService reservedTermService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AddressService addressService, RoleService roleService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AddressService addressService, RoleService roleService, ComplaintService complaintService,ReservationService reservationService,EvaluateService evaluateService, EntityRepository entityRepository,ReservedTermService reservedTermService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.addressService = addressService;
         this.roleService = roleService;
+        this.complaintService = complaintService;
+        this.evaluateService = evaluateService;
+        this.reservationService = reservationService;
+        this.entityRepository = entityRepository;
+        this.reservedTermService = reservedTermService;
     }
 
     public User findById(int id) {
@@ -57,12 +78,68 @@ public class UserService {
 
     public void deleteById(User user){
         this.userRepository.delete(user);
-        this.roleService.delete(user.getRole());
     }
 
     public void deleteUserById(int id){
+        List<Reservation> reservations = reservationService.findAll();
+        List<Complaint> complaints = complaintService.findAll();
+        List<Evaluate> evaluates = evaluateService.findAll();
+
+        for(Reservation r : reservations) {
+            if (r.getClient().getId() == id) {
+                reservationService.deleteById(r.getId());
+            }
+        }
+        for(Complaint c : complaints) {
+            if (c.getUserWhoSendsComplaint().getId() == id) {
+                complaintService.deleteById(c.getId());
+            }
+            if (c.getUser().getId() == id) {
+                complaintService.deleteById(c.getId());
+            }
+        }
+        for(Evaluate e : evaluates) {
+            if (e.getUser().getId() == id) {
+                evaluateService.deleteById(e.getId());
+            }
+            if (e.getUserWhoSendsComplaint().getId() == id) {
+                evaluateService.deleteById(e.getId());
+            }
+        }
         User u = this.userRepository.findById(id);
         this.userRepository.delete(u);
+    }
+
+    public void deleteEntityById(int id) {
+        System.out.print("VAP");
+        List<Complaint> complaints = complaintService.findAll();
+        System.out.print("izlistala complaints");
+        List<Evaluate> evaluates = evaluateService.findAll();
+        System.out.print("izlistala evaluates");
+        List<Reservation> reservations = reservationService.findAll();
+        System.out.print("izlistala reservations");
+        List<ReservedTerm> reservedTermList = reservedTermService.fidAll();
+        System.out.print("izlistala reservedTermList");
+        for(Complaint c : complaints) {
+            if (c.getEntity().getId() == id) {
+                System.out.print("Usla sam u complaints");
+                complaintService.deleteById(c.getId());
+
+            }
+        }
+        for(Evaluate e : evaluates) {
+            if (e.getEntity().getId() == id) {
+                System.out.print("Usla sam u evaluate");
+                evaluateService.deleteById(e.getId());
+            }
+        }
+        for (Reservation r: reservations) {
+            if (r.getEntity().getId() == id) {
+                System.out.print("Usla sam u reservations");
+                this.reservationService.delete(r);
+            }
+        }
+        entityRepository.deleteById(id);
     }
 
     public User save(UserRequest userRequest){
@@ -119,4 +196,9 @@ public class UserService {
         return this.userRepository.save(u);
     }
 
+    public void deleteByUserEmail(String userEmail) {
+        User user = this.userRepository.findByEmail(userEmail);
+        System.out.print("userov id je "+user.getId()+" CCC");
+        this.deleteById(user);
+    }
 }

@@ -5,10 +5,8 @@ import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
 
 import javax.persistence.*;
-
 @Entity
-public class Complaint {
-
+public class Evaluate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -20,10 +18,13 @@ public class Complaint {
     private String contentUser;
 
     @Column
-    private boolean isAnswered;
+    private int gradeForUser;
 
     @Column
-    private ComplaintType complaintType;
+    private int gradeForEntity;
+
+    @Column
+    private Boolean accepted;
 
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
@@ -34,7 +35,23 @@ public class Complaint {
     @OneToOne(fetch = FetchType.LAZY)
     private User userWhoSendsComplaint;
 
-    public Complaint() {}
+    public Evaluate() {}
+
+    public int getGradeForUser() {
+        return gradeForUser;
+    }
+
+    public void setGradeForUser(int gradeForUser) {
+        this.gradeForUser = gradeForUser;
+    }
+
+    public int getGradeForEntity() {
+        return gradeForEntity;
+    }
+
+    public void setGradeForEntity(int gradeForEntity) {
+        this.gradeForEntity = gradeForEntity;
+    }
 
     public int getId() {
         return id;
@@ -42,14 +59,6 @@ public class Complaint {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public ComplaintType getComplaintType() {
-        return complaintType;
-    }
-
-    public void setComplaintType(ComplaintType complaintType) {
-        this.complaintType = complaintType;
     }
 
     public User getUser() {
@@ -76,12 +85,12 @@ public class Complaint {
         this.userWhoSendsComplaint = userWhoSendsComplaint;
     }
 
-    public boolean getIsAnswered() {
-        return isAnswered;
+    public Boolean getAccepted() {
+        return accepted;
     }
 
-    public void setIsAnswered(boolean answered) {
-        isAnswered = answered;
+    public void setAccepted(Boolean accepted) {
+        this.accepted = accepted;
     }
 
     public String getContentEntity() {
@@ -100,4 +109,6 @@ public class Complaint {
         this.contentUser = contentUser;
     }
 }
+
+
 

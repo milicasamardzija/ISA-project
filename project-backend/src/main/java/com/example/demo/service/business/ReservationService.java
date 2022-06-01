@@ -254,4 +254,14 @@ public class ReservationService {
         calEnd.add(Calendar.DAY_OF_YEAR, date.getNumber());
         return calEnd.getTime();
     }
+
+    public void deleteById(int id) {
+        Reservation r = this.reservationRepository.findById(id);
+        this.reservationRepository.delete(r);
+    }
+
+    public void delete(Reservation r) {
+        this.reservationRepository.delete(r);
+
+    }
 }

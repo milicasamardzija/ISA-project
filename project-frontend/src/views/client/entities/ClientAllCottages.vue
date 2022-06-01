@@ -137,6 +137,7 @@
             Rezerviši
           </button>
           <button class="btn btn-success" @click="showCottage(cottage)" style="margin-left:40px">Prikazi vikendicu</button>
+
         </div>
       </div>
     </div>
