@@ -35,6 +35,7 @@ import Complaints from "../views/administrator/Complaints"
 import MyBoats from "../views/boatOwner/MyBoats"
 import CottageActions from "../views/client/reservations/CottageActions"
 import Evaluate from "../views/administrator/Evaluate"
+import BuisinessReport from "../views/administrator/BuisinessReport"
 const routes = [
   {
     path: "/",
@@ -45,6 +46,12 @@ const routes = [
     path: "/percentage",
     name: "Percentage",
     component: Percentage,
+  },
+
+  {
+    path: "/buisinessReport",
+    name: "BuisinessReport",
+    component: BuisinessReport,
   },
   {
     path: "/complaints",

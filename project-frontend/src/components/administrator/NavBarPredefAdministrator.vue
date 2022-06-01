@@ -43,7 +43,7 @@
       </li>
       <li class="nav-item">
         <button type="button" class="btn btn-success">
-          <router-link to="">Business report</router-link>
+          <router-link to="/buisinessReport">Business report</router-link>
         </button>
       </li>
       <li class="nav-item">
