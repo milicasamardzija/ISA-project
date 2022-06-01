@@ -22,9 +22,26 @@ public class ReservationDTO {
     private Boolean isCanceled;
 
     private int duration;
-
+    private String dateStart;
+    private String dateEnd;
     public int getId() {
         return id;
+    }
+
+    public String getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(String dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public String getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(String dateEnd) {
+        this.dateEnd = dateEnd;
     }
 
     public void setId(int id) {
@@ -86,6 +103,8 @@ public class ReservationDTO {
         this.entityType = reservation.getEntityType();
         this.isCanceled = reservation.getCanceled();
         this.duration = reservation.getDuration();
+        this.dateStart = reservation.getTerm().getDateStart().toString();
+        this.dateEnd = reservation.getTerm().getDateEnd().toString();
     }
     public ReservationDTO() {
 

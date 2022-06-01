@@ -2,6 +2,7 @@ package com.example.demo.controller.business;
 
 import com.example.demo.dto.business.ReservationDTO;
 import com.example.demo.dto.business.ReservationNewDTO;
+import com.example.demo.dto.business.ReservationnDTO;
 import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.model.business.Reservation;
@@ -93,20 +94,17 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/getSuccessfulBooking")
-    public ResponseEntity<List<ReservationDTO>> getSuccessfulBooking(){
+    public ResponseEntity<List<ReservationnDTO>> getSuccessfulBooking(){
         List<Reservation> allReservation = reservationService.findAll();
-        List<ReservationDTO> reservations = new ArrayList<>();
+        List<ReservationnDTO> reservations = new ArrayList<>();
         for(Reservation r : allReservation ) {
             if (r.getSuccessful()) {
-                 ReservationDTO reservation = new ReservationDTO();
-                 reservation.setId(r.getId());
-                 //reservation.setDateStart(r.getTerm().getDateStart().toString());
-                 //reservation.setDateEnd(r.getTerm().getDateEnd().toString());
-                 reservation.setPrice(r.getPrice());
-                 EntityClass entity = new EntityClass();
-                 entity = entityService.findById(r.getEntity().getId());
-                 reservation.setEntity(entity);
-                 reservations.add(reservation);
+                ReservationnDTO reservationDTO = new ReservationnDTO(r);
+                System.out.print("id je"+r.getEntity().getId());
+                EntityClass e = this.entityService.findById(r.getEntity().getId());
+                EntityDTO entityDTO = new EntityDTO(e);
+                reservationDTO.setEntity(entityDTO);
+                reservations.add(reservationDTO);
             }
         }
         return  new ResponseEntity<>(reservations, HttpStatus.OK);
