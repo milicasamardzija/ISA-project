@@ -25,6 +25,8 @@ public class UserDTO {
 
     private boolean must_change_password;
 
+    private double grade;
+
     public UserDTO(User user){
         this.id = user.getId();
         this.firstname = user.getName();
@@ -36,6 +38,7 @@ public class UserDTO {
         this.telephone = user.getTelephone();
         this.role = user.getRole().getName();
         this.must_change_password = user.isMust_change_password();
+        this.grade = user.getGrade();
     }
 
     public int getId() {
@@ -115,5 +118,13 @@ public class UserDTO {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
     }
 }

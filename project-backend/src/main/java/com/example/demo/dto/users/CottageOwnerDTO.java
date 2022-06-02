@@ -16,6 +16,7 @@ public class CottageOwnerDTO {
     private String telephone;
     private Address address;
     private List<Cottage> cottageList;
+    private double grade;
 
     public int getId() {
         return id;
@@ -79,6 +80,14 @@ public class CottageOwnerDTO {
 
     public void setCottageList(List<Cottage> cottageList) {
         this.cottageList = cottageList;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
     }
 
     public  CottageOwnerDTO(){}
