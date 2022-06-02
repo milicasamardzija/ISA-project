@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @Controller
 @RequestMapping(value = "api/reservation")
 public class ReservationController {
@@ -228,9 +229,13 @@ public class ReservationController {
         List<Reservation> allReservations = reservationService.getAllReservationsForBoatOwner(user.getId());
         List<ReservationForOwnerDTO> ret = new ArrayList<>();
         for(Reservation reservation : allReservations ) {
-            Client c = reservationService.findClientForReservation(reservation.getId());
-            ClientProfileDTO client = new ClientProfileDTO(c);
-            ret.add(new ReservationForOwnerDTO(reservation,client));
+            if(reservationService.findClientForReservation(reservation.getId()) == null){
+                ret.add(new ReservationForOwnerDTO(reservation.getId(),reservation.getAction(), new ReservedTermDTO(reservation.getTerm()), reservation.getPrice(),new EntityDTO(reservation.getEntity()), reservation.getCanceled(), reservation.getDuration(), new ClientProfileDTO("/", 0,"/","/") ));
+            }else {
+                Client c = reservationService.findClientForReservation(reservation.getId());
+                ClientProfileDTO client = new ClientProfileDTO(c);
+                ret.add(new ReservationForOwnerDTO(reservation, client));
+            }
         }
 
         return  new ResponseEntity<>(ret, HttpStatus.OK);
@@ -260,6 +265,13 @@ public class ReservationController {
     @PostMapping("/actionCottage")
     public ResponseEntity<HttpStatus> createActionReservationCottage(@RequestBody ActionReservationDTO action)  {
         this.reservationService.saveActionCottage(action);
+
+        return  new ResponseEntity<>( HttpStatus.OK);
+    }
+
+    @PostMapping("/actionBoat")
+    public ResponseEntity<HttpStatus> createActionReservationBoat(@RequestBody ActionReservationDTO action)  {
+        this.reservationService.saveActionBoat(action);
 
         return  new ResponseEntity<>( HttpStatus.OK);
     }

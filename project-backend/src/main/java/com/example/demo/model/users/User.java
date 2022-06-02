@@ -49,7 +49,7 @@ public class User implements UserDetails {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "role_id")
 	private Role role;
-	@Column(name = "last_password_reset_date")
+	@Column(name = "last_password_reset_date", nullable = true)
 	private Timestamp lastPasswordResetDate;
 	
 	public User() {}

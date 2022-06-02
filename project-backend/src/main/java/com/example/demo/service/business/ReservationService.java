@@ -273,7 +273,69 @@ public class ReservationService {
     }
 
 
-//    public  void save2()
+    public void saveActionBoat(ActionReservationDTO reservation)  {
+
+        EntityClass entity = this.entityService.findById(reservation.getEntityId()); //koji je entitet
+
+        //getting start and end date, end action date nije ishendlan
+        String[] time = reservation.getTimeStart().split(":");
+        String hour = time[0];
+        String minutes = time[1];
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calStart.setTime(reservation.getDateStart());
+        calStart.add(Calendar.HOUR_OF_DAY, Integer.parseInt(hour) - 2);
+        calStart.add(Calendar.MINUTE, Integer.parseInt(minutes));
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calEnd.setTime(calStart.getTime());
+        calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
+
+        Reservation newReservation = new Reservation();
+        newReservation.setTerm(reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false)));
+
+        newReservation.setPrice(reservation.getPrice());
+
+
+        newReservation.setClient(null);  //slobodna za klijenta
+        newReservation.setAction(true);  //na akciji
+        newReservation.setEntity(entity);
+        newReservation.setEntityType(EntityType.BOAT);
+        newReservation.setDuration(reservation.getDuration());
+
+        // ArrayList<ReservationServices> services = new ArrayList<>();
+
+        //dodatne usluge ubacene
+        for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
+            ReservationServices a = new ReservationServices(as);
+            // services.add(a);
+
+            a.setReservation(newReservation);
+            newReservation.getReservationServices().add(a);
+            //  this.reservationServicesService.save(a); //ovde puca za servise kad treba da pravi reservation service tabelu
+
+        }
+
+        //newReservation.setReservationServices(services);
+        reservationRepository.save(newReservation);
+
+        //servisima dodeljujem ovu rezervaciju
+        for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
+            ReservationServices a = new ReservationServices(as);
+            a.setReservation(newReservation);
+            this.reservationServicesService.save(a);
+        }
+        reservationRepository.save(newReservation);
+
+        List<Client> subscribedClients = entityService.findSubscribedClients(entity.getId());
+
+        //slanje mejla svim pretplacenim
+        for (Client c: subscribedClients ) {
+            this.emailService.sendEmailForCreatedAction(c.getName(), entity.getName());
+        }
+
+
+    }
 
     public void saveActionCottage(ActionReservationDTO reservation)  {
 

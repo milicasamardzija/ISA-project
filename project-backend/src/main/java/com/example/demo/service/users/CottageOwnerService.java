@@ -7,6 +7,7 @@ import com.example.demo.repository.entities.EntityRepository;
 import com.example.demo.repository.users.CottageOwnerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +24,7 @@ public class CottageOwnerService {
     }
 
     public CottageOwner save(CottageOwner cottageOwner) {
+        cottageOwner.setCottageList(new ArrayList<>());
         return cottageOwnerRepository.save(cottageOwner);
 
     }

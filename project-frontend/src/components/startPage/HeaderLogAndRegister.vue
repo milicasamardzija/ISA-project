@@ -236,7 +236,7 @@
               <button
                type="submit"
                 class="btn btn-success btn-block"
-                @click="register()"
+              
               >
                 <span></span> Registruj se
               </button>
