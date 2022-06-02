@@ -36,6 +36,8 @@ public class Evaluate {
     @OneToOne(fetch = FetchType.LAZY)
     private User userWhoSendsComplaint;
 
+    public Evaluate() {}
+
     public Evaluate(EvaluateDTO dto) {
         this.contentEntity = dto.getContentEntity();
         this.contentUser = dto.getContentUser();
