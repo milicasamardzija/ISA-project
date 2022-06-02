@@ -1,9 +1,8 @@
 package com.example.demo.dto.business;
 
 import com.example.demo.dto.entities.EntityDTO;
-import com.example.demo.enums.EntityType;
+import com.example.demo.dto.enums.EntityType;
 import com.example.demo.model.business.Reservation;
-import com.example.demo.model.entities.EntityClass;
 
 public class ReservationnDTO {
 

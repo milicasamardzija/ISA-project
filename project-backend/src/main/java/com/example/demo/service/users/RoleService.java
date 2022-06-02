@@ -1,6 +1,6 @@
 package com.example.demo.service.users;
 
-import com.example.demo.enums.Role;
+import com.example.demo.dto.enums.Role;
 import com.example.demo.repository.users.RoleRepository;
 import org.springframework.stereotype.Service;
 

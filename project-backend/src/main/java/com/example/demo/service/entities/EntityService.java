@@ -54,4 +54,7 @@ public class EntityService {
         this.entityRepository.save(entity);
     }
 
+    public EntityClass findByName(String name) {
+        return this.entityRepository.findByName(name);
+    }
 }

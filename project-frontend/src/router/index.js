@@ -41,7 +41,8 @@ import BoatProfile from "../views/boatOwner/BoatProfile"
 import EditBoat from "../views/boatOwner/EditBoat"
 import Evaluate from "../views/administrator/Evaluate"
 import BuisinessReport from "../views/administrator/BuisinessReport"
-
+import AddAdventure from "../views/fishingInstructor/AddAdventure"
+import CreateAction from "../views/fishingInstructor/CreateAction"
 const routes = [
   {
     path: "/",
@@ -58,6 +59,11 @@ const routes = [
     path: "/buisinessReport",
     name: "BuisinessReport",
     component: BuisinessReport,
+  },
+  {
+    path: "/CreateAction",
+    name: "CreateAction",
+    component: CreateAction,
   },
   {
     path: "/complaints",
@@ -123,6 +129,11 @@ const routes = [
     path: "/AvailablePeriod",
     name: "AvailablePeriod",
     component: AvailablePeriod,
+  },
+  {
+    path: "/AddAdventure",
+    name: "AddAdventure",
+    component: AddAdventure,
   },
   {
     path: "/seeAndDeleteEntities",

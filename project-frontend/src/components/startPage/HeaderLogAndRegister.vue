@@ -295,6 +295,7 @@ export default {
       axios.post("http://localhost:8081/api/auth/login",{ email: this.email, password: this.password }, {headers})
       .then (response => {
         if (response.data.enabled === true){
+          console.log(response.data.role)
           localStorage.setItem("token", response.data.accessToken);
           localStorage.setItem("role", response.data.role);
           if (localStorage.getItem("role") == "ROLE_CLIENT") {

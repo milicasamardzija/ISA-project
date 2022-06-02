@@ -8,6 +8,7 @@ import com.example.demo.dto.business.ReservationnDTO;
 
 import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.EntityDTO;
+import com.example.demo.dto.enums.EntityType;
 import com.example.demo.dto.users.ClientProfileDTO;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.business.ReservedTerm;
@@ -17,6 +18,7 @@ import com.example.demo.model.users.Client;
 import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
 import com.example.demo.service.business.ReservationService;
+import com.example.demo.service.business.ReservedTermService;
 import com.example.demo.service.entities.AdventureService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.CottageOwnerService;
@@ -31,6 +33,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +45,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 @Controller
@@ -51,12 +56,14 @@ public class ReservationController {
     private EntityService entityService;
     private CottageOwnerService cottageOwnerService;
     private ClientService  clientService;
+    private ReservedTermService reservedTermService;
 
-    public ReservationController(ReservationService reservationService,EntityService entityService, CottageOwnerService cottageOwnerService,ClientService clientService ){
+    public ReservationController(ReservationService reservationService,EntityService entityService, CottageOwnerService cottageOwnerService,ClientService clientService, ReservedTermService reservedTermService){
         this.reservationService = reservationService;
         this.entityService = entityService;
         this.cottageOwnerService = cottageOwnerService;
         this.clientService = clientService;
+        this.reservedTermService=reservedTermService;
     }
 
     @GetMapping("/scheduledReservations")
@@ -349,6 +356,63 @@ public class ReservationController {
     @PostMapping("/getDateEnd")
     public ResponseEntity<Date> getDateEnd(@RequestBody DateDTO date){
         return new ResponseEntity<>(this.reservationService.getDateEnd(date),HttpStatus.OK);
+    }
+
+    @PostMapping("/addAction")
+    public ResponseEntity<HttpStatus> addAction(@RequestBody ActionRequestDTO actionRequestDTO) throws ParseException {
+        ReservedTerm rt = new ReservedTerm();
+        EntityClass e = this.entityService.findByName(actionRequestDTO.getName());
+        rt.setEntity(e);
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+
+        String[] parts1 = actionRequestDTO.getDateStart().split("-");
+        String year1 = parts1[0];
+        String month1 = parts1[1];
+        String day1 =parts1[2];
+        String realDateFrom = day1+"/"+month1+"/"+year1;
+
+        String[] parts2 = actionRequestDTO.getDateEnd().split("-");
+        String year2 = parts2[0];
+        String month2 = parts2[1];
+        String day2 =parts2[2];
+        String realDateTo = day2+"/"+month2+"/"+year2;
+
+        Date dateStart = format.parse(realDateFrom);
+        Date dateEnd = format.parse(realDateTo);
+        rt.setDateStart(dateStart);
+        rt.setDateEnd(dateEnd);
+        System.out.print("DOVDE SAM");
+
+        Reservation r = new Reservation();
+        r.setTerm(rt);
+        r.setPrice(actionRequestDTO.getPrice());
+        r.setEntityType(EntityType.ADVENTURE);
+
+        String[] parts3 = actionRequestDTO.getValidFrom().split("-");
+        String year3 = parts3[0];
+        String month3 = parts3[1];
+        String day3 =parts3[2];
+        String validFromString = day3+"/"+month3+"/"+year3;
+
+        String[] parts4 =actionRequestDTO.getValidTo().split("-");
+        String year4 = parts4[0];
+        String month4 = parts4[1];
+        String day4=parts4[2];
+        String validToString = day4+"/"+month4+"/"+year4;
+
+        Date validFrom = format.parse(validFromString);
+        Date validTo = format.parse(validToString);
+
+        r.setValidFrom(validFrom);
+        r.setValidTo(validTo);
+        r.setAction(true);
+        long diff = dateEnd.getTime() - dateStart.getTime();
+        int duration = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        r.setDuration(duration);
+        r.setEntity(e);
+
+        this.reservationService.saveReservation(r);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

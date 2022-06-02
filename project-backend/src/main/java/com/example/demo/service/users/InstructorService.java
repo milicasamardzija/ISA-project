@@ -3,7 +3,7 @@ package com.example.demo.service.users;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.users.Instructor;
-import com.example.demo.enums.Role;
+import com.example.demo.dto.enums.Role;
 import com.example.demo.repository.users.InstructorRepository;
 import com.example.demo.service.entities.AddressService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,5 +45,9 @@ public class InstructorService {
         System.out.print("USPELA SAM HEHE");
 
         this.instructorRepository.save(u);
+    }
+
+    public Instructor findByEmail(String email) {
+        return this.instructorRepository.findByEmail(email);
     }
 }

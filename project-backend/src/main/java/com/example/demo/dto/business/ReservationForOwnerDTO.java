@@ -2,10 +2,7 @@ package com.example.demo.dto.business;
 
 import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.dto.users.ClientProfileDTO;
-import com.example.demo.enums.EntityType;
 import com.example.demo.model.business.Reservation;
-import com.example.demo.model.entities.EntityClass;
-import com.example.demo.model.users.User;
 
 public class ReservationForOwnerDTO {
     private int id;

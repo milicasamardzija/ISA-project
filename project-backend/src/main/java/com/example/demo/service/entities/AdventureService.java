@@ -58,4 +58,10 @@ public class AdventureService {
         Adventure a = this.adventureRepository.fetchInstructor(id);
         return this.userService.findByEmail(a.getInstructor().getEmail());
     }
+
+    public void deleteByNameOfAdventure(String namee) {
+        Adventure a = this.adventureRepository.findByNameOfAdventure(namee);
+        System.out.print("NAsla sam avanturu"+ a.getNameOfAdventure());
+        this.adventureRepository.delete(a);
+    }
 }

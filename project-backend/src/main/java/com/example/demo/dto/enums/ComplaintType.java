@@ -1,4 +1,4 @@
-package com.example.demo.enums;
+package com.example.demo.dto.enums;
 
 public enum ComplaintType {
     FOR_BOAT_AND_BOAT_OWNER,
