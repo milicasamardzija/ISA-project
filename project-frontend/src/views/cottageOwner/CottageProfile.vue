@@ -215,7 +215,7 @@
                    </div>
                      
                    <div class="col">
-                      <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="date" min="this.today" />
+                      <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="action.dateStart" min="this.today" />
                     </div>  
                  </div>
                
@@ -228,7 +228,7 @@
                                 class="form-control mr-sm-2"
                                 type="time"
                                 placeholder="Vreme"
-                                v-model="time"
+                                v-model="action.timeStart"
                               />
                     </div>  
                
@@ -240,7 +240,7 @@
                  </div>  
                 <div class="col">
                    
-        <input class="form-control mr-sm-2" type="number" placeholder="Broj dana" v-model="number" />
+        <input class="form-control mr-sm-2" type="number" placeholder="Broj dana" v-model="action.duration"/>
                  </div> 
                  </div>
 
@@ -249,7 +249,7 @@
                   <label style="margin-top: 1rem;"> Ponuda vazi do </label>
                 </div>
                   <div class="col">
-                       <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="date" min="this.today" />
+                       <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="action.dateEndAction" min="this.today" />
                     </div>  
                
                  </div>
@@ -260,7 +260,7 @@
                  </div>  
                 <div class="col">
                 <div class="input-group-append">
-                   <input  class="form-control mr-sm-2" type="number" placeholder=" cena" v-model="number" />
+                   <input  class="form-control mr-sm-2" type="number" placeholder=" cena" v-model="action.price"  />
                     <span class="input-group-text">RSD</span>
                   </div> 
                   </div> 
@@ -287,7 +287,7 @@
               <table>
                 <tr>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block" @click="subscribe()" style="width:80px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" @click="saveAction()" style="width:80px; margin-bottom:20px">
                       Potvrdi
                     </button>
                   </td>
@@ -402,6 +402,8 @@
       
       </div>  -->
 
+
+
 </template>
 
 <script>
@@ -433,15 +435,14 @@ export default {
       capacity: 0,
       services: [],
       showForm: false, 
-      action: { dateStart: "", timeStart: "", dateEnd: "", duration: "", entityId: 0, dateEndAction: "", additionalServices:[] }
+      action: { dateStart: "", timeStart: "", price: 0, duration: 0, entityId: 0, dateEndAction: "", additionalServices:[] }
     };
   },
   async created() {
     this.role = localStorage.getItem("role");
     this.id = this.$route.params.id;
     this.cottage = this.getCottage(this.id);  
-    this.services = this.cottage.additionalServices;
-    console.log(this.services);
+   
   },
   methods: {
     showActions(){
@@ -491,8 +492,26 @@ export default {
 
    },
 
-   saveAction(){
+  async saveAction(){
+     this.action.entityId =this.cottage.id;
+      console.log(this.action.entityId);
+     this.action.additionalServices = this.cottage.additionalServices;
+       console.log(this.action.additionalServices);
 
+      axios.post("http://localhost:8081/api/reservation/checkAvailability", this.action).then( 
+           response => { 
+             console.log(response)
+              axios.post("http://localhost:8081/api/reservation/actionCottage", this.action)
+         }
+         ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce kreirati akciju u navedenom periodu jer je vikendica zauzeta!'
+           });
+         }
+         )
    },
   
 

@@ -229,7 +229,6 @@ export default {
          console.log(response);
          this.cottages = response.data
       }
-      
       )
    }
   },

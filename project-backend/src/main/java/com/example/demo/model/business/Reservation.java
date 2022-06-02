@@ -21,7 +21,7 @@ public class Reservation {
     @Column(name="id", unique=true, nullable=false)
     private int id;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private ReservedTerm term;
 
     @Column(name="price", unique=false, nullable=false)

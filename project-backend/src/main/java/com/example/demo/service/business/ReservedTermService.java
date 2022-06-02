@@ -21,6 +21,10 @@ public class ReservedTermService {
        this.reservedTermRepository.save(reservedTerm);
     }
 
+    public ReservedTerm saveNewTerm(ReservedTerm reservedTerm){
+        return this.reservedTermRepository.save(reservedTerm);
+    }
+
     public ReservedTerm findById(int id) {
         return this.reservedTermRepository.findById(id);
     }

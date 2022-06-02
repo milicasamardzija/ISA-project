@@ -2,6 +2,7 @@ package com.example.demo.service.entities;
 
 
 import com.example.demo.model.entities.EntityClass;
+import com.example.demo.model.users.Client;
 import com.example.demo.repository.entities.EntityRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,5 +47,9 @@ public class EntityService {
 
     public void save(EntityClass entity) {
         this.entityRepository.save(entity);
+    }
+
+    public List<Client> findSubscribedClients(int id){
+        return this.entityRepository.findSubscribedClients(id);
     }
 }

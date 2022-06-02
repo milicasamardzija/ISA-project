@@ -21,11 +21,21 @@ public class ReservationForOwnerDTO {
     private Boolean isCanceled;
 
     private int duration;
+    private  boolean action;
 
     private ClientProfileDTO user; //da bih prikazala profil klijenta
 
-    public ReservationForOwnerDTO(int id, ReservedTermDTO term, double price, EntityDTO entity, Boolean isCanceled, int duration, ClientProfileDTO user) {
+    public boolean isAction() {
+        return action;
+    }
+
+    public void setAction(boolean action) {
+        this.action = action;
+    }
+
+    public ReservationForOwnerDTO(int id, boolean action, ReservedTermDTO term, double price, EntityDTO entity, Boolean isCanceled, int duration, ClientProfileDTO user) {
         this.id = id;
+        this.action= action;
         this.term = term;
         this.price = price;
         this.entity = entity;
@@ -36,6 +46,7 @@ public class ReservationForOwnerDTO {
 
     public ReservationForOwnerDTO(Reservation reservation, ClientProfileDTO u) {
         this.id = reservation.getId();
+        this.action = reservation.getAction();
         this.term = new ReservedTermDTO(reservation.getTerm());
         this.price = reservation.getPrice();
         this.entity = new EntityDTO(reservation.getEntity());

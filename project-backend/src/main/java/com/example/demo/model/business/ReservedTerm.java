@@ -70,7 +70,12 @@ public class ReservedTerm {
         this.dateEnd = dateEnd;
         this.entity = entity;
     }
-
+    public ReservedTerm(Date dateStart, Date dateEnd, EntityClass entity, boolean canceld) {
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.entity = entity;
+        this.isCanceled= canceld;
+    }
     public ReservedTerm(int id, Date dateStart, Date dateEnd, EntityClass entity, boolean isCanceled) {
         this.id = id;
         this.dateStart = dateStart;

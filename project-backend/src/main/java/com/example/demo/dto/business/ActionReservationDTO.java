@@ -9,7 +9,7 @@ public class ActionReservationDTO {
 
     private Date dateStart;
     private String timeStart;
-    private Date dateEnd;
+
     private double price;
     private int duration;
     private int entityId;
@@ -17,10 +17,10 @@ public class ActionReservationDTO {
 
     private ArrayList<AdditionalServiceDTO> additionalServices;
 
-    public ActionReservationDTO(Date dateStart, String timeStart, Date dateEnd, double price, int duration, int entityId, Date dateEndAction,  ArrayList<AdditionalServiceDTO> additionalServices) {
+    public ActionReservationDTO(Date dateStart, String timeStart, double price, int duration, int entityId, Date dateEndAction,  ArrayList<AdditionalServiceDTO> additionalServices) {
         this.dateStart = dateStart;
         this.timeStart = timeStart;
-        this.dateEnd = dateEnd;
+
         this.price = price;
         this.duration = duration;
         this.entityId = entityId;
@@ -46,14 +46,6 @@ public class ActionReservationDTO {
 
     public void setTimeStart(String timeStart) {
         this.timeStart = timeStart;
-    }
-
-    public Date getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
     }
 
     public double getPrice() {
