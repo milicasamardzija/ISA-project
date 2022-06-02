@@ -89,12 +89,15 @@ public class AdventureController {
         User user = (User)authentication.getPrincipal();
         System.out.print("OVDE SAM1"+user.getId());
         Instructor i = this.instructorService.findByEmail(user.getEmail());
+        System.out.print("OVDE SAM2 "+i.getId());
         Adventure a = new Adventure();
         a.setNameOfAdventure(adventureRequest.getNameOfAdventure());
+        a.setName(adventureRequest.getNameOfAdventure());
         a.setMaxNumberOfPeople(adventureRequest.getMaxNumberOfPeople());
         a.setInstructorBiografy(adventureRequest.getInstructorBiografy());
         a.setPromoDescription(adventureRequest.getPromoDescription());
         a.setFishingEquipment(adventureRequest.getFishingEquipment());
+        a.setRules(adventureRequest.getRules());
         a.setInstructor(i);
         if (adventureRequest.getCancelationType().equalsIgnoreCase("BESPLATNO")) {
             a.setCancelationType(CancelationType.BESPLATNO);

@@ -1,5 +1,7 @@
 package com.example.demo.dto.entities;
 
+import com.example.demo.model.entities.Address;
+
 public class AdventureRequestDTO {
     private String nameOfAdventure;
     private int maxNumberOfPeople;
@@ -7,6 +9,51 @@ public class AdventureRequestDTO {
     private String promoDescription;
     private String fishingEquipment;
     private String cancelationType;
+    private String rules;
+    private String street;
+    private int number;
+    private String city;
+    private String country;
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getRules() {
+        return rules;
+    }
+
+    public void setRules(String rules) {
+        this.rules = rules;
+    }
 
     public String getNameOfAdventure() {
         return nameOfAdventure;
@@ -59,12 +106,17 @@ public class AdventureRequestDTO {
     public AdventureRequestDTO() {
     }
 
-    public AdventureRequestDTO(String nameOfAdventure, int maxNumberOfPeople, String instructorBiografy, String promoDescription, String fishingEquipment, String cancelationType) {
+    public AdventureRequestDTO(String nameOfAdventure,String rules, int maxNumberOfPeople, String instructorBiografy, String promoDescription, String fishingEquipment, String cancelationType, String street,int number,String city,String country) {
         this.nameOfAdventure = nameOfAdventure;
         this.maxNumberOfPeople = maxNumberOfPeople;
         this.instructorBiografy = instructorBiografy;
         this.promoDescription = promoDescription;
         this.fishingEquipment = fishingEquipment;
         this.cancelationType = cancelationType;
+        this.rules = rules;
+        this.street=street;
+        this.number=number;
+        this.city=city;
+        this.country=country;
     }
 }

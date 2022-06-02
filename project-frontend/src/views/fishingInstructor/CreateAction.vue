@@ -22,7 +22,7 @@
           <td><label ><span class="glyphicon glyphicon-eye-open"></span>Izaberi entitet</label></td>
           <td>   <select v-model="name" class="form-control">
                         <option v-for="entity in entities" :value="item" :key="entity.id">
-                            {{ entity.name }}
+                            {{ entity.nameOfAdventure }}
                         </option>
   </select></td></tr>
 
@@ -66,7 +66,10 @@ export default ({
     },
     methods: {
     async getEntities() {
-      const res = await fetch("http://localhost:8081/api/entities/getAllEntities");
+              const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/adventures/getMyAdventures",{headers});
       const data = await res.json();
       return data;
     },

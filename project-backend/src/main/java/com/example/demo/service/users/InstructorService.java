@@ -39,6 +39,7 @@ public class InstructorService {
         u.setTelephone(userRequest.getTelephone());
         Role r = this.roleService.findByName(userRequest.getRole());
         u.setRole(r);
+        u.setGrade(0);
         Address a = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber());
         this.addressService.save(a);
         u.setAddress(a);

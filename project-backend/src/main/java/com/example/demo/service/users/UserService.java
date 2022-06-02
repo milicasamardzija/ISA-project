@@ -199,6 +199,7 @@ public class UserService {
         u.setRole(roleService.save(new Role((userRequest.getRole()))));
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);
+        u.setGrade(0);
         u.setAddress(addressService.save(userRequest.getAddress()));
         return this.userRepository.save(u);
     }
