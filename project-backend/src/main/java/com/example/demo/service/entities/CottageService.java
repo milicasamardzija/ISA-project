@@ -13,6 +13,7 @@ import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.business.ReservedTerm;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.repository.entities.CottageRepository;
+import com.example.demo.repository.users.CottageOwnerRepository;
 import com.example.demo.service.users.CottageOwnerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,14 +30,16 @@ public class CottageService {
 
     private  AdditionalServicesService aditionalServicesService;
     private  EntityService entityService;
-    private CottageOwnerService ownerService;
+   // private CottageOwnerService ownerService;
+    private CottageOwnerRepository cottageOwnerRepository;
 
 
-    public CottageService(CottageRepository cottageRepository, AdditionalServicesService additionalServicesService, EntityService entityService, CottageOwnerService coService){
+    public CottageService(CottageRepository cottageRepository, AdditionalServicesService additionalServicesService, EntityService entityService, CottageOwnerRepository cottageOwnerRepository){
         this.cottageRepository = cottageRepository;
         this.aditionalServicesService = additionalServicesService;
         this.entityService = entityService;
-        this.ownerService = coService;
+       // this.ownerService = coService;
+        this.cottageOwnerRepository = cottageOwnerRepository;
     }
 
     public List<Cottage> findAll() {
@@ -264,7 +267,7 @@ public class CottageService {
                         aditionalServicesService.deleteById(a.getId()); //oni su one to many, tako da se brisu odmah
                     }
                 }
-                ownerService.save(owner);
+                cottageOwnerRepository.save(owner);
                 break;
             }
         }

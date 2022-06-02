@@ -37,7 +37,7 @@ public class ReservationService {
     private ReservedTermService reservedTermService;
     private AdditionalServicesService additionalService;
     private ReservationServicesService reservationServicesService;
-    private CottageService cottageService;
+  //  private CottageService cottageService;
 
     public ReservationService (ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService, CottageService cottageService) {
         this.reservationRepository = reservationRepository;
@@ -47,7 +47,7 @@ public class ReservationService {
         this.reservedTermService = reservedTermService;
         this.additionalService = additionalService;
         this.reservationServicesService = reservationServicesService;
-        this.cottageService = cottageService;
+       // this.cottageService = cottageService;
     }
 
     public List<Reservation> findAll() {
@@ -244,10 +244,8 @@ public class ReservationService {
     }
 
     public List<Reservation> getAllReservationsForCottageOwner(int id_owner) {
-        List<Reservation> res = new ArrayList<>();
-            res= this.reservationRepository.findAllReservationsForCottageOwner(id_owner);
-        return res;
         List<Reservation> ret = new ArrayList<>();
+
         for (Reservation r: this.reservationRepository.findAllReservationsForCottageOwner(id_owner) ) {
             if(r.getAction() ){
                 ret.add(r);
@@ -277,10 +275,10 @@ public class ReservationService {
     }
 
 
-    public Integer getMaxPeople(int id) {
-        Cottage cottage = this.cottageService.findOne(id);
-        return cottage.getRoomsNumber() * cottage.getBedsByRoom();
-    }
+//    public Integer getMaxPeople(int id) {
+//        Cottage cottage = this.cottageService.findOne(id);
+//        return cottage.getRoomsNumber() * cottage.getBedsByRoom();
+//    }
 
     public Date getDateEnd(DateDTO date) {
         String[] time = date.getTime().split(":");
@@ -391,12 +389,17 @@ public class ReservationService {
     public void saveActionBoat(ActionReservationDTO reservation)  {
 
         EntityClass entity = this.entityService.findById(reservation.getEntityId()); //koji je entitet
-
         //getting start and end date, end action date nije ishendlan
         String[] time = reservation.getTimeStart().split(":");
-
-        
+        String hour = time[0];
+        String minutes = time[1];
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calStart.setTime(reservation.getDateStart());
+        calStart.add(Calendar.HOUR_OF_DAY, Integer.parseInt(hour) - 2);
+        calStart.add(Calendar.MINUTE, Integer.parseInt(minutes));
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calEnd.setTime(calStart.getTime());
         calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
 

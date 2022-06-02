@@ -24,7 +24,7 @@ public class CottageOwnerService {
     }
 
     public CottageOwner save(CottageOwner cottageOwner) {
-        cottageOwner.setCottageList(new ArrayList<>());
+        //cottageOwner.setCottageList(new ArrayList<>());
         return cottageOwnerRepository.save(cottageOwner);
 
     }

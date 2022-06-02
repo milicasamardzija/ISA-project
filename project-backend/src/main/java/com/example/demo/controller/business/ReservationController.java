@@ -55,14 +55,14 @@ public class ReservationController {
 
     private ReservationService reservationService;
     private EntityService entityService;
-    private CottageOwnerService cottageOwnerService;
+    //private CottageOwnerService cottageOwnerService;
     private ClientService  clientService;
     private ReservedTermService reservedTermService;
 
     public ReservationController(ReservationService reservationService,EntityService entityService, CottageOwnerService cottageOwnerService,ClientService clientService, ReservedTermService reservedTermService){
         this.reservationService = reservationService;
         this.entityService = entityService;
-        this.cottageOwnerService = cottageOwnerService;
+        //this.cottageOwnerService = cottageOwnerService;
         this.clientService = clientService;
         this.reservedTermService=reservedTermService;
     }
@@ -359,10 +359,10 @@ public class ReservationController {
         }
     }
 
-    @GetMapping("/getMaxPeople/{id}")
-    public ResponseEntity<Integer> getMaxPeople( @PathVariable int id){
-        return new ResponseEntity<>(this.reservationService.getMaxPeople(id),HttpStatus.OK);
-    }
+//    @GetMapping("/getMaxPeople/{id}")
+//    public ResponseEntity<Integer> getMaxPeople( @PathVariable int id){
+//        return new ResponseEntity<>(this.reservationService.getMaxPeople(id),HttpStatus.OK);
+//    }
 
     @PostMapping("/getDateEnd")
     public ResponseEntity<Date> getDateEnd(@RequestBody DateDTO date){
