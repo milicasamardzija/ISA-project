@@ -8,6 +8,7 @@ import com.example.demo.repository.users.ClientRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -68,11 +69,17 @@ public class ClientService {
     public void addSubsrciptions(int idEntity, Client client){
         EntityClass entity = this.entityRepository.findById(idEntity);
         List<EntityClass> entities = this.findSubscribedEnities(client.getId());
+        if (entities == null) {
+            entities = new ArrayList<>();
+        }
         entities.add(entity);
         client.setSubscribedEntities(entities);
         this.clientRepository.save(client);
 
         List<Client> clients = this.clientRepository.findClientWithSubscribedEntities(idEntity);
+        if (clients == null){
+            clients = new ArrayList<>();
+        }
         clients.add(client);
         entity.setSubscribedClients(clients);
         this.entityRepository.save(entity);
