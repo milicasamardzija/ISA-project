@@ -150,23 +150,31 @@ public class UserService {
         u.setRole(new Role((userRequest.getRole()))); //ovo ce napraviti razlicite role
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);   // odmah odobreno
+        u.setGrade(0);
         u.setAddress(addressService.save(userRequest.getAddress()));
         this.userRepository.save(u);
         return u;
     }
 
     public User saveUser(User user){
-        User u = new User();
-        u.setPassword(passwordEncoder.encode(user.getPassword()));
-        u.setName(user.getName());
-        u.setSurname(user.getSurname());
-        u.setTelephone(user.getTelephone());
-        u.setRole(user.getRole());
-        u.setEmail(user.getEmail());
-        u.setEnabled(true);
-        u.setAddress(addressService.save(user.getAddress()));
-        this.userRepository.save(u);
-        return u;
+        User exist = this.findByEmail(user.getEmail());
+        if (exist == null) {
+
+            User u = new User();
+            u.setPassword(passwordEncoder.encode(user.getPassword()));
+            u.setName(user.getName());
+            u.setSurname(user.getSurname());
+            u.setTelephone(user.getTelephone());
+            u.setRole(user.getRole());
+            u.setEmail(user.getEmail());
+            u.setEnabled(true);
+            u.setGrade(0);
+            u.setAddress(addressService.save(user.getAddress()));
+            this.userRepository.save(u);
+            return u;
+        } else {
+            return this.userRepository.save(user);
+        }
     }
     public List<User> findAll() {
         return userRepository.findAll();
