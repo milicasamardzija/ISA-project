@@ -95,7 +95,7 @@
               <table>
                 <tr>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block" @click="Cancel()" style="width:80px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" @click="Cancel()" style="width:80px; margin-bottom:20px">
                       Potvrdi
                     </button>
                   </td>
@@ -168,7 +168,7 @@ export default {
        const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.put( "http://localhost:8081/api/reservation/cancel/" + this.id ,
+      axios.get( "http://localhost:8081/api/reservation/cancel/" + this.id ,
         { headers }).then(
           response => {
             console.log(response);
@@ -178,8 +178,11 @@ export default {
              text: response.data,
            });
           }
-        )
-        this.$router.go(0);
+        );
+        this.udpateReservations();
+    },
+    async udpateReservations(){
+      this.reservations = await this.fetchScheduledReservations()
     },
     async fetchScheduledReservations() {
       const headers = {

@@ -378,7 +378,7 @@ export default {
     goToCottages(){
       //this.closeModal();
       this.r = false;
-      this.$router.go(0);
+     //this.$router.go(0);
     },
     addService(service, index){
       this.additionalServicesReservation.push(service);
@@ -538,15 +538,41 @@ export default {
         },{headers})
       .then (response => { 
         console.log(response.data);
-      }).catch(
-        error => {
-        console.log(error)
+        alert(response.status)
+         if (response.data === "Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu."){
+          return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu.'
+           });
+        }
+         if (response.data === "Vec ste jednom zapazali i otkazali ovu vikendicu u ovom periodu!Ne mozete ponovo!"){
          return new Swal({
              title:"Obavestenje",
              type: "warning",
              text:'Vec ste jednom zapazali i otkazali ovu vikendicu u ovom periodu!Ne mozete ponovo!'
            });
+         }
       });
+       this.closeModal();
+       this.goToCottages();
+     /*.catch(
+        error => {
+        alert(error)
+        alert(error.console.error())
+        if (error === "Error: Request failed with status code 404"){
+          return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu.'
+           });
+        }
+         return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Vec ste jednom zapazali i otkazali ovu vikendicu u ovom periodu!Ne mozete ponovo!'
+           });
+      });*/
        this.closeModal();
        this.goToCottages();
     }

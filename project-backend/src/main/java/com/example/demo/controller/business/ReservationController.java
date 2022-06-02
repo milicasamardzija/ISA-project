@@ -297,23 +297,29 @@ public class ReservationController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HttpStatus> save(@RequestBody ReservationNewDTO reservation) throws Exception {
+    public ResponseEntity<String> save(@RequestBody ReservationNewDTO reservation) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
 
         if (user == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+        if (!this.reservationService.checkPenals(user)){
+            return new ResponseEntity<String>("Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu.", HttpStatus.OK);
+        }
+
         if (this.reservationService.save(reservation, user)){
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("Vec ste jednom zapazali i otkazali ovu vikendicu u ovom periodu!Ne mozete ponovo!", HttpStatus.OK);
         }
     }
 
-    @PutMapping("/cancel/{id}")
+    @GetMapping("/cancel/{id}")
     public ResponseEntity<String> cancelReservation(@PathVariable int id){
-        return new ResponseEntity<>(reservationService.cancelReservation(id), HttpStatus.OK);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+        return new ResponseEntity<>(reservationService.cancelReservation(id, user), HttpStatus.OK);
     }
 
     @PostMapping("/totalPrice")
