@@ -16,7 +16,7 @@
     <NavBarClient/>
   </div>
   
-  <div>
+  <div  v-if="!showForm">
     <div class="tab-pane active containerInfo">
       <div class="row">
         <div class="column" style="width: 22rem; height: 3rem">
@@ -27,17 +27,20 @@
           <h4>{{cottage.address.street}} {{cottage.address.number}}, {{cottage.address.city}}, {{cottage.address.country}},</h4>
         </div>
         <div class="column" style="width: 18rem; height: 3rem">
-          <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'" @click="showCottage(cottage)">
+          <button type="button" class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'" @click="editCottage(cottage)">
         Izmeni vikendicu
           </button>
         </div>
         <div class="column" style="width: 28rem; height: 3rem" >
-          <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'">Dodaj akciju</button>
+          <!-- <button class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'"  @click="createAction()" >Dodaj akciju</button> -->
+          <button type="button" class="btn btn-success" v-if="this.role === 'ROLE_COTTAGE_OWNER'" data-target="#akcija" data-toggle="modal">
+       Dodaj akciju
+          </button>
           <button class="btn btn-success" data-target="#pretplata" data-toggle="modal" v-if="this.role === 'ROLE_CLIENT'" @click="subscribeModal()">Pretplati se</button>
           <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'" style="margin-left:40px" @click="showActions()">Akcije</button>
         </div>
       </div>
-
+ 
       <div class="row">
         <div class="column">
           <img
@@ -192,6 +195,215 @@
       </div>
     </div>
 
+
+      <!-- Modal za akciju -->
+  <div class="modal fade" id="akcija" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="color: #0b4025; padding: 5px 35px">
+              Akcija
+            </h5>
+          </div>
+          <div class="modal-body" style="padding: 15px 50px">
+            <form role="form" @submit.prevent="saveAction()">
+              <div class="form-group">
+                 <div class="row"> 
+                  <div class="col">
+                     <label style="margin-top: 1rem;"> Datum pocetka </label>
+                   </div>
+                     
+                   <div class="col">
+                      <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="action.dateStart" min="this.today" />
+                    </div>  
+                 </div>
+               
+               <div class="row">  
+                 <div class="col">
+                  <label style="margin-top: 1rem;"> Vreme pocetka </label>
+                </div>
+                  <div class="col">
+                      <input 
+                                class="form-control mr-sm-2"
+                                type="time"
+                                placeholder="Vreme"
+                                v-model="action.timeStart"
+                              />
+                    </div>  
+               
+                 </div>
+ 
+             <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Broj dana </label>
+                 </div>  
+                <div class="col">
+                   
+        <input class="form-control mr-sm-2" type="number" placeholder="Broj dana" v-model="action.duration"/>
+                 </div> 
+                 </div>
+
+                 <div class="row">  
+                 <div class="col">
+                  <label style="margin-top: 1rem;"> Ponuda vazi do </label>
+                </div>
+                  <div class="col">
+                       <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="action.dateEndAction" min="this.today" />
+                    </div>  
+               
+                 </div>
+
+                  <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Promo cena </label>
+                 </div>  
+                <div class="col">
+                <div class="input-group-append">
+                   <input  class="form-control mr-sm-2" type="number" placeholder=" cena" v-model="action.price"  />
+                    <span class="input-group-text">RSD</span>
+                  </div> 
+                  </div> 
+                 </div>
+
+                   <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Dodatne usluge </label>
+                 </div>  
+                <div class="col">
+                <div class="input-group-append">
+                  <table>
+                    <tr v-for="(adS, index) in this.cottage.additionalServices" :key="index">
+                      <td  style="width: 6rem;" >{{adS.name}}  </td> 
+                       <td  style="width: 6rem;" >{{adS.price}}  </td> 
+                       <td style="width: 2.3rem;" > </td> 
+                      <td><button type="button" class="btn btn-outline-secondary" @click="remove(this.cottage.additionalServices, index)">x </button> </td> 
+                       </tr> 
+                     </table>
+                  </div> 
+                  </div> 
+                 </div>
+              </div>
+              <table>
+                <tr>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block"  style="width:80px; margin-bottom:20px">
+                      Potvrdi
+                    </button>
+                  </td>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
+                      Otkazi
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- forma za akciju kada se dugme pritisne-->
+    <!-- <div v-if="showForm" style="height: 15rem; width: 40%; margin-left: 25%"> 
+           <form role="form" @submit.prevent="saveAction()">
+              <div class="form-group">
+                <div class="row"> 
+                  <div class="col">
+                     <label style="margin-top: 1rem;"> Datum pocetka </label>
+                   </div>
+                     
+                   <div class="col">
+                      <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="date" min="this.today" />
+                    </div>  
+                 </div>
+               
+               <div class="row">  
+                 <div class="col">
+                  <label style="margin-top: 1rem;"> Vreme pocetka </label>
+                </div>
+                  <div class="col">
+                      <input 
+                                class="form-control mr-sm-2"
+                                type="time"
+                                placeholder="Vreme"
+                                v-model="time"
+                              />
+                    </div>  
+               
+                 </div>
+ 
+             <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Broj dana </label>
+                 </div>  
+                <div class="col">
+                   
+        <input class="form-control mr-sm-2" type="number" placeholder="Broj dana" v-model="number" />
+                 </div> 
+                 </div>
+
+                 <div class="row">  
+                 <div class="col">
+                  <label style="margin-top: 1rem;"> Ponuda vazi do </label>
+                </div>
+                  <div class="col">
+                       <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="date" min="this.today" />
+                    </div>  
+               
+                 </div>
+
+                  <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Promo cena </label>
+                 </div>  
+                <div class="col">
+                <div class="input-group-append">
+                   <input  class="form-control mr-sm-2" type="number" placeholder=" cena" v-model="number" />
+                    <span class="input-group-text">RSD</span>
+                  </div> 
+                  </div> 
+                 </div>
+
+                   <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Dodatne usluge </label>
+                 </div>  
+                <div class="col">
+                <div class="input-group-append">
+                  <table>
+                    <tr v-for="(adS, index) in this.cottage.additionalServices" :key="index">
+                      <td  style="width: 6rem;" >{{adS.name}}  </td> 
+                       <td  style="width: 6rem;" >{{adS.price}}  </td> 
+                       <td style="width: 2.3rem;" > </td> 
+                      <td><button type="button" class="btn btn-outline-secondary" @click="remove(index)">x </button> </td> 
+                       </tr> 
+                     </table>
+                  </div> 
+                  </div> 
+                 </div>
+
+
+        </div>
+
+           <button
+              type="button"
+              class="btn btn-outline-secondary pull-left"
+             
+            >
+              Odustani
+            </button>
+
+              <button type="submit" class="btn btn-success btn-block" @click="saveAction()">
+                <span></span> Potvrdi
+              </button>
+
+            </form>
+      
+      </div>  -->
+
+
+
 </template>
 
 <script>
@@ -202,6 +414,7 @@ import NavBarClient from "../../components/client/NavBarClient.vue"
 import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
 import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue';
 import axios from "axios"
+import Swal from "sweetalert2"
 
 
 export default {
@@ -219,13 +432,17 @@ export default {
       role:"",
       id: "",
       cottage: "",
-      capacity: 0
+      capacity: 0,
+      services: [],
+      showForm: false, 
+      action: { dateStart: "", timeStart: "", price: 0, duration: 0, entityId: 0, dateEndAction: "", additionalServices:[] }
     };
   },
   async created() {
     this.role = localStorage.getItem("role");
     this.id = this.$route.params.id;
     this.cottage = this.getCottage(this.id);  
+   
   },
   methods: {
     showActions(){
@@ -250,12 +467,62 @@ export default {
        console.log(data) ;
        this.cottage= data;  //samo u created nije radilo
        this.capacity = this.cottage.bedsByRoom * this.cottage.roomsNumber;
+       this.services = this.cottage.additionalServices
       return data;
     },
     
-      async showCottage(cottage){
+      async editCottage(cottage){
+                axios.get("http://localhost:8081/api/reservation/check/"+ this.cottage.id).then( 
+           response => { 
+             console.log(response)
         this.$router.push({ name: 'EditCottage', params: { id: cottage.id}})
+         }
+         ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce izmeniti vikendicu jer imate rezervacije u narednom periodu!'
+           });
+         }
+         )
+      
    },
+  
+
+  async saveAction(){
+     this.action.entityId =this.cottage.id;
+      console.log(this.action.entityId);
+     this.action.additionalServices = this.cottage.additionalServices;
+       console.log(this.action.additionalServices);
+
+      axios.post("http://localhost:8081/api/reservation/checkAvailability", this.action).then( 
+           response => { 
+             console.log(response)
+              axios.post("http://localhost:8081/api/reservation/actionCottage", this.action)
+         }
+         ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce kreirati akciju u navedenom periodu jer je vikendica zauzeta!'
+           });
+         }
+         )
+   },
+  
+
+   createAction(){
+
+     this.showForm = true;
+   },
+    remove(services,index){
+
+      console.log(this.services)
+      console.log(services)
+      this.services.splice(index, 1);
+    }
   },
   
 };

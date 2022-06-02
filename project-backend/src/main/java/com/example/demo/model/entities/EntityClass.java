@@ -11,6 +11,8 @@ import com.example.demo.model.business.ReservedTerm;
 import com.example.demo.model.users.Client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -25,7 +27,8 @@ public class EntityClass {
 	@Column(name="name", nullable=false)
 	private String name;
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Address address;
 	
 	@Column(name="promoDescription", unique=false, nullable=false)
@@ -33,6 +36,7 @@ public class EntityClass {
 	
 	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("entity") //da ne pravi loop
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<Image> image;
 	
 	@Column(name="rules", unique=false, nullable=false)
@@ -55,6 +59,7 @@ public class EntityClass {
 
 	@OneToMany(mappedBy= "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("entity")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<AdditionalService> additionalServices = new HashSet<AdditionalService>();
 
 	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

@@ -156,4 +156,11 @@ public class BoatController {
 
     }
 
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable int id){
+        boatService.deleteById(id);
+
+        return  new ResponseEntity<>( HttpStatus.OK);
+    }
+
     }

@@ -115,7 +115,7 @@
             </h5>
           </div>
           <div class="modal-body" style="padding: 15px 50px">
-            <form role="form">
+            <form role="form" @submit.prevent="deleteCottage()">
               <div class="form-group">
                 <label for="psw"
                   ><span class="glyphicon glyphicon-eye-open"></span> Da li ste
@@ -148,6 +148,7 @@
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import axios from 'axios'
+import Swal from 'sweetalert2';
 
 export default {
   name: "MyCottages",
@@ -200,14 +201,20 @@ export default {
    //ne radi
      deleteCottage(){
        console.log(this.selectedId)
-         axios.get("http://localhost:8081/api/cottages/delete/"+ this.selectedId).then(
-          
+        axios.get("http://localhost:8081/api/reservation/check/"+ this.selectedId).then( 
            response => { 
-        console.log(response);
-        
-        
-           }
-         );
+             console.log(response)
+            axios.get("http://localhost:8081/api/cottages/delete/"+ this.selectedId);
+         }
+         ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce obrisati vikendicu jer imate rezervacije u narednom periodu!'
+           });
+         }
+         )
    
       this.cottages = this.getMyCottages();
      // this.$router.go(0);
@@ -222,7 +229,6 @@ export default {
          console.log(response);
          this.cottages = response.data
       }
-      
       )
    }
   },

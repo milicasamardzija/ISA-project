@@ -16,4 +16,10 @@ public interface BoatOwnerRepository extends JpaRepository<BoatOwner, Integer> {
 
     @Query("select bo from Boat bo left join fetch bo.boatOwner where bo.id = ?1")
     Boat fetchBoatOwnerByBoat(int idBoat);
+
+    @Query("select b from BoatOwner b left join fetch b.boatList a where b.id = ?1")
+    BoatOwner findOwnerWithBoats(int id_owner);
+
+
+
 }

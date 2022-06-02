@@ -1,6 +1,7 @@
 package com.example.demo.service.business;
 
 import com.example.demo.dto.business.DateDTO;
+import com.example.demo.dto.business.ActionReservationDTO;
 import com.example.demo.dto.business.PriceDTO;
 import com.example.demo.dto.business.ReservationNewDTO;
 import com.example.demo.dto.entities.AdditionalServiceDTO;
@@ -22,6 +23,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
+import java.time.DateTimeException;
 import java.util.*;
 
 @Service
@@ -244,11 +247,35 @@ public class ReservationService {
         List<Reservation> res = new ArrayList<>();
             res= this.reservationRepository.findAllReservationsForCottageOwner(id_owner);
         return res;
+        List<Reservation> ret = new ArrayList<>();
+        for (Reservation r: this.reservationRepository.findAllReservationsForCottageOwner(id_owner) ) {
+            if(r.getAction() ){
+                ret.add(r);
+            }
+        }
+        return  ret;
+
+    }
+
+    public List<Reservation> getAllReservationsForCottageOwnerActions(int id_owner) {
+        List<Reservation> ret = new ArrayList<>();
+        for (Reservation r: this.reservationRepository.findAllReservationsForCottageOwner(id_owner) ) {
+            if(r.getAction()){
+                ret.add(r);
+            }
+        }
+        return  ret;
+
+    }
+
+    public List<Reservation> getAllReservationsForBoatOwner(int id_owner) {
+        return   this.reservationRepository.findAllReservationsForBoatOwner(id_owner);
     }
 
     public Client findClientForReservation(int id){
         return this.reservationRepository.findClientFromReservation(id);
     }
+
 
     public Integer getMaxPeople(int id) {
         Cottage cottage = this.cottageService.findOne(id);
@@ -257,7 +284,8 @@ public class ReservationService {
 
     public Date getDateEnd(DateDTO date) {
         String[] time = date.getTime().split(":");
-        String hour = time[0];
+
+          String hour = time[0];
         String minutes = time[1];
         Calendar calStart = Calendar.getInstance();
         calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
@@ -266,7 +294,7 @@ public class ReservationService {
         calStart.add(Calendar.MINUTE, Integer.parseInt(minutes));
         Calendar calEnd = Calendar.getInstance();
         calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
-        calEnd.setTime(date.getDate());
+   calEnd.setTime(date.getDate());
         calEnd.add(Calendar.DAY_OF_YEAR, date.getNumber());
         return calEnd.getTime();
     }
@@ -283,5 +311,200 @@ public class ReservationService {
 
     public void saveReservation(Reservation r) {
         this.reservationRepository.save(r);
+         }
+
+    public boolean findFutureReservationsForEntity(int id) {
+        List<Reservation> allReservations = this.reservationRepository.getReservationsForEntity(id);
+        //Date today = new Date();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        List<Reservation> futureReservations = new ArrayList<>();
+        if (allReservations.size() != 0) {
+            for (Reservation r : allReservations) {
+                Calendar cal2 = Calendar.getInstance();
+                cal2.setTime(r.getTerm().getDateEnd());
+                if (cal.before(cal2)) {
+                    futureReservations.add(r);
+                }
+            }
+        }
+        if(futureReservations.size() != 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+    public boolean checkAvailability(ActionReservationDTO action) {
+        List<Reservation> allReservations = this.reservationRepository.getReservationsForEntity(action.getEntityId());
+        String[] time = action.getTimeStart().split(":");
+        String hour = time[0];
+        String minutes = time[1];
+
+        Calendar calStartAction = Calendar.getInstance();
+        Calendar calEndAction = Calendar.getInstance();
+
+        calStartAction.setTime(action.getDateStart());
+        calStartAction.add(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
+        calStartAction.add(Calendar.MINUTE, Integer.parseInt(minutes));
+
+        calEndAction.setTime(calStartAction.getTime());
+        calEndAction.add(Calendar.DAY_OF_YEAR, action.getDuration());
+
+        Boolean isNotReserved = true;
+
+        if (allReservations.size() != 0) {
+            for (Reservation r : allReservations) {
+                Calendar calRStart = Calendar.getInstance();
+                calRStart.setTime(r.getTerm().getDateStart());
+
+                Calendar calREnd = Calendar.getInstance();
+                calREnd.setTime(r.getTerm().getDateEnd());
+
+                    if(calRStart.getTime().after(calStartAction.getTime()) && calREnd.getTime().after(calEndAction.getTime())
+                       && calStartAction.getTime().before(calRStart.getTime()) && calEndAction.getTime().before(calREnd.getTime())
+                    && calEndAction.getTime().after(calRStart.getTime())){
+                        isNotReserved = false;
+                    }
+                    else if(calRStart.getTime().before(calStartAction.getTime()) && calREnd.getTime().before(calEndAction.getTime())
+                     && calStartAction.getTime().after(calRStart.getTime()) && calEndAction.getTime().after(calREnd.getTime())
+                    && calStartAction.getTime().before(calREnd.getTime())     //ovo pokriva kompletan period nakon neke rezervacije
+                    ){
+                        isNotReserved = false;
+                    }
+                    else if(calRStart.getTime().before(calStartAction.getTime()) && calREnd.getTime().after(calEndAction.getTime())
+                      && calStartAction.getTime().after(calRStart.getTime()) && calEndAction.getTime().before(calREnd.getTime())){
+                        isNotReserved = false;
+                    }
+                    else if(calRStart.getTime().after(calStartAction.getTime()) && calREnd.getTime().before(calEndAction.getTime())
+                    && calStartAction.getTime().before(calRStart.getTime()) && calEndAction.getTime().after(calREnd.getTime())){
+                        isNotReserved = false;
+                    }
+            }
+        }
+        return isNotReserved;
+    }
+
+
+    public void saveActionBoat(ActionReservationDTO reservation)  {
+
+        EntityClass entity = this.entityService.findById(reservation.getEntityId()); //koji je entitet
+
+        //getting start and end date, end action date nije ishendlan
+        String[] time = reservation.getTimeStart().split(":");
+
+        
+        calStart.setTime(reservation.getDateStart());
+        calEnd.setTime(calStart.getTime());
+        calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
+
+        Reservation newReservation = new Reservation();
+        newReservation.setTerm(reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false)));
+
+        newReservation.setPrice(reservation.getPrice());
+
+
+        newReservation.setClient(null);  //slobodna za klijenta
+        newReservation.setAction(true);  //na akciji
+        newReservation.setEntity(entity);
+        newReservation.setEntityType(EntityType.BOAT);
+        newReservation.setDuration(reservation.getDuration());
+
+        // ArrayList<ReservationServices> services = new ArrayList<>();
+
+        //dodatne usluge ubacene
+        for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
+            ReservationServices a = new ReservationServices(as);
+            // services.add(a);
+
+            a.setReservation(newReservation);
+            newReservation.getReservationServices().add(a);
+            //  this.reservationServicesService.save(a); //ovde puca za servise kad treba da pravi reservation service tabelu
+
+        }
+
+        //newReservation.setReservationServices(services);
+        reservationRepository.save(newReservation);
+
+        //servisima dodeljujem ovu rezervaciju
+        for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
+            ReservationServices a = new ReservationServices(as);
+            a.setReservation(newReservation);
+            this.reservationServicesService.save(a);
+        }
+        reservationRepository.save(newReservation);
+
+        List<Client> subscribedClients = entityService.findSubscribedClients(entity.getId());
+
+        //slanje mejla svim pretplacenim
+        for (Client c: subscribedClients ) {
+            this.emailService.sendEmailForCreatedAction(c.getName(), entity.getName());
+        }
+
+
+    }
+
+    public void saveActionCottage(ActionReservationDTO reservation)  {
+
+        EntityClass entity = this.entityService.findById(reservation.getEntityId()); //koji je entitet
+
+        //getting start and end date, end action date nije ishendlan
+        String[] time = reservation.getTimeStart().split(":");
+        String hour = time[0];
+        String minutes = time[1];
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calStart.setTime(reservation.getDateStart());
+        calStart.add(Calendar.HOUR_OF_DAY, Integer.parseInt(hour) - 2);
+        calStart.add(Calendar.MINUTE, Integer.parseInt(minutes));
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calEnd.setTime(calStart.getTime());
+        calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
+
+        Reservation newReservation = new Reservation();
+        newReservation.setTerm(reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false)));
+
+        newReservation.setPrice(reservation.getPrice());
+
+
+        newReservation.setClient(null);  //slobodna za klijenta
+        newReservation.setAction(true);  //na akciji
+        newReservation.setEntity(entity);
+        newReservation.setEntityType(EntityType.COTTAGE);
+        newReservation.setDuration(reservation.getDuration());
+
+       // ArrayList<ReservationServices> services = new ArrayList<>();
+
+        //dodatne usluge ubacene
+        for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
+            ReservationServices a = new ReservationServices(as);
+           // services.add(a);
+
+            a.setReservation(newReservation);
+            newReservation.getReservationServices().add(a);
+         //  this.reservationServicesService.save(a); //ovde puca za servise kad treba da pravi reservation service tabelu
+
+        }
+
+        //newReservation.setReservationServices(services);
+        reservationRepository.save(newReservation);
+
+        //servisima dodeljujem ovu rezervaciju
+        for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
+            ReservationServices a = new ReservationServices(as);
+            a.setReservation(newReservation);
+            this.reservationServicesService.save(a);
+        }
+        reservationRepository.save(newReservation);
+
+        List<Client> subscribedClients = entityService.findSubscribedClients(entity.getId());
+
+        //slanje mejla svim pretplacenim
+        for (Client c: subscribedClients ) {
+            this.emailService.sendEmailForCreatedAction(c.getName(), entity.getName());
+        }
     }
 }

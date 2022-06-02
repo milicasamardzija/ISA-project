@@ -12,6 +12,7 @@ import HomePageInProfil from "../views/cottageOwner/HomePageInProfil";
 import Reservations from "../views/cottageOwner/Reservations";
 import LastReservations from "../views/cottageOwner/LastReservations";
 import NextReservations from "../views/cottageOwner/FutureReservations";
+import Actions from "../views/cottageOwner/Actions";
 import MyCottages from "../views/cottageOwner/MyCottages";
 import MyProfile from "../views/cottageOwner/MyProfile";
 import Statistic from "../views/cottageOwner/Statistic";
@@ -259,6 +260,11 @@ const routes = [
     path: "/nextReservations",
     name: "NextReservations",
     component: NextReservations,
+  },
+  {
+    path: "/actions",
+    name: "Actions",
+    component: Actions,
   },
 ];
 

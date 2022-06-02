@@ -48,6 +48,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
+@CrossOrigin
 @Controller
 @RequestMapping(value = "api/reservation")
 public class ReservationController {
@@ -337,9 +338,13 @@ public class ReservationController {
         List<Reservation> allReservations = reservationService.getAllReservationsForCottageOwner(user.getId());
         List<ReservationForOwnerDTO> ret = new ArrayList<>();
         for(Reservation reservation : allReservations ) {
-            Client c = reservationService.findClientForReservation(reservation.getId());
-            ClientProfileDTO client = new ClientProfileDTO(c);
-            ret.add(new ReservationForOwnerDTO(reservation,client));
+            if(reservationService.findClientForReservation(reservation.getId()) == null){
+                ret.add(new ReservationForOwnerDTO(reservation.getId(), reservation.getAction(), new ReservedTermDTO(reservation.getTerm()), reservation.getPrice(),new EntityDTO(reservation.getEntity()), reservation.getCanceled(), reservation.getDuration(), new ClientProfileDTO("/", 0,"/","/") ));
+            }else {
+                Client c = reservationService.findClientForReservation(reservation.getId());
+                ClientProfileDTO client = new ClientProfileDTO(c);
+                ret.add(new ReservationForOwnerDTO(reservation,client));}
+
         }
 
         return  new ResponseEntity<>(ret, HttpStatus.OK);
@@ -419,6 +424,61 @@ public class ReservationController {
 
         this.reservationService.saveReservation(r);
         return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+    @GetMapping("/allReservationsBoatOwner")
+    public ResponseEntity<List<ReservationForOwnerDTO>> allReservationsBoatOwner()  {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+
+        List<Reservation> allReservations = reservationService.getAllReservationsForBoatOwner(user.getId());
+        List<ReservationForOwnerDTO> ret = new ArrayList<>();
+        for(Reservation reservation : allReservations ) {
+            if(reservationService.findClientForReservation(reservation.getId()) == null){
+                ret.add(new ReservationForOwnerDTO(reservation.getId(),reservation.getAction(), new ReservedTermDTO(reservation.getTerm()), reservation.getPrice(),new EntityDTO(reservation.getEntity()), reservation.getCanceled(), reservation.getDuration(), new ClientProfileDTO("/", 0,"/","/") ));
+            }else {
+                Client c = reservationService.findClientForReservation(reservation.getId());
+                ClientProfileDTO client = new ClientProfileDTO(c);
+                ret.add(new ReservationForOwnerDTO(reservation, client));
+            }
+        }
+
+        return  new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+    @GetMapping("/check/{id}")
+    public ResponseEntity<HttpStatus> checkIfFutureReservationExist(@PathVariable int id){
+        if(this.reservationService.findFutureReservationsForEntity(id)){
+            return  new ResponseEntity<>( HttpStatus.OK);
+        }else{
+            return  new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @PostMapping("/checkAvailability")
+    public ResponseEntity<HttpStatus> checkAvailability(@RequestBody ActionReservationDTO action){
+            if( this.reservationService.checkAvailability(action)){
+                return  new ResponseEntity<>( HttpStatus.OK);
+            } else {
+                return  new ResponseEntity<>( HttpStatus.NOT_FOUND);
+            }
+    }
+
+
+
+    @PostMapping("/actionCottage")
+    public ResponseEntity<HttpStatus> createActionReservationCottage(@RequestBody ActionReservationDTO action)  {
+        this.reservationService.saveActionCottage(action);
+
+        return  new ResponseEntity<>( HttpStatus.OK);
+    }
+
+    @PostMapping("/actionBoat")
+    public ResponseEntity<HttpStatus> createActionReservationBoat(@RequestBody ActionReservationDTO action)  {
+        this.reservationService.saveActionBoat(action);
+
+        return  new ResponseEntity<>( HttpStatus.OK);
     }
 
 }

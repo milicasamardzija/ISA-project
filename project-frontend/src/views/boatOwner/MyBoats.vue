@@ -112,7 +112,7 @@
             </h5>
           </div>
           <div class="modal-body" style="padding: 15px 50px">
-            <form role="form">
+            <form role="form"  @submit.prevent="deleteBoat()">
               <div class="form-group">
                 <label for="psw"
                   ><span class="glyphicon glyphicon-eye-open"></span> Da li ste
@@ -145,6 +145,7 @@
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 import axios from 'axios'
+import Swal from "sweetalert2"
 
 export default {
   name: "MyBoats",
@@ -209,15 +210,21 @@ export default {
    //ne radi
      deleteBoat(){
        console.log(this.selectedId)
-         axios.get("http://localhost:8081/api/cottages/delete/"+ this.selectedId).then(
-          
+           axios.get("http://localhost:8081/api/reservation/check/"+ this.selectedId).then( 
            response => { 
-        console.log(response);
-        
-        
-           }
-         );
-   
+             console.log(response)
+              axios.get("http://localhost:8081/api/boats/delete/"+ this.selectedId);
+         }
+            ).catch(error =>{
+        console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce obrisati brod jer imate rezervacije u narednom periodu!'
+           });
+         }
+         )
+       
       this.cottages = this.getMyBoats();
      // this.$router.go(0);
 

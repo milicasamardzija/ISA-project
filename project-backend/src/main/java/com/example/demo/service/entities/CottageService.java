@@ -5,6 +5,7 @@ import com.example.demo.dto.entities.CottageDTO;
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.Cottage;
+import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.AdditionalServicesRepository;
 import com.example.demo.dto.business.ReservationSearchDTO;
@@ -12,6 +13,7 @@ import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.model.business.ReservedTerm;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.repository.entities.CottageRepository;
+import com.example.demo.service.users.CottageOwnerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -26,10 +28,15 @@ public class CottageService {
     private CottageRepository cottageRepository;
 
     private  AdditionalServicesService aditionalServicesService;
+    private  EntityService entityService;
+    private CottageOwnerService ownerService;
 
-    public CottageService(CottageRepository cottageRepository, AdditionalServicesService additionalServicesService){
+
+    public CottageService(CottageRepository cottageRepository, AdditionalServicesService additionalServicesService, EntityService entityService, CottageOwnerService coService){
         this.cottageRepository = cottageRepository;
         this.aditionalServicesService = additionalServicesService;
+        this.entityService = entityService;
+        this.ownerService = coService;
     }
 
     public List<Cottage> findAll() {
@@ -246,9 +253,25 @@ public class CottageService {
     }
 
     public void deleteById(int id) {
-        Cottage c = this.cottageRepository.findById(id);
-        System.out.print(c);
-        this.cottageRepository.deleteById(id);
+        Cottage cottage = this.cottageRepository.getCottageWithServices(id);
+        CottageOwner owner = this.findCottageOwner(id);
+
+        for(Cottage c: cottage.getCottageOwner().getCottageList()){
+            if(c.getId() == id) {
+                c.getCottageOwner().getCottageList().remove(c);
+                for(AdditionalService a : c.getAdditionalServices() ){
+                    if(a.getEntities().getId() == id ){
+                        aditionalServicesService.deleteById(a.getId()); //oni su one to many, tako da se brisu odmah
+                    }
+                }
+                ownerService.save(owner);
+                break;
+            }
+        }
+
+        this.cottageRepository.delete(cottage);
+
+
     }
 
     public Cottage saveCottage(Cottage newCottage){
@@ -282,5 +305,9 @@ public class CottageService {
             }
         }
         cottageRepository.save(newCottageState);
+    }
+
+    public CottageOwner findCottageOwner(int id){
+        return cottageRepository.findCottageOwner(id);
     }
 }

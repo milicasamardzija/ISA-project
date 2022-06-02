@@ -145,13 +145,15 @@ public class UserService {
         User u = new User();
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         u.setName(userRequest.getFirstname());
+       //u.setAddress(userRequest.getAddress());
         u.setSurname(userRequest.getLastname());
         u.setTelephone(userRequest.getTelephone());
-        u.setRole(new Role((userRequest.getRole()))); //ovo ce napraviti razlicite role
+        u.setRole(roleService.save(new Role((userRequest.getRole())))); //ovo ce napraviti razlicite role
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);   // odmah odobreno
         u.setGrade(0);
         u.setAddress(addressService.save(userRequest.getAddress()));
+        u.setReasonForRegistration(userRequest.getReasonForRegistration());
         this.userRepository.save(u);
         return u;
     }

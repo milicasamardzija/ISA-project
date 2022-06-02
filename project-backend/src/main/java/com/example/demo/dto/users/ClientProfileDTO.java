@@ -22,6 +22,6 @@ public class ClientProfileDTO {
         this.id = c.getId();
         this.email = c.getEmail();
         this.surname = c.getSurname();
-        this.name = c.getSurname();
+        this.name = c.getName();
     }
 }

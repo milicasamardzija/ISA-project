@@ -27,7 +27,7 @@
           <h4>{{boat.address.street}} {{boat.address.number}}, {{boat.address.city}}, {{boat.address.country}},</h4>
         </div>
         <div class="column" style="width: 18rem; height: 3rem; margin-left: 17rem">
-            <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; ">Dodaj akciju</button>
+            <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; " data-target="#akcija" data-toggle="modal" >Dodaj akciju</button>
           <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; margin-left:2rem" @click="editBoat()">Izmeni brod
       
           </button>  
@@ -198,6 +198,114 @@
       </div>
     </div>
 
+
+    <!-- Modal za akciju -->
+  <div class="modal fade" id="akcija" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="color: #0b4025; padding: 5px 35px">
+              Akcija
+            </h5>
+          </div>
+          <div class="modal-body" style="padding: 15px 50px">
+            <form role="form" @submit.prevent="saveAction()">
+              <div class="form-group">
+                 <div class="row"> 
+                  <div class="col">
+                     <label style="margin-top: 1rem;"> Datum pocetka </label>
+                   </div>
+                     
+                   <div class="col">
+                      <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="action.dateStart" min="this.today" />
+                    </div>  
+                 </div>
+               
+               <div class="row">  
+                 <div class="col">
+                  <label style="margin-top: 1rem;"> Vreme pocetka </label>
+                </div>
+                  <div class="col">
+                      <input 
+                                class="form-control mr-sm-2"
+                                type="time"
+                                placeholder="Vreme"
+                                v-model="action.timeStart"
+                              />
+                    </div>  
+               
+                 </div>
+ 
+             <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Broj dana </label>
+                 </div>  
+                <div class="col">
+                   
+        <input class="form-control mr-sm-2" type="number" placeholder="Broj dana" v-model="action.duration"/>
+                 </div> 
+                 </div>
+
+                 <div class="row">  
+                 <div class="col">
+                  <label style="margin-top: 1rem;"> Ponuda vazi do </label>
+                </div>
+                  <div class="col">
+                       <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="action.dateEndAction" min="this.today" />
+                    </div>  
+               
+                 </div>
+
+                  <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Promo cena </label>
+                 </div>  
+                <div class="col">
+                <div class="input-group-append">
+                   <input  class="form-control mr-sm-2" type="number" placeholder=" cena" v-model="action.price"  />
+                    <span class="input-group-text">RSD</span>
+                  </div> 
+                  </div> 
+                 </div>
+
+                   <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Dodatne usluge </label>
+                 </div>  
+                <div class="col">
+                <div class="input-group-append">
+                  <table>
+                    <tr v-for="(adS, index) in this.boat.additionalServices" :key="index">
+                      <td  style="width: 6rem;" >{{adS.name}}  </td> 
+                       <td  style="width: 6rem;" >{{adS.price}}  </td> 
+                       <td style="width: 2.3rem;" > </td> 
+                      <td><button type="button" class="btn btn-outline-secondary" @click="remove(this.boat.additionalServices, index)">x </button> </td> 
+                       </tr> 
+                     </table>
+                  </div> 
+                  </div> 
+                 </div>
+              </div>
+              <table>
+                <tr>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block"  style="width:80px; margin-bottom:20px">
+                      Potvrdi
+                    </button>
+                  </td>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
+                      Otkazi
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -207,7 +315,8 @@ import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue"
 import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
 import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue';
-//import axios from "axios"
+import axios from "axios"
+import Swal from "sweetalert2"
 
 
 export default {
@@ -225,7 +334,8 @@ export default {
       role:"",
       id: "",
       boat: "",
-      capacity: 0
+      capacity: 0,
+      action: { dateStart: "", timeStart: "", price: 0, duration: 0, entityId: 0, dateEndAction: "", additionalServices:[]}
     };
   },
   async created() {
@@ -258,10 +368,51 @@ export default {
        this.capacity = this.boat.quantity;
       return data;
     },
+       async editBoat(){
+                axios.get("http://localhost:8081/api/reservation/check/"+ this.boat.id).then( 
+           response => { 
+             console.log(response)
+       this.$router.push({ name: 'EditBoat', params: { id: this.id}})
+         }
+         ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce izmeniti brod jer imate rezervacije u narednom periodu!'
+           });
+         }
+         )
+      
+   },
+  async saveAction(){
+     this.action.entityId =this.boat.id;
+      console.log(this.action.entityId);
+     this.action.additionalServices = this.boat.additionalServices;
+       console.log(this.action.additionalServices);
 
-    async editBoat(){
-          this.$router.push({ name: 'EditBoat', params: { id: this.id}})
+      axios.post("http://localhost:8081/api/reservation/checkAvailability", this.action).then( 
+           response => { 
+             console.log(response)
+              axios.post("http://localhost:8081/api/reservation/actionBoat", this.action)
+         }
+         ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce kreirati akciju u navedenom periodu jer je brod zauzet!'
+           });
+         }
+         )
+   },
+     remove(services,index){
+
+      console.log(this.services)
+      console.log(services)
+      this.services.splice(index, 1);
     }
+   
   },
   
 };

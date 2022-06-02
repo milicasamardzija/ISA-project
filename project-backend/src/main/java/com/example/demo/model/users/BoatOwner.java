@@ -34,9 +34,9 @@ public class BoatOwner extends User {
 		super(user.getFirstname(), user.getLastname(), user.getEmail(), user.getPassword(), user.getTelephone(), user.getAddress(), user.getRole());
 	}
 	//PROVERI KOD REGISTRACIJE DA L NIJE PROBLEM SA ROLOM !!!!
-	public BoatOwner(User user){
-		super(user.getName(), user.getSurname(), user.getEmail(),user.getPassword(), user.getTelephone(), user.getAddress(),true, user.getRole(), user.getLastPasswordResetDate());
-	}
+//	public BoatOwner(User user){
+//		super(user.getName(), user.getSurname(), user.getEmail(),user.getPassword(), user.getTelephone(), user.getAddress(),true, user.getRole(), user.getLastPasswordResetDate(),user.getReasonForRegistration());
+//	}
 	public List<Boat> getBoatList() {
 		return boatList;
 	}

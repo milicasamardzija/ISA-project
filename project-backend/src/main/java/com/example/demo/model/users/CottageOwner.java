@@ -41,6 +41,7 @@ public class CottageOwner extends User{
 
     public CottageOwner(User user) {
         super(user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getTelephone(), user.getAddress(), true, user.getRole(), user.getLastPasswordResetDate());
+        setReasonForRegistration(user.getReasonForRegistration());
         //cottageList je null
     }
 }

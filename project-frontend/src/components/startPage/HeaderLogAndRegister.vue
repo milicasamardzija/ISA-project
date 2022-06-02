@@ -239,6 +239,7 @@
               <button
                type="submit"
                 class="btn btn-success btn-block"
+              
               >
                 <span></span> Registruj se
               </button>

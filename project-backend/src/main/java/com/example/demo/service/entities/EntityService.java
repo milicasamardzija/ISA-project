@@ -5,6 +5,7 @@ import com.example.demo.model.business.Complaint;
 import com.example.demo.model.business.Evaluate;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.EntityClass;
+import com.example.demo.model.users.Client;
 import com.example.demo.repository.entities.EntityRepository;
 import com.example.demo.service.business.ComplaintService;
 import com.example.demo.service.business.EvaluateService;
@@ -56,5 +57,8 @@ public class EntityService {
 
     public EntityClass findByName(String name) {
         return this.entityRepository.findByName(name);
+    }
+    public List<Client> findSubscribedClients(int id){
+        return this.entityRepository.findSubscribedClients(id);
     }
 }

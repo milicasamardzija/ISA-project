@@ -72,4 +72,17 @@ public class EmailService {
 
         System.out.println("Email poslat!");
     }
+
+    public void sendEmailForCreatedAction(String email, String entityName) {
+        System.out.println("Slanje emaila...");
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom("spring.mail.username");
+        mail.setSubject("New action");
+        mail.setText("New action for " + entityName + " created! Hurry up and use this special offer!" );
+        javaMailSender.send(mail);
+
+        System.out.println("Email poslat!");
+    }
 }

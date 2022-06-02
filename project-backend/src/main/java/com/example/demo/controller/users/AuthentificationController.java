@@ -32,8 +32,9 @@ public class AuthentificationController {
     private CottageOwnerService cottageOwnerService;
     private AdministratorService administratorService;
     private InstructorService instructorService;
+    private BoatOwnerService boatOwnerService;
 
-    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CottageOwnerService cottageOwnerService, AdministratorService administratorService, InstructorService instructorService) {
+    public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CottageOwnerService cottageOwnerService, AdministratorService administratorService, InstructorService instructorService,BoatOwnerService boatOwnerService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.tokenUtils = tokenUtils;
@@ -42,6 +43,7 @@ public class AuthentificationController {
         this.cottageOwnerService = cottageOwnerService;
         this.administratorService = administratorService;
         this.instructorService = instructorService;
+        this.boatOwnerService = boatOwnerService;
     }
 
     @PostMapping("/login")
@@ -98,6 +100,10 @@ public class AuthentificationController {
             }
             if (userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
                 this.instructorService.saveInstructor(userRequest);
+            }
+            if (userRequest.getRole().equals("ROLE_BOAT_OWNER")) {
+                user = this.userService.save(userRequest);
+                this.boatOwnerService.save(user);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

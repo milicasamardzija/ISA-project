@@ -117,7 +117,6 @@ public class CottageController {
 
     @GetMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable int id){
-        System.out.print("id: " + id);
         cottageService.deleteById(id);
 
         return  new ResponseEntity<>( HttpStatus.OK);
