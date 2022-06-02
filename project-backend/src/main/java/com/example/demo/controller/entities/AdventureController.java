@@ -1,8 +1,10 @@
 package com.example.demo.controller.entities;
 import com.example.demo.dto.entities.AdventureDTO;
+import com.example.demo.dto.entities.BoatDTO;
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.model.entities.Adventure;
+import com.example.demo.model.entities.Boat;
 import com.example.demo.model.users.User;
 import com.example.demo.service.entities.AdventureService;
 import org.springframework.http.HttpStatus;
@@ -33,14 +35,25 @@ public class AdventureController {
         return  new ResponseEntity<>(adventures, HttpStatus.OK);
     }
 
-    @PostMapping("/search")
+   /* @PostMapping("/search")
     public ResponseEntity<List<Adventure>> search(@RequestBody SearchDTO searchParam) {
         return new ResponseEntity<>(adventureService.searchAdventures(searchParam), HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/instructorUser/{id}")
     public  ResponseEntity<UserDTO> fetchInstructor(@PathVariable int id){
         User user = this.adventureService.fetchInstructorByAdventure(id);
         return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<AdventureDTO>> searchStartPage(@RequestBody SearchDTO searchParam) {
+        List<AdventureDTO> ret = new ArrayList<>();
+        if( adventureService.searchAdventuresStartPage(searchParam).size() != 0) {
+            for (Adventure c : adventureService.searchAdventuresStartPage(searchParam)) {
+                ret.add(new AdventureDTO(c));
+            }
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 }

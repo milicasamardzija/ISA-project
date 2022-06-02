@@ -58,4 +58,55 @@ public class AdventureService {
         Adventure a = this.adventureRepository.fetchInstructor(id);
         return this.userService.findByEmail(a.getInstructor().getEmail());
     }
+
+    public List<Adventure> searchAdventuresStartPage(SearchDTO searchParam) {
+        List<Adventure> ret = new ArrayList<>();
+
+        for (Adventure cottage : this.findAll()) {
+
+            //prazno sve
+            if( searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                ret.add(cottage);
+            }
+            //prazno ime
+            else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                if( cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+                    ret.add(cottage);
+                }
+            }
+            //prazno ime i ulica
+            else if(searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                if(cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+                    ret.add(cottage);
+                }
+            }
+            //prazno ime i grad
+            else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                if( cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase())){
+                    ret.add(cottage);
+                }
+            }
+            //prazna ulica i grad
+            else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) ){
+                    ret.add(cottage);
+                }
+            }
+            //prazno grad
+            else if(!searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) ){
+                    ret.add(cottage);
+                }
+            }
+            //prazna ulica
+            else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
+                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) ){
+                    ret.add(cottage);
+                }
+            }
+        }
+
+
+        return  ret;
+    }
 }
