@@ -8,7 +8,6 @@ import com.example.demo.model.business.Complaint;
 import com.example.demo.model.business.Evaluate;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.business.ReservedTerm;
-import com.example.demo.model.users.Role;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.EntityRepository;
 import com.example.demo.repository.users.UserRepository;

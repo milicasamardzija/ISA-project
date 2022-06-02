@@ -5,6 +5,7 @@ import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.EntityRepository;
 import com.example.demo.repository.users.ClientRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -80,5 +81,16 @@ public class ClientService {
     public Client save(User user) {
         return  this.clientRepository.save(new Client(user));
     }
+
+
+    @Scheduled(cron = "${greeting.cron}")
+    public void deletePenals(){
+        List<Client> clients = this.clientRepository.findAll();
+        for (Client c : clients){
+            c.setPenals(0);
+            this.clientRepository.save(c);
+        }
+    }
+
 
 }
