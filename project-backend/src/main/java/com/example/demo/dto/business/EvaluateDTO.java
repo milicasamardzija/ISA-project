@@ -15,6 +15,8 @@ public class EvaluateDTO {
     private User userWhoSendsComplaint;
     private Boolean accepted;
 
+    public EvaluateDTO() {}
+
     public EvaluateDTO(Evaluate e) {
         this.id = e.getId();
         this.contentEntity = e.getContentEntity();

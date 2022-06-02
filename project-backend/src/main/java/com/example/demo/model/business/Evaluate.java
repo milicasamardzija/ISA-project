@@ -1,5 +1,6 @@
 package com.example.demo.model.business;
 
+import com.example.demo.dto.business.EvaluateDTO;
 import com.example.demo.enums.ComplaintType;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
@@ -35,7 +36,14 @@ public class Evaluate {
     @OneToOne(fetch = FetchType.LAZY)
     private User userWhoSendsComplaint;
 
-    public Evaluate() {}
+    public Evaluate(EvaluateDTO dto) {
+        this.contentEntity = dto.getContentEntity();
+        this.contentUser = dto.getContentUser();
+        this.gradeForEntity = dto.getGradeForEntity();
+        this.gradeForUser = dto.getGradeForUser();
+        this.entity = dto.getEntity();
+        this.user = dto.getUser();
+    }
 
     public int getGradeForUser() {
         return gradeForUser;

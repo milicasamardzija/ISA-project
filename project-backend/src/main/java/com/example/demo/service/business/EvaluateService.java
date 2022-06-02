@@ -1,6 +1,7 @@
 package com.example.demo.service.business;
 
 import com.example.demo.model.business.Evaluate;
+import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ComplaintRepository;
 import com.example.demo.repository.business.EvaluateRepository;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,10 @@ public class EvaluateService {
     public void deleteById(int id) {
         Evaluate e = this.evaluateRepository.findById(id);
         this.evaluateRepository.delete(e);
+    }
+
+    public void save(Evaluate evaluate, User user){
+        evaluate.setUserWhoSendsComplaint(user);
+        this.evaluateRepository.save(evaluate);
     }
 }
