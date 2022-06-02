@@ -1,18 +1,19 @@
 package com.example.demo.dto.entities;
 
-import com.example.demo.enums.CancelationType;
+import com.example.demo.dto.enums.CancelationType;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.Image;
 
 import java.util.Set;
-import com.example.demo.model.entities.Address;
 
 public class AdventureDTO {
 
     private Integer id;
 
     private String name;
+
+    private String nameOfAdventure;
 
     private Address address;
 
@@ -34,6 +35,8 @@ public class AdventureDTO {
 
     private CancelationType cancelationType;
 
+
+
     public AdventureDTO(Adventure adventure){
         this.id = adventure.getId();
         this.name = adventure.getName();
@@ -47,10 +50,19 @@ public class AdventureDTO {
         this.maxNumberOfPeople = adventure.getMaxNumberOfPeople();
         this.fishingEquipment = adventure.getFishingEquipment();
         this.cancelationType = adventure.getCancelationType();
+        this.nameOfAdventure =adventure.getNameOfAdventure();
     }
 
     public Integer getId() {
         return id;
+    }
+
+    public String getNameOfAdventure() {
+        return nameOfAdventure;
+    }
+
+    public void setNameOfAdventure(String nameOfAdventure) {
+        this.nameOfAdventure = nameOfAdventure;
     }
 
     public void setId(Integer id) {

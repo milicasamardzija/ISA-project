@@ -8,6 +8,11 @@
     <NavBarLogOutCO />
     <NavBarBoatOwner />
   </div>
+  <div v-if="this.role === 'ROLE_INSTRUCTOR'">
+    <NavBarLogOut />
+    <HeaderStartPage />
+    <NavBarFishingInstructor />
+  </div>
   <!--KLIJENT-->
   <div v-if="this.role === 'ROLE_CLIENT'">
     <NavBarClient />
@@ -57,6 +62,15 @@
                 <h5 style="width: 600px" class="text">Adresa: {{cottageOwner.address.street}}  {{cottageOwner.address.number}}, {{cottageOwner.address.city}}, {{cottageOwner.address.country}}</h5>
                 <h5 style="width: 600px" class="text">Email: {{cottageOwner.email}}</h5>
                 <h5 style="width: 600px" class="text">Broj telefona: {{cottageOwner.telephone}}</h5>
+        
+              </div>
+
+              <div class="col-info" style="margin-top: 2%" v-if="this.role === 'ROLE_INSTRUCTOR'">
+                <h5 style="width: 600px" class="text">Ime:  {{instructor.firstname}}</h5>
+                <h5 style="width: 600px" class="text">Prezime: {{instructor.lastname}} </h5>
+                <h5 style="width: 600px" class="text">Adresa: {{instructor.address.street}}  {{instructor.address.number}}, {{instructor.address.city}}, {{instructor.address.country}}</h5>
+                <h5 style="width: 600px" class="text">Email: {{instructor.email}}</h5>
+                <h5 style="width: 600px" class="text">Broj telefona: {{instructor.telephone}}</h5>
         
               </div>
 
@@ -268,8 +282,9 @@ import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue";
 import NavBarAdministrator from "../../components/administrator/NavBarAdministrator.vue";
-import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarPredefAdministrator from "../../components/administrator/NavBarPredefAdministrator.vue";
+import HeaderStartPage from "../../components/startPage/HeaderStartPage";
+import NavBarFishingInstructor from "../../components/fishingInstructor/NavBarFishingInstructor.vue";
 import Swal from 'sweetalert2';
 export default {
   name: "MyProfile",
@@ -283,6 +298,7 @@ export default {
     NavBarPredefAdministrator,
     NavBarLogOutCO,
     NavBarBoatOwner,
+    NavBarFishingInstructor
   },
   data(){
     return {
@@ -295,6 +311,7 @@ export default {
       normal: true, 
       cottageOwner: "",
       boatOwner: "",
+      instructor:""
     }
   },
   methods: {
@@ -306,6 +323,14 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch("http://localhost:8081/api/client/profileClient", {headers});
+      const data = await res.json();
+      return data;
+    },
+    async getInstructor() {
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/instructor/profileInstructor", {headers});
       const data = await res.json();
       return data;
     },
@@ -382,6 +407,8 @@ export default {
      this.client = await this.getClient();
   } else if(this.role =="ROLE_BOAT_OWNER"){
     this.boatOwner = await this.getBoatOwner();
+  }else if(this.role =="ROLE_INSTRUCTOR"){
+    this.instructor = await this.getInstructor();
   }
  
   },

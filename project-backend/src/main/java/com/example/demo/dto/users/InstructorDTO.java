@@ -2,10 +2,9 @@ package com.example.demo.dto.users;
 
 import com.example.demo.dto.enums.LoyalityType;
 import com.example.demo.model.entities.Address;
-import com.example.demo.model.users.Client;
+import com.example.demo.model.users.Instructor;
 
-public class ClientDTO {
-
+public class InstructorDTO {
     private int id;
 
     private String password;
@@ -30,19 +29,16 @@ public class ClientDTO {
 
     private String telephone;
 
-    public ClientDTO(Client client) {
-        this.id = client.getId();
-        this.password = client.getPassword();
-        this.firstname = client.getName();
-        this.lastname = client.getSurname();
-        this.email = client.getEmail();
-        this.role = client.getRole().getName();
-        this.reasonForRegistration = client.getReasonForRegistration();
-        this.penals = client.getPenals();
-        this.loyalityType = client.getLoyalityType();
-        this.poents = client.getPoents();
-        this.address = client.getAddress();
-        this.telephone = client.getTelephone();
+    public InstructorDTO(Instructor instructor) {
+        this.id = instructor.getId();
+        this.password = instructor.getPassword();
+        this.firstname = instructor.getName();
+        this.lastname = instructor.getSurname();
+        this.email = instructor.getEmail();
+        this.role = instructor.getRole().getName();
+        this.reasonForRegistration = instructor.getReasonForRegistration();
+        this.address = instructor.getAddress();
+        this.telephone = instructor.getTelephone();
     }
 
     public int getId() {

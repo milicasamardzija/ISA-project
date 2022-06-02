@@ -1,10 +1,8 @@
 package com.example.demo.model.business;
 
-import com.example.demo.enums.EntityType;
-import com.example.demo.model.entities.AdditionalService;
+import com.example.demo.dto.enums.EntityType;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -30,6 +28,11 @@ public class Reservation {
     @Column(name="entity_type")
     private EntityType entityType;
 
+    @Column
+    private Date validFrom;
+    @Column
+    private Date validTo;
+
     @Column(name="is_canceled",nullable=false)
     private Boolean isCanceled = false;
 
@@ -51,6 +54,23 @@ public class Reservation {
     @JoinColumn(name = "entity_id")
     @JsonIgnoreProperties("entities")
     private EntityClass entity;
+
+
+    public Date getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(Date validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Date getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Date validTo) {
+        this.validTo = validTo;
+    }
 
     public List<ReservationServices> getReservationServices() {
         return reservationServices;

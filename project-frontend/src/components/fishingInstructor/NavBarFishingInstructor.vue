@@ -19,7 +19,7 @@
         >
       </li>
       <li class="nav-item">
-        <a class="nav-link"><router-link to="">Create action</router-link></a>
+        <a class="nav-link" ><router-link to="/CreateAction">Create action</router-link></a>
       </li>
       <li class="nav-item">
         <a class="nav-link"><router-link to="">Fill in reports</router-link></a>
@@ -36,7 +36,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link"
-          ><router-link to="/fishingInstructorProfile"
+          ><router-link to="/myProfile"
             >Azuriraj svoje podatke</router-link
           ></a
         >

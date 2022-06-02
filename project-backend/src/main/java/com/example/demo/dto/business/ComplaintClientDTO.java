@@ -1,11 +1,8 @@
 package com.example.demo.dto.business;
 
-import com.example.demo.enums.ComplaintType;
 import com.example.demo.model.business.Complaint;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
-
-import javax.persistence.*;
 
 public class ComplaintClientDTO {
 

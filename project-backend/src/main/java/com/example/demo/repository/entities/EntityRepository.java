@@ -14,4 +14,6 @@ public interface EntityRepository extends JpaRepository<EntityClass, Integer> {
 
     EntityClass findById(int id);
     void deleteById(int id);
+
+    EntityClass findByName(String name);
 }

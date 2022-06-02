@@ -59,6 +59,7 @@ public class AdventureService {
         return this.userService.findByEmail(a.getInstructor().getEmail());
     }
 
+
     public List<Adventure> searchAdventuresStartPage(SearchDTO searchParam) {
         List<Adventure> ret = new ArrayList<>();
 
@@ -108,5 +109,10 @@ public class AdventureService {
 
 
         return  ret;
+
+    public void deleteByNameOfAdventure(String namee) {
+        Adventure a = this.adventureRepository.findByNameOfAdventure(namee);
+        System.out.print("NAsla sam avanturu"+ a.getNameOfAdventure());
+        this.adventureRepository.delete(a);
     }
 }

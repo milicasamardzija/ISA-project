@@ -2,7 +2,7 @@ package com.example.demo.service.users;
 
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserRequest;
-import com.example.demo.enums.Role;
+import com.example.demo.dto.enums.Role;
 
 import com.example.demo.model.business.Complaint;
 import com.example.demo.model.business.Evaluate;
@@ -199,6 +199,7 @@ public class UserService {
         u.setRole(roleService.save(new Role((userRequest.getRole()))));
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);
+        u.setGrade(0);
         u.setAddress(addressService.save(userRequest.getAddress()));
         return this.userRepository.save(u);
     }

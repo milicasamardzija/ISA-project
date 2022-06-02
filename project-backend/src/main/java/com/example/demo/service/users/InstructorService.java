@@ -3,7 +3,7 @@ package com.example.demo.service.users;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.users.Instructor;
-import com.example.demo.enums.Role;
+import com.example.demo.dto.enums.Role;
 import com.example.demo.repository.users.InstructorRepository;
 import com.example.demo.service.entities.AddressService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,11 +39,16 @@ public class InstructorService {
         u.setTelephone(userRequest.getTelephone());
         Role r = this.roleService.findByName(userRequest.getRole());
         u.setRole(r);
+        u.setGrade(0);
         Address a = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber());
         this.addressService.save(a);
         u.setAddress(a);
         System.out.print("USPELA SAM HEHE");
 
         this.instructorRepository.save(u);
+    }
+
+    public Instructor findByEmail(String email) {
+        return this.instructorRepository.findByEmail(email);
     }
 }

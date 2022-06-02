@@ -3,7 +3,6 @@
     <NavBarLogOut />
     <HeaderStartPage />
     <NavBarFishingInstructor />
-    <InstructorProfile />
   </div>
 </template>
 
@@ -11,7 +10,6 @@
 import HeaderStartPage from "../../components/startPage/HeaderStartPage";
 import NavBarFishingInstructor from "../../components/fishingInstructor/NavBarFishingInstructor.vue";
 import NavBarLogOut from "../../components/fishingInstructor/NavbarLogOut.vue";
-import InstructorProfile from "../../components/fishingInstructor/InstructorProfile.vue";
 
 export default {
   name: "FishingInstructorProfile",
@@ -19,7 +17,6 @@ export default {
     HeaderStartPage,
     NavBarFishingInstructor,
     NavBarLogOut,
-    InstructorProfile,
   },
 };
 </script>

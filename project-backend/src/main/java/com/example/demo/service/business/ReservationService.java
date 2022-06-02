@@ -4,11 +4,10 @@ import com.example.demo.dto.business.DateDTO;
 import com.example.demo.dto.business.PriceDTO;
 import com.example.demo.dto.business.ReservationNewDTO;
 import com.example.demo.dto.entities.AdditionalServiceDTO;
-import com.example.demo.enums.EntityType;
+import com.example.demo.dto.enums.EntityType;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.business.ReservationServices;
 import com.example.demo.model.business.ReservedTerm;
-import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
@@ -23,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 @Service
@@ -281,5 +279,9 @@ public class ReservationService {
     public void delete(Reservation r) {
         this.reservationRepository.delete(r);
 
+    }
+
+    public void saveReservation(Reservation r) {
+        this.reservationRepository.save(r);
     }
 }

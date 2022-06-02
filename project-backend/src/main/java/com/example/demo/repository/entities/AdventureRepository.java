@@ -10,4 +10,6 @@ public interface AdventureRepository extends JpaRepository<Adventure,Integer> {
 
     @Query("select a from Adventure a left join fetch a.instructor where a.id = ?1")
     Adventure fetchInstructor(int id);
+
+    Adventure findByNameOfAdventure(String namee);
 }
