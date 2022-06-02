@@ -35,7 +35,7 @@
         <div class="column" style="width: 28rem; height: 3rem" >
         
           <button class="btn btn-success" data-target="#pretplata" data-toggle="modal" v-if="this.role === 'ROLE_CLIENT'" @click="subscribeModal()">Pretplati se</button>
-          <!-- <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'" style="margin-left:40px" @click="showActions()">Akcije</button> -->
+          <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'" style="margin-left:40px" @click="showActions()">Akcije</button>
         </div>
       </div>
 
@@ -132,14 +132,15 @@
           <div class="row" style="height: 25rem; background: whitesmoke">
             <div class="column" style="width: 20rem">
               <p>Cena: {{boat.price}}</p>
-              <p>Ocena: {{boat.grade}}</p>
+              <p>Ocena broda: {{boat.grade}}</p>
+              <p v-if="this.role === 'ROLE_CLIENT'">Ocena vlasnika broda: {{this.ownerGrade}}</p>
               <p>Maksimalan broj osoba: {{capacity}}</p>
               <p>Tip broda: {{boat.typeBoat}}</p>
               <p>Navigaciona oprema: {{boat.navigationEquipment}}</p>
               <p>Max brzina: {{boat.maxSpeed}}</p>
-                <p>Broj motora: {{boat.motorNumber}}</p>
-                  <p>Snaga: {{boat.power}}</p>
-                    <p>Duzina: {{boat.lenght}}</p>
+              <p>Broj motora: {{boat.motorNumber}}</p>
+              <p>Snaga: {{boat.power}}</p>
+              <p>Duzina: {{boat.lenght}}</p>
             </div>
 
             <div 
@@ -174,16 +175,16 @@
             </h5>
           </div>
           <div class="modal-body" style="padding: 15px 50px">
-            <form role="form" @submit.prevent="Cancel">
+            <form role="form" @submit.prevent="subscribe">
               <div class="form-group">
                 <label for="name">Da li ste sigurni da zelite da se pretplatite ?</label>
               </div>
               <table>
                 <tr>
                   <td>
-                    <!-- <button type="submit" class="btn btn-success btn-block" @click="subscribe()" style="width:80px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" @click="subscribe()" style="width:80px; margin-bottom:20px">
                        Potvrdi
-                    </button> -->
+                    </button>
                   </td>
                   <td>
                     <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
@@ -207,7 +208,7 @@ import HeaderStartPage from "../../components/startPage/HeaderStartPage.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue"
 import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
 import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue';
-//import axios from "axios"
+import axios from "axios"
 
 
 export default {
@@ -225,31 +226,21 @@ export default {
       role:"",
       id: "",
       boat: "",
-      capacity: 0
+      capacity: 0,
+      owner: {},
+      ownerGrade: 0
     };
   },
   async created() {
     this.role = localStorage.getItem("role");
     this.id = this.$route.params.id;
     this.boat = this.getBoat(this.id);  
+    this.owner = this.getUser(this.id);
   },
   methods: {
-    // showActions(){
-    //   this.$router.push({ name: 'CottageActions', params: { id: this.id}})
-    // },
-    // subscribe(){
-    //   const headers = {
-    //     Authorization: "Bearer " + localStorage.getItem("token"),
-    //   };
-    //   axios.get( "http://localhost:8081/api/client/" + this.id ,
-    //     { headers }).then(
-    //       response => {
-    //         console.log(response);
-    //         alert("Uspesno ste se pretplatili!")
-    //         this.$router.go(0);
-    //       }
-    //     )
-    // },
+     showActions(){
+       this.$router.push({ name: 'CottageActions', params: { id: this.id}})
+     },
     async getBoat(id) {
       const res = await fetch("http://localhost:8081/api/boats/boat/" + id);
       const data = await res.json();  
@@ -258,10 +249,36 @@ export default {
        this.capacity = this.boat.quantity;
       return data;
     },
-
     async editBoat(){
           this.$router.push({ name: 'EditBoat', params: { id: this.id}})
-    }
+    },
+    async getUser(id){
+     const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch(
+        "http://localhost:8081/api/boatOwner/boatOwnerUser/" + id,
+        { headers }
+      );
+      const data = await res.json();
+      this.owner = data;
+      console.log(this.owner)
+      this.ownerGrade = this.owner.grade;
+      return data;
+   },
+   subscribe(){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.get( "http://localhost:8081/api/client/" + this.id ,
+        { headers }).then(
+          response => {
+            console.log(response);
+            alert("Uspesno ste se pretplatili!")
+            this.$router.go(0);
+          }
+        )
+    },
   },
   
 };

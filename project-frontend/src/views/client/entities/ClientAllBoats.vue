@@ -112,6 +112,7 @@
           <h4 style="width: 600px" class="text">
             Prosecna ocena: {{ boat.grade }}
           </h4>
+          <button class="btn btn-success" @click="showBoat(boat)" style="margin-left:40px">Prikazi brod</button>
         </div>
       </div>
     </div>
@@ -156,6 +157,9 @@ export default {
       });
       const data = await res.json();
       this.boats = data;
+    },
+     async showBoat(boat){
+        this.$router.push({ name: 'BoatProfile', params: { id: boat.id}})
     },
     getImgUrl(img) {
       var images = require.context('../../../assets/boatImages/', false, /.jpg$/)
