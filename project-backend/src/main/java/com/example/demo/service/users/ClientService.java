@@ -79,9 +79,12 @@ public class ClientService {
     }
 
     public Client save(User user) {
-        return  this.clientRepository.save(new Client(user));
+        return this.clientRepository.save(new Client(user));
     }
 
+    public Client save(Client client){
+        return this.clientRepository.save(client);
+    }
 
     @Scheduled(cron = "${greeting.cron}")
     public void deletePenals(){

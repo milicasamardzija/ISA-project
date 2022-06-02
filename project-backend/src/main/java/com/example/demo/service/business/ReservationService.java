@@ -19,6 +19,8 @@ import com.example.demo.service.entities.AdditionalServicesService;
 import com.example.demo.service.entities.CottageService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.ClientService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -123,6 +125,16 @@ public class ReservationService {
             return  isNotReserved;
     }
 
+    public Boolean checkPenals(User user){
+        Client client = this.clientService.findById(user.getEmail());
+
+        if (client.getPenals() >= 3){
+            return false;
+        }
+
+        return  true;
+    }
+
     public Boolean save(ReservationNewDTO reservation, User user) throws Exception {
         Client client = this.clientService.findById(user.getEmail());
         EntityClass entity = this.entityService.findById(reservation.getEntityId());
@@ -193,7 +205,8 @@ public class ReservationService {
         emailService.sendEmailForReservationAction(user.getEmail());
     }
 
-    public String cancelReservation(int id) {
+    //klijent otkazuje rezervaciju
+    public String cancelReservation(int id, User user) {
         Reservation reservation = this.reservationRepository.findById(id);
 
         Calendar cal = Calendar.getInstance();
@@ -202,6 +215,11 @@ public class ReservationService {
 
         if (cal.getTime().before(reservation.getTerm().getDateStart())) {
             reservation.setCanceled(true);
+            Client client = this.clientService.findById(user.getEmail());
+            int penals = client.getPenals();
+            client.setPenals(penals + 1);
+            this.clientService.save(client);
+            Client c = this.clientService.findById(user.getEmail());
 
             ReservedTerm term = reservation.getTerm();
             term.setCanceled(true);

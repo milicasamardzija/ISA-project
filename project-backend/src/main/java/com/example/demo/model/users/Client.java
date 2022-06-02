@@ -78,6 +78,7 @@ public class Client extends User{
 		this.subscribedEntities = subscribedEntities;
 	}
 
+
 	public Client(User user){
 		this.setId(user.getId());
 		this.setName(user.getName());
