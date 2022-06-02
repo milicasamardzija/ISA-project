@@ -314,7 +314,7 @@ public class ReservationService {
 
             a.setReservation(newReservation);
             newReservation.getReservationServices().add(a);
-           this.reservationServicesService.save(a); //ovde puca za servise kad treba da pravi reservation service tabelu
+         //  this.reservationServicesService.save(a); //ovde puca za servise kad treba da pravi reservation service tabelu
 
         }
 
