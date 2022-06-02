@@ -287,7 +287,7 @@
               <table>
                 <tr>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block" @click="saveAction()" style="width:80px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block"  style="width:80px; margin-bottom:20px">
                       Potvrdi
                     </button>
                   </td>
@@ -488,9 +488,7 @@ export default {
          )
       
    },
-   checkAvailability(){
-
-   },
+  
 
   async saveAction(){
      this.action.entityId =this.cottage.id;
