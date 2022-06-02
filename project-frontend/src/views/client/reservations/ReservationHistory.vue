@@ -95,7 +95,7 @@
                   </td>
                   <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success" data-target="#zalba" data-toggle="modal" @click="getSelected(reservation.id)">Napisi zalbu</button></td>
-                  <td><button class="btn btn-success" data-target="#ocena" data-toggle="modal">Oceni uslugu</button></td>
+                  <td><button class="btn btn-success" data-target="#ocena" data-toggle="modal"  @click="getSelected(reservation.id)">Oceni uslugu</button></td>
                 </tr>
               </tbody>
             </table>
@@ -170,7 +170,7 @@
                   </td>
                   <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success" data-target="#zalba" data-toggle="modal" @click="getSelected(reservation.id)">Napisi zalbu</button></td>
-                  <td><button class="btn btn-success" data-target="#ocena" data-toggle="modal">Oceni uslugu</button></td>
+                  <td><button class="btn btn-success" data-target="#ocena" data-toggle="modal"  @click="getSelected(reservation.id, reservation.entityType)">Oceni uslugu</button></td>
                 </tr>
               </tbody>
             </table>
@@ -247,7 +247,7 @@
                   </td>
                   <td>{{ reservation.price }}</td>
                   <td><button class="btn btn-success" data-target="#zalba" data-toggle="modal" @click="getSelected(reservation.id, reservation.entityType)">Napisi zalbu</button></td>
-                  <td><button class="btn btn-success" data-target="#ocena" data-toggle="modal">Oceni uslugu</button></td>
+                  <td><button class="btn btn-success" data-target="#ocena" data-toggle="modal"  @click="getSelected(reservation.id, reservation.entityType)">Oceni uslugu</button></td>
                 </tr>
               </tbody>
             </table>
@@ -346,47 +346,48 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel" style="color: #0b4025; padding: 5px 35px">
-              Ocena
+              Recenzija
             </h5>
           </div>
           <div class="modal-body" style="padding: 15px 50px">
             <form role="form" @submit.prevent="Cancel">
               <div class="form-group">
-                <table>
-                  <tr>
-                    <td><label>Ime vlasnika: </label> </td>
-                    <td><label>{{this.user.firstname}} {{this.user.lastname}} </label> </td>
-                  </tr>
-                  <tr v-if="selectedReservationType == 'COTTAGE' || selectedReservationType == 'BOAT'">
-                    Komentar na vlasnika:
-                  </tr> 
-                  <tr v-if="selectedReservationType == 'ADVENTURE'">
-                    Komentar na instruktora:
-                  </tr> 
-                  <tr v-if="selectedReservationType == 'COTTAGE' || selectedReservationType == 'BOAT'">
-                    <textarea type="text" style="width: 100%; height: 50%">
-                    </textarea>
-                  </tr>
-                  <tr>
-                    <td v-if="selectedReservationType == 'COTTAGE'"><label>Naziv vikendice: </label> </td>
-                    <td v-if="selectedReservationType == 'BOAT'"><label>Naziv broda: </label> </td>
-                    <td v-if="selectedReservationType == 'ADVENTURE'"><label>Naziv avanture: </label> </td>
-                    <td><label>{{this.entity.name}}</label> </td>
-                  </tr>
-                   <tr v-if="selectedReservationType == 'COTTAGE'">
-                    Komentar na vikendicu:
+                  <table>
+                    <tr v-if="selectedReservationType === 'COTTAGE' || selectedReservationType === 'BOAT'">
+                      <td><label>Ime vlasnika: </label> </td>
+                      <td><label>{{this.user.firstname}} {{this.user.lastname}}</label> </td>
+                    </tr>
+                    <tr v-if="selectedReservationType === 'ADVENTURE'">
+                      <td><label>Ime instruktora: </label> </td>
+                      <td><label>{{this.user.firstname}} {{this.user.lastname}}</label> </td>
+                    </tr>
+                    <tr>
+                      <td v-if="this.selectedReservationType === 'COTTAGE'"><label>Naziv vikendice: </label> </td>
+                      <td v-if="this.selectedReservationType === 'BOAT'"><label>Naziv broda: </label> </td>
+                      <td v-if="this.selectedReservationType === 'ADVENTURE'"><label>Naziv avanture: </label> </td>
+                      <td><label>{{this.entity.name}}</label> </td>
+                    </tr>
+                  
+                    <tr v-if="selectedReservationType === 'COTTAGE' || selectedReservationType === 'BOAT'" >
+                      <td  span="2">
+                      Komentar na vlasnika:
+                      </td>
                     </tr> 
-                    <tr v-if="selectedReservationType == 'BOAT'">
-                    Komentar na brod:
-                    </tr> 
-                  <tr v-if="selectedReservationType == 'COTTAGE' || selectedReservationType == 'BOAT'">
-                    <textarea type="text" style="width: 100%; height: 50%">
-                    </textarea>
-                  </tr>
-                  <tr>
-                    <td><label>Unesite ocenu: </label> </td>
+                    <tr v-if="this.selectedReservationType === 'ADVENTURE'">
+                      Komentar na instruktora:
+                    </tr>  
+                    <tr > 
+                      <td  colspan="2">
+                      <textarea type="text" style="width: 100%; height: 50%" v-model="reviewContentUser">
+                      </textarea>
+                      </td>
+                    </tr>
+                    <tr>
+                     <td v-if="selectedReservationType === 'COTTAGE'"><label>Unesite ocenu vlasnika vikednice: </label> </td>
+                    <td v-if="selectedReservationType === 'BOAT'"><label>Unesite ocenu vlasnika broda: </label> </td>
+                    <td v-if="selectedReservationType === 'ADVENTURE'"><label>Unesite ocenu instruktora: </label> </td>
                     <td style="width: 200px"> 
-                      <select  v-model="review.grade"> Ocena
+                      <select  v-model="reviewGradeForUser"> Ocena
                         <option  v-bind:value="5">5</option>
                         <option  v-bind:value="4">4</option>
                         <option  v-bind:value="3">3</option>
@@ -395,17 +396,46 @@
                       </select>
                     </td>
                   </tr>
-                </table>
+                    <tr v-if="selectedReservationType === 'COTTAGE'">
+                      Komentar na vikendicu:
+                    </tr> 
+                    <tr v-if="selectedReservationType === 'BOAT'">
+                      Komentar na brod:
+                    </tr>
+                    <tr v-if="selectedReservationType === 'ADVENTURE'">
+                      Komentar na avanturu:
+                    </tr>
+                    <tr>
+                      <td  colspan="2">
+                      <textarea  type="text" style="width: 100%; height: 50%" v-model="reviewContentEntity">
+                      </textarea>
+                      </td>
+                    </tr>
+                     <tr>
+                    <td v-if="selectedReservationType === 'COTTAGE'"><label>Unesite ocenu vikednice: </label> </td>
+                    <td v-if="selectedReservationType === 'BOAT'"><label>Unesite ocenu broda: </label> </td>
+                    <td v-if="selectedReservationType === 'ADVENTURE'"><label>Unesite ocenu avanture: </label> </td>
+                    <td style="width: 200px"> 
+                      <select  v-model="reviewGradeForEntity"> Ocena
+                        <option  v-bind:value="5">5</option>
+                        <option  v-bind:value="4">4</option>
+                        <option  v-bind:value="3">3</option>
+                        <option  v-bind:value="2">2</option>
+                        <option  v-bind:value="1">1</option>
+                      </select>
+                    </td>
+                  </tr>
+                  </table>
               </div>
               <table>
                 <tr>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block" @click="sendReview()" style="width:80px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" @click="sendReview()" style="width:80px; margin-bottom:20px">
                       Potvrdi
                     </button>
                   </td>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px" @click="clear()">
                       Otkazi
                     </button>
                   </td>
@@ -416,6 +446,8 @@
         </div>
       </div>
     </div>
+
+  
   </div>
 </template>
 
@@ -436,14 +468,17 @@ export default {
       reservationsBoats: [],
       reservationsAdventures: [],
       complaint: "",
-      review:"",
       user: {},
       entity: {},
       selectedReservationId:0,
       selectedReservationType:"",
       show:false,
       contentUser: "",
-      contentEntity: ""
+      contentEntity: "",
+      reviewContentUser: "",
+      reviewContentEntity: "",
+      reviewGradeForUser: "",
+      reviewGradeForEntity: ""
     };
   },
   methods: {
@@ -459,6 +494,10 @@ export default {
       this.entity = "";
       this.contentUser = "";
       this.contentEntity = "";
+      this.reviewContentUser = "",
+      this.reviewContentEntity = "",
+      this.reviewGradeForUser = "",
+      this.reviewGradeForEntity = ""
     },
     async fetchCottageReservations() {
       const headers = {
@@ -630,6 +669,21 @@ export default {
              title:"Uspesno",
              type: "warning",
              text:'Vasa zalba je poslata!'
+           });
+      });
+       this.clear()
+    },
+    sendReview(){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.post("http://localhost:8081/api/evaluate" ,{contentUser: this.reviewContentUser, contentEntity: this.reviewContentEntity, user: this.user, entity: this.entity, gradeForUser : this.reviewGradeForUser, gradeForEntity: this.reviewGradeForEntity},{headers})
+      .then (response => { 
+        console.log(response);
+       return new Swal({
+             title:"Uspesno",
+             type: "warning",
+             text:'Vasa revizija je poslata!'
            });
       });
        this.clear()

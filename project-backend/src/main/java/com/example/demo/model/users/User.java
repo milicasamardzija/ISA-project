@@ -35,6 +35,8 @@ public class User implements UserDetails {
 	private String email;
 	@Column(name = "password", nullable = false)
 	private String password;
+	@Column(name = "grade")
+	private double grade;
 	@Column(name = "telephone")
 	private String telephone;
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE ) //PRILIKOM REGISTRACIJE NIJE CUVAO USERA, PA SAM PROMENILA CASCADETYPE
@@ -66,6 +68,7 @@ public class User implements UserDetails {
 		this.enabled = enabled;
 		this.role = role;
 		this.lastPasswordResetDate = lastPasswordResetDate;
+		this.grade = 0;
 	}
 
 	public User(String name, String surname, String email, String password, String telephone, Address address) {
@@ -206,6 +209,11 @@ public class User implements UserDetails {
 
 	public boolean getEnabled() {return enabled;}
 
-	
+	public double getGrade() {
+		return grade;
+	}
 
+	public void setGrade(double grade) {
+		this.grade = grade;
+	}
 }

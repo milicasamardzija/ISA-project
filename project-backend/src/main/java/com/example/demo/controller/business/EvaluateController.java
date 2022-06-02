@@ -1,15 +1,14 @@
 package com.example.demo.controller.business;
 
-import com.example.demo.dto.business.ComplaintClientDTO;
 import com.example.demo.dto.business.EvaluateDTO;
-import com.example.demo.model.business.Complaint;
 import com.example.demo.model.business.Evaluate;
-import com.example.demo.model.users.DeleteUserRequest;
-import com.example.demo.service.business.ComplaintService;
+import com.example.demo.model.users.User;
 import com.example.demo.service.business.EvaluateService;
 import com.example.demo.service.email.EmailSenderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +16,7 @@ import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @Controller
 @RequestMapping(value = "api/evaluate")
 public class EvaluateController {
@@ -68,4 +68,11 @@ public class EvaluateController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping()
+    public ResponseEntity<Void> save(@RequestBody EvaluateDTO evalueteDTO){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+        this.evaluateService.save(new Evaluate(evalueteDTO), user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

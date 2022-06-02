@@ -15,6 +15,7 @@ public class BoatOwnerDTO {
     public String password;
     public String telephone;
     public Address address;
+    public double grade;
     public List<Boat> boatList;
 
     public BoatOwnerDTO() {
@@ -103,5 +104,13 @@ public class BoatOwnerDTO {
 
     public void setBoatList(List<Boat> boatList) {
         this.boatList = boatList;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
     }
 }
