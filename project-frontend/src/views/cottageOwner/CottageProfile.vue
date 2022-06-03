@@ -520,7 +520,7 @@ export default {
       console.log(this.services)
       console.log(services)
       this.services.splice(index, 1);
-    }
+    },
    async getUser(id){
      const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),

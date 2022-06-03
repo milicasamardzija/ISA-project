@@ -1,7 +1,7 @@
 package com.example.demo.dto.business;
 
 import com.example.demo.dto.entities.AdditionalServiceDTO;
-import com.example.demo.enums.EntityType;
+import com.example.demo.dto.enums.EntityType;
 
 import java.util.ArrayList;
 import java.util.Date;
