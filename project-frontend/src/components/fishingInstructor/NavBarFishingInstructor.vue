@@ -15,7 +15,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link"
-          ><router-link to="">Booking history</router-link></a
+          ><router-link to="/MyAdventureReservations">Booking history</router-link></a
         >
       </li>
       <li class="nav-item">
@@ -39,11 +39,6 @@
           ><router-link to="/myProfile"
             >Azuriraj svoje podatke</router-link
           ></a
-        >
-      </li>
-      <li class="nav-item">
-        <a class="nav-link"
-          ><router-link to="">Zahtev za brisanje</router-link></a
         >
       </li>
       <li class="nav-item">

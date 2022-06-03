@@ -108,6 +108,26 @@ public class ReservationController {
         return  new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @GetMapping("/getMyReservations")
+    public ResponseEntity<List<ReservationnDTO>> getMyReservations(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+
+        List<Reservation> scheduledReservations = reservationService.findAllReservationsForInstructor(user.getId());
+        List<ReservationnDTO> ret = new ArrayList<>();
+        for(Reservation reservation : scheduledReservations ) {
+            ReservationnDTO reservationDTO = new ReservationnDTO(reservation);
+            EntityClass e = this.entityService.findById(reservation.getEntity().getId());
+            EntityDTO entityDTO = new EntityDTO(e);
+            reservationDTO.setEntity(entityDTO);
+            ret.add(reservationDTO);
+
+        }
+
+        return  new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+
     @GetMapping("/historyReservationsCottages")
     public ResponseEntity<List<ReservationDTO>> historyReservationsCottages(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

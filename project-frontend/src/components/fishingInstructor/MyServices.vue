@@ -9,14 +9,16 @@
    <table class="styled-table">
     <thead>
         <tr>
-            <th>Naziv akcije</th>
+            <th>Naziv avantura</th>
             <th></th>
             <th></th>           
+            <th></th>
         </tr>
     </thead>
     <tbody>
           <tr v-for="(adventure, index) in adventures" :key="index">
                   <td>{{adventure.nameOfAdventure}}</td>
+                  <td><button class="btn btn-success btn-block"  @click="ShowAdventure(adventure.nameOfAdventure)">Prikazi profil usluge</button></td>
                   <td><button class="btn btn-success btn-block"  @click="EditAdventure(adventure.nameOfAdventure)">Izmeni uslugu</button></td>
                   <td><button class="btn btn-success btn-block"  @click="Delete(adventure.nameOfAdventure)">Obrisi uslugu</button></td>
            </tr> 
@@ -58,6 +60,10 @@ export default ({
       const res1 = await fetch("http://localhost:8081/api/adventures/findAdventure/"+this.inputText);
            const data1 = await res1.json();
       return data1;
+   },
+   async ShowAdventure(name) {
+     localStorage.setItem("nameOfAdventure",name);
+     this.$router.push({ name: "AdventureProfile" });
    },
     async Find() {
       this.adventures = await this.FindActions();

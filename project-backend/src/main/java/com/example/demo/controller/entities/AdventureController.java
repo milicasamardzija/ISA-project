@@ -77,7 +77,6 @@ public class AdventureController {
         return  new ResponseEntity<>(adventures, HttpStatus.OK);
     }
 
-
     @GetMapping("/findAdventure/{inputText}")
     public ResponseEntity<List<AdventureDTO>> findAdventures(@PathVariable String inputText){
         List<Adventure> allAdventures = adventureService.findAll();

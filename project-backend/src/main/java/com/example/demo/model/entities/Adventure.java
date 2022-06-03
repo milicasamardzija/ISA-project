@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.example.demo.dto.enums.CancelationType;
 import com.example.demo.model.business.ReservationServices;
+import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.Instructor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -45,7 +46,6 @@ public class Adventure extends EntityClass{
 	@JoinColumn(name = "instructor_id")
 	@JsonIgnoreProperties("instructor")
 	public Instructor instructor;
-
 
 	public Adventure() {
 		super();

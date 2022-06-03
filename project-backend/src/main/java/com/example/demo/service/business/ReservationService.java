@@ -246,6 +246,13 @@ public class ReservationService {
         return res;
     }
 
+
+    public List<Reservation> getAllReservationsForInstructor(int id) {
+        List<Reservation> res = new ArrayList<>();
+        res= this.reservationRepository.findAllReservationsForInstructor(id);
+        return res;
+    }
+
     public Client findClientForReservation(int id){
         return this.reservationRepository.findClientFromReservation(id);
     }
@@ -283,5 +290,9 @@ public class ReservationService {
 
     public void saveReservation(Reservation r) {
         this.reservationRepository.save(r);
+    }
+
+    public List<Reservation> findAllReservationsForInstructor(int id) {
+        return this.reservationRepository.findAllReservationsForInstructor(id);
     }
 }
