@@ -136,6 +136,9 @@ public class ReservationService {
         return  true;
     }
 
+    public List<Reservation> getAllReservationForEntity(int id){
+        return  this.reservationRepository.getReservationsForEntity(id);
+    }
     public Boolean save(ReservationNewDTO reservation, User user) throws Exception {
         Client client = this.clientService.findById(user.getEmail());
         EntityClass entity = this.entityService.findById(reservation.getEntityId());

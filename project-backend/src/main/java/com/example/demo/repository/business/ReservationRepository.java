@@ -48,4 +48,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query(value = "select r from Reservation r join fetch r.entity e where e.id = ?1 ")
     List<Reservation> getReservationsForEntity(int id);
 
+
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller.business;
 
 import com.example.demo.dto.business.ReportOwnerDTO;
+import com.example.demo.model.business.ReportForOwner;
 import com.example.demo.service.business.ReportOwnerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,10 @@ public class ReportOwnerController {
         this.reportOwnerService.addReportCottageOwner(dto);
 
         return  new ResponseEntity<>( HttpStatus.OK);
+    }
+
+    @PostMapping("/reportOwner")
+    public ResponseEntity<ReportForOwner> addReportForBusiness(@RequestBody ReportForOwner dto){
+        return  new ResponseEntity<>(this.reportOwnerService.createReportForBusiness(dto), HttpStatus.OK);
     }
 }
