@@ -23,11 +23,6 @@ public class AdditionalService {
     @Column
     private double price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name= "reservation_id")
-    @JsonIgnoreProperties("reservation")
-    private Reservation reservation;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name= "entity_id")
     @JsonIgnoreProperties("entity")
@@ -57,14 +52,6 @@ public class AdditionalService {
         this.price = price;
     }
 
-    public Reservation getReservations() {
-        return reservation;
-    }
-
-    public void setReservations(Reservation reservation) {
-        this.reservation = reservation;
-    }
-
     public EntityClass getEntities() {
         return entity;
     }
@@ -79,11 +66,10 @@ public class AdditionalService {
         this.setPrice(dto.getPrice());
     }
 
-    public AdditionalService(int id, String name, double price, Reservation reservation, EntityClass entity) {
+    public AdditionalService(int id, String name, double price, EntityClass entity) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.reservation = reservation;
         this.entity = entity;
     }
 

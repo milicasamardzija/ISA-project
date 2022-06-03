@@ -245,7 +245,7 @@ public class CottageService {
         if (isNotReserved && searchParam.getCity().equals("") && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber() && searchParam.getPeople() > 0) {
             ret.add(cottage);
         }
-        isNotReserved = true;
+       // isNotReserved = true;
     }
         return ret;
     }
@@ -312,5 +312,10 @@ public class CottageService {
 
     public CottageOwner findCottageOwner(int id){
         return cottageRepository.findCottageOwner(id);
+    }
+    
+    public Integer getMaxPeople(int id) {
+        Cottage cottage = this.findOne(id);
+        return cottage.getRoomsNumber() * cottage.getBedsByRoom();
     }
 }

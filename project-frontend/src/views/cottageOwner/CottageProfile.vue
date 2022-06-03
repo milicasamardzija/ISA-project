@@ -132,27 +132,21 @@
           <div class="row" style="height: 20rem; background: whitesmoke">
             <div class="column" style="width: 20rem">
               <p>Cena: {{cottage.price}}</p>
-              <p>Ocena: {{cottage.grade}}</p>
+              <p>Ocena vikednice: {{cottage.grade}}</p>
+              <p v-if="this.role === 'ROLE_CLIENT'">Ocena vlasnika vikendice: {{this.ownerGrade}}</p>
               <p>Maksimalan broj osoba: {{capacity}}</p>
               <p>Broj soba: {{cottage.roomsNumber}}</p>
               <p>Broj kreveta po sobi: {{cottage.bedsByRoom}}</p>
               <p>Pravila ponasanja: {{cottage.rules}}</p>
             </div>
-
             <div 
               class="column"
-              style="width: 12rem; height: 18rem; background: white"
-            > 
+              style="width: 12rem; height: 18rem; background: white"> 
             <p class="pStyle">dodatne usluge:</p>
              <div class="row" style="height: 2rem; background: white" v-for="service in cottage.additionalServices" :key="service">
-           
-            
-              <p>{{ service.name}} : {{service.price}}</p> 
+            <p>{{ service.name}} : {{service.price}}</p> 
             </div>
             </div>
-
-             
-         
           </div>
         </div>
       </div>
@@ -435,14 +429,19 @@ export default {
       capacity: 0,
       services: [],
       showForm: false, 
-      action: { dateStart: "", timeStart: "", price: 0, duration: 0, entityId: 0, dateEndAction: "", additionalServices:[] }
+      action: { dateStart: "", timeStart: "", price: 0, duration: 0, entityId: 0, dateEndAction: "", additionalServices:[] },
+      owner: {},
+      ownerGrade: 0
+
     };
   },
   async created() {
     this.role = localStorage.getItem("role");
     this.id = this.$route.params.id;
-    this.cottage = this.getCottage(this.id);  
-   
+    this.cottage = this.getCottage(this.id); 
+    this.owner = this.getUser(this.id);
+    this.ownerGrade = this.owner.grade; 
+    console.log(this.owner)
   },
   methods: {
     showActions(){
@@ -467,6 +466,7 @@ export default {
        console.log(data) ;
        this.cottage= data;  //samo u created nije radilo
        this.capacity = this.cottage.bedsByRoom * this.cottage.roomsNumber;
+       
        this.services = this.cottage.additionalServices
       return data;
     },
@@ -488,8 +488,6 @@ export default {
          )
       
    },
-  
-
   async saveAction(){
      this.action.entityId =this.cottage.id;
       console.log(this.action.entityId);
@@ -523,6 +521,19 @@ export default {
       console.log(services)
       this.services.splice(index, 1);
     }
+   async getUser(id){
+     const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch(
+        "http://localhost:8081/api/cottageOwner/cottageOwnerUser/" + id,
+        { headers }
+      );
+      const data = await res.json();
+      this.owner = data;
+      this.ownerGrade = this.owner.grade;
+      return data;
+   }
   },
   
 };
