@@ -538,7 +538,7 @@ export default {
           duration: this.number,
           entityId: this.selectedEntity.id,
           additionalServices : this.additionalServicesReservation,
-          type: 1
+          type: 2
         },{headers})
       .then (response => { 
         console.log(response.data);
