@@ -4,6 +4,7 @@ import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.BoatDTO;
 import com.example.demo.dto.entities.AdventureRequestDTO;
 import com.example.demo.dto.entities.SearchDTO;
+import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.enums.CancelationType;
 import com.example.demo.model.entities.Address;
@@ -17,6 +18,7 @@ import com.example.demo.service.entities.AdventureService;
 import com.example.demo.service.users.InstructorService;
 import com.example.demo.service.users.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,6 +53,17 @@ public class AdventureController {
         return  new ResponseEntity<>(adventures, HttpStatus.OK);
     }
 
+    @GetMapping("/getAdventure/{name}")
+    public ResponseEntity<AdventureDTO> getAdventure(@PathVariable String name){
+        List<Adventure> allAdventures = adventureService.findAll();
+        AdventureDTO adventure = new AdventureDTO();
+        for(Adventure a : allAdventures ) {
+            if (a.getNameOfAdventure().contains(name)) {
+                adventure = new AdventureDTO(a);
+            }
+        }
+        return  new ResponseEntity<>(adventure, HttpStatus.OK);
+    }
 
     @GetMapping("/getMyAdventures")
     public ResponseEntity<List<AdventureDTO>> getMyAdventures(){
@@ -99,6 +112,17 @@ public class AdventureController {
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @PostMapping(value="/editAdventure",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateAdventure(@RequestBody AdventureDTO adventureDTO){
+        Boolean bool = this.adventureService.validate(adventureDTO.getNameOfAdventure());
+        if (bool == true) {
+            this.adventureService.update(adventureDTO);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+
     @PostMapping("/addAdventure")
     public ResponseEntity<Adventure> addAdventure(@RequestBody AdventureRequestDTO adventureRequest){
         System.out.print("OVDE SAM");
@@ -135,7 +159,7 @@ public class AdventureController {
     }
 
     @DeleteMapping(value = "/deleteAdventure/{name}")
-    public ResponseEntity<Void> deleteAdventure (@PathVariable String name) {
+    public ResponseEntity<HttpStatus> deleteAdventure (@PathVariable String name) {
         List<Adventure> adventures = adventureService.findAll();
         System.out.print("Poslali ste "+name);
         for (Adventure a : adventures) {
@@ -145,11 +169,12 @@ public class AdventureController {
                 if (bool == true) {
                     System.out.print("CAO MACKO");
                     return new ResponseEntity<>(HttpStatus.OK);
+                }else {
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 }
             }
 
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

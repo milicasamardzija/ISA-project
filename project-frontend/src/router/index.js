@@ -43,6 +43,7 @@ import Evaluate from "../views/administrator/Evaluate"
 import BuisinessReport from "../views/administrator/BuisinessReport"
 import AddAdventure from "../views/fishingInstructor/AddAdventure"
 import CreateAction from "../views/fishingInstructor/CreateAction"
+import EditAdventure from "../views/fishingInstructor/EditAdventure"
 const routes = [
   {
     path: "/",
@@ -54,7 +55,11 @@ const routes = [
     name: "Percentage",
     component: Percentage,
   },
-
+  {
+    path: "/EditAdventure",
+    name: "EditAdventure",
+    component: EditAdventure,
+  },
   {
     path: "/buisinessReport",
     name: "BuisinessReport",

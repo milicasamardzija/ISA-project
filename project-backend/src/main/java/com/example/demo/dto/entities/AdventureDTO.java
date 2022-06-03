@@ -35,7 +35,9 @@ public class AdventureDTO {
 
     private CancelationType cancelationType;
 
+    public AdventureDTO(){
 
+    }
 
     public AdventureDTO(Adventure adventure){
         this.id = adventure.getId();
