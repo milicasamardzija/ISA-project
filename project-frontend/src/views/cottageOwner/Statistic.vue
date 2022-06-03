@@ -11,19 +11,6 @@
 
   </div>
   <div class="divStyle">
-    <div class="row"  >
-      <div class="column" style="width: 22rem;" > 
-        <label> Izaberite entitet za izvestaj:</label>
-      </div>
-      <div class="column" >
-     <div class="md-form">
-             <select class="form-control" v-model="report.entityId" placeholder="Kliknite za izbor entiteta">
-                    <option v-for="m in this.cottages" :key="m.id" :value="m.id">{{m.name}}</option>
-                </select>
-      </div>
-        
-       </div>
-       </div>
 
     <div class="row" >
       <div class="column" style="width: 22rem; margin-top:1rem"> 
@@ -34,7 +21,7 @@
                                 class="form-control mr-sm-2"
                                 type="date"
                                 placeholder="Vreme"
-                                v-model="report.fromDate"
+                                v-model="report.dateFrom"
                               />
         
        </div>
@@ -49,16 +36,19 @@
                                 class="form-control mr-sm-2"
                                 type="date"
                                 placeholder="Vreme"
-                                v-model="report.toDate"
+                                v-model="report.dateTo"
                               />
         
        </div>
        </div>
-       <button type="button" @click="showChart()"> Generisi </button>
+       <button type="button" style="margin-left: 10%" class="btn btn-success" @click="showChart()"> Generisi </button>
      </div>
 
-     <div style="width: 50%, height: 20%">  
-   <canvas id="myCharts" width="400" height="400" style="width: 50%, height: 20%" > </canvas>
+     <div style="width:300px, height: 300px">  
+      <!-- <canvas id="krofna" width="400px" height="400px" style="width: 50%, height: 20%" > </canvas> -->
+      <canvas id="ljudi" width="400" height="400" style="width: 50%, height: 20%" > </canvas>
+      <canvas id="zarada" width="400" height="400" style="width: 50%, height: 20%" > </canvas>
+      <canvas id="ocena" width="400" height="400" style="width: 50%, height: 20%" > </canvas>
      </div>
 </template>
 
@@ -87,12 +77,18 @@ export default  ({
   data(){
     return {
       role: "",
-      report: { entityId: 0, entityName: "", type: 1, grade: 0, numberOfPeople: 0, earing: 0, fromDate: "", toDate: ""},
+      report: { type: 1,  dateTo: "", dateFrom: ""},
       cottages: "",
       boats: "",
       owner: "",
       id: 0,
-      dates: ""
+      dates: "",
+      earnings : [],
+      names: [],
+      peopleNum: [],
+      grades: [],
+     
+     
  
 
 
@@ -104,79 +100,194 @@ export default  ({
 
     showChart(){
     
-     console.log(this.report);
+   if(this.role == "ROLE_COTTAGE_OWNER"){
+
+this.report.type = 1;
+   
      const headers = {
        Authorization: "Bearer " + localStorage.getItem("token"),
       };
    axios.post("http://localhost:8081/api/reportOwner/reportOwner", this.report, {headers})
-   .then(response => this.dates = response.data );
-   console.log(this.dates);
+   .then(response => {
+   this.dates = response.data,
+   
+//    this.names.push(this.dates.names),
+//    this.earnings.push(this.dates.earnings),
+// this.grades.push(this.dates.grade),
+// this.peopleNum.push(this.dates.numberOfPeople),
+this.names = this.dates.names ,
+   this.earnings = this.dates.earnings,
+this.grades = this.dates.grade,
+this.peopleNum = this.dates.numberOfPeople,
 
+   this.printChart()}
+   );
+  
+   }
+else {
+  this.report.type = 0;
+  const headers = {
+       Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+   axios.post("http://localhost:8081/api/reportOwner/reportOwner", this.report, {headers})
+   .then(response => {
+   this.dates = response.data,
+    alert(this.dates.name),
+    this.showArray = [this.dates.grade, this.dates.numberOfPeople, this.dates.earning ],
+   
+   this.printChart(this.showArray)}
+   );
+}
 
+ 
+    },
 
+   printChart( ){
 
-const ctx = document.getElementById('myCharts').getContext('2d');
-const myChart = new Chart(ctx, {
+// const ctx = document.getElementById('krofna');
+// const data= {
+//   labels:this.names
+// ,
+// datasets: [{
+//   label: 'Zarada',
+//   data: this.earnings,
+//   backgroundColor: [
+//                 'rgba(255, 99, 132, 0.2)',
+//                 'rgba(54, 162, 235, 0.2)',
+//                 // 'rgba(255, 206, 86, 0.2)',
+//                 // 'rgba(75, 192, 192, 0.2)',
+//                 //  'rgba(153, 102, 255, 0.2)',
+//                 //  'rgba(255, 159, 64, 0.2)'
+//             ],
+//     hoverOffSet: 4
+  
+// }]
+// };
+
+// const krofnica = new Chart(ctx, {
+//   type: 'doughnut',
+//   data: data,
+// });
+// krofnica;
+console.log("imena")
+console.log(this.names);
+console.log("zarade")
+console.log(this.earnings);
+console.log("ljdi")
+console.log(this.peopleNum);
+console.log("ocene")
+console.log(this.grades);
+
+     const ctx1 = document.getElementById('ljudi').getContext('2d');
+  
+const ljudi = new Chart(ctx1, {
     type: 'bar',
     data: {
-        labels: ['Prosecna ocena', 'Posecenost', 'Prihodi' ], //ime entiteta
+        labels: this.names, //ime entiteta
         datasets: [{
              label: 'Posecenost', //moze ime entiteta
-            data: [12, 19, 3],             //posecenost po entitetu
+            data: this.peopleNum,             //posecenost po entitetu
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
-                // 'rgba(75, 192, 192, 0.2)',
-                // 'rgba(153, 102, 255, 0.2)',
-                // 'rgba(255, 159, 64, 0.2)'
+                'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)'
             ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)',
-                // 'rgba(75, 192, 192, 1)',
-                // 'rgba(153, 102, 255, 1)',
-                // 'rgba(255, 159, 64, 1)'
+                 'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                 'rgba(255, 159, 64, 1)'
             ],
-            borderWidth: 1
-        // },
-       
-        // {
-        //     label: 'Prosecna ocena',
-        //     data: [12, 19, 3, 5, 2, 3],              //prihodi
-        //     backgroundColor: [
-        //         'rgba(255, 99, 132, 0.2)',
-        //         'rgba(54, 162, 235, 0.2)',
-        //         'rgba(255, 206, 86, 0.2)',
-        //         'rgba(75, 192, 192, 0.2)',
-        //         'rgba(153, 102, 255, 0.2)',
-        //         'rgba(255, 159, 64, 0.2)'
-        //     ],
-        //     borderColor: [
-        //         'rgba(255, 99, 132, 1)',
-        //         'rgba(54, 162, 235, 1)',
-        //         'rgba(255, 206, 86, 1)',
-        //         'rgba(75, 192, 192, 1)',
-        //         'rgba(153, 102, 255, 1)',
-        //         'rgba(255, 159, 64, 1)'
-        //     ],
-        //     borderWidth: 1
-        }]
+      
+        },
+        
+        ],
+         options: {
+        maintainAspectRatio: false,
     },
-    // options: {
-    //     scales: {
-    //         y: {
-    //             beginAtZero: true
-    //         }
-    //     }
-    // }
+    },
+    
+
 });
 
-myChart;
+ljudi;
+
+   const ctx2 = document.getElementById('zarada').getContext('2d');
+const zarada = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: this.names, //ime entiteta
+        datasets: [{
+           label: 'Zarada', //moze ime entiteta
+            data: this.dates.earnings,             //posecenost po entitetu
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                 'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                 'rgba(255, 159, 64, 1)'
+            ],
       
+        },
+        
+        ]
     },
-   
+    
+
+});
+
+zarada;
+
+   const ctx3 = document.getElementById('ocena').getContext('2d');
+const ocena = new Chart(ctx3, {
+    type: 'bar',
+    data: {
+        labels: this.names, //ime entiteta
+        datasets: [{
+             label: 'Ocena', //moze ime entiteta
+            data: this.grades,             //posecenost po entitetu
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                 'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                 'rgba(255, 159, 64, 1)'
+            ],
+      
+        },
+        
+        ]
+    },
+    
+
+});
+
+ocena;
+   },
+
    getMyCottages(){
            const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),

@@ -1,5 +1,7 @@
 package com.example.demo.controller.business;
 
+import com.example.demo.dto.business.DateReportDTO;
+import com.example.demo.dto.business.InformationsForChart;
 import com.example.demo.dto.business.ReportOwnerDTO;
 import com.example.demo.model.business.ReportForOwner;
 import com.example.demo.service.business.ReportOwnerService;
@@ -30,8 +32,13 @@ public class ReportOwnerController {
         return  new ResponseEntity<>( HttpStatus.OK);
     }
 
+//    @PostMapping("/reportOwner")
+//    public ResponseEntity<ReportForOwner> addReportForBusiness(@RequestBody ReportForOwner dto){
+//        return  new ResponseEntity<>(this.reportOwnerService.createReportForBusiness(dto), HttpStatus.OK);
+//    }
+
     @PostMapping("/reportOwner")
-    public ResponseEntity<ReportForOwner> addReportForBusiness(@RequestBody ReportForOwner dto){
-        return  new ResponseEntity<>(this.reportOwnerService.createReportForBusiness(dto), HttpStatus.OK);
+    public ResponseEntity<InformationsForChart> addReportForBusiness(@RequestBody DateReportDTO dto){
+        return  new ResponseEntity<>(this.reportOwnerService.getReportForChart(dto), HttpStatus.OK);
     }
 }
