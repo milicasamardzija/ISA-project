@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
+@CrossOrigin
 @Controller
 @RequestMapping(value = "api/cottages")
 public class CottageController {
@@ -115,6 +115,36 @@ public class CottageController {
                 }
              return new ResponseEntity<>(ret, HttpStatus.OK);
             }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/ownerCottages")
+    public ResponseEntity<List<CottageDTO>> getMyCottages(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User cottageOwner = (User)authentication.getPrincipal();
+        List<Cottage> allOwnerCottages = cottageService.findAllOwnerCottages(cottageOwner.getId()); //dobila sve vikendice
+        List<CottageDTO> ret = new ArrayList<>();
+        List<AdditionalServiceDTO> services = new ArrayList<>();
+        if(allOwnerCottages.size() != 0){
+            for(Cottage c : allOwnerCottages){
+                List<AdditionalService> allServices= this.additionalServicesService.getServicesForCottage(c.getId()); //uzmem servise
+                if( allServices.size() != 0) {
+                    for (AdditionalService a : allServices) {
+                        services.add(new AdditionalServiceDTO(a));
+
+                    }
+                    CottageDTO cottage = new CottageDTO(c);
+                    cottage.setAdditionalServices(services);
+                    ret.add(cottage);
+                } else{
+                    CottageDTO cottage = new CottageDTO(c);
+                    cottage.setAdditionalServices(services);
+                    ret.add(cottage);
+                }
+            }
+            return new ResponseEntity<>(ret, HttpStatus.OK);
+        }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
