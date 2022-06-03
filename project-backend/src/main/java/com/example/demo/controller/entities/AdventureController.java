@@ -6,10 +6,13 @@ import com.example.demo.dto.entities.AdventureRequestDTO;
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.enums.CancelationType;
+import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.Boat;
+import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Instructor;
 import com.example.demo.model.users.User;
+import com.example.demo.service.entities.AddressService;
 import com.example.demo.service.entities.AdventureService;
 import com.example.demo.service.users.InstructorService;
 import com.example.demo.service.users.UserService;
@@ -30,10 +33,12 @@ public class AdventureController {
     private AdventureService adventureService;
     public UserService userService;
     public InstructorService instructorService;
-    public AdventureController(AdventureService adventureService,UserService userService,InstructorService instructorService){
+    private AddressService addressService;
+    public AdventureController(AdventureService adventureService,UserService userService,InstructorService instructorService, AddressService addressService){
         this.adventureService = adventureService;
         this.userService=userService;
         this.instructorService=instructorService;
+        this.addressService=addressService;
     }
 
     @GetMapping
@@ -46,8 +51,6 @@ public class AdventureController {
         return  new ResponseEntity<>(adventures, HttpStatus.OK);
     }
 
-
-   /* @PostMapping("/search")
 
     @GetMapping("/getMyAdventures")
     public ResponseEntity<List<AdventureDTO>> getMyAdventures(){
@@ -77,10 +80,6 @@ public class AdventureController {
         return  new ResponseEntity<>(adventures, HttpStatus.OK);
     }
 
-    @PostMapping("/search")
-    public ResponseEntity<List<Adventure>> search(@RequestBody SearchDTO searchParam) {
-        return new ResponseEntity<>(adventureService.searchAdventures(searchParam), HttpStatus.OK);
-    }*/
 
     @GetMapping("/instructorUser/{id}")
     public  ResponseEntity<UserDTO> fetchInstructor(@PathVariable int id){
@@ -116,6 +115,10 @@ public class AdventureController {
         a.setPromoDescription(adventureRequest.getPromoDescription());
         a.setFishingEquipment(adventureRequest.getFishingEquipment());
         a.setRules(adventureRequest.getRules());
+        a.setDescription(adventureRequest.getPromoDescription());
+        Address address = new Address(adventureRequest.getCountry(),adventureRequest.getCity(),adventureRequest.getStreet(),adventureRequest.getNumber());
+        this.addressService.save(address);
+        a.setAddress(address);
         a.setInstructor(i);
         if (adventureRequest.getCancelationType().equalsIgnoreCase("BESPLATNO")) {
             a.setCancelationType(CancelationType.BESPLATNO);
@@ -131,5 +134,22 @@ public class AdventureController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @DeleteMapping(value = "/deleteAdventure/{name}")
+    public ResponseEntity<Void> deleteAdventure (@PathVariable String name) {
+        List<Adventure> adventures = adventureService.findAll();
+        System.out.print("Poslali ste "+name);
+        for (Adventure a : adventures) {
+            if (a.getNameOfAdventure().contains(name)) {
+                System.out.print("Usla sam heeeereee");
+                boolean bool = this.adventureService.deleteAdventureByName(a);
+                if (bool == true) {
+                    System.out.print("CAO MACKO");
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+            }
 
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+    }
 }

@@ -20,7 +20,7 @@
        <tr>
           <td>
               <label ><span class="glyphicon glyphicon-eye-open"></span> Biografija instruktora</label></td>
-          <td> <input class="form-control" id="psw" v-model="instructorBiografy"/></td></tr>
+          <td> <input class="form-control" id="psw" v-model="instructorBiografy" /></td></tr>
 
        <tr>
           <td>
@@ -47,18 +47,19 @@
                 <td> <input
                   class="form-control"
                   id="psw"
-                  v-model="rules"
+                  v-model="rules" 
                 /></td></tr>
 
         <tr>
           <td>
                 <label ><span class="glyphicon glyphicon-eye-open"></span> Adresa</label></td>
-          <td> <input class="form-control" id="psw"  v-model="street"/></td>
-          <td> <input class="form-control" id="psw"  v-model="number"/></td>
+          <td> <input class="form-control" id="psw"  v-model="street" placeholder="Ulica"/></td>
+          <td> <input class="form-control" id="psw"  v-model="number"  placeholder="Broj"/></td>
           </tr>
         <tr>
-          <td> <input class="form-control" id="psw"  v-model="city"/></td>
-          <td> <input class="form-control" id="psw"  v-model="country"/></td>
+          <td></td>
+          <td> <input class="form-control" id="psw"  v-model="city"  placeholder="Grad"/></td>
+          <td> <input class="form-control" id="psw"  v-model="country"  placeholder="Drzava"/></td>
           </tr>
 
               <tr><td><button class="btn btn-success btn-block" style="width:100px;margin-top:20px" @click="GoBack()">
@@ -94,7 +95,7 @@ export default ({
             cancelationType:"",
             rules:"",
             street:"",
-            number:0,
+            number:"",
             city:"",
             country:""
             }

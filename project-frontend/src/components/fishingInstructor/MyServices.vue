@@ -18,7 +18,7 @@
           <tr v-for="(adventure, index) in adventures" :key="index">
                   <td>{{adventure.nameOfAdventure}}</td>
                   <td><button class="btn btn-success btn-block" >Izmeni uslugu</button></td>
-                  <td><button class="btn btn-success btn-block" data-target="#prihvatanje" data-toggle="modal" @click="Save(adventure.nameOfAdventure)">Obrisi uslugu</button></td>
+                  <td><button class="btn btn-success btn-block"  @click="Delete(adventure.nameOfAdventure)">Obrisi uslugu</button></td>
            </tr> 
 
     </tbody>
@@ -38,11 +38,11 @@
             </h5>
           </div>
           <div class="modal-body" style="padding: 15px 50px">
-            <form role="form">
+            <form role="form" @click.prevent="Delete()">
               <button
                 type="submit"
                 class="btn btn-success btn-block"
-                 @click="Delete()"
+             
               >
                 <span></span> Da
               </button>
@@ -103,25 +103,20 @@ export default ({
     async AddAdventure() {
       this.$router.push({ name: "AddAdventure" });
     },
-    async Save(name) {
-      this.namee = name;
-      console.log(this.namee);
-    },
 
-    async Delete() {
+    async Delete(name) {
+      this.namee = name;
       console.log(this.namee)
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.delete("http://localhost:8081/api/adventures/delete/" + this.namee,{headers})
+      axios.delete("http://localhost:8081/api/adventures/deleteAdventure/"+ name,{headers})
       .then (response => { 
         console.log(response);
        // this.$router.push({ name: "MyServices" });
+         
       })  
-     // return new Swal({
-     ////       type: "success",
-        //     text:'Obrisali ste uslugu!'
-      //     }); 
+     //this.$router.go(0); 
 
     }    
     },

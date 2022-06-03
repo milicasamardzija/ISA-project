@@ -1,9 +1,12 @@
 package com.example.demo.service.entities;
 
 import com.example.demo.dto.entities.SearchDTO;
+import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.Boat;
+import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
+import com.example.demo.repository.business.ReservationRepository;
 import com.example.demo.repository.entities.AdventureRepository;
 import com.example.demo.service.users.UserService;
 import org.springframework.data.domain.Page;
@@ -18,10 +21,14 @@ public class AdventureService {
 
     private AdventureRepository adventureRepository;
     private UserService userService;
+    private ReservationRepository reservationRepository;
+    private EntityService entityService;
 
-    public AdventureService(AdventureRepository adventureRepository, UserService userService){
+    public AdventureService(EntityService entityService,AdventureRepository adventureRepository, UserService userService,ReservationRepository reservationRepository){
         this.adventureRepository = adventureRepository;
         this.userService = userService;
+        this.reservationRepository=reservationRepository;
+        this.entityService=entityService;
     }
 
     public List<Adventure> findAll() {
@@ -66,53 +73,68 @@ public class AdventureService {
         for (Adventure cottage : this.findAll()) {
 
             //prazno sve
-            if( searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
+            if (searchParam.getName().equals("") && searchParam.getStreet().equals("") && searchParam.getCity().equals("")) {
                 ret.add(cottage);
             }
             //prazno ime
-            else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
-                if( cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+            else if (searchParam.getName().equals("") && !searchParam.getStreet().equals("") && !searchParam.getCity().equals("")) {
+                if (cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())) {
                     ret.add(cottage);
                 }
             }
             //prazno ime i ulica
-            else if(searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
-                if(cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())){
+            else if (searchParam.getName().equals("") && searchParam.getStreet().equals("") && !searchParam.getCity().equals("")) {
+                if (cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())) {
                     ret.add(cottage);
                 }
             }
             //prazno ime i grad
-            else if(searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
-                if( cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase())){
+            else if (searchParam.getName().equals("") && !searchParam.getStreet().equals("") && searchParam.getCity().equals("")) {
+                if (cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase())) {
                     ret.add(cottage);
                 }
             }
             //prazna ulica i grad
-            else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
-                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) ){
+            else if (!searchParam.getName().equals("") && searchParam.getStreet().equals("") && searchParam.getCity().equals("")) {
+                if (cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase())) {
                     ret.add(cottage);
                 }
             }
             //prazno grad
-            else if(!searchParam.getName().equals("") && !searchParam.getStreet().equals("") &&  searchParam.getCity().equals("")){
-                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase()) ){
+            else if (!searchParam.getName().equals("") && !searchParam.getStreet().equals("") && searchParam.getCity().equals("")) {
+                if (cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getStreet().toLowerCase().equals(searchParam.getStreet().toLowerCase())) {
                     ret.add(cottage);
                 }
             }
             //prazna ulica
-            else if(!searchParam.getName().equals("") && searchParam.getStreet().equals("") &&  !searchParam.getCity().equals("")){
-                if(cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase()) ){
+            else if (!searchParam.getName().equals("") && searchParam.getStreet().equals("") && !searchParam.getCity().equals("")) {
+                if (cottage.getName().toLowerCase().equals(searchParam.getName().toLowerCase()) && cottage.getAddress().getCity().toLowerCase().equals(searchParam.getCity().toLowerCase())) {
                     ret.add(cottage);
                 }
             }
         }
 
 
-        return  ret;
-
+        return ret;
+    }
     public void deleteByNameOfAdventure(String namee) {
         Adventure a = this.adventureRepository.findByNameOfAdventure(namee);
         System.out.print("NAsla sam avanturu"+ a.getNameOfAdventure());
         this.adventureRepository.delete(a);
+    }
+
+    public boolean deleteAdventureByName(Adventure a) {
+        List<Reservation> reservations = this.reservationRepository.findAll();
+        System.out.print("Broj rezervacija je"+reservations.size());
+        for (Reservation r : reservations) {
+            EntityClass e = this.entityService.findById(r.getEntity().getId());
+            System.out.print("NAZIVI SU"+ e.getName());
+            if (e.getName().contains(a.getNameOfAdventure())) {
+                System.out.print("HEJ TI");
+                return false;
+            }
+        }
+        this.adventureRepository.delete(a);
+        return true;
     }
 }
