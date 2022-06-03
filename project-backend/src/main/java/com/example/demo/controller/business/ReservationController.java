@@ -301,7 +301,7 @@ public class ReservationController {
             return new ResponseEntity<String>("Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu.", HttpStatus.OK);
         }
 
-        if (this.reservationService.save(reservation, user)){
+        if (!this.reservationService.save(reservation, user)){
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             return new ResponseEntity<String>("Vec ste jednom zapazali i otkazali ovu vikendicu u ovom periodu!Ne mozete ponovo!", HttpStatus.OK);

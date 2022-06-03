@@ -235,7 +235,7 @@ public class CottageService {
         if (isNotReserved && searchParam.getCity().equals("") && searchParam.getCountry().equals("") && searchParam.getPeople() <= cottage.getBedsByRoom() * cottage.getRoomsNumber() && searchParam.getPeople() > 0) {
             ret.add(cottage);
         }
-        isNotReserved = true;
+       // isNotReserved = true;
     }
         return ret;
     }
