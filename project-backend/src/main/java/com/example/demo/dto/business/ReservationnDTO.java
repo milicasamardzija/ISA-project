@@ -21,7 +21,17 @@ public class ReservationnDTO {
         private int duration;
         private String dateStart;
         private String dateEnd;
-        public int getId() {
+        private String clientID;
+
+    public String getClientID() {
+        return clientID;
+    }
+
+    public void setClientID(String clientID) {
+        this.clientID = clientID;
+    }
+
+    public int getId() {
             return id;
         }
 
@@ -102,6 +112,7 @@ public class ReservationnDTO {
             this.duration = reservation.getDuration();
             this.dateStart = reservation.getTerm().getDateStart().toString();
             this.dateEnd = reservation.getTerm().getDateEnd().toString();
+            this.clientID = String.valueOf(reservation.getClient().getId());
         }
         public ReservationnDTO() {
 

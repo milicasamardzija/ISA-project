@@ -7,11 +7,10 @@ import com.example.demo.model.entities.Image;
 
 import java.util.Set;
 
-public class AdventureDTO {
-
-    private Integer id;
-
+public class AdventureHelpDTO {
+    private String realName;
     private String name;
+    private Integer id;
 
     private String nameOfAdventure;
 
@@ -35,11 +34,19 @@ public class AdventureDTO {
 
     private CancelationType cancelationType;
 
-    public AdventureDTO(){
+    public AdventureHelpDTO(){
 
     }
 
-    public AdventureDTO(Adventure adventure){
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public AdventureHelpDTO(Adventure adventure){
         this.id = adventure.getId();
         this.name = adventure.getName();
         this.address = adventure.getAddress();

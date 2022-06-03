@@ -6,6 +6,7 @@ import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import com.example.demo.service.users.ClientService;
+import com.example.demo.service.users.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,9 +22,12 @@ import java.util.List;
 public class ClientController {
 
     private ClientService clientService;
+    private UserService userService;
 
-    public ClientController(ClientService clientService){
+    public ClientController(ClientService clientService,UserService userService){
+
         this.clientService = clientService;
+        this.userService = userService;
     }
 
     @GetMapping("/profileClient")
@@ -38,6 +42,13 @@ public class ClientController {
         }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/getClient/{id}")
+    public ResponseEntity<ClientDTO> getClient(@PathVariable String id)
+    {
+            Client client = clientService.find(Integer.parseInt(id));
+            return new ResponseEntity<>(new ClientDTO(client), HttpStatus.OK);
     }
 
     @GetMapping("/subscribedEntitites")

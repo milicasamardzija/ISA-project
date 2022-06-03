@@ -11,7 +11,7 @@ public class AdventureRequestDTO {
     private String cancelationType;
     private String rules;
     private String street;
-    private int number;
+    private String number;
     private String city;
     private String country;
 
@@ -23,11 +23,11 @@ public class AdventureRequestDTO {
         this.street = street;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -106,7 +106,7 @@ public class AdventureRequestDTO {
     public AdventureRequestDTO() {
     }
 
-    public AdventureRequestDTO(String nameOfAdventure,String rules, int maxNumberOfPeople, String instructorBiografy, String promoDescription, String fishingEquipment, String cancelationType, String street,int number,String city,String country) {
+    public AdventureRequestDTO(String nameOfAdventure,String rules, int maxNumberOfPeople, String instructorBiografy, String promoDescription, String fishingEquipment, String cancelationType, String street,String number,String city,String country) {
         this.nameOfAdventure = nameOfAdventure;
         this.maxNumberOfPeople = maxNumberOfPeople;
         this.instructorBiografy = instructorBiografy;

@@ -44,6 +44,9 @@ import Evaluate from "../views/administrator/Evaluate"
 import BuisinessReport from "../views/administrator/BuisinessReport"
 import AddAdventure from "../views/fishingInstructor/AddAdventure"
 import CreateAction from "../views/fishingInstructor/CreateAction"
+import EditAdventure from "../views/fishingInstructor/EditAdventure"
+import MyAdventureReservations from "../views/fishingInstructor/MyAdventureReservations"
+import AdventureProfile from "../views/fishingInstructor/AdventureProfile"
 const routes = [
   {
     path: "/",
@@ -51,11 +54,26 @@ const routes = [
     component: BoatsStartPage,
   },
   {
+    path: "/AdventureProfile",
+    name: "AdventureProfile",
+    component: AdventureProfile,
+  },
+  {
+    path: "/MyAdventureReservations",
+    name: "MyAdventureReservations",
+    component: MyAdventureReservations,
+  },
+  
+  {
     path: "/percentage",
     name: "Percentage",
     component: Percentage,
   },
-
+  {
+    path: "/EditAdventure",
+    name: "EditAdventure",
+    component: EditAdventure,
+  },
   {
     path: "/buisinessReport",
     name: "BuisinessReport",

@@ -1,9 +1,15 @@
 package com.example.demo.service.entities;
 
+import com.example.demo.dto.entities.AdventureDTO;
+import com.example.demo.dto.entities.AdventureHelpDTO;
 import com.example.demo.dto.entities.SearchDTO;
+import com.example.demo.dto.enums.CancelationType;
+import com.example.demo.model.business.Reservation;
+import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Adventure;
-import com.example.demo.model.entities.Boat;
+import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
+import com.example.demo.repository.business.ReservationRepository;
 import com.example.demo.repository.entities.AdventureRepository;
 import com.example.demo.service.users.UserService;
 import org.springframework.data.domain.Page;
@@ -18,10 +24,16 @@ public class AdventureService {
 
     private AdventureRepository adventureRepository;
     private UserService userService;
+    private ReservationRepository reservationRepository;
+    private EntityService entityService;
+    private AddressService addressService;
 
-    public AdventureService(AdventureRepository adventureRepository, UserService userService){
+    public AdventureService(AddressService addressService,EntityService entityService,AdventureRepository adventureRepository, UserService userService,ReservationRepository reservationRepository){
         this.adventureRepository = adventureRepository;
         this.userService = userService;
+        this.reservationRepository=reservationRepository;
+        this.entityService=entityService;
+        this.addressService = addressService;
     }
 
     public List<Adventure> findAll() {
@@ -114,5 +126,55 @@ public class AdventureService {
         Adventure a = this.adventureRepository.findByNameOfAdventure(namee);
         System.out.print("NAsla sam avanturu"+ a.getNameOfAdventure());
         this.adventureRepository.delete(a);
+    }
+
+    public boolean deleteAdventureByName(Adventure a) {
+        List<Reservation> reservations = this.reservationRepository.findAll();
+        System.out.print("Broj rezervacija je"+reservations.size());
+        for (Reservation r : reservations) {
+            EntityClass e = this.entityService.findById(r.getEntity().getId());
+            System.out.print("NAZIVI SU"+ e.getName());
+            if (e.getName().contains(a.getNameOfAdventure())) {
+                System.out.print("HEJ TI");
+                return false;
+            }
+        }
+        this.adventureRepository.delete(a);
+        return true;
+    }
+
+    public void update(AdventureHelpDTO adventureDTO) {
+        Adventure a = this.adventureRepository.findByNameOfAdventure(adventureDTO.getRealName());
+        a.setNameOfAdventure(adventureDTO.getNameOfAdventure());
+        a.setName(adventureDTO.getNameOfAdventure());
+        a.setMaxNumberOfPeople(adventureDTO.getMaxNumberOfPeople());
+        a.setInstructorBiografy(adventureDTO.getInstructorBiografy());
+        a.setPromoDescription(adventureDTO.getPromoDescription());
+        a.setFishingEquipment(adventureDTO.getFishingEquipment());
+        a.setRules(adventureDTO.getRules());
+        a.setDescription(adventureDTO.getPromoDescription());
+        Address address = new Address(adventureDTO.getAddress().getCountry(),adventureDTO.getAddress().getCity(),adventureDTO.getAddress().getStreet(),adventureDTO.getAddress().getNumber());
+        this.addressService.save(address);
+        a.setAddress(address);
+        if (adventureDTO.getCancelationType().equals("BESPLATNO")) {
+            a.setCancelationType(CancelationType.BESPLATNO);
+        }else {
+            a.setCancelationType(CancelationType.SA_PROCENTOM);
+        }
+        this.adventureRepository.save(a);
+    }
+
+    public Boolean validate(String nameOfAdventure) {
+        List<Reservation> reservations = this.reservationRepository.findAll();
+        System.out.print("Broj rezervacija je"+reservations.size());
+        for (Reservation r : reservations) {
+            EntityClass e = this.entityService.findById(r.getEntity().getId());
+            System.out.print("NAZIVI SU"+ e.getName());
+            if (e.getName().contains(nameOfAdventure)) {
+                System.out.print("HEJ TI");
+                return false;
+            }
+        }
+        return true;
     }
 }

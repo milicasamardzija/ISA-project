@@ -45,6 +45,7 @@ public class ClientDTO {
         this.telephone = client.getTelephone();
     }
 
+
     public int getId() {
         return id;
     }

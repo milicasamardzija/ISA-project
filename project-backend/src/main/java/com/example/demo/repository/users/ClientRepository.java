@@ -12,7 +12,7 @@ import java.util.List;
 public interface ClientRepository extends JpaRepository<Client,Integer> {
 
     Client findByEmail(String email);
-
+    Client findById(int id);
     Client save(Client client);
 
     @Query("select e from EntityClass e left join fetch e.subscribedClients c where c.id = ?1")

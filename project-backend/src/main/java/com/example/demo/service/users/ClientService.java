@@ -26,6 +26,9 @@ public class ClientService {
     public Client findById(String id){
         return this.clientRepository.findByEmail(id);
     }
+    public Client find(int id){
+        return this.clientRepository.findById(id);
+    }
 
     public Client findClientById(int id){
         return this.clientRepository.getById(id);
