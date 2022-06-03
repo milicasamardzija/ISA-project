@@ -136,21 +136,14 @@
               <p>Broj kreveta po sobi: {{cottage.bedsByRoom}}</p>
               <p>Pravila ponasanja: {{cottage.rules}}</p>
             </div>
-
             <div 
               class="column"
-              style="width: 12rem; height: 18rem; background: white"
-            > 
+              style="width: 12rem; height: 18rem; background: white"> 
             <p class="pStyle">dodatne usluge:</p>
              <div class="row" style="height: 2rem; background: white" v-for="service in cottage.additionalServices" :key="service">
-           
-            
-              <p>{{ service.name}} : {{service.price}}</p> 
+            <p>{{ service.name}} : {{service.price}}</p> 
             </div>
             </div>
-
-             
-         
           </div>
         </div>
       </div>

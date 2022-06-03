@@ -1,12 +1,11 @@
 package com.example.demo.controller.entities;
 
-import com.example.demo.dto.entities.AdditionalServiceDTO;
-import com.example.demo.dto.entities.BoatDTO;
-import com.example.demo.dto.entities.CottageDTO;
-import com.example.demo.dto.entities.SearchDTO;
+import com.example.demo.dto.business.ReservationSearchDTO;
+import com.example.demo.dto.entities.*;
 import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.Boat;
 import com.example.demo.model.entities.Cottage;
+import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.BoatOwner;
 import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
@@ -57,6 +56,17 @@ public class BoatController {
                 ret.add(new BoatDTO(c));
             }
         }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+    @PostMapping("/reservationSearch")
+    public ResponseEntity<List<EntityDTO>> searchReservation(@RequestBody ReservationSearchDTO searchParam){
+        ArrayList<EntityDTO> ret = new ArrayList<>();
+
+        for(EntityClass e : boatService.searchReservation(searchParam)){
+            ret.add(new EntityDTO(e));
+        }
+
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
@@ -154,6 +164,11 @@ public class BoatController {
         this.boatService.update(editBoat, newServices);
         return  new ResponseEntity<>( HttpStatus.OK);
 
+    }
+
+    @GetMapping("/getMaxPeople/{id}")
+    public ResponseEntity<Integer> getMaxPeople( @PathVariable int id){
+        return new ResponseEntity<>(this.boatService.getMaxPeople(id),HttpStatus.OK);
     }
 
     }

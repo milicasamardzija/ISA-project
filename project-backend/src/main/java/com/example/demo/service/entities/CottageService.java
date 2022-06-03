@@ -283,4 +283,9 @@ public class CottageService {
         }
         cottageRepository.save(newCottageState);
     }
+
+    public Integer getMaxPeople(int id) {
+        Cottage cottage = this.findOne(id);
+        return cottage.getRoomsNumber() * cottage.getBedsByRoom();
+    }
 }

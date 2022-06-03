@@ -160,7 +160,7 @@ public class ReservationService {
         newReservation.setPrice(reservation.getPrice());
         newReservation.setClient(client);
         newReservation.setEntity(entity);
-        newReservation.setEntityType(EntityType.COTTAGE);
+        newReservation.setEntityType(reservation.getType());
         newReservation.setDuration(reservation.getDuration());
 
         ArrayList<ReservationServices> services = new ArrayList<>();

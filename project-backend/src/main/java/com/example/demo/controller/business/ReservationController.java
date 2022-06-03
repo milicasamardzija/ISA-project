@@ -347,10 +347,6 @@ public class ReservationController {
         }
     }
 
-    @GetMapping("/getMaxPeople/{id}")
-    public ResponseEntity<Integer> getMaxPeople( @PathVariable int id){
-        return new ResponseEntity<>(this.reservationService.getMaxPeople(id),HttpStatus.OK);
-    }
 
     @PostMapping("/getDateEnd")
     public ResponseEntity<Date> getDateEnd(@RequestBody DateDTO date){

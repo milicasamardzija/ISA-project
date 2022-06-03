@@ -3,32 +3,54 @@
     <NavBarClient />
   </div>
 
-  <!-- Pretraga -->
-  <div style="width: 1000px;margin-top:20px;margin-bottom:20px" v-if="boats.length != 0">
-    <nav class="navbar navbar-expand-sm navbar-dark">
-      <input
-        class="form-control mr-sm-2"
-        type="text"
-        placeholder="Naziv"
-        v-model="name"
-      />
-      <input
-        class="form-control mr-sm-2"
-        type="text"
-        placeholder="Ulica"
-        v-model="street"
-      />
-      <input
-        class="form-control mr-sm-2"
-        type="text"
-        placeholder="Grad"
-        v-model="city"
-      />
-      <button class="btn btn-success" type="submit" @click="search()">
-        Pretrazi
-      </button>
-    </nav>
-  </div>
+  <div v-if="this.r === false">
+  <!--Pretraga-->
+    <div style="width: 1000px;margin-top:20px;margin-bottom:20px" v-if="boats.length != 0">
+      <nav class="navbar navbar-expand-sm navbar-dark">
+        <input
+          class="form-control mr-sm-2"
+          type="date"
+          placeholder="Datum"
+          v-model="date"
+          min="this.today"
+        />
+        <input
+          class="form-control mr-sm-2"
+          type="time"
+          placeholder="Vreme"
+          v-model="time"
+        />
+        <input
+          class="form-control mr-sm-2"
+          type="number"
+          min="0"
+          placeholder="Broj dana"
+          v-model="number"
+        />
+        <input
+          class="form-control mr-sm-2"
+          type="number"
+          min="0"
+          placeholder="Broj ljudi"
+          v-model="people"
+        />
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Grad"
+          v-model="city"
+        />
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Drzava"
+          v-model="country"
+        />
+        <button class="btn btn-success" type="submit" @click="search()">
+          Pretrazi
+        </button>
+      </nav>
+    </div>
 
   <!-- Sortiranje -->
   <div class="dropdown" style="margin-bottom:20px; margin-left:20px" v-if="boats.length != 0">
@@ -112,15 +134,163 @@
           <h4 style="width: 600px" class="text">
             Prosecna ocena: {{ boat.grade }}
           </h4>
+          <button class="btn btn-success" type="submit" @click="openModal(boat), getSelected(boat)" v-if="this.s == true">
+            Rezerviši
+          </button>
           <button class="btn btn-success" @click="showBoat(boat)" style="margin-left:40px">Prikazi brod</button>
         </div>
       </div>
     </div>
+    </div>
+   </div>
+
+
+<div v-if="this.r === true" style="margin-top:50px; margin-left:50px">
+  <h4 style="margin-top:50px; margin-left:10px; margin-bottom:20px"><i> Rezervisi vikendicu:</i> </h4>
+   <!-- Nav tabs -->
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#home">Podaci</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu1">Dodatne usluge</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu2">Potvrda rezervacije</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane container active" id="home">
+      <div style="margin-top:50px; margin-bottom:50px">
+        <table>
+          <tr>
+            <td><p style="font-family:Helvetica " class="text"> <i>Naziv:</i></p></td>
+            <td><p>{{this.selectedEntity.name}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica " class="text"> <i>Adresa:</i> </p></td>
+            <td> <p>
+              {{ this.selectedEntity.address.street }} {{ this.selectedEntity.address.number }},
+              {{ this.selectedEntity.address.city }}, {{ this.selectedEntity.address.country }}
+            </p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Ocena:</i></p></td>
+            <td><p>{{this.selectedEntity.grade}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Cena:</i></p></td>
+            <td><p>{{this.selectedEntity.price}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Datum pocetka:</i></p></td>
+            <td><p><input type="date"  v-model="this.date" style="width:120px"></p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Vreme:</i></p></td>
+            <td><p><input type="time" v-model="this.time" style="width:120px"></p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Broj dana: </i></p></td>
+            <td><p><input type="number" v-model="this.number" min="0"  @change="checkDate()" style="width:120px"></p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Datum kraja:</i></p></td>
+            <td><p>{{this.format_date(this.dateEnd)}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Broj osoba: </i></p></td>
+            <td><p><input type="number" v-model="this.people" min="0" style="width:120px">  Maksimalan broj ljudi: {{this.maxPeople}} </p></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="tab-pane container fade" id="menu1">
+       <div style="margin-left:50px;margin-top:50px;"> 
+        <label  style="width: 600px; font-family:Helvetica;width: 600px" v-if="this.additionalServices.length != 0"><i>Izaberite zeljene dodatne usluge:</i></label>
+        <table v-if="this.additionalServices.length != 0">
+          <tr  v-for="(as, index) in additionalServices" :key="index">
+            <td style="width:40%"> {{as.name}} </td>
+            <td style="width:40%"> {{as.price}} din.</td>
+            <td style="width:20%"><button class="btn btn-secondary" @click="addService(as, index)">+</button></td>
+          </tr>
+        </table>
+      </div>
+
+      <div v-if="this.additionalServicesReservation.length != 0"  style="margin-left:50px;margin-top:50px;"> 
+        <label style="width: 600px; font-family:Helvetica;width: 600px " v-if="this.additionalServicesReservation.length != 0"><i>Izabrali ste:</i></label>
+        <table v-if="this.additionalServicesReservation.length != 0">
+          <tr  v-for="(as, index) in additionalServicesReservation" :key="index">
+            <td style="width:40%"> {{as.name}} </td>
+            <td style="width:40%"> {{as.price}} din.</td>
+            <td style="width:20%"><button class="btn btn-secondary" @click="removeService(as, index)">-</button></td>
+          </tr>
+        </table>
+      </div>
+      <div v-if="this.additionalServicesReservation.length == 0" style="margin-left:50px;margin-top:50px;width: 600px;"> 
+        Nema dodatnih usluga trenutno u ponudi.
+      </div>
+      <h4 style="margin-left:50px;margin-top:50px;" class="text" ><i>Konacna cena:</i> {{this.price}} din.</h4>
+    </div>
+    <div class="tab-pane container fade" id="menu2">
+      <div style="margin-top:50px; margin-bottom:50px">
+        <table>
+          <tr>
+            <td><p style="font-family:Helvetica" class="text"> <i>Naziv:</i></p></td>
+            <td><p style="margin-top:10px">{{this.selectedEntity.name}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica " class="text"> <i>Adresa:</i> </p></td>
+            <td> <p style="margin-top:10px">
+              {{ this.selectedEntity.address.street }} {{ this.selectedEntity.address.number }},
+              {{ this.selectedEntity.address.city }}, {{ this.selectedEntity.address.country }}
+            </p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Ocena:</i></p></td>
+            <td><p style="margin-top:10px"> {{this.selectedEntity.grade}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Cena:</i></p></td>
+            <td><p style="margin-top:10px">{{this.price}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Datum pocetka:</i></p></td>
+            <td><p style="margin-top:12px">{{this.format_date(this.date)}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Broj dana: </i></p></td>
+            <td><p style="margin-top:10px">{{this.number}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Datum kraja:</i></p></td>
+            <td><p style="margin-top:10px">{{this.format_date( this.dateEnd)}}</p></td>
+          </tr>
+          <tr>
+            <td><p style="font-family:Helvetica "  class="text"> <i>Broj osoba: </i></p></td>
+            <td><p style="margin-top:10px"> {{this.people}} </p></td>
+          </tr>
+          <tr>
+            <td><button class="btn btn-success" type="submit" style="margin-top:10px" @click="makeReservation()"> Rezerviši</button>
+            </td><button  class="btn btn-secondary" style="margin-top:10px" type="submit" @click="goToCottages()">  Odustani </button>
+            <td>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
+  </div>
+
 </template>
 
 <script>
 import NavBarClient from "../../../components/client/NavBarClient.vue";
+import axios from 'axios'
+import moment from 'moment'
+import Swal from 'sweetalert2'
 
 export default {
   name: "ClientAllBoats",
@@ -130,10 +300,23 @@ export default {
   data() {
     return {
       boats: [],
-      name: "",
-      street: "",
+       date: "",
+      time:"",
+      country: "",
       city: "",
-      maxLength:0
+      maxLength:0,
+       number: "",
+       modalOpened: false,
+      people: "",
+      selectedEntity: {},
+      price: "",
+      s: false,
+      today: "",
+      additionalServices : [],
+      additionalServicesReservation: [],
+      maxPeople: "",
+      r: false,
+      dateEnd: ""
     };
   },
 
@@ -142,21 +325,6 @@ export default {
       const res = await fetch("http://localhost:8081/api/boats");
       const data = await res.json();
       return data;
-    },
-    async search() {
-      const res = await fetch("http://localhost:8081/api/boats/search", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          name: this.name,
-          street: this.street,
-          city: this.city,
-        }),
-      });
-      const data = await res.json();
-      this.boats = data;
     },
      async showBoat(boat){
         this.$router.push({ name: 'BoatProfile', params: { id: boat.id}})
@@ -204,12 +372,235 @@ export default {
       if (param == -1) {
         this.boats =  await this.fetchBoats();
       }
+    },
+    goToCottages(){
+      //this.closeModal();
+      this.r = false;
+     //this.$router.go(0);
+    },
+    addService(service, index){
+      this.additionalServicesReservation.push(service);
+      this.additionalServices.splice(index, 1)
+      this.price = this.getPrice();
+    },
+    removeService(service, index){
+      this.additionalServices.push(service);
+      this.additionalServicesReservation.splice(index, 1);
+      this.price = this.getPrice();
+    },
+    getDateEnd(){
+       const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        };
+        axios.post("http://localhost:8081/api/reservation/getDateEnd" ,{
+         date: this.date,
+         time: this.time,
+         number: this.number,
+         id: this.selectedEntity.id
+        },{headers})
+      .then (response => { 
+        console.log(response.data);
+        this.dateEnd = response.data;
+      })
+    },
+    getNumberPeople(){
+       const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        };
+        axios.get("http://localhost:8081/api/boat/getMaxPeople/" + this.selectedEntity.id ,{headers})
+        .then (response => { 
+          console.log(response.data);
+          this.maxPeople = response.data;
+        })
+    },
+    checkDate(){
+    this.today = this.dates()
+    var t = this.format_date(this.today)
+    var dt = this.format_date(this.date)
+     if (this.date == "" || this.time == "" || this.number == "") {
+        return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate uneti datum, vreme i broj dana!'
+           });
+      } else {
+        if(dt < t){
+           return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate izabrati datum koji je danasnji ili posle danasnjeg!'
+           });
+        } else {
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        };
+        axios.post("http://localhost:8081/api/reservation/checkDate" ,{
+         date: this.date,
+         time: this.time,
+         number: this.number,
+         id: this.selectedEntity.id
+        },{headers})
+      .then (response => { 
+        console.log(response.data);
+        this.price = response.data;
+      })
+      .catch(
+        error => {
+        console.log(error)
+         return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate izabrati drugi datum!Brod je rezervisan u ovom periodu!'
+           });
+      })
+        }}
+    },
+    getPrice(){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        };
+        axios.post("http://localhost:8081/api/reservation/totalPrice" ,{
+          entityPrice: this.selectedEntity.price,
+          services: this.additionalServicesReservation,
+        },{headers})
+      .then (response => { 
+        console.log(response.data);
+        this.price = response.data;
+      });
+    },
+    getSelected(entity){
+      this.selectedEntity = entity;
+    },
+async search() { 
+    this.today = this.dates()
+    var t = this.format_date(this.today)
+    var dt = this.format_date(this.date)
+     if (this.date == "" || this.time == "" || this.number == "") {
+        return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate uneti datum, vreme i broj dana!'
+           });
+      } else {
+        if(dt < t){
+           return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate izabrati datum koji je danasnji ili posle danasnjeg!'
+           });
+        } else {
+        const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.post("http://localhost:8081/api/boats/reservationSearch" ,{
+          date: this.date,
+          time: this.time,
+          city: this.city,
+          country: this.country,
+          number: this.number,
+          people: this.people
+        },{headers})
+      .then (response => { 
+        console.log(response.data);
+        this.cottages = response.data
+        this.s = true;
+      }) }
+      }
+    },
+    async makeReservation() {
+      console.log(this.date)
+      console.log(this.time)
+      console.log(this.number)
+      if (this.date == "" || this.time == "" || this.number == "") {
+        alert("Morate uneti datum, vreme i broj dana!")
+      } else {
+        this.checkDate();
+        const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        };
+        axios.post("http://localhost:8081/api/reservation" ,{
+          dateStart: this.date,
+          timeStart: this.time,
+          price: this.price,
+          duration: this.number,
+          entityId: this.selectedEntity.id,
+          additionalServices : this.additionalServicesReservation,
+          type: 0
+        },{headers})
+      .then (response => { 
+        console.log(response.data);
+        alert(response.status)
+         if (response.data === "Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu."){
+          return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu.'
+           });
+        }
+         if (response.data === "Vec ste jednom zapazali i otkazali ovu vikendicu u ovom periodu!Ne mozete ponovo!"){
+         return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Vec ste jednom zapazali i otkazali ovu vikendicu u ovom periodu!Ne mozete ponovo!'
+           });
+         }
+      });
+       this.closeModal();
+       this.goToCottages();
+      }
+    },
+    openModal(cottage) {
+      this.selectedEntity = cottage;
+      this.price = this.selectedEntity.price;
+      this.additionalServices = this.getAdditionalServices();
+      this.maxPeople = this.getNumberPeople();
+      this.dateEnd = this.getDateEnd();
+      this.r = true;
+    },
+    closeModal() {
+      this.modalOpened = false;
+      this.r = false;
+      this.date = "";
+      this.name = "";
+      this.country = "";
+      this.city = "";
+      this.number = "";
+      this.price = "";
+      this.today = "";
+      this.additionalServices = [];
+      this.additionalServicesReservation = [];
+    },
+    dates(){
+      var today = new Date();
+      var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(); 
+      var dateTime = date+' '+time;
+      return dateTime;
+    },
+    format_date(value){
+      if (value) {
+        return moment(value).format('MM/DD/YYYY')
+      }
+    },
+    getAdditionalServices(){
+      const headers = {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + localStorage.getItem("token"),
+      };
+      axios.get("http://localhost:8081/api/additionalService/services/" + this.selectedEntity.id ,{headers})
+      .then (response => { 
+        console.log(response.data);
+        this.additionalServices = response.data;
+      })
     }
+  
   },
 
   async created() {
     this.boats = await this.fetchBoats();
     this.maxLength = this.boats.length;
+    this.today = this.dates();
+    console.log(this.today)
   },
 };
 </script>

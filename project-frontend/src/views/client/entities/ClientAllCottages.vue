@@ -534,7 +534,8 @@ export default {
           price: this.price,
           duration: this.number,
           entityId: this.selectedEntity.id,
-          additionalServices : this.additionalServicesReservation
+          additionalServices : this.additionalServicesReservation,
+          type: 1
         },{headers})
       .then (response => { 
         console.log(response.data);
