@@ -403,11 +403,19 @@ public class ReservationService {
         calEnd.setTime(calStart.getTime());
         calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
 
+        //definisem promo period
+        Calendar calEndAction = Calendar.getInstance();
+        calEndAction.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calEndAction.setTime(reservation.getDateEndAction());
+
+
         Reservation newReservation = new Reservation();
         newReservation.setTerm(reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false)));
 
         newReservation.setPrice(reservation.getPrice());
-
+        //definisem promo period
+         newReservation.setValidFrom(new Date());
+         newReservation.setValidTo(calEndAction.getTime());
 
         newReservation.setClient(null);  //slobodna za klijenta
         newReservation.setAction(true);  //na akciji
@@ -467,11 +475,18 @@ public class ReservationService {
         calEnd.setTime(calStart.getTime());
         calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
 
+        //definisem promo period
+        Calendar calEndAction = Calendar.getInstance();
+        calEndAction.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calEndAction.setTime(reservation.getDateEndAction());
+
         Reservation newReservation = new Reservation();
         newReservation.setTerm(reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false)));
 
         newReservation.setPrice(reservation.getPrice());
-
+        //definisem promo period
+        newReservation.setValidFrom(new Date());
+        newReservation.setValidTo(calEndAction.getTime());
 
         newReservation.setClient(null);  //slobodna za klijenta
         newReservation.setAction(true);  //na akciji

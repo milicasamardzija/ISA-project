@@ -28,9 +28,9 @@ public class Reservation {
     @Column(name="entity_type")
     private EntityType entityType;
 
-    @Column
+    @Column(nullable = true)
     private Date validFrom;
-    @Column
+    @Column(nullable = true)
     private Date validTo;
 
     @Column(name="is_canceled",nullable=false)

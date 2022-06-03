@@ -394,7 +394,23 @@ export default {
       axios.post("http://localhost:8081/api/reservation/checkAvailability", this.action).then( 
            response => { 
              console.log(response)
-              axios.post("http://localhost:8081/api/reservation/actionBoat", this.action)
+              axios.post("http://localhost:8081/api/reservation/actionBoat", this.action).then(
+                 response => { 
+                   console.log(response);
+                 return new Swal({
+             title:"Akcija kreirana !",
+             type: "success",
+             text:'Uspesno ste kreirali akciju!'
+           });
+           }).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Greska prilikom kreiranja akcije!'
+           });
+         }
+         );
          }
          ).catch(error =>{
            console.log(error);
