@@ -91,19 +91,19 @@ public class AuthentificationController {
                 emailService.sendEmailForUserAuthentication(user);
             }
             if (userRequest.getRole().equals("ROLE_ADMIN") || userRequest.getRole().equals("ROLE_PREDEF_ADMIN")) {
-                user = this.userService.save(userRequest);
-                administratorService.save(new Administrator(user));
+                //user = this.userService.saveAdmin(userRequest);
+                administratorService.saveAdmin(userRequest);
             }
             if (userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
-                user = this.userService.save(userRequest);
-                cottageOwnerService.save(new CottageOwner(user));
+               // user = this.userService.save(userRequest);
+                this.cottageOwnerService.saveCottageOwner(userRequest);
             }
             if (userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
                 this.instructorService.saveInstructor(userRequest);
             }
             if (userRequest.getRole().equals("ROLE_BOAT_OWNER")) {
-                user = this.userService.save(userRequest);
-                this.boatOwnerService.save(user);
+                //user = this.userService.save(userRequest);
+                this.boatOwnerService.saveBoatOwner(userRequest);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

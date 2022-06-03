@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "cottageOwner")
-@Proxy(lazy = false)
+@Proxy(lazy = true)
 @DiscriminatorValue("CO")
 public class CottageOwner extends User{
 

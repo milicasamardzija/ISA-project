@@ -8,6 +8,8 @@ import com.example.demo.model.business.Complaint;
 import com.example.demo.model.business.Evaluate;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.business.ReservedTerm;
+import com.example.demo.model.users.Administrator;
+import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.EntityRepository;
 import com.example.demo.repository.users.UserRepository;
@@ -148,6 +150,18 @@ public class UserService {
        //u.setAddress(userRequest.getAddress());
         u.setSurname(userRequest.getLastname());
         u.setTelephone(userRequest.getTelephone());
+
+        Role r = this.roleService.findByName("ROLE_ADMIN");
+        if (r==null) {
+            r= this.roleService.findByName("ROLE_PREDEF_ADMIN");
+            if (r==null) {
+                this.roleService.save(r);
+                u.setRole(r);
+            }
+        }else {
+            u.setRole(r);
+        }
+
         u.setRole(roleService.save(new Role((userRequest.getRole())))); //ovo ce napraviti razlicite role
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);   // odmah odobreno
@@ -193,15 +207,24 @@ public class UserService {
     }
 
     public User saveClient(UserRequest userRequest){
-        User u = new User();
+        Client u = new Client();
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         u.setName(userRequest.getFirstname());
         u.setSurname(userRequest.getLastname());
         u.setTelephone(userRequest.getTelephone());
-        u.setRole(roleService.save(new Role((userRequest.getRole()))));
+        Role r = this.roleService.findByName("ROLE_CLIENT");
+        if (r==null) {
+            Role newRole = new Role(userRequest.getRole());
+            this.roleService.save(newRole);
+            u.setRole(newRole);
+        }else {
+            u.setRole(r);
+        }
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);
         u.setGrade(0);
+        u.setPenals(0);
+        u.setPoents(0);
         u.setAddress(addressService.save(userRequest.getAddress()));
         return this.userRepository.save(u);
     }
@@ -210,5 +233,31 @@ public class UserService {
         User user = this.userRepository.findByEmail(userEmail);
         System.out.print("userov id je "+user.getId()+" CCC");
         this.deleteById(user);
+    }
+
+
+    public User saveAdmin(UserRequest userRequest) {
+        Administrator a = new Administrator();
+        a.setName(userRequest.getFirstname());
+        a.setSurname(userRequest.getLastname());
+        a.setEnabled(true);
+        a.setMust_change_password(true);
+        a.setEmail(userRequest.getEmail());
+        a.setTelephone(userRequest.getTelephone());
+        a.setAddress(userRequest.getAddress());
+        a.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
+        Role r = this.roleService.findByName("ROLE_ADMIN");
+        if (r==null) {
+            r = this.roleService.findByName("ROLE_PREDEF_ADMIN");
+            if (r==null) {
+                Role newRole = new Role(userRequest.getRole());
+                this.roleService.save(newRole);
+                a.setRole(newRole);
+            }
+        }else {
+            a.setRole(r);
+        }
+        return userRepository.save(a);
     }
 }

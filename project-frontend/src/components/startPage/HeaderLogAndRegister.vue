@@ -410,7 +410,7 @@ export default {
        .then(response => { 
        console.log(response.status);
        this.$router.push({ name: "BoatsStartPage" });
-       this.$router.go(0);
+
       }) 
             .catch( error => {
         console.log(error)
@@ -420,7 +420,9 @@ export default {
              text:'Vec postoji user sa istim email-om!'
            });
        // alert("")
+
       }) 
+             this.$router.go(0);
     }
     },
         validFirstname() {

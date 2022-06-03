@@ -1,10 +1,15 @@
 package com.example.demo.service.users;
 
+import com.example.demo.dto.enums.Role;
+import com.example.demo.dto.users.UserRequest;
+import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Boat;
 import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.users.BoatOwner;
+import com.example.demo.model.users.Instructor;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.users.BoatOwnerRepository;
+import com.example.demo.service.entities.AddressService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +22,15 @@ public class BoatOwnerService {
     private BoatOwnerRepository boatOwnerRepository;
     private UserService userService;
     private PasswordEncoder passwordEncoder;
+    private RoleService roleService;
+    private AddressService addressService;
 
-    public BoatOwnerService(PasswordEncoder passwordEncoder, BoatOwnerRepository boatOwnerRepository, UserService userService){
+    public BoatOwnerService(RoleService roleService,AddressService addressService,PasswordEncoder passwordEncoder, BoatOwnerRepository boatOwnerRepository, UserService userService){
         this.boatOwnerRepository = boatOwnerRepository;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.addressService=addressService;
+        this.roleService=roleService;
     }
 
     public BoatOwner save(User boatOwner){
@@ -64,4 +73,33 @@ public class BoatOwnerService {
 }
 
 
+    public void saveBoatOwner(UserRequest userRequest) {
+        BoatOwner u = new BoatOwner();
+        u.setEmail(userRequest.getEmail());
+        u.setEnabled(false);
+        u.setMust_change_password(false);
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        u.setName(userRequest.getFirstname());
+        u.setReasonForRegistration(userRequest.getReasonForRegistration());
+        u.setSurname(userRequest.getLastname());
+        u.setTelephone(userRequest.getTelephone());
+
+        Role r = this.roleService.findByName("ROLE_BOAT_OWNER");
+        if (r==null) {
+            Role newRole = new Role(userRequest.getRole());
+            this.roleService.save(newRole);
+            u.setRole(newRole);
+        }else {
+            u.setRole(r);
+        }
+
+        u.setGrade(0);
+        Address a = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber());
+        this.addressService.save(a);
+        u.setAddress(a);
+        System.out.print("USPELA SAM HEHE");
+
+        this.boatOwnerRepository.save(u);
+
+    }
 }

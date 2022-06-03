@@ -37,8 +37,16 @@ public class InstructorService {
         u.setReasonForRegistration(userRequest.getReasonForRegistration());
         u.setSurname(userRequest.getLastname());
         u.setTelephone(userRequest.getTelephone());
-        Role r = this.roleService.findByName(userRequest.getRole());
-        u.setRole(r);
+
+        Role r = this.roleService.findByName("ROLE_INSTRUCTOR");
+        if (r==null) {
+            Role newRole = new Role(userRequest.getRole());
+            this.roleService.save(newRole);
+            u.setRole(newRole);
+        }else {
+            u.setRole(r);
+        }
+
         u.setGrade(0);
         Address a = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber());
         this.addressService.save(a);
