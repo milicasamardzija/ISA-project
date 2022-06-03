@@ -44,7 +44,7 @@
        <button type="button" style="margin-left: 10%" class="btn btn-success" @click="showChart()"> Generisi </button>
      </div>
 
-     <div style="width:300px, height: 300px">  
+     <div style="width:300px; height: 300px">  
       <!-- <canvas id="krofna" width="400px" height="400px" style="width: 50%, height: 20%" > </canvas> -->
       <canvas id="ljudi" width="400" height="400" style="width: 50%, height: 20%" > </canvas>
       <canvas id="zarada" width="400" height="400" style="width: 50%, height: 20%" > </canvas>
@@ -58,7 +58,7 @@ import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import Chart from 'chart.js/auto';
 import axios from 'axios'
-// import { defineComponent } from 'vue'
+
 
 
 export default  ({
@@ -110,11 +110,7 @@ this.report.type = 1;
    axios.post("http://localhost:8081/api/reportOwner/reportOwner", this.report, {headers})
    .then(response => {
    this.dates = response.data,
-   
-//    this.names.push(this.dates.names),
-//    this.earnings.push(this.dates.earnings),
-// this.grades.push(this.dates.grade),
-// this.peopleNum.push(this.dates.numberOfPeople),
+
 this.names = this.dates.names ,
    this.earnings = this.dates.earnings,
 this.grades = this.dates.grade,
@@ -132,10 +128,12 @@ else {
    axios.post("http://localhost:8081/api/reportOwner/reportOwner", this.report, {headers})
    .then(response => {
    this.dates = response.data,
-    alert(this.dates.name),
-    this.showArray = [this.dates.grade, this.dates.numberOfPeople, this.dates.earning ],
+   this.names = this.dates.names ,
+   this.earnings = this.dates.earnings,
+this.grades = this.dates.grade,
+this.peopleNum = this.dates.numberOfPeople,
    
-   this.printChart(this.showArray)}
+   this.printChart()}
    );
 }
 
