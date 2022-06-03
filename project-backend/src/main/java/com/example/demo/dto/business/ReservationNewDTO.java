@@ -1,6 +1,7 @@
 package com.example.demo.dto.business;
 
 import com.example.demo.dto.entities.AdditionalServiceDTO;
+import com.example.demo.dto.enums.EntityType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,17 +13,19 @@ public class ReservationNewDTO {
     private double price;
     private int duration;
     private int entityId;
+    private EntityType type;
     private ArrayList<AdditionalServiceDTO> additionalServices;
 
     public ReservationNewDTO() {}
 
-    public ReservationNewDTO(Date dateStart, String timeStart, double price, int duration, int entityId, ArrayList<AdditionalServiceDTO> additionalServices) {
+    public ReservationNewDTO(Date dateStart, String timeStart, double price, int duration, int entityId, ArrayList<AdditionalServiceDTO> additionalServices, EntityType type) {
         this.dateStart = dateStart;
         this.timeStart = timeStart;
         this.price = price;
         this.duration = duration;
         this.entityId = entityId;
         this.additionalServices = additionalServices;
+        this.type = type;
     }
 
     public Date getDateStart() {
@@ -79,5 +82,13 @@ public class ReservationNewDTO {
 
     public void setAdditionalServices(ArrayList<AdditionalServiceDTO> additionalServices) {
         this.additionalServices = additionalServices;
+    }
+
+    public EntityType getType() {
+        return type;
+    }
+
+    public void setType(EntityType type) {
+        this.type = type;
     }
 }

@@ -395,9 +395,9 @@ export default {
            }
       else{
       axios.post("http://localhost:8081/api/auth/signup",{ firstname : this.newUser.firstname, 
-       lastname : this.newUser.lastname,
-       role: this.newUser.role,
-       reasonForRegistration: this.newUser.reasonForRegistration,
+        lastname : this.newUser.lastname,
+        role: this.newUser.role,
+        reasonForRegistration: this.newUser.reasonForRegistration,
         email : this.newUser.email,
         password: this.newUser.password,
         country: this.newUser.address.country,
@@ -410,7 +410,6 @@ export default {
        .then(response => { 
        console.log(response.status);
        this.$router.push({ name: "BoatsStartPage" });
-
       }) 
             .catch( error => {
         console.log(error)
@@ -419,8 +418,6 @@ export default {
              type: "warning",
              text:'Vec postoji user sa istim email-om!'
            });
-       // alert("")
-
       }) 
              this.$router.go(0);
     }

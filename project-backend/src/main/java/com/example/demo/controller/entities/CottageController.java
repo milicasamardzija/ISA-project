@@ -85,6 +85,10 @@ public class CottageController {
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @GetMapping("/getMaxPeople/{id}")
+    public ResponseEntity<Integer> getMaxPeople( @PathVariable int id){
+        return new ResponseEntity<>(this.cottageService.getMaxPeople(id),HttpStatus.OK);
+    }
 
     @GetMapping("/myCottages/{id}")
     public ResponseEntity<List<CottageDTO>> getOwnersCottages(@PathVariable int id){

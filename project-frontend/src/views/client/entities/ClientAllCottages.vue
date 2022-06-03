@@ -409,7 +409,7 @@ export default {
        const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
-        axios.get("http://localhost:8081/api/reservation/getMaxPeople/" + this.selectedEntity.id ,{headers})
+        axios.get("http://localhost:8081/api/cottages/getMaxPeople/" + this.selectedEntity.id ,{headers})
         .then (response => { 
           console.log(response.data);
           this.maxPeople = response.data;
@@ -534,11 +534,10 @@ export default {
           price: this.price,
           duration: this.number,
           entityId: this.selectedEntity.id,
-          additionalServices : this.additionalServicesReservation
+          additionalServices : this.additionalServicesReservation,
+          type: 1
         },{headers})
       .then (response => { 
-        console.log(response.data);
-        alert(response.status)
          if (response.data === "Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu."){
           return new Swal({
              title:"Obavestenje",
@@ -554,25 +553,6 @@ export default {
            });
          }
       });
-       this.closeModal();
-       this.goToCottages();
-     /*.catch(
-        error => {
-        alert(error)
-        alert(error.console.error())
-        if (error === "Error: Request failed with status code 404"){
-          return new Swal({
-             title:"Obavestenje",
-             type: "warning",
-             text:'Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu.'
-           });
-        }
-         return new Swal({
-             title:"Obavestenje",
-             type: "warning",
-             text:'Vec ste jednom zapazali i otkazali ovu vikendicu u ovom periodu!Ne mozete ponovo!'
-           });
-      });*/
        this.closeModal();
        this.goToCottages();
     }
