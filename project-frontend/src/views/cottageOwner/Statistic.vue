@@ -44,11 +44,27 @@
        <button type="button" style="margin-left: 10%" class="btn btn-success" @click="showChart()"> Generisi </button>
      </div>
 
-     <div style="width:300px; height: 300px">  
+     <div style="width:100%; height: 200px">  
       <!-- <canvas id="krofna" width="400px" height="400px" style="width: 50%, height: 20%" > </canvas> -->
-      <canvas id="ljudi" width="400" height="400" style="width: 50%, height: 20%" > </canvas>
-      <canvas id="zarada" width="400" height="400" style="width: 50%, height: 20%" > </canvas>
-      <canvas id="ocena" width="400" height="400" style="width: 50%, height: 20%" > </canvas>
+
+      <div class="row"> 
+          <div class="col">
+             <canvas id="ljudi" width="400" height="400" style="width: 50%, height: 10%" > </canvas>
+             </div>  
+              <div  class="col">
+                 <canvas id="zarada" width="400" height="400" style="width: 50%, height: 10%" > </canvas>
+                </div>
+                 
+                  <div  class="col">
+                    <canvas id="ocena" width="400" height="400" style="width: 50%, height: 10%" > </canvas>
+                </div>
+                </div>
+     
+     
+      <div class="row"> 
+
+                </div>
+ 
      </div>
 </template>
 
