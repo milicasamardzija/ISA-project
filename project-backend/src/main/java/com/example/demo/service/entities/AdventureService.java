@@ -1,6 +1,7 @@
 package com.example.demo.service.entities;
 
 import com.example.demo.dto.entities.AdventureDTO;
+import com.example.demo.dto.entities.AdventureHelpDTO;
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.dto.enums.CancelationType;
 import com.example.demo.model.business.Reservation;
@@ -142,8 +143,8 @@ public class AdventureService {
         return true;
     }
 
-    public void update(AdventureDTO adventureDTO) {
-        Adventure a = new Adventure();
+    public void update(AdventureHelpDTO adventureDTO) {
+        Adventure a = this.adventureRepository.findByNameOfAdventure(adventureDTO.getRealName());
         a.setNameOfAdventure(adventureDTO.getNameOfAdventure());
         a.setName(adventureDTO.getNameOfAdventure());
         a.setMaxNumberOfPeople(adventureDTO.getMaxNumberOfPeople());

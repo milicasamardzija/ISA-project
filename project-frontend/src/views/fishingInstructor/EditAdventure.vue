@@ -77,6 +77,8 @@ import axios from "axios";
 import HeaderStartPage from "../../components/startPage/HeaderStartPage";
 import NavBarFishingInstructor from "../../components/fishingInstructor/NavBarFishingInstructor.vue";
 import NavBarLogOut from "../../components/fishingInstructor/NavbarLogOut.vue";
+import Swal from 'sweetalert2';
+
 export default ({
     name: "EditAdventure",
   components: {
@@ -86,8 +88,9 @@ export default ({
     },
     data() {
         return {
-            name:"",
-            adventure:{      
+            realName:"",
+            adventure:{     
+                realName:"", 
                 nameOfAdventure:"",
                 maxNumberOfPeople:0,
                 instructorBiografy:"",
@@ -109,7 +112,7 @@ export default ({
                 const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/adventures/getAdventure/"+ this.name, {headers});
+      const res = await fetch("http://localhost:8081/api/adventures/getAdventure/"+ this.realName, {headers});
       const data = await res.json();
       return data;
         },
@@ -118,29 +121,44 @@ export default ({
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       axios.post("http://localhost:8081/api/adventures/editAdventure",{ 
+        realName:this.realName,
         nameOfAdventure : this.adventure.nameOfAdventure, 
         maxNumberOfPeople : this.adventure.maxNumberOfPeople, 
         instructorBiografy : this.adventure.instructorBiografy, 
         promoDescription : this.adventure.promoDescription, 
         fishingEquipment : this.adventure.fishingEquipment, 
         cancelationType : this.adventure.cancelationType,
+        rules:this.adventure.rules,
         address: this.adventure.address
        },{
         headers
       })
       .then (response => { 
         console.log(response);
-        this.$router.push({ name: "EditAdventure" });
+        this.$router.push({ name: "MyService" });
+
       }) 
-
-        alert("Dodali ste avanturu!")
-      this.$router.go(0);
+      .catch(function (error) {
+         console.log(error.response.status)
+         console.log(error.response.status)
+          if (error.response.status == 400) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Ovaj entitet je rezervisan! Nemoguce ga je izmeniti!',
+           });
+          }
+        });  
+        new Swal({
+             title:"Uspesno",
+             type: "warning",
+             text:'Uspesno ste izmenili entitet!',
+           }); 
         }
-
     },
     async created() 
     {
-      this.name = localStorage.getItem("nameOfAdventure");
+      this.realName = localStorage.getItem("nameOfAdventure");
       this.adventure =  await this.getAdventure();
       console.log(this.name);
       console.log(this.adventure.nameOfAdventure);

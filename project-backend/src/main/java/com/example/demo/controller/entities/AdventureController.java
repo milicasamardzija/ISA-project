@@ -1,9 +1,6 @@
 package com.example.demo.controller.entities;
-import com.example.demo.dto.entities.AdventureDTO;
+import com.example.demo.dto.entities.*;
 
-import com.example.demo.dto.entities.BoatDTO;
-import com.example.demo.dto.entities.AdventureRequestDTO;
-import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.enums.CancelationType;
@@ -113,13 +110,15 @@ public class AdventureController {
     }
 
     @PostMapping(value="/editAdventure",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateAdventure(@RequestBody AdventureDTO adventureDTO){
-        Boolean bool = this.adventureService.validate(adventureDTO.getNameOfAdventure());
+    public ResponseEntity<Void> updateAdventure(@RequestBody AdventureHelpDTO adventureDTO){
+        System.out.print("Real name je "+ adventureDTO.getRealName());
+        Boolean bool = this.adventureService.validate(adventureDTO.getRealName());
         if (bool == true) {
             this.adventureService.update(adventureDTO);
             return new ResponseEntity<>(HttpStatus.OK);
-        }else
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }else {
+            System.out.printf("U ovom sam delu");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);}
     }
 
 
