@@ -69,4 +69,5 @@ public class CottageOwnerController {
         User user = this.cottageOwnerService.fetchCottageOwnerByCottage(id);
         return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
     }
+
 }
