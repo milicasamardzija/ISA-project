@@ -14,6 +14,7 @@ import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ReservationRepository;
+import com.example.demo.repository.users.ClientRepository;
 import com.example.demo.service.email.EmailService;
 import com.example.demo.service.entities.AdditionalServicesService;
 import com.example.demo.service.entities.CottageService;
@@ -39,7 +40,7 @@ public class ReservationService {
     private ReservationServicesService reservationServicesService;
   //  private CottageService cottageService;
 
-    public ReservationService (ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService, CottageService cottageService) {
+    public ReservationService (ClientRepository clientRepository,ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService, CottageService cottageService) {
         this.reservationRepository = reservationRepository;
         this.emailService = emailService;
         this.clientService = clientService;
@@ -538,5 +539,14 @@ public class ReservationService {
 
     public List<Reservation> findAllReservationsForInstructor(int id) {
         return this.reservationRepository.findAllReservationsForInstructor(id);
+    }
+
+    public void sendMailToSubscribedClients(EntityClass e) {
+        List<Client> clients = this.clientService.findClientWithSubscribedEntities(e.getId());
+        System.out.print("brojj klijenata je"+clients.size());
+        for (Client c: clients) {
+            this.emailService.sendEmailForCreatedAction(c.getEmail(),e.getName());
+        }
+
     }
 }

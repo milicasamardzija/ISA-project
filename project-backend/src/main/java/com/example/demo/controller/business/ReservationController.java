@@ -463,7 +463,7 @@ public class ReservationController {
             System.out.print(a.getName());
         }
 
-
+        this.reservationService.sendMailToSubscribedClients(e);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }

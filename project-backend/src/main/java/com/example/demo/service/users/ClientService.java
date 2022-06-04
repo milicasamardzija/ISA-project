@@ -73,8 +73,14 @@ public class ClientService {
 
     }
 
+    public List<Client> findClientWithSubscribedEntities(int id) {
+        return this.clientRepository.findClientWithSubscribedEntities(id);
+    }
+
+
     public void addSubsrciptions(int idEntity, Client client){
         EntityClass entity = this.entityRepository.findById(idEntity);
+        System.out.print("ajajaj"+entity.getName());
         List<EntityClass> entities = this.findSubscribedEnities(client.getId());
         if (entities == null) {
             entities = new ArrayList<>();
