@@ -29,8 +29,11 @@
         <div class="column" style="width: 18rem; height: 3rem; margin-left: 17rem">
             <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; " data-target="#akcija" data-toggle="modal" >Dodaj akciju</button>
           <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; margin-left:2rem" @click="editBoat()">Izmeni brod
-      
+       
           </button>  
+           <button type="button" class="btn btn-outline-success"  style="margin-left:2rem" v-if="this.role === 'ROLE_BOAT_OWNER'" data-target="#rezervacija" data-toggle="modal" @click="findCurrentClient()">
+       Rezervisi
+          </button>
         </div>
         <div class="column" style="width: 28rem; height: 3rem" >
         
@@ -307,6 +310,114 @@
         </div>
       </div>
     </div>
+
+        <!-- Modal za rezervaciju -->
+  <div class="modal fade" id="rezervacija" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="color: #0b4025; padding: 5px 35px">
+              Kreiraj rezervaciju za korisnika 
+            </h5>
+          </div>
+          <div class="modal-body" style="padding: 15px 50px">
+            <form role="form" @submit.prevent="makeReservation()">
+              <div class="form-group">
+                 <div class="row"> 
+                  <div class="col">
+                     <label style="margin-top: 1rem;"> Datum pocetka </label>
+                   </div>
+                     
+                   <div class="col">
+                      <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="reservation.dateStart" min="this.today" />
+                    </div>  
+                 </div>
+               
+               <div class="row">  
+                 <div class="col">
+                  <label style="margin-top: 1rem;"> Vreme pocetka </label>
+                </div>
+                  <div class="col">
+                      <input 
+                                class="form-control mr-sm-2"
+                                type="time"
+                                placeholder="Vreme"
+                                v-model="reservation.timeStart"
+                              />
+                    </div>  
+               
+                 </div>
+ 
+             <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Broj dana </label>
+                 </div>  
+                <div class="col">
+                   
+        <input class="form-control mr-sm-2" type="number" placeholder="Broj dana" v-model="reservation.duration"/>
+                 </div> 
+                 </div>
+
+                 <div class="row">  
+                 <div class="col">
+                  <label style="margin-top: 1rem;"> Klijent:  </label>
+                </div>
+                  <div class="col">
+                        <label>{{ this.client.name }}  {{ this.client.surname}}</label>
+                    </div>  
+               
+                 </div>
+
+                  <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Cena </label>
+                 </div>  
+                <div class="col">
+                <div class="input-group-append">
+                   <input  class="form-control mr-sm-2" type="number" placeholder=" cena" v-model="reservation.price"  />
+                    <span class="input-group-text">RSD</span>
+                  </div> 
+                  </div> 
+                 </div>
+
+                   <div class="row">  
+                 <div class="col">
+                     <label style="margin-top: 1rem;"> Dodatne usluge </label>
+                 </div>  
+                <div class="col">
+                <div class="input-group-append">
+                  <table>
+                    <tr v-for="(adS, index) in this.boat.additionalServices" :key="index">
+                      <td  style="width: 6rem;" >{{adS.name}}  </td> 
+                       <td  style="width: 6rem;" >{{adS.price}}  </td> 
+                       <td style="width: 2.3rem;" > </td> 
+                      <td><button type="button" class="btn btn-outline-secondary" @click="remove(this.boat.additionalServices, index)">x </button> </td> 
+                       </tr> 
+                     </table>
+                  </div> 
+                  </div> 
+                 </div>
+              </div>
+              <table>
+                <tr>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block"  style="width:80px; margin-bottom:20px">
+                      Potvrdi
+                    </button>
+                  </td>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
+                      Otkazi
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -335,10 +446,13 @@ export default {
       role:"",
       id: "",
       boat: "",
+     
       capacity: 0,
       action: { dateStart: "", timeStart: "", price: 0, duration: 0, entityId: 0, dateEndAction: "", additionalServices:[]},
       owner: {},
-      ownerGrade: 0
+      ownerGrade: 0,
+          client: "",
+            reservation: { dateStart: "", timeStart: "", price: 0, duration: 0, entityId: 0, additionalServices:[], clientId: 0, type: 0 },
     };
   },
   async created() {
@@ -450,6 +564,61 @@ export default {
           }
         )
     },
+
+       makeReservation(){
+     this.reservation.clientId = this.client.id;
+     this.reservation.entityId = this.id;
+     this.reservation.additionalServices = this.boat.additionalServices;
+
+     if(this.client.name== null){
+        return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce kreirati rezervaciju jer nemate klijenta!'
+           });
+     } else {
+
+      axios.post("http://localhost:8081/api/reservation/checkAvailability",  
+      { dateStart: this.reservation.dateStart, timeStart: this.reservation.timeStart, price: this.reservation.price, duration: this.reservation.duration, entityId: this.id, dateEndAction: "", additionalServices:[] }).then( 
+           response => { 
+             console.log(response)
+              axios.post("http://localhost:8081/api/reservation/makeReservationOwner", this.reservation).then(
+                res=> {
+                  console.log(res);
+               return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Uspesno ste rezervisali brod!'
+           });
+                }
+              )
+         }
+         ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce kreirati rezervaciju u navedenom periodu jer je brod zauzet!'
+           });
+         }
+         )}
+   }, 
+   findCurrentClient(){
+      axios.get("http://localhost:8081/api/reservation/currentClient/"+ this.boat.id).then( 
+           response => { 
+             console.log(response)
+             this.client = response.data;
+         }
+         ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nemate klijenta kome mozete napraviti rezervaciju'
+           });
+         }
+         )
+   }
   },
   
 };

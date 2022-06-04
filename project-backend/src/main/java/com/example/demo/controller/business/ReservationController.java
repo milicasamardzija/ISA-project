@@ -481,6 +481,7 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
     @GetMapping("/allReservationsBoatOwner")
     public ResponseEntity<List<ReservationForOwnerDTO>> allReservationsBoatOwner()  {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -533,5 +534,44 @@ public class ReservationController {
 
         return  new ResponseEntity<>( HttpStatus.OK);
     }
+
+    @PostMapping("/checkIfReservationExist")
+    public ResponseEntity<HttpStatus> checkIfReservationExist(@RequestBody UnavailablePeriodDTO action){
+        if( this.reservationService.checkReservations(action)){
+            return  new ResponseEntity<>( HttpStatus.OK);
+        } else {
+            return  new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/unavailablePeriodCottageOwner")
+    public ResponseEntity<HttpStatus> unavailablePeriodDefineCO(@RequestBody UnavailablePeriodDTO action){
+
+        this.reservationService.saveUnavailablePeriod(action, 1);
+            return  new ResponseEntity<>( HttpStatus.OK);
+
+    }
+
+    @PostMapping("/unavailablePeriodBoatOwner")
+    public ResponseEntity<HttpStatus> unavailablePeriodDefineBO(@RequestBody UnavailablePeriodDTO action){
+
+        this.reservationService.saveUnavailablePeriod(action, 0);
+        return  new ResponseEntity<>( HttpStatus.OK);
+
+    }
+
+    @GetMapping("/currentClient/{id}")
+    public ResponseEntity<ClientProfileDTO> findCurrentClientForEntity(@PathVariable int id){
+            ClientProfileDTO client = this.reservationService.findCurrentClientForEntity(id);
+        return  new ResponseEntity<>( client, HttpStatus.OK);
+
+    }
+
+    @PostMapping("/makeReservationOwner")
+    public  ResponseEntity<HttpStatus> makeReservationOwner(@RequestBody ReservationNewOwnerDTO res) throws InterruptedException {
+        this.reservationService.saveReservationOwner(res);
+        return  new ResponseEntity<>( HttpStatus.OK);
+    }
+
 
 }
