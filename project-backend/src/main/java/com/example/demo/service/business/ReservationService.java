@@ -175,9 +175,14 @@ public class ReservationService {
         calStart.add(Calendar.HOUR_OF_DAY, Integer.parseInt(hour) - 2);
         calStart.add(Calendar.MINUTE, Integer.parseInt(minutes));
         Calendar calEnd = Calendar.getInstance();
+        calEnd.setTime(calStart.getTime());
         calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
-        calEnd.setTime(reservation.getDateStart());
-        calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
+
+        if (reservation.getType() == EntityType.ADVENTURE){
+            calEnd.add(Calendar.HOUR_OF_DAY, reservation.getDuration());
+        } else {
+            calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
+        }
 
         Reservation newReservation = new Reservation();
         newReservation.setTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity));
@@ -203,10 +208,9 @@ public class ReservationService {
             entity.getReservedTerms().add(newReservation.getTerm());
             this.reservationRepository.save(newReservation);
 
-            for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
-                ReservationServices a = new ReservationServices(as);
-                a.setReservation(newReservation);
-                this.reservationServicesService.save(a);
+            for(ReservationServices as : services) {
+                as.setReservation(newReservation);
+                this.reservationServicesService.save(as);
             }
 
             try {

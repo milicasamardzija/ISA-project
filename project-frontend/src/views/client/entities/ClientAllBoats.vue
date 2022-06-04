@@ -258,7 +258,7 @@
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Datum pocetka:</i></p></td>
-            <td><p style="margin-top:12px">{{this.format_date(this.date)}}</p></td>
+            <td><p style="margin-top:12px">{{this.format_date(this.date)}} , {{this.time}}</p></td>
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Broj dana: </i></p></td>
