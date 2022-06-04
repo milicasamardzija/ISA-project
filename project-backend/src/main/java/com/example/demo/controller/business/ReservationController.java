@@ -467,6 +467,7 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
     @GetMapping("/allReservationsBoatOwner")
     public ResponseEntity<List<ReservationForOwnerDTO>> allReservationsBoatOwner()  {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -546,5 +547,19 @@ public class ReservationController {
         return  new ResponseEntity<>( HttpStatus.OK);
 
     }
+
+    @GetMapping("/currentClient/{id}")
+    public ResponseEntity<ClientProfileDTO> findCurrentClientForEntity(@PathVariable int id){
+            ClientProfileDTO client = this.reservationService.findCurrentClientForEntity(id);
+        return  new ResponseEntity<>( client, HttpStatus.OK);
+
+    }
+
+    @PostMapping("/makeReservationOwner")
+    public  ResponseEntity<HttpStatus> makeReservationOwner(@RequestBody ReservationNewOwnerDTO res) throws InterruptedException {
+        this.reservationService.saveReservationOwner(res);
+        return  new ResponseEntity<>( HttpStatus.OK);
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.example.demo.service.business;
 import com.example.demo.dto.business.*;
 import com.example.demo.dto.entities.AdditionalServiceDTO;
 import com.example.demo.dto.enums.EntityType;
+import com.example.demo.dto.users.ClientProfileDTO;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.business.ReservationServices;
 import com.example.demo.model.business.ReservedTerm;
@@ -12,6 +13,7 @@ import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ReservationRepository;
 import com.example.demo.repository.users.ClientRepository;
+import com.example.demo.repository.users.UserRepository;
 import com.example.demo.service.email.EmailService;
 import com.example.demo.service.entities.AdditionalServicesService;
 import com.example.demo.service.entities.CottageService;
@@ -35,9 +37,10 @@ public class ReservationService {
     private ReservedTermService reservedTermService;
     private AdditionalServicesService additionalService;
     private ReservationServicesService reservationServicesService;
+    private UserRepository userRepository;
   //  private CottageService cottageService;
 
-    public ReservationService (ClientRepository clientRepository,ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService, CottageService cottageService) {
+    public ReservationService (ClientRepository clientRepository,ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService, CottageService cottageService,UserRepository userRepo) {
         this.reservationRepository = reservationRepository;
         this.emailService = emailService;
         this.clientService = clientService;
@@ -46,6 +49,7 @@ public class ReservationService {
         this.additionalService = additionalService;
         this.reservationServicesService = reservationServicesService;
        // this.cottageService = cottageService;
+        this.userRepository = userRepo;
     }
 
     public List<Reservation> findAll() {
@@ -641,6 +645,96 @@ public class ReservationService {
         for (Client c: clients) {
             this.emailService.sendEmailForCreatedAction(c.getEmail(),e.getName());
         }
+
+    }
+
+    public ClientProfileDTO findCurrentClientForEntity(int id) {
+        List<Reservation> allReservations = reservationRepository.getReservationsForEntity(id);
+        Calendar today = Calendar.getInstance();
+        today.setTime(new Date());
+        ClientProfileDTO client = new ClientProfileDTO();
+        if(allReservations.size()!= 0) {
+            for(Reservation r : allReservations){
+                Calendar calRStart = Calendar.getInstance();
+                calRStart.setTime(r.getTerm().getDateStart());
+
+                Calendar calREnd = Calendar.getInstance();
+                calREnd.setTime(r.getTerm().getDateEnd());
+                if( today.getTime().after(calRStart.getTime()) && today.getTime().before(calREnd.getTime()) ){
+                    Client c = findClientForReservation(r.getId());
+                    client.setEmail(c.getEmail());
+                    client.setName(c.getName());
+                    client.setId(c.getId());
+                    client.setSurname(c.getSurname());
+                }
+            }
+        }
+        return  client;
+    }
+
+
+    public  void saveReservationOwner(ReservationNewOwnerDTO reservation) throws InterruptedException {
+        EntityClass entity = this.entityService.findOne(reservation.getEntityId()); //koji je entitet
+        Client client = this.clientService.find(reservation.getClientId());
+        User user = this.userRepository.findById(reservation.getClientId());
+
+        String[] time = reservation.getTimeStart().split(":");
+        String hour = time[0];
+        String minutes = time[1];
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calStart.setTime(reservation.getDateStart());
+        calStart.add(Calendar.HOUR_OF_DAY, Integer.parseInt(hour) - 2);
+        calStart.add(Calendar.MINUTE, Integer.parseInt(minutes));
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calEnd.setTime(calStart.getTime());
+        calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
+
+        Reservation newReservation = new Reservation();
+        ReservedTerm newTerm = reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false));
+        newReservation.setTerm(newTerm);
+
+        newReservation.setPrice(reservation.getPrice());
+        //definisem promo period
+        newReservation.setValidFrom(null);
+        newReservation.setValidTo(null);
+
+        newReservation.setClient(client);  //slobodna za klijenta
+        newReservation.setAction(false);  //na akciji
+        newReservation.setEntity(entity);
+        if(reservation.getType() == EntityType.COTTAGE){
+            newReservation.setEntityType(EntityType.COTTAGE);
+        }else{
+            newReservation.setEntityType(EntityType.BOAT);
+        }
+        newReservation.setDuration(reservation.getDuration());
+
+        //dodatne usluge ubacene
+        for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
+            ReservationServices a = new ReservationServices(as);
+            // services.add(a);
+
+            a.setReservation(newReservation);
+            newReservation.getReservationServices().add(a);
+            //  this.reservationServicesService.save(a); //ovde puca za servise kad treba da pravi reservation service tabelu
+
+        }
+
+        //newReservation.setReservationServices(services);
+        reservationRepository.save(newReservation);
+        entityService.save(entity);
+
+        //servisima dodeljujem ovu rezervaciju
+        for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
+            ReservationServices a = new ReservationServices(as);
+            a.setReservation(newReservation);
+            this.reservationServicesService.save(a);
+        }
+        reservationRepository.save(newReservation);
+
+        this.emailService.sendEmailForReservation(user);
+
 
     }
 }
