@@ -39,4 +39,10 @@ public interface EntityRepository extends JpaRepository<EntityClass, Integer> {
     @Query("select e from Client e left join fetch e.subscribedEntities c where c.id = ?1")
     List<Client> findSubscribedClients(int id);
 
+    @Query("select e from EntityClass e left join fetch e.reservedTerms c where c.id = ?1")
+    EntityClass findEntityWithReservedTerms(int id);
+
+    @Query("select e from EntityClass e left join fetch e.reservations c where c.id = ?1")
+    EntityClass findEntityWithReservations(int id);
+
 }
