@@ -561,7 +561,7 @@ export default {
              console.log(response)
               axios.post("http://localhost:8081/api/reservation/makeReservationOwner", this.reservation).then(
                 res=> {
-                  console.log(response);
+                  console.log(res);
                    return new Swal({
              title:"Uspesno",
              type: "success",
