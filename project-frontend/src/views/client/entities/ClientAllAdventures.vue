@@ -517,7 +517,11 @@ export default {
       console.log(this.time)
       console.log(this.number)
       if (this.date == "" || this.time == "" || this.number == "") {
-        alert("Morate uneti datum, vreme i broj dana!")
+         return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate uneti datum, vreme i broj dana!'
+           });
       } else {
         //this.checkDate();
         const headers = {
@@ -534,7 +538,6 @@ export default {
         },{headers})
       .then (response => { 
         console.log(response.data);
-        alert(response.status)
          if (response.data === "Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu."){
           return new Swal({
              title:"Obavestenje",

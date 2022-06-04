@@ -142,7 +142,11 @@ export default {
         { headers }).then(
           response => {
             console.log(response);
-            alert("Uspesno ste se zakazali rezervaciju!")
+             new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Uspesno ste se zakazali rezervaciju!'
+           });
             this.$router.go(0);
           }
         ).catch(error => { 

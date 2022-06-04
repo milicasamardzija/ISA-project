@@ -72,6 +72,7 @@
 <script>
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 import axios from 'axios'
+import Swal from 'sweetalert2';
 
 export default {
   name: "ClientSubscription",
@@ -106,20 +107,14 @@ export default {
       axios.delete("http://localhost:8081/api/client/" + this.selectedId,{headers})
       .then (response => { 
         console.log(response);
+          new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Uspesno ste se odjavili sa pretplate!'
+           });
         alert("Uspesno ste se odjavili sa pretplate!")
-        this.$router.go(0);
       })
     }
-    /*const headers = {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      };
-      axios.put("http://localhost:8081/api/client/" + this.selectedId,{headers})
-      .then (response => { 
-        console.log(response);
-        alert("Uspesno ste se odjavili sa pretplate!")
-        this.$router.go(0);
-      })
-    }*/
   },
   async created() {
     this.subscriptions = await this.fetchSubscriptions();
