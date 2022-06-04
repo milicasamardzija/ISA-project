@@ -3,15 +3,21 @@ package com.example.demo.repository.users;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.util.List;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client,Integer> {
 
+
     Client findByEmail(String email);
+
     Client findById(int id);
     Client save(Client client);
 

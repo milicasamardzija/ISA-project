@@ -109,14 +109,13 @@
       </div>
     </div>
 
-
-
 </template>
 
 <script>
 import NavBarClient from "../../../components/client/NavBarClient.vue";
 import moment from 'moment';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   name: "CottageActions",
@@ -146,7 +145,15 @@ export default {
             alert("Uspesno ste se zakazali rezervaciju!")
             this.$router.go(0);
           }
-        )
+        ).catch(error => { 
+          console.log(error)
+          return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:' Ne mozete u ovom trenutku da izvrsite rezervaciju, neko je vec zakazuje!Pokusajte ponovo za koji minut!'
+           });
+          
+        })
     },
     async fetchScheduledReservations() {
      const headers = {

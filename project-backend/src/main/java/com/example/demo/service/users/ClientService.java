@@ -7,6 +7,7 @@ import com.example.demo.repository.entities.EntityRepository;
 import com.example.demo.repository.users.ClientRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class ClientService {
         this.entityRepository = entityRepository;
     }
 
+    @Transactional
     public Client findById(String id){
         return this.clientRepository.findByEmail(id);
     }

@@ -79,10 +79,10 @@ public class AuthentificationController {
 
     // Endpoint za registraciju novog korisnika
     @RequestMapping(value="/signup", method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) throws InterruptedException {
         User existUser = this.userService.findByEmail(userRequest.getEmail());
         User user = null;
-        if (existUser != null) {
+       if (existUser != null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
