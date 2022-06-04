@@ -1,10 +1,15 @@
 <template>
-    <div>
+    <div v-if="this.role === 'ROLE_INSTRUCTOR'">
     <NavBarLogOut />
     <HeaderStartPage />
     <NavBarFishingInstructor />
 </div>
-
+    <div v-if="this.role != 'ROLE_INSTRUCTOR'">
+      <HeaderLogAndRegister />
+      <HeaderStartPage />
+      <NavBarStartPage />
+      <button class="btn btn-success btn-block" @click="goBack()">Vrati se</button>
+    </div>
   <div>
         <div  style="width: 22rem; height: 3rem">
         <table> <tr> <td><h3>Naziv avanture</h3></td><td><h4>{{adventure.nameOfAdventure}}</h4></td> </tr></table>
@@ -32,8 +37,8 @@
           <tr v-for="(additionalService, index) in additionalServices" :key="index">
                  <td></td> <td><h4>{{additionalService.name}}-{{additionalService.price}}e</h4></td>
            </tr>
-          <tr><td></td><td> <button class="btn btn-success btn-block" @click="AddService()">Dodaj uslugu</button></td></tr>
-          <tr><td></td><td> <button class="btn btn-success btn-block" @click="AddAction()">Dodaj akciju</button></td></tr> 
+          <tr v-if="this.role === 'ROLE_INSTRUCTOR'"><td></td><td> <button class="btn btn-success btn-block" @click="AddService()">Dodaj uslugu</button></td></tr>
+          <tr v-if="this.role === 'ROLE_INSTRUCTOR'"><td></td><td> <button class="btn btn-success btn-block" @click="AddAction()">Dodaj akciju</button></td></tr> 
           </table>
         </div>  
 </template>
@@ -51,6 +56,7 @@ export default ({
     },
     data() {
         return {
+          role:"",
           nameOfAdventure:"",
           adventure:{ id:0,realName:"", nameOfAdventure:"",maxNumberOfPeople:0,instructorBiografy:"",promoDescription:"",fishingEquipment:"",cancelationType:"",rules:"",address: {  street:"",number:"",city:"",country:""} 
             ,price:0, grade:0},
@@ -67,6 +73,9 @@ export default ({
       const res1 = await fetch("http://localhost:8081/api/adventures/getAdventure/"+this.nameOfAdventure,{headers});
            const data1 = await res1.json();
       return data1;
+        },
+        async goBack() {
+          this.$router.push({ name: "AdventuresStartPage" });          
         },
         async AddService() {
           localStorage.setItem("nameOfAdventure",this.nameOfAdventure);
@@ -90,6 +99,7 @@ export default ({
         this.nameOfAdventure = localStorage.getItem("nameOfAdventure");
         this.adventure =  await this.getAdventuree();
          this.additionalServices = await this.getAdditionalServices();
+         this.role = localStorage.getItem("role");
         console.log(this.adventure.nameOfAdventure)
     } 
 })
