@@ -4,9 +4,13 @@ import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +32,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query(value = "select e from EntityClass e left join fetch e.reservations r where r.id= ?1")
     EntityClass findEntityByReservation(int idReservation);
 
+    //@Lock(LockModeType.PESSIMISTIC_WRITE)
+    //@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "0")})
     Reservation findById(int id);
 
     @Query(value = "select r from Reservation r join fetch r.entity e where e.id = ?1 and r.action = true and r.client is null")
@@ -38,7 +44,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query(value = "select r from Reservation r join fetch r.entity e where e.cottageOwner.id = ?1")
     List<Reservation> findAllReservationsForCottageOwner(int id);
-
 
     @Query(value = "select r from Reservation r join fetch r.entity e where e.boatOwner.id = ?1")
     List<Reservation> findAllReservationsForBoatOwner(int id);

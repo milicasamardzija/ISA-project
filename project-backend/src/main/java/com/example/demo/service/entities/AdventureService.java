@@ -197,7 +197,7 @@ public class AdventureService {
         Calendar calEnd = Calendar.getInstance();
         calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calEnd.setTime(searchParam.getDate());
-        calEnd.add(Calendar.DAY_OF_YEAR, searchParam.getNumber());
+        calEnd.add(Calendar.HOUR_OF_DAY, searchParam.getNumber());
 
         Boolean isNotReserved = true;
         for (Adventure cottage : this.findAll()) {

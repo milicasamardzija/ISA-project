@@ -18,8 +18,10 @@ import com.example.demo.service.business.EvaluateService;
 import com.example.demo.service.business.ReservationService;
 import com.example.demo.service.business.ReservedTermService;
 import com.example.demo.service.entities.AddressService;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -206,6 +208,7 @@ public class UserService {
         return  users;
     }
 
+    @Transactional(readOnly = false)
     public User saveClient(UserRequest userRequest){
         Client u = new Client();
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
@@ -226,7 +229,8 @@ public class UserService {
         u.setPenals(0);
         u.setPoents(0);
         u.setAddress(addressService.save(userRequest.getAddress()));
-        return this.userRepository.save(u);
+        User ret =  this.userRepository.save(u);
+        return ret;
     }
 
     public void deleteByUserEmail(String userEmail) {

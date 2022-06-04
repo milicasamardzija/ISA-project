@@ -38,11 +38,14 @@
           </button>
           <button class="btn btn-success" data-target="#pretplata" data-toggle="modal" v-if="this.role === 'ROLE_CLIENT'" @click="subscribeModal()">Pretplati se</button>
           <button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'" style="margin-left:40px" @click="showActions()">Akcije</button>
-        </div>
+       <button type="button" class="btn btn-outline-success"  style="margin-left:40px" v-if="this.role === 'ROLE_COTTAGE_OWNER'" data-target="#rezervacija" data-toggle="modal" @click="findCurrentClient()">
+       Rezervisi
+          </button> </div>
+      
       </div>
  
       <div class="row">
-        <div class="column">
+        <div class="column" >
           <img
             class="mainImage"
             src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
@@ -298,17 +301,26 @@
       </div>
     </div>
 
-<!-- forma za akciju kada se dugme pritisne-->
-    <!-- <div v-if="showForm" style="height: 15rem; width: 40%; margin-left: 25%"> 
-           <form role="form" @submit.prevent="saveAction()">
+    <!-- Modal za rezervaciju -->
+  <div class="modal fade" id="rezervacija" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="color: #0b4025; padding: 5px 35px">
+              Kreiraj rezervaciju za korisnika 
+            </h5>
+          </div>
+          <div class="modal-body" style="padding: 15px 50px">
+            <form role="form" @submit.prevent="makeReservation()">
               <div class="form-group">
-                <div class="row"> 
+                 <div class="row"> 
                   <div class="col">
                      <label style="margin-top: 1rem;"> Datum pocetka </label>
                    </div>
                      
                    <div class="col">
-                      <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="date" min="this.today" />
+                      <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="reservation.dateStart" min="this.today" />
                     </div>  
                  </div>
                
@@ -321,7 +333,7 @@
                                 class="form-control mr-sm-2"
                                 type="time"
                                 placeholder="Vreme"
-                                v-model="time"
+                                v-model="reservation.timeStart"
                               />
                     </div>  
                
@@ -333,27 +345,27 @@
                  </div>  
                 <div class="col">
                    
-        <input class="form-control mr-sm-2" type="number" placeholder="Broj dana" v-model="number" />
+        <input class="form-control mr-sm-2" type="number" placeholder="Broj dana" v-model="reservation.duration"/>
                  </div> 
                  </div>
 
                  <div class="row">  
                  <div class="col">
-                  <label style="margin-top: 1rem;"> Ponuda vazi do </label>
+                  <label style="margin-top: 1rem;"> Klijent:  </label>
                 </div>
                   <div class="col">
-                       <input class="form-control mr-sm-2" type="date" placeholder="Datum" v-model="date" min="this.today" />
+                        <label>{{ this.client.name }}  {{ this.client.surname}}</label>
                     </div>  
                
                  </div>
 
                   <div class="row">  
                  <div class="col">
-                     <label style="margin-top: 1rem;"> Promo cena </label>
+                     <label style="margin-top: 1rem;"> Cena </label>
                  </div>  
                 <div class="col">
                 <div class="input-group-append">
-                   <input  class="form-control mr-sm-2" type="number" placeholder=" cena" v-model="number" />
+                   <input  class="form-control mr-sm-2" type="number" placeholder=" cena" v-model="reservation.price"  />
                     <span class="input-group-text">RSD</span>
                   </div> 
                   </div> 
@@ -370,31 +382,32 @@
                       <td  style="width: 6rem;" >{{adS.name}}  </td> 
                        <td  style="width: 6rem;" >{{adS.price}}  </td> 
                        <td style="width: 2.3rem;" > </td> 
-                      <td><button type="button" class="btn btn-outline-secondary" @click="remove(index)">x </button> </td> 
+                      <td><button type="button" class="btn btn-outline-secondary" @click="remove(this.cottage.additionalServices, index)">x </button> </td> 
                        </tr> 
                      </table>
                   </div> 
                   </div> 
                  </div>
-
-
-        </div>
-
-           <button
-              type="button"
-              class="btn btn-outline-secondary pull-left"
-             
-            >
-              Odustani
-            </button>
-
-              <button type="submit" class="btn btn-success btn-block" @click="saveAction()">
-                <span></span> Potvrdi
-              </button>
-
+              </div>
+              <table>
+                <tr>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block"  style="width:80px; margin-bottom:20px">
+                      Potvrdi
+                    </button>
+                  </td>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
+                      Otkazi
+                    </button>
+                  </td>
+                </tr>
+              </table>
             </form>
-      
-      </div>  -->
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -430,8 +443,10 @@ export default {
       services: [],
       showForm: false, 
       action: { dateStart: "", timeStart: "", price: 0, duration: 0, entityId: 0, dateEndAction: "", additionalServices:[] },
+     reservation: { dateStart: "", timeStart: "", price: 0, duration: 0, entityId: 0, additionalServices:[], clientId: 0, type: 1 },
       owner: {},
-      ownerGrade: 0
+      ownerGrade: 0,
+      client: ""
 
     };
   },
@@ -441,7 +456,8 @@ export default {
     this.cottage = this.getCottage(this.id); 
     this.owner = this.getUser(this.id);
     this.ownerGrade = this.owner.grade; 
-    console.log(this.owner)
+    console.log(this.owner);
+  
   },
   methods: {
     showActions(){
@@ -533,6 +549,60 @@ export default {
       this.owner = data;
       this.ownerGrade = this.owner.grade;
       return data;
+   }, 
+   makeReservation(){
+
+      if(this.client.name== null){
+        return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce kreirati rezervaciju jer nemate klijenta!'
+           });
+     } else {
+     this.reservation.clientId = this.client.id;
+     this.reservation.entityId = this.id;
+     this.reservation.additionalServices = this.cottage.additionalServices;
+
+      axios.post("http://localhost:8081/api/reservation/checkAvailability",  
+      { dateStart: this.reservation.dateStart, timeStart: this.reservation.timeStart, price: this.reservation.price, duration: this.reservation.duration, entityId: this.id, dateEndAction: "", additionalServices:[] }).then( 
+           response => { 
+             console.log(response)
+              axios.post("http://localhost:8081/api/reservation/makeReservationOwner", this.reservation).then(
+                res=> {
+                  console.log(res);
+               return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Uspesno ste rezervisali vikendicu!'
+           });
+                }
+              )
+         }
+         ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce kreirati rezervaciju u navedenom periodu jer je vikendica zauzeta!'
+           });
+         }
+         )}
+   }, 
+   findCurrentClient(){
+      axios.get("http://localhost:8081/api/reservation/currentClient/"+ this.cottage.id).then( 
+           response => { 
+             console.log(response)
+             this.client = response.data;
+         }
+         ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nemate klijenta kome mozete napraviti rezervaciju'
+           });
+         }
+         )
    }
   },
   

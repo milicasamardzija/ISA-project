@@ -55,6 +55,8 @@ public class Reservation {
     @JsonIgnoreProperties("entities")
     private EntityClass entity;
 
+    @Version
+    private Integer version;
 
     public Date getValidFrom() {
         return validFrom;
@@ -174,5 +176,13 @@ public class Reservation {
 
     public void setTerm(ReservedTerm term) {
         this.term = term;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

@@ -258,7 +258,7 @@
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Datum pocetka:</i></p></td>
-            <td><p style="margin-top:12px">{{this.format_date(this.date)}}</p></td>
+            <td><p style="margin-top:12px">{{this.format_date(this.date)}} , {{this.time}}</p></td>
           </tr>
           <tr>
             <td><p style="font-family:Helvetica "  class="text"> <i>Broj dana: </i></p></td>
@@ -512,9 +512,13 @@ async search() {
       console.log(this.time)
       console.log(this.number)
       if (this.date == "" || this.time == "" || this.number == "") {
-        alert("Morate uneti datum, vreme i broj dana!")
+         return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:'Morate uneti datum, vreme i broj dana!'
+           });
       } else {
-        this.checkDate();
+        //this.checkDate();
         const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
@@ -529,7 +533,6 @@ async search() {
         },{headers})
       .then (response => { 
         console.log(response.data);
-        alert(response.status)
          if (response.data === "Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu."){
           return new Swal({
              title:"Obavestenje",

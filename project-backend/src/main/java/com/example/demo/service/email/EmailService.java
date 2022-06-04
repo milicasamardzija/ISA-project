@@ -35,7 +35,7 @@ public class EmailService {
     }
 
     @Async
-    public void sendEmailForReservation(User user) throws MailException, InterruptedException {
+    public void sendEmailForReservation(User user) throws MailException, Exception {
         System.out.println("Slanje emaila...");
 
         SimpleMailMessage mail = new SimpleMailMessage();
