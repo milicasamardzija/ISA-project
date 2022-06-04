@@ -514,7 +514,7 @@ async search() {
       if (this.date == "" || this.time == "" || this.number == "") {
         alert("Morate uneti datum, vreme i broj dana!")
       } else {
-        this.checkDate();
+        //this.checkDate();
         const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };

@@ -524,7 +524,7 @@ export default {
       if (this.date == "" || this.time == "" || this.number == "") {
         alert("Morate uneti datum, vreme i broj dana!")
       } else {
-        this.checkDate();
+      //  this.checkDate();
         const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
@@ -552,7 +552,16 @@ export default {
              text:'Vec ste jednom zapazali i otkazali ovu vikendicu u ovom periodu!Ne mozete ponovo!'
            });
          }
-      });
+      }). catch(
+        error => {
+          console.log(error)
+          return new Swal({
+             title:"Obavestenje",
+             type: "warning",
+             text:' Ne mozete u ovom trenutku da izvrsite rezervaciju, neko je vec zakazuje!Pokusajte ponovo za koji minut!'
+           });
+        }
+      );
        this.closeModal();
        this.goToCottages();
     }

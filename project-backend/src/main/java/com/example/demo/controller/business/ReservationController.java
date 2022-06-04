@@ -23,6 +23,7 @@ import com.example.demo.service.entities.AdventureService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.CottageOwnerService;
 import com.example.demo.service.users.ClientService;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,14 +56,12 @@ public class ReservationController {
 
     private ReservationService reservationService;
     private EntityService entityService;
-    //private CottageOwnerService cottageOwnerService;
     private ClientService  clientService;
     private ReservedTermService reservedTermService;
 
-    public ReservationController(ReservationService reservationService,EntityService entityService, CottageOwnerService cottageOwnerService,ClientService clientService, ReservedTermService reservedTermService){
+    public ReservationController(ReservationService reservationService,EntityService entityService,ClientService clientService, ReservedTermService reservedTermService){
         this.reservationService = reservationService;
         this.entityService = entityService;
-        //this.cottageOwnerService = cottageOwnerService;
         this.clientService = clientService;
         this.reservedTermService=reservedTermService;
     }
@@ -122,7 +121,6 @@ public class ReservationController {
             EntityDTO entityDTO = new EntityDTO(e);
             reservationDTO.setEntity(entityDTO);
             ret.add(reservationDTO);
-
         }
 
         return  new ResponseEntity<>(ret, HttpStatus.OK);
@@ -313,12 +311,18 @@ public class ReservationController {
     public ResponseEntity<HttpStatus> actionReservation(@PathVariable int id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
-        reservationService.actionReservation(id, user);
+        try {
+            reservationService.actionReservation(id, user);
+        } catch(Exception e){
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> save(@RequestBody ReservationNewDTO reservation) throws Exception {
+    public ResponseEntity<String> save(@RequestBody ReservationNewDTO reservation){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
 
@@ -329,7 +333,17 @@ public class ReservationController {
             return new ResponseEntity<String>("Imate tri ili vise penala!Ne mozete vrsiti rezervisanje do prvog sledeceg u mesecu.", HttpStatus.OK);
         }
 
-        if (!this.reservationService.save(reservation, user)){
+        boolean ret = false;
+        try {
+            ret = !this.reservationService.save(reservation, user);
+        } catch (Exception e){
+            System.out.print("*******************************************************************************************");
+            System.out.print(e);
+            System.out.print("*******************************************************************************************");
+            return new ResponseEntity<String>("Ne mozete u ovom trenutku da izvrsite rezervaciju, neko je vec zakazauje!Pokusajte ponovo za koji minut!", HttpStatus.BAD_REQUEST);
+        }
+
+        if (ret){
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             return new ResponseEntity<String>("Vec ste jednom zapazali i otkazali ovu vikendicu u ovom periodu!Ne mozete ponovo!", HttpStatus.OK);
@@ -479,8 +493,6 @@ public class ReservationController {
                 return  new ResponseEntity<>( HttpStatus.NOT_FOUND);
             }
     }
-
-
 
     @PostMapping("/actionCottage")
     public ResponseEntity<HttpStatus> createActionReservationCottage(@RequestBody ActionReservationDTO action)  {

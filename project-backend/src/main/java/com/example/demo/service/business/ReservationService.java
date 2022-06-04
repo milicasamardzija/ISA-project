@@ -14,14 +14,20 @@ import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ReservationRepository;
+import com.example.demo.repository.entities.EntityRepository;
+import com.example.demo.repository.users.ClientRepository;
 import com.example.demo.service.email.EmailService;
 import com.example.demo.service.entities.AdditionalServicesService;
 import com.example.demo.service.entities.CottageService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.DateTimeException;
@@ -38,8 +44,11 @@ public class ReservationService {
     private AdditionalServicesService additionalService;
     private ReservationServicesService reservationServicesService;
   //  private CottageService cottageService;
+   private ClientRepository clientRepository;
+    @Autowired
+    private EntityRepository repo;
 
-    public ReservationService (ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService, CottageService cottageService) {
+    public ReservationService (ClientRepository clientRepository,ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService, CottageService cottageService) {
         this.reservationRepository = reservationRepository;
         this.emailService = emailService;
         this.clientService = clientService;
@@ -48,6 +57,7 @@ public class ReservationService {
         this.additionalService = additionalService;
         this.reservationServicesService = reservationServicesService;
        // this.cottageService = cottageService;
+        this.clientRepository = clientRepository;
     }
 
     public List<Reservation> findAll() {
@@ -136,9 +146,18 @@ public class ReservationService {
         return  true;
     }
 
-    public Boolean save(ReservationNewDTO reservation, User user) throws Exception {
+    @Transactional(readOnly = false)
+    public Boolean save(ReservationNewDTO reservation, User user)  {
         Client client = this.clientService.findById(user.getEmail());
-        EntityClass entity = this.entityService.findById(reservation.getEntityId());
+        EntityClass entity = new EntityClass();
+
+       try{
+        entity = this.entityService.findById(reservation.getEntityId());
+        } catch (PessimisticLockingFailureException e){
+            System.out.println("*************************************");
+            System.out.println(e);
+            System.out.println("*************************************");
+        }
 
         boolean alreadyReserved = false;
 
@@ -186,7 +205,11 @@ public class ReservationService {
                 this.reservationServicesService.save(a);
             }
 
-            this.emailService.sendEmailForReservation(user);
+            try {
+                this.emailService.sendEmailForReservation(user);
+            } catch (Exception e){
+                System.out.println(e);
+            }
         } else {
             alreadyReserved = true;
         }
@@ -198,9 +221,16 @@ public class ReservationService {
         return this.reservationRepository.getActionsForEntity(id);
     }
 
+    @Transactional(readOnly = false)
     public void actionReservation(int id, User user) {
-        Reservation reservation = this.reservationRepository.findById(id);
-        Client client = this.clientService.findById(user.getEmail());
+        Reservation reservation = new Reservation();
+        try {
+            reservation = this.reservationRepository.findById(id);
+        } catch (OptimisticLockingFailureException ex){
+            System.out.print(ex);
+        }
+        Client client = this.clientRepository.findByEmail(user.getEmail());
+
         reservation.setClient(client);
         this.reservationRepository.save(reservation);
         emailService.sendEmailForReservationAction(user.getEmail());
@@ -281,16 +311,9 @@ public class ReservationService {
         return this.reservationRepository.findClientFromReservation(id);
     }
 
-
-//    public Integer getMaxPeople(int id) {
-//        Cottage cottage = this.cottageService.findOne(id);
-//        return cottage.getRoomsNumber() * cottage.getBedsByRoom();
-//    }
-
     public Date getDateEnd(DateDTO date) {
         String[] time = date.getTime().split(":");
-
-          String hour = time[0];
+        String hour = time[0];
         String minutes = time[1];
         Calendar calStart = Calendar.getInstance();
         calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
@@ -299,7 +322,7 @@ public class ReservationService {
         calStart.add(Calendar.MINUTE, Integer.parseInt(minutes));
         Calendar calEnd = Calendar.getInstance();
         calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
-   calEnd.setTime(date.getDate());
+        calEnd.setTime(date.getDate());
         calEnd.add(Calendar.DAY_OF_YEAR, date.getNumber());
         return calEnd.getTime();
     }
