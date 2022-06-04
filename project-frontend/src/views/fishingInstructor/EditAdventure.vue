@@ -16,7 +16,6 @@
          <td>
            <label for="psw"><span class="glyphicon glyphicon-eye-open"></span>Maksimalan broj ljudi </label></td>
           <td><input  type="number" class="form-control" id="psw" v-model="adventure.maxNumberOfPeople"/></td></tr>
-          <!-- <td><input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"/></td> -->
        <tr>
           <td>
               <label ><span class="glyphicon glyphicon-eye-open"></span> Biografija instruktora</label></td>
@@ -69,6 +68,12 @@
               </button></td></tr>
 
           </table>
+
+      <!-- <form ref="uploadForm" @submit.prevent="submit">
+        <input type="file" ref="uploadImage" @change="onImageUpload()" class="form-control" required>
+        <input type="button" @click="startUpload" name="Upload" value="Upload" />
+      </form> -->
+
 </div>
 </template>
 
@@ -88,6 +93,7 @@ export default ({
     },
     data() {
         return {
+            formData:null,
             realName:"",
             adventure:{     
                 realName:"", 
@@ -108,7 +114,27 @@ export default ({
             }
     },
     methods: {
-        async getAdventure() {
+      onImageUpload() {
+        let file = this.$refs.uploadImage.files[0];
+        this.formData= new FormData();
+        this.formData.append("file",file);
+      },
+      
+      startUpload() {
+        axios({
+            url: "http://localhost:8081/api/file/upload/",
+            method: "POST",
+            data: this.formData,
+            headers: {
+                Accept : "application/json",  
+                'Content-type': 'multipart/form-data'
+            },
+        }) .then(response => {
+              console.log(JSON.stringify(response.data));
+        });
+
+      }  
+       , async getAdventure() {
                 const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };

@@ -41,7 +41,7 @@
             <div v-if="adventure.images.length != 0">
               <img
                 :src="getImgUrl(adventure.images[0].filePath)"
-                style="height: 250px !important; width: 300px !important" @click="goToAdventure()"
+                style="height: 250px !important; width: 300px !important" 
               />
             </div>
           </div>
@@ -63,6 +63,7 @@
             <h4 style="width: 600px" class="text">
               Biografija instruktora: {{ adventure.instructorBiografy }}
             </h4>
+             <button  @click="goToAdventure(adventure.name)">Prikazi profil</button>
           </div>
         </div>
       </div>
@@ -116,8 +117,11 @@ export default {
       var images = require.context('../../assets/adventureImages/', false, /.jpg$/)
     return images('./' + img + ".jpg")
     },
-    goToAdventure(){
-      this.$router.push({ name: "AdventurePage" });
+    goToAdventure(name){
+      this.name=name;
+      console.log(name)
+      localStorage.setItem("nameOfAdventure",this.name)
+      this.$router.push({ name: "AdventureProfile" });
     }
   },
   async created() {
@@ -139,6 +143,11 @@ export default {
   margin-bottom: 1%;
 }
 
+button {
+  background-color: #4caf50; /* Green */
+  width: 50%;
+  height: 20%;
+}
 .col-info {
   margin-left: 30px;
   margin-top: 10px;
