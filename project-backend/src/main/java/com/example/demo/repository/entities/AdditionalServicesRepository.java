@@ -18,4 +18,8 @@ public interface AdditionalServicesRepository  extends JpaRepository<AdditionalS
    @Query("select ac from AdditionalService ac join fetch ac.entity e  where e.id=?1")
    List<AdditionalService> findAdditionalServicesForCottage(int id);
 
+   @Query("select ac from AdditionalService ac join fetch ac.entity e  where e.name=?1")
+   List<AdditionalService> findAdditionalServicesForAdventure(String name);
+
+   AdditionalService findByName(String name);
 }

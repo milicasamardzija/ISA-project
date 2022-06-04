@@ -1,5 +1,10 @@
 package com.example.demo.dto.business;
 
+import com.example.demo.dto.entities.AdditionalServiceDTO;
+import com.example.demo.dto.entities.AdventureDTO;
+
+import java.util.List;
+
 public class ActionRequestDTO {
     private String dateStart;
     private String dateEnd;
@@ -7,6 +12,16 @@ public class ActionRequestDTO {
     private String name;
     private String validFrom;
     private String validTo;
+    private List<AdditionalServiceDTO> additionalServices;
+
+
+    public List<AdditionalServiceDTO> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public void setAdditionalServices(List<AdditionalServiceDTO> additionalServices) {
+        this.additionalServices = additionalServices;
+    }
 
     public ActionRequestDTO() {
     }

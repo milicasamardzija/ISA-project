@@ -6,19 +6,24 @@ import com.example.demo.dto.business.ReservationDTO;
 import com.example.demo.dto.business.ReservationNewDTO;
 import com.example.demo.dto.business.ReservationnDTO;
 
+import com.example.demo.dto.entities.AdditionalServiceDTO;
 import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.dto.enums.EntityType;
 import com.example.demo.dto.users.ClientProfileDTO;
 import com.example.demo.model.business.Reservation;
+import com.example.demo.model.business.ReservationServices;
 import com.example.demo.model.business.ReservedTerm;
+import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
 import com.example.demo.service.business.ReservationService;
+import com.example.demo.service.business.ReservationServicesService;
 import com.example.demo.service.business.ReservedTermService;
+import com.example.demo.service.entities.AdditionalServicesService;
 import com.example.demo.service.entities.AdventureService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.CottageOwnerService;
@@ -58,13 +63,17 @@ public class ReservationController {
     //private CottageOwnerService cottageOwnerService;
     private ClientService  clientService;
     private ReservedTermService reservedTermService;
+    private AdditionalServicesService additionalServicesService;
+    private ReservationServicesService reservationServicesService;
 
-    public ReservationController(ReservationService reservationService,EntityService entityService, CottageOwnerService cottageOwnerService,ClientService clientService, ReservedTermService reservedTermService){
+    public ReservationController(ReservationServicesService reservationServicesService,AdditionalServicesService additionalServicesService,ReservationService reservationService,EntityService entityService, CottageOwnerService cottageOwnerService,ClientService clientService, ReservedTermService reservedTermService){
         this.reservationService = reservationService;
         this.entityService = entityService;
         //this.cottageOwnerService = cottageOwnerService;
         this.clientService = clientService;
         this.reservedTermService=reservedTermService;
+        this.additionalServicesService = additionalServicesService;
+        this.reservationServicesService=reservationServicesService;
     }
 
     @GetMapping("/scheduledReservations")
@@ -386,6 +395,8 @@ public class ReservationController {
 
     @PostMapping("/addAction")
     public ResponseEntity<HttpStatus> addAction(@RequestBody ActionRequestDTO actionRequestDTO) throws ParseException {
+        System.out.print("naziv entiteta je"+actionRequestDTO.getName());
+
         ReservedTerm rt = new ReservedTerm();
         EntityClass e = this.entityService.findByName(actionRequestDTO.getName());
         rt.setEntity(e);
@@ -408,6 +419,8 @@ public class ReservationController {
         rt.setDateStart(dateStart);
         rt.setDateEnd(dateEnd);
         System.out.print("DOVDE SAM");
+
+        this.reservedTermService.saveNewTerm(rt);
 
         Reservation r = new Reservation();
         r.setTerm(rt);
@@ -438,6 +451,19 @@ public class ReservationController {
         r.setEntity(e);
 
         this.reservationService.saveReservation(r);
+
+        List<AdditionalServiceDTO> list = actionRequestDTO.getAdditionalServices();
+        for (AdditionalServiceDTO a: list) {
+            AdditionalService as = this.additionalServicesService.findByName(a.getName());
+            ReservationServices rs = new ReservationServices();
+            rs.setName(as.getName());
+            rs.setReservation(r);
+            rs.setPrice(as.getPrice());
+            this.reservationServicesService.save(rs);
+            System.out.print(a.getName());
+        }
+
+
         return new ResponseEntity<>(HttpStatus.OK);
 
     }

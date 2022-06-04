@@ -36,4 +36,20 @@ public class AdditionalServicesController {
         else
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/servicess/{name}")
+    public ResponseEntity<List<AdditionalServiceDTO>> servicesForAdventure(@PathVariable  String name) {
+        System.out.print("IME JE"+name);
+        List<AdditionalService> allServices = this.additionalServicesService.findAdditionalServicesForAdventure(name);
+        List<AdditionalServiceDTO> ret = new ArrayList<>();
+        if(allServices != null  ) {
+            for (AdditionalService a :  allServices  ) {
+                ret.add(new AdditionalServiceDTO(a));
+            }
+            System.out.print("Ispisi broj u listi:"+ ret.size());
+            return new ResponseEntity<>(ret, HttpStatus.OK );
+        }
+        else
+            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

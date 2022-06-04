@@ -32,6 +32,11 @@ public class AdditionalServicesService {
     public List<AdditionalService> getServicesForCottage(int id){
         return  this.additionalServicesRepository.findAdditionalServicesForCottage(id);
     }
+
+    public List<AdditionalService> findAdditionalServicesForAdventure(String name){
+        return  this.additionalServicesRepository.findAdditionalServicesForAdventure(name);
+    }
+
     public void deleteById(int id) {
         this.additionalServicesRepository.deleteById(id);
     }
@@ -45,5 +50,9 @@ public class AdditionalServicesService {
 
     public AdditionalService findById(int id) {
         return this.additionalServicesRepository.findById(id);
+    }
+
+    public AdditionalService findByName(String name) {
+        return this.additionalServicesRepository.findByName(name);
     }
 }

@@ -17,15 +17,6 @@
         <tr>
           <td><label ><span class="glyphicon glyphicon-eye-open"></span>Cena</label></td>
           <td> <input class="form-control" id="psw" type="number" v-model="price"/></td></tr>
-
-        <tr>
-          <td><label ><span class="glyphicon glyphicon-eye-open"></span>Izaberi entitet</label></td>
-          <td>   <select v-model="name" class="form-control">
-                        <option v-for="entity in entities" :value="item" :key="entity.id">
-                            {{ entity.nameOfAdventure }}
-                        </option>
-  </select></td></tr>
-
         <tr>
             <td><label ><span class="glyphicon glyphicon-eye-open"></span>Validno od</label></td>
             <td> <input class="form-control" id="psw" type="date" v-model="validFrom"/></td></tr>
@@ -36,6 +27,28 @@
                 <span></span> Potvrdi
               </button></td></tr>
           </table>
+<div><table>
+    <tbody>
+      <tr><td><h2>Izaberi dostupne dodatne usluge:</h2></td></tr>
+          <tr v-for="(additionalService, index) in additionalServices" :key="index">
+                  <td>{{additionalService.name}}</td>
+                  <td>{{additionalService.price}}</td>
+                  <td><button class="btn btn-success btn-block" @click="addService(additionalService.name,additionalService.price)">Dodaj</button></td>
+           </tr>
+
+    </tbody>
+</table></div>
+
+         
+                 <div class="col-md-10" >
+                  <p v-if="this.List.length  != 0"> Trenutno definisane dodatne usluge </p>
+                <div class="form control" v-for="(additionalService, index) in List" :key="index">
+                 <table> 
+                  
+                    <tr style="width: 25rem;"> <td style="width: 8rem;">{{additionalService.name}} </td> <td> </td><td style="width: 5rem;">{{additionalService.price}} din  </td>  <td> <button type="button" class="btn btn-secondary" @click="remove(index)">x </button></td> </tr>
+                   </table> 
+                </div>
+              </div> 
 </div>
 </template>
 
@@ -54,14 +67,19 @@ export default ({
     },
     data() {
         return {
+            checkedList:[],
+            List:[],
+            nameOfAdventure:"",
+            name:"",
             entities:"",
-            entity: { id:0, name: "", address: { id: "", street:"", number: 0, city: ""}, promoDescription: "", rules:"", price:0, grade: 0},
+            adventure: "",
             dateStart:"",
             dateEnd:"",
             price:0,
-            name:"",
             validFrom:"",
             validTo:"",
+            additionalServices:"",
+            additionalService: {name:"", price:0.0}
             }
     },
     methods: {
@@ -69,9 +87,24 @@ export default ({
               const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/adventures/getMyAdventures",{headers});
+      const res = await fetch("http://localhost:8081/api/adventures/getAdventure/"+this.nameOfAdventure,{headers});
       const data = await res.json();
       return data;
+    },
+    async getAdditionalServices() {
+              const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/additionalService/servicess/"+this.nameOfAdventure,{headers});
+      const data = await res.json();
+      return data;
+    },
+           addService(name1,price1){
+      this.List.push({ name: name1, price: price1});
+      console.log(this.List)
+        },
+             remove(index){
+      this.List.splice(index, 1);
     },
     async AddAction() {
       const headers = {
@@ -81,9 +114,11 @@ export default ({
         dateStart : this.dateStart, 
         dateEnd : this.dateEnd,
         price : this.price,
-        name: this.name,
+        name: this.nameOfAdventure,
         validFrom: this.validFrom,
-        validTo: this.validTo
+        validTo: this.validTo,
+        additionalServices: this.List,
+        adventure: this.adventure
        },{
         headers
       })
@@ -97,7 +132,10 @@ export default ({
     }
     },
     async created() {
-        this.entities = await this.getEntities();
+        this.nameOfAdventure = localStorage.getItem("nameOfAdventure");
+        this.adventure = await this.getEntities();
+        console.log(this.adventure.nameOfAdventure);
+        this.additionalServices = await this.getAdditionalServices();
     }
 })
 </script>

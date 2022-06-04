@@ -5,6 +5,7 @@ import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.Image;
 
+import java.util.List;
 import java.util.Set;
 
 public class AdventureDTO {
@@ -34,6 +35,17 @@ public class AdventureDTO {
     private String fishingEquipment;
 
     private CancelationType cancelationType;
+
+    private List<AdditionalServiceDTO> additionalServices;
+
+
+    public List<AdditionalServiceDTO> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public void setAdditionalServices(List<AdditionalServiceDTO> additionalServices) {
+        this.additionalServices = additionalServices;
+    }
 
     public AdventureDTO(){
 

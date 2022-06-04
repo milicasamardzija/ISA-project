@@ -27,9 +27,10 @@
           <tr><td></td><td><h4>Navigaciona oprema: {{adventure.fishingEquipment}}</h4></td></tr>
           <tr><td></td><td><h4>Dozvoljen broj ljudi: {{adventure.maxNumberOfPeople}}</h4></td></tr>
           <tr><td></td><td><h4>Biografija instruktora: {{adventure.instructorBiografy}}</h4></td></tr>
+          <tr><td></td><td> <button @click="AddAction()">Dodaj akciju</button></td></tr>
           </table>
         </div>  
-        
+       
 
 </template>
 
@@ -60,6 +61,11 @@ export default ({
       const res1 = await fetch("http://localhost:8081/api/adventures/getAdventure/"+this.nameOfAdventure,{headers});
            const data1 = await res1.json();
       return data1;
+        },
+        async AddAction() {
+          localStorage.setItem("nameOfAdventure",this.nameOfAdventure);
+          this.$router.push({ name: "CreateAction" });
+
         }
     },
     async created() {
