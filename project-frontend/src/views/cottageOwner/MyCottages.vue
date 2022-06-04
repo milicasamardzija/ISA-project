@@ -243,15 +243,8 @@ export default {
     },
    
     async getMyCottages(){
-      //this.cottages = await this.fetchOwner().cottageList;
-      //this.cottageOwner = this.fetchOwner();
-     /// if(this.cottageOwner.cottageList != null) {
-      // 
-   
     fetch("http://localhost:8081/api/cottages/myCottages/"+ this.cottageOwner.id).then( response => response.json()).then(data => this.cottages = data );
- 
-   
-  
+
    },
 
       async showCottage(cottage){
@@ -261,7 +254,7 @@ export default {
     getSelected(id){
       this.selectedId = id;
     },
-   //ne radi
+ 
      deleteCottage(){
        console.log(this.selectedId)
         axios.get("http://localhost:8081/api/reservation/check/"+ this.selectedId).then( 

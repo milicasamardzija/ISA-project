@@ -551,6 +551,14 @@ export default {
       return data;
    }, 
    makeReservation(){
+
+      if(this.client.name== null){
+        return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce kreirati rezervaciju jer nemate klijenta!'
+           });
+     } else {
      this.reservation.clientId = this.client.id;
      this.reservation.entityId = this.id;
      this.reservation.additionalServices = this.cottage.additionalServices;
@@ -562,7 +570,7 @@ export default {
               axios.post("http://localhost:8081/api/reservation/makeReservationOwner", this.reservation).then(
                 res=> {
                   console.log(res);
-                   return new Swal({
+               return new Swal({
              title:"Uspesno",
              type: "success",
              text:'Uspesno ste rezervisali vikendicu!'
@@ -578,7 +586,7 @@ export default {
              text:'Nije moguce kreirati rezervaciju u navedenom periodu jer je vikendica zauzeta!'
            });
          }
-         )
+         )}
    }, 
    findCurrentClient(){
       axios.get("http://localhost:8081/api/reservation/currentClient/"+ this.cottage.id).then( 

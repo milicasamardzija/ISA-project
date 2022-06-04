@@ -350,7 +350,6 @@ public class ReservationService {
 
 
     public boolean checkAvailability(ActionReservationDTO action) {
-       // List<Reservation> allReservations = this.reservationRepository.getReservationsForEntity(action.getEntityId());
         EntityClass entity = this.entityService.findById(action.getEntityId()); //da bih prosla kroz reservedTerms
         String[] time = action.getTimeStart().split(":");
         String hour = time[0];
@@ -508,7 +507,6 @@ public class ReservationService {
         calEnd.setTime(calStart.getTime());
         calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
 
-        //definisem promo period
         Calendar calEndAction = Calendar.getInstance();
         calEndAction.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calEndAction.setTime(reservation.getDateEndAction());
@@ -519,34 +517,25 @@ public class ReservationService {
         newReservation.setTerm(newTerm);
         entity.getReservedTerms().add(newTerm);
         newReservation.setPrice(reservation.getPrice());
-        //definisem promo period
          newReservation.setValidFrom(new Date());
          newReservation.setValidTo(calEndAction.getTime());
 
-        newReservation.setClient(null);  //slobodna za klijenta
-        newReservation.setAction(true);  //na akciji
+        newReservation.setClient(null);
+        newReservation.setAction(true);
         newReservation.setEntity(entity);
         newReservation.setEntityType(EntityType.BOAT);
         newReservation.setDuration(reservation.getDuration());
 
-        // ArrayList<ReservationServices> services = new ArrayList<>();
-
-        //dodatne usluge ubacene
         for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
             ReservationServices a = new ReservationServices(as);
-            // services.add(a);
 
             a.setReservation(newReservation);
             newReservation.getReservationServices().add(a);
-            //  this.reservationServicesService.save(a); //ovde puca za servise kad treba da pravi reservation service tabelu
-
         }
 
-        //newReservation.setReservationServices(services);
         reservationRepository.save(newReservation);
         entityService.save(entity);
 
-        //servisima dodeljujem ovu rezervaciju
         for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
             ReservationServices a = new ReservationServices(as);
             a.setReservation(newReservation);
@@ -556,7 +545,6 @@ public class ReservationService {
 
         List<Client> subscribedClients = entityService.findSubscribedClients(entity.getId());
 
-        //slanje mejla svim pretplacenim
         for (Client c: subscribedClients ) {
             this.emailService.sendEmailForCreatedAction(c.getName(), entity.getName());
         }
@@ -565,10 +553,7 @@ public class ReservationService {
     }
 
     public void saveActionCottage(ActionReservationDTO reservation)  {
-
-        EntityClass entity = this.entityService.findById(reservation.getEntityId()); //koji je entitet
-
-        //getting start and end date, end action date nije ishendlan
+        EntityClass entity = this.entityService.findById(reservation.getEntityId());
         String[] time = reservation.getTimeStart().split(":");
         String hour = time[0];
         String minutes = time[1];
@@ -581,8 +566,6 @@ public class ReservationService {
         calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calEnd.setTime(calStart.getTime());
         calEnd.add(Calendar.DAY_OF_YEAR, reservation.getDuration());
-
-        //definisem promo period
         Calendar calEndAction = Calendar.getInstance();
         calEndAction.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calEndAction.setTime(reservation.getDateEndAction());
@@ -590,36 +573,26 @@ public class ReservationService {
         Reservation newReservation = new Reservation();
         ReservedTerm newTerm = reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false));
         newReservation.setTerm(newTerm);
-
         newReservation.setPrice(reservation.getPrice());
-        //definisem promo period
         newReservation.setValidFrom(new Date());
         newReservation.setValidTo(calEndAction.getTime());
-
-        newReservation.setClient(null);  //slobodna za klijenta
-        newReservation.setAction(true);  //na akciji
+        newReservation.setClient(null);
+        newReservation.setAction(true);
         newReservation.setEntity(entity);
         newReservation.setEntityType(EntityType.COTTAGE);
         newReservation.setDuration(reservation.getDuration());
 
-       // ArrayList<ReservationServices> services = new ArrayList<>();
 
-        //dodatne usluge ubacene
+
         for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
             ReservationServices a = new ReservationServices(as);
-           // services.add(a);
 
             a.setReservation(newReservation);
             newReservation.getReservationServices().add(a);
-         //  this.reservationServicesService.save(a); //ovde puca za servise kad treba da pravi reservation service tabelu
-
         }
-
-        //newReservation.setReservationServices(services);
         reservationRepository.save(newReservation);
         entityService.save(entity);
 
-        //servisima dodeljujem ovu rezervaciju
         for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
             ReservationServices a = new ReservationServices(as);
             a.setReservation(newReservation);
@@ -629,7 +602,6 @@ public class ReservationService {
 
         List<Client> subscribedClients = entityService.findSubscribedClients(entity.getId());
 
-        //slanje mejla svim pretplacenim
         for (Client c: subscribedClients ) {
             this.emailService.sendEmailForCreatedAction(c.getName(), entity.getName());
         }
@@ -696,12 +668,10 @@ public class ReservationService {
         newReservation.setTerm(newTerm);
 
         newReservation.setPrice(reservation.getPrice());
-        //definisem promo period
         newReservation.setValidFrom(null);
         newReservation.setValidTo(null);
-
-        newReservation.setClient(client);  //slobodna za klijenta
-        newReservation.setAction(false);  //na akciji
+        newReservation.setClient(client);
+        newReservation.setAction(false);
         newReservation.setEntity(entity);
         if(reservation.getType() == EntityType.COTTAGE){
             newReservation.setEntityType(EntityType.COTTAGE);
@@ -709,23 +679,14 @@ public class ReservationService {
             newReservation.setEntityType(EntityType.BOAT);
         }
         newReservation.setDuration(reservation.getDuration());
-
-        //dodatne usluge ubacene
         for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
             ReservationServices a = new ReservationServices(as);
-            // services.add(a);
-
             a.setReservation(newReservation);
             newReservation.getReservationServices().add(a);
-            //  this.reservationServicesService.save(a); //ovde puca za servise kad treba da pravi reservation service tabelu
-
         }
-
-        //newReservation.setReservationServices(services);
         reservationRepository.save(newReservation);
         entityService.save(entity);
 
-        //servisima dodeljujem ovu rezervaciju
         for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
             ReservationServices a = new ReservationServices(as);
             a.setReservation(newReservation);
