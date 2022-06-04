@@ -61,4 +61,12 @@ public class EntityService {
     public List<Client> findSubscribedClients(int id){
         return this.entityRepository.findSubscribedClients(id);
     }
+
+    public  EntityClass findEntityWithReservedTerms(int id){
+        return this.entityRepository.findEntityWithReservedTerms(id);
+    }
+
+    public EntityClass findEntityWithReservations(int id){
+        return this.entityRepository.findEntityWithReservations(id);
+    }
 }

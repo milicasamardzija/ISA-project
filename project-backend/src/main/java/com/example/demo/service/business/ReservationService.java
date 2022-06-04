@@ -1,9 +1,6 @@
 package com.example.demo.service.business;
 
-import com.example.demo.dto.business.DateDTO;
-import com.example.demo.dto.business.ActionReservationDTO;
-import com.example.demo.dto.business.PriceDTO;
-import com.example.demo.dto.business.ReservationNewDTO;
+import com.example.demo.dto.business.*;
 import com.example.demo.dto.entities.AdditionalServiceDTO;
 import com.example.demo.dto.enums.EntityType;
 import com.example.demo.model.business.Reservation;
@@ -74,6 +71,8 @@ public class ReservationService {
     public EntityClass findEntityByReservation(int id) {
         return this.reservationRepository.findEntityByReservation(id);
     }
+
+
 
     public Reservation findById(int id) {
         return this.reservationRepository.findById(id);
@@ -347,7 +346,8 @@ public class ReservationService {
 
 
     public boolean checkAvailability(ActionReservationDTO action) {
-        List<Reservation> allReservations = this.reservationRepository.getReservationsForEntity(action.getEntityId());
+       // List<Reservation> allReservations = this.reservationRepository.getReservationsForEntity(action.getEntityId());
+        EntityClass entity = this.entityService.findById(action.getEntityId()); //da bih prosla kroz reservedTerms
         String[] time = action.getTimeStart().split(":");
         String hour = time[0];
         String minutes = time[1];
@@ -364,15 +364,44 @@ public class ReservationService {
 
         Boolean isNotReserved = true;
 
-        if (allReservations.size() != 0) {
-            for (Reservation r : allReservations) {
+//        if (allReservations.size() != 0) {
+//            for (Reservation r : allReservations) {
+//                Calendar calRStart = Calendar.getInstance();
+//                calRStart.setTime(r.getTerm().getDateStart());
+//
+//                Calendar calREnd = Calendar.getInstance();
+//                calREnd.setTime(r.getTerm().getDateEnd());
+//
+//                    if(calRStart.getTime().after(calStartAction.getTime()) && calREnd.getTime().after(calEndAction.getTime())
+//                       && calStartAction.getTime().before(calRStart.getTime()) && calEndAction.getTime().before(calREnd.getTime())
+//                    && calEndAction.getTime().after(calRStart.getTime())){
+//                        isNotReserved = false;
+//                    }
+//                    else if(calRStart.getTime().before(calStartAction.getTime()) && calREnd.getTime().before(calEndAction.getTime())
+//                     && calStartAction.getTime().after(calRStart.getTime()) && calEndAction.getTime().after(calREnd.getTime())
+//                    && calStartAction.getTime().before(calREnd.getTime())     //ovo pokriva kompletan period nakon neke rezervacije
+//                    ){
+//                        isNotReserved = false;
+//                    }
+//                    else if(calRStart.getTime().before(calStartAction.getTime()) && calREnd.getTime().after(calEndAction.getTime())
+//                      && calStartAction.getTime().after(calRStart.getTime()) && calEndAction.getTime().before(calREnd.getTime())){
+//                        isNotReserved = false;
+//                    }
+//                    else if(calRStart.getTime().after(calStartAction.getTime()) && calREnd.getTime().before(calEndAction.getTime())
+//                    && calStartAction.getTime().before(calRStart.getTime()) && calEndAction.getTime().after(calREnd.getTime())){
+//                        isNotReserved = false;
+//                    }
+//            }
+//        }
+
+        if(entity.getReservedTerms().size() != 0){
+            for( ReservedTerm rt: entity.getReservedTerms()){
                 Calendar calRStart = Calendar.getInstance();
-                calRStart.setTime(r.getTerm().getDateStart());
+                calRStart.setTime(rt.getDateStart());
 
                 Calendar calREnd = Calendar.getInstance();
-                calREnd.setTime(r.getTerm().getDateEnd());
-
-                    if(calRStart.getTime().after(calStartAction.getTime()) && calREnd.getTime().after(calEndAction.getTime())
+                calREnd.setTime(rt.getDateEnd());
+                if(calRStart.getTime().after(calStartAction.getTime()) && calREnd.getTime().after(calEndAction.getTime())
                        && calStartAction.getTime().before(calRStart.getTime()) && calEndAction.getTime().before(calREnd.getTime())
                     && calEndAction.getTime().after(calRStart.getTime())){
                         isNotReserved = false;
@@ -396,6 +425,67 @@ public class ReservationService {
         return isNotReserved;
     }
 
+
+    public boolean checkReservations(UnavailablePeriodDTO unavailable){
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calStart.setTime(unavailable.getDateFrom());
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calEnd.setTime(unavailable.getDateTo());
+
+//        EntityClass entity = entityService.findEntityWithReservations(unavailable.getEntityId()); //ceo entity sa rezervacijama  NE RADI
+//        List<Reservation> allReservations = this.reservationRepository.getReservationsForEntity(unavailable.getEntityId());
+
+        EntityClass entity = entityService.findById(unavailable.getEntityId());
+
+        Boolean isNotReserved = true;
+
+        if(entity.getReservedTerms().size() != 0){
+            for( ReservedTerm r: entity.getReservedTerms()){
+                Calendar calRStart = Calendar.getInstance();
+                calRStart.setTime(r.getDateStart());
+
+                Calendar calREnd = Calendar.getInstance();
+                calREnd.setTime(r.getDateEnd());
+                if(calRStart.getTime().after(calStart.getTime()) && calREnd.getTime().after(calEnd.getTime())
+                        && calStart.getTime().before(calRStart.getTime()) && calEnd.getTime().before(calREnd.getTime())
+                        && calEnd.getTime().after(calRStart.getTime())){
+                    isNotReserved = false;
+                }
+                else if(calRStart.getTime().before(calStart.getTime()) && calREnd.getTime().before(calEnd.getTime())
+                        && calStart.getTime().after(calRStart.getTime()) && calEnd.getTime().after(calREnd.getTime())
+                        && calStart.getTime().before(calREnd.getTime())     //ovo pokriva kompletan period nakon neke rezervacije
+                ){
+                    isNotReserved = false;
+                }
+                else if(calRStart.getTime().before(calStart.getTime()) && calREnd.getTime().after(calEnd.getTime())
+                        && calStart.getTime().after(calRStart.getTime()) && calEnd.getTime().before(calREnd.getTime())){
+                    isNotReserved = false;
+                }
+                else if(calRStart.getTime().after(calStart.getTime()) && calREnd.getTime().before(calEnd.getTime())
+                        && calStart.getTime().before(calRStart.getTime()) && calEnd.getTime().after(calREnd.getTime())){
+                    isNotReserved = false;
+                }
+
+            }
+        }
+        return isNotReserved;
+    }
+
+    public void saveUnavailablePeriod(UnavailablePeriodDTO unavailable, int type){
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calStart.setTime(unavailable.getDateFrom());
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
+        calEnd.setTime(unavailable.getDateTo());
+
+        EntityClass entity = entityService.findById(unavailable.getEntityId()); //eager je, ovako je okej
+        ReservedTerm newTerm = reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false));
+        entity.getReservedTerms().add(newTerm);
+        entityService.save(entity);
+    }
 
     public void saveActionBoat(ActionReservationDTO reservation)  {
 
@@ -421,8 +511,9 @@ public class ReservationService {
 
 
         Reservation newReservation = new Reservation();
-        newReservation.setTerm(reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false)));
-
+        ReservedTerm newTerm= reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false));
+        newReservation.setTerm(newTerm);
+        entity.getReservedTerms().add(newTerm);
         newReservation.setPrice(reservation.getPrice());
         //definisem promo period
          newReservation.setValidFrom(new Date());
@@ -449,6 +540,7 @@ public class ReservationService {
 
         //newReservation.setReservationServices(services);
         reservationRepository.save(newReservation);
+        entityService.save(entity);
 
         //servisima dodeljujem ovu rezervaciju
         for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {
@@ -492,7 +584,8 @@ public class ReservationService {
         calEndAction.setTime(reservation.getDateEndAction());
 
         Reservation newReservation = new Reservation();
-        newReservation.setTerm(reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false)));
+        ReservedTerm newTerm = reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false));
+        newReservation.setTerm(newTerm);
 
         newReservation.setPrice(reservation.getPrice());
         //definisem promo period
@@ -520,6 +613,7 @@ public class ReservationService {
 
         //newReservation.setReservationServices(services);
         reservationRepository.save(newReservation);
+        entityService.save(entity);
 
         //servisima dodeljujem ovu rezervaciju
         for(AdditionalServiceDTO as : reservation.getAdditionalServices()) {

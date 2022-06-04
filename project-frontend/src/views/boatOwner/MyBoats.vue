@@ -79,7 +79,7 @@
               Obrisi brod
             </button>
           </div>
-          <div class="row">
+          <div class="row" style="margin-bottom: 15%">
             <button class="btn btn-success" @click="showBoat(cottage)" >
              <!--  <router-link to="{name: 'CottageProfile', params: { id: 'cottage.id'} }"></router-link>
                <router-link  style="
@@ -88,6 +88,14 @@
                   color: white;
                 " to="`/cottageProfile/${cottage.id}`"></router-link> -->
             Prikazi brod
+             
+            </button>
+          </div>
+              <div class="row">
+            <button class="btn btn-outline-danger"  data-target="#unavailable"
+              data-toggle="modal"   @click="getSelected(cottage.id)" >
+       
+           Nedostupnost
              
             </button>
           </div>
@@ -137,6 +145,59 @@
         </div>
       </div>
     </div>
+
+      <!-- Modal za nedostupnost-->
+    <div class="modal fade" id="unavailable" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              style="color: #0b4025; padding: 5px 35px"
+            >
+              Definisi period nedostupnosti
+            </h5>
+          </div>
+          <div class="modal-body" style="padding: 15px 50px">
+            <form role="form"  @submit.prevent="unavailablePeriodDefine()">
+              <div class="form-group">
+                 <div class="row">
+               <div class="col">
+               <label> Od:  </label>
+              </div>
+               <div class="col">
+               <input class="form-control mr-sm-2" type="date" v-model="unavailablePeriod.dateFrom"/>
+              </div>
+              </div>
+              <div class="row">
+                <div class="col">
+               <label>Do: </label>
+              </div>
+               <div class="col">
+                <input class="form-control mr-sm-2" type="date" v-model="unavailablePeriod.dateTo"/>
+              </div>
+              </div>
+              </div>
+
+              <button type="submit" class="btn btn-success btn-block">
+                <span></span> Potvrdi
+              </button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary pull-left"
+              data-dismiss="modal"
+            >
+              Odustani
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -163,6 +224,7 @@ export default {
       boatOwner: "",
       notEmpty: false,
        search: { name: "", street: "", city: ""},
+       unavailablePeriod: { dateFrom: "", dateTo: "", entityId: "" }
     }
   },
 
@@ -229,6 +291,41 @@ export default {
      // this.$router.go(0);
 
        
+   }, 
+   unavailablePeriodDefine() {
+     this.unavailablePeriod.entityId =this.selectedId;
+       axios.post("http://localhost:8081/api/reservation/checkIfReservationExist", this.unavailablePeriod).then( 
+           response => { 
+             console.log(response)
+              axios.post("http://localhost:8081/api/reservation/unavailablePeriodCottageOwner", this.unavailablePeriod).then(
+                 response => { 
+             console.log(response)
+              return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Uspesno ste definisali nedostupnost!'
+           });
+             }
+              ).catch(
+                error =>{
+        console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Greska pri cuvanju!'
+           });
+         }
+              );
+         }
+            ).catch(error =>{
+        console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce definisati ovaj period jer imate rezervaciju tada!'
+           });
+         }
+         )
    }
   },
    async created() {
