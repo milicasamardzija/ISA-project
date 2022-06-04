@@ -103,6 +103,7 @@ public class ReservationnDTO {
             this.term = term;
         }
 
+        public ReservationnDTO() {}
         public ReservationnDTO(Reservation reservation) {
             this.id = reservation.getId();
             this.term = new ReservedTermDTO(reservation.getTerm().getDateStart(), reservation.getTerm().getDateEnd() );
@@ -112,10 +113,9 @@ public class ReservationnDTO {
             this.duration = reservation.getDuration();
             this.dateStart = reservation.getTerm().getDateStart().toString();
             this.dateEnd = reservation.getTerm().getDateEnd().toString();
-            this.clientID = String.valueOf(reservation.getClient().getId());
-        }
-        public ReservationnDTO() {
-
+            if (reservation.getClient() !=null) {
+                this.clientID = String.valueOf(reservation.getClient().getId());
+            }
         }
 
 

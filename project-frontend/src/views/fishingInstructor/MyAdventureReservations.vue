@@ -4,6 +4,7 @@
     <HeaderStartPage />
     <NavBarFishingInstructor />
 </div>
+<h2>Rezervacije za moje avanture:</h2>
 <table class="styled-table">
     <thead>
         <tr>
@@ -23,6 +24,30 @@
                   <td>{{reservation.entity.name}}</td>
                   <td>{{reservation.price}} €</td>
                   <td><button class="btn btn-success btn-block" data-target="#prikazKlijena" data-toggle="modal" @click="findClient(reservation.clientID)">Prikazi profil klijenta</button></td>
+           </tr>
+
+    </tbody>
+</table>
+
+<h2>Moje brze rezervacije:</h2>
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Datum pocetka</th>
+            <th>Datum kraja</th>
+            <th>Entitet</th>
+            <th>Cena</th>
+            <th></th>          
+        </tr>
+    </thead>
+    <tbody>
+          <tr v-for="(reservation, index) in quickRet" :key="index">
+                  <td>{{reservation.id}}</td>
+                  <td>{{reservation.dateStart}}</td>
+                  <td>{{reservation.dateEnd}}</td>
+                  <td>{{reservation.entity.name}}</td>
+                  <td>{{reservation.price}} €</td>
            </tr>
 
     </tbody>
@@ -79,6 +104,7 @@ export default ({
     },
     data() {
         return {
+          quickRet:"",
           namee:"",
           counter:0,
           inputText:"",
@@ -90,14 +116,22 @@ export default ({
             }
     },
     methods: {
-        async getActions() {
+        async getReservations() {
                 const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/reservation/getMyReservations", {headers});
+      const res = await fetch("http://localhost:8081/api/reservation/myRegularReservation", {headers});
       const data = await res.json();
       return data;
         },
+        async getMyQuickReservations() {
+                const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/reservation/myActionReservation", {headers});
+      const data = await res.json();
+      return data;
+        } ,
         async findClient(clientID) {
             this.id = clientID;
             console.log(this.id);
@@ -111,7 +145,8 @@ export default ({
     },
       async created() {
       this.userRole = localStorage.getItem("role");
-      this.ret =  await this.getActions();
+      this.ret =  await this.getReservations();
+      this.quickRet = await this.getMyQuickReservations();
   }
 
 })

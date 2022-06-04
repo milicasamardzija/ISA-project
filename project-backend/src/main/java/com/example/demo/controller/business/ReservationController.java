@@ -28,6 +28,7 @@ import com.example.demo.service.entities.AdventureService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.CottageOwnerService;
 import com.example.demo.service.users.ClientService;
+import net.bytebuddy.implementation.bytecode.StackSize;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -132,6 +133,67 @@ public class ReservationController {
             reservationDTO.setEntity(entityDTO);
             ret.add(reservationDTO);
 
+        }
+
+        return  new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+    @GetMapping("/myRegularReservation")
+    public ResponseEntity<List<ReservationnDTO>> getMyRegularReservation(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+
+        List<Reservation> scheduledReservations = reservationService.findAllReservationsForInstructor(user.getId());
+        List<ReservationnDTO> ret = new ArrayList<>();
+        for(Reservation reservation : scheduledReservations ) {
+            if (!reservation.getAction()) {
+            ReservationnDTO reservationDTO = new ReservationnDTO();
+            reservationDTO.setId(reservation.getId());
+            reservationDTO.setCanceled(reservation.getCanceled());
+            reservationDTO.setPrice(reservation.getPrice());
+            reservationDTO.setDuration(reservation.getDuration());
+            reservationDTO.setClientID(String.valueOf(reservation.getClient().getId()));
+
+            ReservedTerm rt = this.reservedTermService.findById(reservation.getTerm().getId());
+            ReservedTermDTO rtDTO = new ReservedTermDTO(rt);
+            reservationDTO.setTerm(rtDTO);
+            reservationDTO.setDateEnd(rtDTO.getDateEnd().toString());
+            reservationDTO.setDateStart(rtDTO.getDateStart().toString());
+            EntityClass e = this.entityService.findById(reservation.getEntity().getId());
+            EntityDTO entityDTO = new EntityDTO(e);
+            reservationDTO.setEntity(entityDTO);
+            ret.add(reservationDTO);
+            }
+        }
+
+        return  new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+    @GetMapping("/myActionReservation")
+    public ResponseEntity<List<ReservationnDTO>> myActionReservation(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+
+        List<Reservation> scheduledReservations = reservationService.findAllReservationsForInstructor(user.getId());
+        List<ReservationnDTO> ret = new ArrayList<>();
+        for(Reservation reservation : scheduledReservations ) {
+            if (reservation.getAction()) {
+                ReservationnDTO reservationDTO = new ReservationnDTO();
+                reservationDTO.setId(reservation.getId());
+                reservationDTO.setCanceled(reservation.getCanceled());
+                reservationDTO.setPrice(reservation.getPrice());
+                reservationDTO.setDuration(reservation.getDuration());
+
+                ReservedTerm rt = this.reservedTermService.findById(reservation.getTerm().getId());
+                ReservedTermDTO rtDTO = new ReservedTermDTO(rt);
+                reservationDTO.setTerm(rtDTO);
+                reservationDTO.setDateEnd(rtDTO.getDateEnd().toString());
+                reservationDTO.setDateStart(rtDTO.getDateStart().toString());
+                EntityClass e = this.entityService.findById(reservation.getEntity().getId());
+                EntityDTO entityDTO = new EntityDTO(e);
+                reservationDTO.setEntity(entityDTO);
+                ret.add(reservationDTO);
+            }
         }
 
         return  new ResponseEntity<>(ret, HttpStatus.OK);
