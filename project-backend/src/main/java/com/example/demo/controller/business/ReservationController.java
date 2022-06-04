@@ -568,7 +568,7 @@ public class ReservationController {
     }
 
     @PostMapping("/makeReservationOwner")
-    public  ResponseEntity<HttpStatus> makeReservationOwner(@RequestBody ReservationNewOwnerDTO res) throws InterruptedException {
+    public  ResponseEntity<HttpStatus> makeReservationOwner(@RequestBody ReservationNewOwnerDTO res) throws Exception {
         this.reservationService.saveReservationOwner(res);
         return  new ResponseEntity<>( HttpStatus.OK);
     }

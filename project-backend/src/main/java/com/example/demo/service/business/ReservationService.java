@@ -643,7 +643,7 @@ public class ReservationService {
     }
 
 
-    public  void saveReservationOwner(ReservationNewOwnerDTO reservation) throws InterruptedException {
+    public  void saveReservationOwner(ReservationNewOwnerDTO reservation) throws Exception {
         EntityClass entity = this.entityService.findOne(reservation.getEntityId()); //koji je entitet
         Client client = this.clientService.find(reservation.getClientId());
         User user = this.userRepository.findById(reservation.getClientId());
