@@ -16,7 +16,7 @@
          <td>
            <label for="psw"><span class="glyphicon glyphicon-eye-open"></span>Maksimalan broj ljudi </label></td>
           <td><input  type="number" class="form-control" id="psw" v-model="adventure.maxNumberOfPeople"/></td></tr>
-  
+          <!-- <td><input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"/></td> -->
        <tr>
           <td>
               <label ><span class="glyphicon glyphicon-eye-open"></span> Biografija instruktora</label></td>

@@ -1,23 +1,27 @@
 package com.example.demo.controller.entities;
 
+import com.example.demo.dto.business.DateDTO;
 import com.example.demo.dto.entities.AdditionalServiceDTO;
 import com.example.demo.model.entities.AdditionalService;
+import com.example.demo.model.entities.Adventure;
+import com.example.demo.model.entities.EntityClass;
 import com.example.demo.service.entities.AdditionalServicesService;
+import com.example.demo.service.entities.AdventureService;
+import com.example.demo.service.entities.EntityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = "api/additionalService")
 public class AdditionalServicesController {
 
-    public AdditionalServicesService additionalServicesService;
+    private AdditionalServicesService additionalServicesService;
 
     public AdditionalServicesController(AdditionalServicesService service){
         this.additionalServicesService =service;
@@ -52,4 +56,11 @@ public class AdditionalServicesController {
         else
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PostMapping("/creating")
+    public ResponseEntity<HttpStatus> createAdditionalServices(@RequestBody AdditionalServiceDTO additionalServiceDTO){
+        this.additionalServicesService.save(additionalServiceDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

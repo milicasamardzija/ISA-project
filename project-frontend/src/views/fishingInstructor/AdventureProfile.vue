@@ -27,11 +27,15 @@
           <tr><td></td><td><h4>Navigaciona oprema: {{adventure.fishingEquipment}}</h4></td></tr>
           <tr><td></td><td><h4>Dozvoljen broj ljudi: {{adventure.maxNumberOfPeople}}</h4></td></tr>
           <tr><td></td><td><h4>Biografija instruktora: {{adventure.instructorBiografy}}</h4></td></tr>
-          <tr><td></td><td> <button @click="AddAction()">Dodaj akciju</button></td></tr>
+          
+          <tr><td><h3>Dostupne dodatne usluge za ovu avanturu su:</h3></td></tr>
+          <tr v-for="(additionalService, index) in additionalServices" :key="index">
+                 <td></td> <td><h4>{{additionalService.name}}-{{additionalService.price}}e</h4></td>
+           </tr>
+          <tr><td></td><td> <button class="btn btn-success btn-block" @click="AddService()">Dodaj uslugu</button></td></tr>
+          <tr><td></td><td> <button class="btn btn-success btn-block" @click="AddAction()">Dodaj akciju</button></td></tr> 
           </table>
         </div>  
-       
-
 </template>
 
 <script>
@@ -50,7 +54,9 @@ export default ({
           nameOfAdventure:"",
           adventure:{ id:0,realName:"", nameOfAdventure:"",maxNumberOfPeople:0,instructorBiografy:"",promoDescription:"",fishingEquipment:"",cancelationType:"",rules:"",address: {  street:"",number:"",city:"",country:""} 
             ,price:0, grade:0},
-          additionalSetting: {name:"", price:0.0, id:0}
+          additionalSetting: {name:"", price:0.0, id:0},
+          additionalServices:"",
+          additionalService:{name:"",price:0.0}
         }
     },
     methods: {
@@ -62,15 +68,28 @@ export default ({
            const data1 = await res1.json();
       return data1;
         },
+        async AddService() {
+          localStorage.setItem("nameOfAdventure",this.nameOfAdventure);
+          this.$router.push({ name: "AddService" });
+        },
         async AddAction() {
           localStorage.setItem("nameOfAdventure",this.nameOfAdventure);
           this.$router.push({ name: "CreateAction" });
 
-        }
+        },
+            async getAdditionalServices() {
+              const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch("http://localhost:8081/api/additionalService/servicess/"+this.nameOfAdventure,{headers});
+      const data = await res.json();
+      return data;
+    },
     },
     async created() {
         this.nameOfAdventure = localStorage.getItem("nameOfAdventure");
         this.adventure =  await this.getAdventuree();
+         this.additionalServices = await this.getAdditionalServices();
         console.log(this.adventure.nameOfAdventure)
     } 
 })

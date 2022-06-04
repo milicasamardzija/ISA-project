@@ -6,6 +6,15 @@ public class AdditionalServiceDTO {
     public String name;
     public double price;
     public int id;
+    public String nameOfAdventure;
+
+    public String getNameOfAdventure() {
+        return nameOfAdventure;
+    }
+
+    public void setNameOfAdventure(String nameOfAdventure) {
+        this.nameOfAdventure = nameOfAdventure;
+    }
 
     public String getName() {
         return name;
@@ -40,6 +49,7 @@ public class AdditionalServiceDTO {
         this.name = a.getName();
         this.price = a.getPrice();
         this.id =a.getId();
+
     }
     public AdditionalServiceDTO(){}
 }

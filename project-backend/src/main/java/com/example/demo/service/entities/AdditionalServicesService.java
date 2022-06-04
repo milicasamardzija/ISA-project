@@ -1,6 +1,8 @@
 package com.example.demo.service.entities;
 
+import com.example.demo.dto.entities.AdditionalServiceDTO;
 import com.example.demo.model.entities.AdditionalService;
+import com.example.demo.model.entities.EntityClass;
 import com.example.demo.repository.entities.AdditionalServicesRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,12 @@ import java.util.List;
 public class AdditionalServicesService {
 
     private AdditionalServicesRepository additionalServicesRepository;
+    private EntityService entityService;
 
-    public AdditionalServicesService(AdditionalServicesRepository repo){
+    public AdditionalServicesService(EntityService entityService,AdditionalServicesRepository repo){
 
         this.additionalServicesRepository = repo;
+        this.entityService=entityService;
     }
 
     public List<AdditionalService> saveAll(List<AdditionalService> services ){
@@ -40,8 +44,22 @@ public class AdditionalServicesService {
     public void deleteById(int id) {
         this.additionalServicesRepository.deleteById(id);
     }
-    public AdditionalService save(AdditionalService additionalService) {
-        return this.additionalServicesRepository.save(additionalService);
+
+
+
+    public AdditionalService save(AdditionalServiceDTO additionalServiceDTO) {
+        EntityClass e = this.entityService.findByName(additionalServiceDTO.getNameOfAdventure());
+        List<AdditionalService> list = this.additionalServicesRepository.findAll();
+        System.out.print("Velicina liste je "+list.size());
+        int id = list.size()+10;
+        System.out.print(" id ce biti  "+id);
+        AdditionalService as = new AdditionalService();
+        as.setId(id);
+        as.setEntities(e);
+        as.setName(additionalServiceDTO.getName());
+        as.setPrice(additionalServiceDTO.getPrice());
+
+        return this.additionalServicesRepository.save(as);
     }
 
     public List<AdditionalService> getAll(){
