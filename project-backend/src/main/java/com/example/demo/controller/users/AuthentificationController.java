@@ -82,13 +82,16 @@ public class AuthentificationController {
     public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) throws InterruptedException {
         User existUser = this.userService.findByEmail(userRequest.getEmail());
         User user = null;
+        Client client = null;
        if (existUser != null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
             if (userRequest.getRole().equals("ROLE_CLIENT")) {
-                user = this.userService.saveClient(userRequest);
-                emailService.sendEmailForUserAuthentication(user);
+                System.out.print("HHHA");
+                this.clientService.saveClient(userRequest);
+                System.out.print("HHHAqqq");
+                //emailService.sendEmailForUserAuthentication(client);
             }
             if (userRequest.getRole().equals("ROLE_ADMIN") || userRequest.getRole().equals("ROLE_PREDEF_ADMIN")) {
                 //user = this.userService.saveAdmin(userRequest);

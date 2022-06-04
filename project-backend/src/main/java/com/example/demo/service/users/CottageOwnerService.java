@@ -1,12 +1,10 @@
 package com.example.demo.service.users;
 
-import com.example.demo.dto.enums.Role;
+import com.example.demo.enums.Role;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Cottage;
-import com.example.demo.model.users.Client;
 import com.example.demo.model.users.CottageOwner;
-import com.example.demo.model.users.Instructor;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.EntityRepository;
 import com.example.demo.repository.users.CottageOwnerRepository;
@@ -14,7 +12,6 @@ import com.example.demo.service.entities.AddressService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

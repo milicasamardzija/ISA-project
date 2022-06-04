@@ -1,6 +1,6 @@
 package com.example.demo.model.users;
 
-import com.example.demo.dto.enums.Role;
+import com.example.demo.enums.Role;
 import com.example.demo.model.entities.Address;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

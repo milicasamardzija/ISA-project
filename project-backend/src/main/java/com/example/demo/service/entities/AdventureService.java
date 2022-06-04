@@ -1,16 +1,13 @@
 package com.example.demo.service.entities;
 
-import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.AdventureHelpDTO;
 import com.example.demo.dto.entities.SearchDTO;
-import com.example.demo.dto.enums.CancelationType;
+import com.example.demo.enums.CancelationType;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.dto.business.ReservationSearchDTO;
 import com.example.demo.model.business.ReservedTerm;
-import com.example.demo.model.entities.Adventure;
-import com.example.demo.model.entities.Boat;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ReservationRepository;

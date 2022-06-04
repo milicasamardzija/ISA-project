@@ -2,7 +2,7 @@ package com.example.demo.service.users;
 
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserRequest;
-import com.example.demo.dto.enums.Role;
+import com.example.demo.enums.Role;
 
 import com.example.demo.model.business.Complaint;
 import com.example.demo.model.business.Evaluate;
@@ -12,13 +12,13 @@ import com.example.demo.model.users.Administrator;
 import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.EntityRepository;
+import com.example.demo.repository.users.ClientRepository;
 import com.example.demo.repository.users.UserRepository;
 import com.example.demo.service.business.ComplaintService;
 import com.example.demo.service.business.EvaluateService;
 import com.example.demo.service.business.ReservationService;
 import com.example.demo.service.business.ReservedTermService;
 import com.example.demo.service.entities.AddressService;
-import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +38,9 @@ public class UserService {
     private ReservationService reservationService;
     private EntityRepository entityRepository;
     private ReservedTermService reservedTermService;
+    private ClientRepository clientRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AddressService addressService, RoleService roleService, ComplaintService complaintService,ReservationService reservationService,EvaluateService evaluateService, EntityRepository entityRepository,ReservedTermService reservedTermService) {
+    public UserService(ClientRepository clientRepository,UserRepository userRepository, PasswordEncoder passwordEncoder, AddressService addressService, RoleService roleService, ComplaintService complaintService,ReservationService reservationService,EvaluateService evaluateService, EntityRepository entityRepository,ReservedTermService reservedTermService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.addressService = addressService;
@@ -49,6 +50,7 @@ public class UserService {
         this.reservationService = reservationService;
         this.entityRepository = entityRepository;
         this.reservedTermService = reservedTermService;
+        this.clientRepository=clientRepository;
     }
 
     public User findById(int id) {
@@ -209,7 +211,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
-    public User saveClient(UserRequest userRequest){
+    public Client saveClient(UserRequest userRequest){
         Client u = new Client();
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         u.setName(userRequest.getFirstname());
@@ -229,8 +231,9 @@ public class UserService {
         u.setPenals(0);
         u.setPoents(0);
         u.setAddress(addressService.save(userRequest.getAddress()));
-        User ret =  this.userRepository.save(u);
-        return ret;
+        System.out.print("burek");
+        this.clientRepository.save(u);
+        return u;
     }
 
     public void deleteByUserEmail(String userEmail) {

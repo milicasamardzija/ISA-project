@@ -4,8 +4,8 @@ package com.example.demo.model.entities;
 import javax.persistence.*;
 
 import com.example.demo.dto.entities.BoatDTO;
-import com.example.demo.dto.enums.BoatType;
-import com.example.demo.dto.enums.CancelationType;
+import com.example.demo.enums.BoatType;
+import com.example.demo.enums.CancelationType;
 import com.example.demo.model.users.BoatOwner;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

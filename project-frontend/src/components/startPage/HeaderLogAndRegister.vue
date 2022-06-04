@@ -354,6 +354,7 @@ export default {
       }) 
     },
     async register() {
+      console.log(this.newUser.role);
       if ( !this.validFirstname()) {
         new Swal({
              title:"Nije uspesno",

@@ -3,7 +3,6 @@ package com.example.demo.service.business;
 import com.example.demo.dto.business.DateReportDTO;
 import com.example.demo.dto.business.InformationsForChart;
 import com.example.demo.dto.business.ReportOwnerDTO;
-import com.example.demo.dto.enums.EntityType;
 import com.example.demo.model.business.ReportForOwner;
 import com.example.demo.model.business.ReportOwner;
 import com.example.demo.model.business.Reservation;

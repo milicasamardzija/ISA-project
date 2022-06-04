@@ -1,7 +1,7 @@
 package com.example.demo.dto.entities;
 
-import com.example.demo.dto.enums.BoatType;
-import com.example.demo.dto.enums.CancelationType;
+import com.example.demo.enums.BoatType;
+import com.example.demo.enums.CancelationType;
 import com.example.demo.model.entities.Boat;
 import com.example.demo.model.entities.Image;
 import com.example.demo.model.entities.Address;

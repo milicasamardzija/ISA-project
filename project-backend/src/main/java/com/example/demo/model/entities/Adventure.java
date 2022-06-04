@@ -2,17 +2,9 @@ package com.example.demo.model.entities;
 
 import javax.persistence.*;
 
-import com.example.demo.dto.enums.CancelationType;
-import com.example.demo.model.business.ReservationServices;
-import com.example.demo.model.users.CottageOwner;
+import com.example.demo.enums.CancelationType;
 import com.example.demo.model.users.Instructor;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name="adventure")

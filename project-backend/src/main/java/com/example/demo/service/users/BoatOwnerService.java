@@ -1,19 +1,16 @@
 package com.example.demo.service.users;
 
-import com.example.demo.dto.enums.Role;
+import com.example.demo.enums.Role;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Boat;
-import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.users.BoatOwner;
-import com.example.demo.model.users.Instructor;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.users.BoatOwnerRepository;
 import com.example.demo.service.entities.AddressService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 @Service

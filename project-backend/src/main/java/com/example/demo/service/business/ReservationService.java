@@ -2,12 +2,11 @@ package com.example.demo.service.business;
 
 import com.example.demo.dto.business.*;
 import com.example.demo.dto.entities.AdditionalServiceDTO;
-import com.example.demo.dto.enums.EntityType;
+import com.example.demo.enums.EntityType;
 import com.example.demo.dto.users.ClientProfileDTO;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.business.ReservationServices;
 import com.example.demo.model.business.ReservedTerm;
-import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
@@ -23,13 +22,9 @@ import com.example.demo.service.users.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.dao.PessimisticLockingFailureException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.InvocationTargetException;
-import java.time.DateTimeException;
 import java.util.*;
 
 @Service

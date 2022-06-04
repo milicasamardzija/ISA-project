@@ -1,6 +1,6 @@
 package com.example.demo.dto.entities;
 
-import com.example.demo.dto.enums.EntityType;
+import com.example.demo.enums.EntityType;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.entities.Image;
 import com.example.demo.model.entities.Address;

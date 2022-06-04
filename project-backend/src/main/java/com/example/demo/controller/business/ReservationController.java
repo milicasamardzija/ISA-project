@@ -7,29 +7,23 @@ import com.example.demo.dto.business.ReservationNewDTO;
 import com.example.demo.dto.business.ReservationnDTO;
 
 import com.example.demo.dto.entities.AdditionalServiceDTO;
-import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.EntityDTO;
-import com.example.demo.dto.enums.EntityType;
+import com.example.demo.enums.EntityType;
 import com.example.demo.dto.users.ClientProfileDTO;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.business.ReservationServices;
 import com.example.demo.model.business.ReservedTerm;
 import com.example.demo.model.entities.AdditionalService;
-import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
-import com.example.demo.model.users.CottageOwner;
 import com.example.demo.model.users.User;
 import com.example.demo.service.business.ReservationService;
 import com.example.demo.service.business.ReservationServicesService;
 import com.example.demo.service.business.ReservedTermService;
 import com.example.demo.service.entities.AdditionalServicesService;
-import com.example.demo.service.entities.AdventureService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.CottageOwnerService;
 import com.example.demo.service.users.ClientService;
-import net.bytebuddy.implementation.bytecode.StackSize;
-import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,18 +33,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.time.Duration;
-import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 

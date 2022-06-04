@@ -1,4 +1,4 @@
-package com.example.demo.dto.enums;
+package com.example.demo.enums;
 
 public enum CancelationType {
 	BESPLATNO,

@@ -1,12 +1,10 @@
 package com.example.demo.service.users;
 
-import com.example.demo.dto.enums.Role;
+import com.example.demo.enums.Role;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.users.Administrator;
-import com.example.demo.model.users.CottageOwner;
 import com.example.demo.repository.users.AdministratorRepository;
-import com.example.demo.repository.users.CottageOwnerRepository;
 import com.example.demo.service.entities.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
