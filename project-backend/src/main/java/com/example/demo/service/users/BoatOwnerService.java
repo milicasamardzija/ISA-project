@@ -33,24 +33,24 @@ public class BoatOwnerService {
         this.roleService=roleService;
     }
 
-    public BoatOwner save(User boatOwner){
-        BoatOwner owner= new BoatOwner();
-        owner.setName(boatOwner.getName());
-        owner.setSurname(boatOwner.getSurname());
-        owner.setAddress(boatOwner.getAddress());
-        owner.setBoatList(new ArrayList<>()); //inicijalno prazna
-//        owner.setPassword(passwordEncoder.encode(boatOwner.getPassword()));
-        owner.setPassword(boatOwner.getPassword());
-        owner.setEmail(boatOwner.getEmail());
-        owner.setTelephone(boatOwner.getTelephone());
-        owner.setRole(boatOwner.getRole());
-        owner.setEnabled(true);
-        owner.setMust_change_password(false); //Cemu?
-        owner.setLastPasswordResetDate(null); //???
-        owner.setReasonForRegistration(boatOwner.getReasonForRegistration());
-
-       return this.boatOwnerRepository.save(owner);
-    }
+//    public BoatOwner save(User boatOwner){
+//        BoatOwner owner= new BoatOwner();
+//        owner.setName(boatOwner.getName());
+//        owner.setSurname(boatOwner.getSurname());
+//        owner.setAddress(boatOwner.getAddress());
+//        owner.setBoatList(new ArrayList<>()); //inicijalno prazna
+////        owner.setPassword(passwordEncoder.encode(boatOwner.getPassword()));
+//        owner.setPassword(boatOwner.getPassword());
+//        owner.setEmail(boatOwner.getEmail());
+//        owner.setTelephone(boatOwner.getTelephone());
+//        owner.setRole(boatOwner.getRole());
+//        owner.setEnabled(true);
+//        owner.setMust_change_password(false); //Cemu?
+//        owner.setLastPasswordResetDate(null); //???
+//        owner.setReasonForRegistration(boatOwner.getReasonForRegistration());
+//
+//       return this.boatOwnerRepository.save(owner);
+//    }
 
     public  BoatOwner findById(int id){
        return this.boatOwnerRepository.findById(id);
@@ -101,5 +101,9 @@ public class BoatOwnerService {
 
         this.boatOwnerRepository.save(u);
 
+    }
+
+    public void save(BoatOwner owner){
+        this.boatOwnerRepository.save(owner);
     }
 }

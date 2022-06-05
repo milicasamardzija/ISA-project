@@ -74,6 +74,7 @@
               <p>Broj motora: {{boat.motorNumber}}</p>
               <p>Snaga: {{boat.power}}</p>
               <p>Duzina: {{boat.lenght}}</p>
+               <p>Pecaroska oprema: {{boat.fishingEquipment}}</p>
             </div>
 
             <div 

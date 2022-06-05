@@ -299,13 +299,13 @@ public class BoatService {
         Boat boat = this.boatRepository.findBoatWithServices(id);
         BoatOwner owner = this.findOwnerForBoat(id);
         BoatOwner ownerWithBoats = boatOwnerService.getOwnerWithBoats(owner.getId()); //zasto vrati samo 1
+        List<Boat> ownerBoats = ownerWithBoats.getBoatList();
 
-
-        for(Boat c : ownerWithBoats.getBoatList()){
+        for(Boat c : ownerBoats){
             if(c.getId() == id) {
                 ownerWithBoats.getBoatList().remove(c);
                 boatOwnerService.save(ownerWithBoats);
-                break;
+    break;
             }
         }
         //brisem sve servise u kom je boat id strani kljuc

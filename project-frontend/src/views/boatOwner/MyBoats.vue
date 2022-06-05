@@ -128,7 +128,7 @@
                 >
               </div>
 
-              <button type="submit" class="btn btn-success btn-block" @click="deleteBoat()">
+              <button type="submit" class="btn btn-success btn-block">
                 <span></span> Potvrdi
               </button>
             </form>

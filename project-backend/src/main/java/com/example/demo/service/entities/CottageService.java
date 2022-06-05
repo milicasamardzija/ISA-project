@@ -262,15 +262,15 @@ public class CottageService {
         for(Cottage c: cottage.getCottageOwner().getCottageList()){
             if(c.getId() == id) {
                 c.getCottageOwner().getCottageList().remove(c);
-                for(AdditionalService a : c.getAdditionalServices() ){
-                    if(a.getEntities().getId() == id ){
-                        aditionalServicesService.deleteById(a.getId()); //oni su one to many, tako da se brisu odmah
+                if(c.getAdditionalServices().size() != 0) {
+                    for (AdditionalService a : c.getAdditionalServices()) {
+                        if (a.getEntities().getId() == id) {
+                            aditionalServicesService.deleteById(a.getId()); //oni su one to many, tako da se brisu odmah
+                        }
                     }
                 }
 
-
                 cottageOwnerRepository.save(owner);
-                break;
             }
         }
 
