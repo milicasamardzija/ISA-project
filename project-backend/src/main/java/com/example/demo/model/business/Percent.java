@@ -6,8 +6,7 @@ import javax.persistence.*;
 @Table(name = "percent")
 public class Percent {
     @Id
-    @SequenceGenerator(name = "PercentGen", sequenceName = "PercentGen", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PercentGen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", unique=true, nullable=false)
     private int id;
 

@@ -19,15 +19,15 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name="entities")
 public class EntityClass {
 	@Id
-	@SequenceGenerator(name = "mySeqGenEntity", sequenceName = "mySeqEntity", initialValue = 100, allocationSize = 1)
+	@SequenceGenerator(name = "mySeqGenEntity", sequenceName = "mySeqEntity", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenEntity")
 	@Column(name="id", unique=true, nullable=false)
 	private Integer id;
 	
 	@Column(name="name", nullable=false)
 	private String name;
-	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE )
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Address address;
 	

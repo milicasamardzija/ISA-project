@@ -8,8 +8,7 @@ import javax.persistence.*;
 @Entity
 public class Evaluate {
     @Id
-    @SequenceGenerator(name = "EvaluateGen", sequenceName = "EvaluateGen", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EvaluateGen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column

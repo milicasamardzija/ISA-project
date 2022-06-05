@@ -20,8 +20,6 @@ public class AdventureDTO {
 
     private String promoDescription;
 
-    private Set<String> images;
-
     private String rules;
 
     private int price;
@@ -37,6 +35,8 @@ public class AdventureDTO {
     private CancelationType cancelationType;
 
     private List<AdditionalServiceDTO> additionalServices;
+
+    private Set<String> images;
 
 
     public List<AdditionalServiceDTO> getAdditionalServices() {
@@ -65,6 +65,7 @@ public class AdventureDTO {
         this.fishingEquipment = adventure.getFishingEquipment();
         this.cancelationType = adventure.getCancelationType();
         this.nameOfAdventure =adventure.getNameOfAdventure();
+        this.images = adventure.getImages();
     }
 
     public Integer getId() {

@@ -73,8 +73,12 @@ public class UserController {
         List<User> users = userService.findAll();
         for(User u : users) {
             if (u.getId()== deleteId) {
-                userService.deleteUserById(u.getId());
-                return new ResponseEntity<>(HttpStatus.OK);
+                Boolean is_true= userService.deleteUserById(u.getId());
+                if (is_true) {
+                    this.userService.deleteById(u);
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }else
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
         }

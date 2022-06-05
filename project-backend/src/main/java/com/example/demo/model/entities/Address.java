@@ -5,10 +5,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "address")
 public class Address {
-	
+
 	@Id
-	@SequenceGenerator(name = "addressGen", sequenceName = "addressGen", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressGen")
+	@SequenceGenerator(name = "addressSeqGen", sequenceName = "addressSeqGen", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressSeqGen")
 	@Column(name="id", unique=true, nullable=false)
 	private int id;
 	@Column(name = "country", nullable = false)

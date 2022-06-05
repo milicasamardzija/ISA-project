@@ -10,32 +10,32 @@
         <tr>
           <td>
                 <label ><span class="glyphicon glyphicon-eye-open"></span> Naziv avanture</label></td>
-                <td> <input class="form-control"  id="psw" v-model="nameOfAdventure"/></td></tr>
+                <td> <input class="form-control"  id="psw" v-model="adventure.nameOfAdventure"/></td></tr>
 
        <tr>
          <td>
            <label for="psw"><span class="glyphicon glyphicon-eye-open"></span>Maksimalan broj ljudi </label></td>
-          <td><input  type="number" class="form-control" id="psw" v-model="maxNumberOfPeople"/></td></tr>
+          <td><input  type="number" class="form-control" id="psw" v-model="adventure.maxNumberOfPeople"/></td></tr>
   
        <tr>
           <td>
               <label ><span class="glyphicon glyphicon-eye-open"></span> Biografija instruktora</label></td>
-          <td> <input class="form-control" id="psw" v-model="instructorBiografy" /></td></tr>
+          <td> <input class="form-control" id="psw" v-model="adventure.instructorBiografy" /></td></tr>
 
        <tr>
           <td>
                 <label ><span class="glyphicon glyphicon-eye-open"></span> Opis usluge</label></td>
-          <td> <input class="form-control" id="psw" v-model="promoDescription"/></td></tr>
+          <td> <input class="form-control" id="psw" v-model="adventure.promoDescription"/></td></tr>
 
         <tr>
           <td>
                 <label ><span class="glyphicon glyphicon-eye-open"></span> Potrebna oprema</label></td>
-          <td> <input class="form-control" id="psw"  v-model="fishingEquipment"/></td></tr>
+          <td> <input class="form-control" id="psw"  v-model="adventure.fishingEquipment"/></td></tr>
 
             <tr>
                 <td><label ><span class="glyphicon glyphicon-eye-open"></span> Izaberi uslov otkaza rezervacije</label
                 ></td>
-                <td><select class="form-control" v-model="cancelationType">
+                <td><select class="form-control" v-model="adventure.cancelationType">
                     <option value="BESPLATNO">Besplatno</option>
                     <option value="SA_PROCENTOM">Sa procentom</option>
                   </select></td>
@@ -47,21 +47,30 @@
                 <td> <input
                   class="form-control"
                   id="psw"
-                  v-model="rules" 
+                  v-model="adventure.rules" 
                 /></td></tr>
 
         <tr>
           <td>
                 <label ><span class="glyphicon glyphicon-eye-open"></span> Adresa</label></td>
-          <td> <input class="form-control" id="psw"  v-model="street" placeholder="Ulica"/></td>
-          <td> <input class="form-control" id="psw"  v-model="number"  placeholder="Broj"/></td>
+          <td> <input class="form-control" id="psw"  v-model="adventure.street" placeholder="Ulica"/></td>
+          <td> <input class="form-control" id="psw"  v-model="adventure.number"  placeholder="Broj"/></td>
           </tr>
         <tr>
           <td></td>
-          <td> <input class="form-control" id="psw"  v-model="city"  placeholder="Grad"/></td>
-          <td> <input class="form-control" id="psw"  v-model="country"  placeholder="Drzava"/></td>
+          <td> <input class="form-control" id="psw"  v-model="adventure.city"  placeholder="Grad"/></td>
+          <td> <input class="form-control" id="psw"  v-model="adventure.country"  placeholder="Drzava"/></td>
           </tr>
-
+          <tr>
+                   <div class="upload-images">
+                    <input type="file"  @change="imageAdded"/>
+                </div> <br/>
+                <div v-if="imagesFrontend" class="images-preview">
+                        <div v-for="image in imagesFrontend" :key="image">
+                            <img :src="image" />
+                        </div>
+                </div>
+          </tr>
               <tr><td><button class="btn btn-success btn-block" style="width:100px;margin-top:20px" @click="GoBack()">
                 <span></span> Odustani
               </button></td><td><button type="submit" class="btn btn-success btn-block" style="width:100px;margin-top:20px" @click="AddAdventure()">
@@ -86,7 +95,10 @@ export default ({
     },
     data() {
         return {
+            imagesFrontend: [],
+            images: [], 
             adventures:"",
+            adventure:{
             nameOfAdventure:"",
             maxNumberOfPeople:0,
             instructorBiografy:"",
@@ -97,10 +109,30 @@ export default ({
             street:"",
             number:"",
             city:"",
-            country:""
+            country:"",
+            images:[]
+            }
             }
     },
     methods: {
+                     imageAdded(e) {
+           
+                const file = e.target.files[0];  
+                console.log(file)        
+                this.createBase64Image(file);
+                this.imagesFrontend.push(URL.createObjectURL(file));
+            },
+            createBase64Image(file){
+                const reader= new FileReader();
+            
+                reader.onload = (e) =>{
+                    let img = e.target.result;
+                     console.log(img)  
+                    this.adventure.images.push(img);
+                }
+                reader.readAsDataURL(file);
+            }, 
+
         async GoBack() {
             this.$router.push({ name: "MyService" });
         },
@@ -109,25 +141,8 @@ export default ({
         const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.post("http://localhost:8081/api/adventures/addAdventure",{ 
-        nameOfAdventure : this.nameOfAdventure, 
-        maxNumberOfPeople : this.maxNumberOfPeople, 
-        instructorBiografy : this.instructorBiografy, 
-        promoDescription : this.promoDescription, 
-        fishingEquipment : this.fishingEquipment, 
-        cancelationType : this.cancelationType,
-        rules: this.rules,
-        street: this.street,
-        number: this.number,
-        city: this.city,
-        country: this.country
-       },{
-        headers
-      })
-      .then (response => { 
-        console.log(response);
-        this.$router.push({ name: "AddAdventure" });
-      }) 
+      axios.post("http://localhost:8081/api/adventures/newAdventure", this.adventure,  {headers}).then( response => response.json());
+  this.$router.push({name: "AddAdventure"});
 
         alert("Dodali ste avanturu!")
       this.$router.go(0);

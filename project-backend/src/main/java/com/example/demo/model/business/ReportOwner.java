@@ -9,10 +9,8 @@ import javax.persistence.*;
 @Entity
 @Table(name="report_owner")
 public class ReportOwner {
-
     @Id
-    @SequenceGenerator(name = "ReportOwnerGen", sequenceName = "ReportOwnerGen", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ReportOwnerGen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", unique=true, nullable=false)
     private  int id;
 

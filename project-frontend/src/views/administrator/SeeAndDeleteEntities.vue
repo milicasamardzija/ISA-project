@@ -194,12 +194,13 @@ export default {
         this.$router.push({ name: "SeeAndDeleteEntities" });
          this.$router.go(0); 
       }).catch(function (error) {
+        if(error.response.status == 500) {
             new Swal({
              title:"Nije uspesno",
              type: "warning",
              text:'Ovaj entitet se koristi u sistemu! Nemoguce ga je obrisati!',
            });
-                 
+                 }
         }); 
      
     },
@@ -212,7 +213,22 @@ export default {
         console.log(response);
         this.$router.push({ name: "SeeAndDeleteEntities" });
         this.$router.go(0); 
-      })  
+      }).catch(function (error) {
+        if(error.response.status == 500) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Ovaj user se koristi u sistemu! Nemoguce ga je obrisati!',
+           });
+                 }else if (error.response.status == 400) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Ovaj user se koristi u sistemu! Nemoguce ga je obrisati!',
+           });
+
+                 }
+        });   
       return new Swal({
              title:"Uspesno",
              type: "success",

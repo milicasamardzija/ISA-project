@@ -85,34 +85,38 @@ public class UserService {
         this.userRepository.delete(user);
     }
 
-    public void deleteUserById(int id){
+    public Boolean deleteUserById(int id){
         List<Reservation> reservations = reservationService.findAll();
         List<Complaint> complaints = complaintService.findAll();
         List<Evaluate> evaluates = evaluateService.findAll();
 
         for(Reservation r : reservations) {
             if (r.getClient().getId() == id) {
-                reservationService.deleteById(r.getId());
+                //reservationService.deleteById(r.getId());
+                return false;
             }
         }
         for(Complaint c : complaints) {
             if (c.getUserWhoSendsComplaint().getId() == id) {
-                complaintService.deleteById(c.getId());
+                return false;
+                // complaintService.deleteById(c.getId());
             }
             if (c.getUser().getId() == id) {
-                complaintService.deleteById(c.getId());
+                return false;
+                //complaintService.deleteById(c.getId());
             }
         }
         for(Evaluate e : evaluates) {
             if (e.getUser().getId() == id) {
-                evaluateService.deleteById(e.getId());
+                return false;
+                // evaluateService.deleteById(e.getId());
             }
             if (e.getUserWhoSendsComplaint().getId() == id) {
-                evaluateService.deleteById(e.getId());
+               // evaluateService.deleteById(e.getId());
+                return false;
             }
         }
-        User u = this.userRepository.findById(id);
-        this.userRepository.delete(u);
+        return true;
     }
 
     public boolean deleteEntityById(int id) {
