@@ -30,10 +30,13 @@ public class UserServiceTest {
     @Test
     public void testUpdate(){
         User userUpdate = new User("Mira",DB_SURNAME, DB_EMAIL, DB_PASSWORD, DB_TELEPHONE, new Address());
+
         when(userRepositoryMock.findById(1)).thenReturn(new User(DB_NAME,DB_SURNAME, DB_EMAIL, DB_PASSWORD, DB_TELEPHONE, new Address()));
         User user = userService.update(new UpdateUserDTO(userUpdate));
+
         assertThat(user).isNotNull();
         assertEquals(user.getName(), "Mira");
+        //Boze pomozi
     }
 
 }
