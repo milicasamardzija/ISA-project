@@ -81,12 +81,12 @@ export default {
 
   methods: {
     async fetchCottages() {
-      const res = await fetch("http://localhost:8081/api/cottages");
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+ "/api/cottages");
       const data = await res.json();
       return data;
     },
     async search() {
-      const res = await fetch("http://localhost:8081/api/cottages/search", {
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL + "/api/cottages/search", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

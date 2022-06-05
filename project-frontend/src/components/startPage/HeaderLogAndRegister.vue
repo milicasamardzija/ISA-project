@@ -293,7 +293,7 @@ export default {
       const headers ={
         "Content-type": "application/json",
       }; 
-      axios.post("http://localhost:8081/api/auth/login",{ email: this.email, password: this.password }, {headers})
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/auth/login",{ email: this.email, password: this.password }, {headers})
       .then (response => {
         if (response.data.enabled === true){
           console.log(response.data.role)
@@ -394,7 +394,7 @@ export default {
            });  
            }
       else{
-      axios.post("http://localhost:8081/api/auth/signup",{ firstname : this.newUser.firstname, 
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/auth/signup",{ firstname : this.newUser.firstname, 
         lastname : this.newUser.lastname,
         role: this.newUser.role,
         reasonForRegistration: this.newUser.reasonForRegistration,
@@ -409,7 +409,7 @@ export default {
        })
        .then(response => { 
        console.log(response.status);
-       this.$router.push({ name: "BoatsStartPage" });
+     //  this.$router.push({ name: "BoatsStartPage" });
       }) 
             .catch( error => {
         console.log(error)
@@ -419,7 +419,7 @@ export default {
              text:'Vec postoji user sa istim email-om!'
            });
       }) 
-             this.$router.go(0);
+          //   this.$router.go(0);
     }
     },
         validFirstname() {
