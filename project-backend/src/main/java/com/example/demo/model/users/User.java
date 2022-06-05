@@ -94,7 +94,6 @@ public class User implements UserDetails {
 		this.enabled = true;
 		this.address = address;
 	}
-
 	public boolean isMust_change_password() {
 		return must_change_password;
 	}

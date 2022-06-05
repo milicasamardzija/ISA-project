@@ -29,6 +29,7 @@ public class UpdateUserDTO {
         this.telephone = user.getTelephone();
         this.role = user.getRole().getName();
     }
+
     public int getId() {
         return id;
     }
