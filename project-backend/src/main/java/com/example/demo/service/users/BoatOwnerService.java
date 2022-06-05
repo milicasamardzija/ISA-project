@@ -94,7 +94,7 @@ public class BoatOwnerService {
         }
 
         u.setGrade(0);
-        Address a = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber());
+        Address a = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber(),0,0);
         this.addressService.save(a);
         u.setAddress(a);
         System.out.print("USPELA SAM HEHE");

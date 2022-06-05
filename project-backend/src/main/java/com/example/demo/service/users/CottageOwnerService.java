@@ -88,7 +88,7 @@ public class CottageOwnerService {
         }
         System.out.print("USPELA");
         u.setGrade(0);
-        Address a = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber());
+        Address a = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber(), 0, 0);
         this.addressService.save(a);
         System.out.print("USPELA SAM ");
         u.setAddress(a);

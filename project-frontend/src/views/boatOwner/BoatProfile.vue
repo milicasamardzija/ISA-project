@@ -58,17 +58,55 @@
           </label>
           <h4> Pravila ponasanja</h4>
           <label> {{boat.rules}} </label>
+</div>
+<div class="col"> 
+               <div style="width: 20rem; height: 10%">
+  <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:400px">
+
+    <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" 
+    :projection="projection" />
+
+           <ol-tile-layer>
+          <ol-source-osm />
+          </ol-tile-layer>
+
+           <ol-vector-layer>
+      
+        <ol-source-vector>
+            <ol-feature>
+                <ol-geom-multi-point :coordinates="[[this.boat.address.longitude,this.boat.address.latitude]]"></ol-geom-multi-point>
+                   <!-- <ol-geom-multi-point :coordinates="[[20,40]]"></ol-geom-multi-point> -->
+                <ol-style>
+                    <ol-style-circle :radius="radius">
+                        <ol-style-fill :color="fillColor"></ol-style-fill>
+                        <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
+                    </ol-style-circle>
+                </ol-style>
+            </ol-feature>
+
+        </ol-source-vector>
+    </ol-vector-layer>
+    
+
+          </ol-map>
         </div>
 
-        <div class="column" style="padding-left: 10rem">
+</div>
+
+        
+
+  
+
+        <!-- <div class="column" style="padding-left: 10rem"> -->
+          <div class="column" style="padding-left: -10rem">
           <h4>Informacije</h4>
-          <div class="row" style="height: 25rem; background: whitesmoke">
+          <div class="row" style="height: 22rem; background: whitesmoke">
             <div class="column" style="width: 20rem">
               <p>Cena: {{boat.price}}</p>
               <p>Ocena broda: {{boat.grade}}</p>
               <p v-if="this.role === 'ROLE_CLIENT'">Ocena vlasnika broda: {{this.ownerGrade}}</p>
               <p>Maksimalan broj osoba: {{capacity}}</p>
-              <p>Tip broda: {{boat.typeBoat}}</p>
+              <!-- <p>Tip broda: {{boat.typeBoat}}</p> -->
               <p>Navigaciona oprema: {{boat.navigationEquipment}}</p>
               <p>Max brzina: {{boat.maxSpeed}}</p>
               <p>Broj motora: {{boat.motorNumber}}</p>
@@ -93,6 +131,11 @@
          
           </div>
         </div>
+      <div class="column" > 
+
+
+        </div>
+
       </div>
     </div>
   </div>
@@ -360,7 +403,7 @@ import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegiste
 import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue';
 import axios from "axios"
 import Swal from "sweetalert2"
-
+import {ref} from 'vue'
 
 export default {
   name: "BoatProfile",
@@ -373,6 +416,19 @@ export default {
     NavBarStartPage
   },
   data() {
+
+   const center = ref([20,44 ])
+        const projection = ref('EPSG:4326')
+        const zoom = ref(8)
+        const rotation = ref(0)
+       
+
+          const radius = ref(2)
+        const strokeWidth = ref(10)
+        const strokeColor = ref('red')
+        const fillColor = ref('white')
+     
+
     return {
       role:"",
       id: "",
@@ -384,6 +440,19 @@ export default {
       ownerGrade: 0,
           client: "",
             reservation: { dateStart: "", timeStart: "", price: 0, duration: 0, entityId: 0, additionalServices:[], clientId: 0, type: 0 },
+    
+    
+      //mapa
+      center,
+            projection,
+            zoom,
+            rotation,
+            radius,
+            strokeWidth,
+            strokeColor,
+            fillColor
+    
+    
     };
   },
   async created() {
@@ -573,6 +642,7 @@ export default {
 .aboutCottage {
   margin-top: 3.5em;
   height: 35em;
+  width: 100%
 }
 .column {
   float: left;
@@ -582,7 +652,7 @@ export default {
 }
 .columnAbout {
   float: left;
-  width: 50em;
+  width: 35em;
   padding: 10px;
   height: 28em;
 }

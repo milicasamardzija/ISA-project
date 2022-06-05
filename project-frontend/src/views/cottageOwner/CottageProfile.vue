@@ -53,75 +53,6 @@
 
  
 
-<!-- 
-        <div class="column" style="width: 50rem">
-          <div class="row">
-           
-            <div class="column columnSmall" style="width:60rem; height: 14em">
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="clearfix"></div>
-            </div>
-          </div>
-          
-          <div class="row" style="height: 14em">
-            <div class="column columnSmall2" style="width: 60rem; height: 18em">
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="clearfix"></div>
-            </div>
-          </div>
-        </div> -->
       </div>
 
       <div class="row aboutCottage">
@@ -132,7 +63,39 @@
           </label>
         </div>
 
-        <div class="column" style="padding-left: 10rem">
+        <div style="width: 20%; height: 20%">
+  <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:400px">
+
+    <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" 
+    :projection="projection" />
+
+           <ol-tile-layer>
+          <ol-source-osm />
+          </ol-tile-layer>
+
+           <ol-vector-layer>
+      
+        <ol-source-vector>
+            <ol-feature>
+                <ol-geom-multi-point :coordinates="[[this.cottage.address.longitude,this.cottage.address.latitude]]"></ol-geom-multi-point>
+                   <!-- <ol-geom-multi-point :coordinates="[[20,40]]"></ol-geom-multi-point> -->
+                <ol-style>
+                    <ol-style-circle :radius="radius">
+                        <ol-style-fill :color="fillColor"></ol-style-fill>
+                        <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
+                    </ol-style-circle>
+                </ol-style>
+            </ol-feature>
+
+        </ol-source-vector>
+    </ol-vector-layer>
+    
+
+          </ol-map>
+
+        </div>
+
+        <div class="column" style="padding-left: 5rem">
           <h4>Informacije</h4>
           <div class="row" style="height: 20rem; background: whitesmoke">
             <div class="column" style="width: 20rem">
@@ -424,6 +387,7 @@ import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegiste
 import NavBarStartPage from '../../components/startPage/NavBarStartPage.vue';
 import axios from "axios"
 import Swal from "sweetalert2"
+import {ref} from 'vue'
 
 
 export default {
@@ -437,6 +401,18 @@ export default {
     NavBarStartPage
   },
   data() {
+   const center = ref([20,44 ])
+        const projection = ref('EPSG:4326')
+        const zoom = ref(8)
+        const rotation = ref(0)
+       
+
+          const radius = ref(2)
+        const strokeWidth = ref(10)
+        const strokeColor = ref('red')
+        const fillColor = ref('white')
+     
+
     return {
       role:"",
       id: "",
@@ -448,7 +424,17 @@ export default {
      reservation: { dateStart: "", timeStart: "", price: 0, duration: 0, entityId: 0, additionalServices:[], clientId: 0, type: 1 },
       owner: {},
       ownerGrade: 0,
-      client: ""
+      client: "",
+
+      //mapa
+      center,
+            projection,
+            zoom,
+            rotation,
+            radius,
+            strokeWidth,
+            strokeColor,
+            fillColor
 
     };
   },
@@ -632,6 +618,7 @@ export default {
 }
 .column {
   float: left;
+ 
   width: 43em;
   padding: 9px;
   height: 28em;
@@ -644,7 +631,7 @@ export default {
 }
 .columnAbout {
   float: left;
-  width: 50em;
+  width: 40rem;
   padding: 10px;
   height: 28em;
 }

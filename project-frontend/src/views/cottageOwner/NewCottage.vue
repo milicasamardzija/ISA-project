@@ -12,7 +12,7 @@
 
       <div class="row" style="margin-bottom: 1%">
         <!--Grid column-->
-        <div class="col-md-8 mb-md-0 mb-3">
+        <div class="col-md-7 mb-md-0 mb-3">
           <form id="contact-form" name="contact-form">
             <!--Grid row-->
             <div class="row" style="margin-bottom: 1%">
@@ -80,6 +80,52 @@
                     class="form-control"
                     placeholder="Grad"
                       v-model="cottage.address.city"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 1%">
+              <!--Grid column-->
+              <div class="col-md-2">
+                <div class="md-form mb-0">
+                  <label for="name" class=""></label>
+                </div>
+              </div>
+              <!--Grid column-->
+              <div class="col-md-3">
+                <div class="md-form mb-0">
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="drzava"
+                      v-model="cottage.address.country"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="md-form mb-2">
+                  <input
+                    type="number"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="longitude"
+                      v-model="cottage.address.longitude"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="md-form mb-0">
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="latitude"
+                      v-model="cottage.address.latitude"
                   />
                 </div>
               </div>
@@ -253,31 +299,12 @@
                 </div>
               </div>
              
-             
-               
-              <!--Grid column
-              <div class="col-md-6">
-                <div class="md-form">
-                  <textarea
-                    type="text"
-                    id="message"
-                    name="message"
-                    rows="2"
-                    class="form-control md-textarea"
-                      v-model="cottage.additionalServices"
-                  ></textarea>
-                </div>
-              </div>-->
             </div>
           </form>
         </div>
-        <!--Button inspo   <div class="text-center text-md-left">
-                <a class="btn btn-primary" onclick="document.getElementById('contact-form').submit();">Send</a>
-            </div>
-            <div class="status"></div>      -->
 
         <!--Grid column-->
-        <div class="col-md-4">
+        <div class="col-md-5">
           <div class="row">
             <!--Grid column-->
             <div class="col-md-2">
@@ -335,7 +362,40 @@
               </div>
             </div>
           </div>
-          <div class="row" style="margin-left: 20%; margin-top: 40%">
+
+       <div class="row" style="width: 100%" >
+            <!--Grid column-->
+ <div class="col-md-12">
+  <div class="map-style">
+
+    <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:400px">
+
+    <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" 
+    :projection="projection" />
+
+           <ol-tile-layer>
+          <ol-source-osm />
+          </ol-tile-layer>
+
+           <ol-vector-layer>
+        <ol-source-vector ref="vectors" >
+           <ol-interaction-draw @drawstart="drawstart" :type="drawType" :v-bind="this.cottage.address.street" >
+        </ol-interaction-draw>
+        </ol-source-vector>
+
+         <ol-style>
+        <ol-style-icon :src="markerIcon" :scale="0.2" ></ol-style-icon>
+      </ol-style>
+
+    </ol-vector-layer>
+    
+
+          </ol-map>
+        </div>
+        </div>
+          </div>
+
+               <div class="row" style="margin-left: 50%; margin-top: -10%">
             <!--Grid column-->
 
             <!--Grid column-->
@@ -347,32 +407,87 @@
               </div>
             </div>
           </div>
+   
         </div>
         <!--Grid column-->
       </div>
     </section>
   </div>
 
-  <div></div>
 </template>
 
 <script>
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import axios from 'axios';
+import markerIcon from "../../assets/logo.png"
+
+
+
 //import $ from "jquery";
+
+import {ref} from 'vue'
 
 export default {
   name: "NewCottage",
   data(){
-    return {
-      images: "", 
-       imagesFrontend: [],
-      adServ: {name:"", price: 0},
-      cottage: {id: 0, name: "",roomsNumber: 0, bedsByRoom: 0, address: { street: "", number: 0, city: "", country: "Srbija", id: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [] },
+
+
+   const center = ref([20,44 ])
+        const projection = ref('EPSG:4326')
+        const zoom = ref(8)
+        const rotation = ref(0)
+
+         const markers = ref(null);
+    const drawType = ref("Point")
+   //const drawedMarker = ref()
+    const vectors = ref([]);
+          const radius = ref(2)
+        const strokeWidth = ref(10)
+        const strokeColor = ref('red')
+        const fillColor = ref('white')
+        const coordinate = ref([20,44 ])
+
+
+
+  
+
+         const drawstart = (event) => {
+      //vectors.value.source.removeFeature(drawedMarker.value);
+      //drawedMarker.value = event.feature;
+     // this.cottage.address.street = event.feature.values.geometryChangeKey_.target.flatCoordinates[0];
+      
+     this.cottage.address.longitude = event.feature.values_.geometry.flatCoordinates[0]; //ISPISUJE
+      this.cottage.address.latitude= event.feature.values_.geometry.flatCoordinates[1];
+      console.log(event)
+
     }
 
+    return {
+      images: "", 
+      markerIcon,
+        markers,
+      drawType,
+        vectors,
+      drawstart,
+       imagesFrontend: [],
+      adServ: {name:"", price: 0},
+      cottage: {id: 0, name: "",roomsNumber: 0, bedsByRoom: 0, address: { street: "", number: 0, city: "", country: "", longitude: 0, latitude: 0,  id: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [] },
+     center,
+       projection,
+        zoom,
+       rotation,
+              radius,
+            strokeWidth,
+            strokeColor,
+            fillColor,
+            coordinate,
+
+
+            }
+
   },
+      
   
     components: {
     NavBarLogOut,
@@ -411,6 +526,7 @@ export default {
                 reader.readAsDataURL(file);
             }, 
 
+
   },
     
 
@@ -431,4 +547,13 @@ table {
         width:10%;
         height: 10%;
     }
+
+  .map-style{
+    height: 20%;
+    width: 50%;
+  }
+  .ol-style-icon{
+    height: 2px; 
+    width: 2px;
+  }
 </style>
