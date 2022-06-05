@@ -1,5 +1,8 @@
 version: 2.1
 
+on:
+  push:
+    branches: [feat_tests]
 jobs:
   build-and-test:
     docker:
