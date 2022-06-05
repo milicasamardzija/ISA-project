@@ -53,6 +53,8 @@
     </tbody>
 </table>
 
+<button class="btn btn-success btn-block">Napisi izvestaj</button>
+
    <div class="modal fade" id="prikazKlijena" role="dialog">
       <div class="modal-dialog">
         <!-- Modal content -->

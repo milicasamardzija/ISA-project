@@ -281,8 +281,62 @@ public class ReservationController {
 
     @GetMapping(value = "/getEarningsByDate/{dateFrom}/{dateTo}")
     public ResponseEntity<Double> getEarningsByDate(@PathVariable String dateFrom, @PathVariable String dateTo) throws ParseException {
+        String[] parts1 = dateFrom.split("-");
+        String year1 = parts1[0];
+        String month1 = parts1[1];
+        String day1 =parts1[2];
+        String realDateFrom = day1+"/"+month1+"/"+year1;
 
-        Double totalEarnings = 0.0;
+        String[] parts2 = dateTo.split("-");
+        String year2 = parts2[0];
+        String month2 = parts2[1];
+        String day2 =parts2[2];
+        String realDateTo = day2+"/"+month2+"/"+year2;
+
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        Date dateStart = format.parse(realDateFrom);
+        Date dateEnd = format.parse(realDateTo);
+
+        List<Reservation> allReservation1 = reservationService.findAll();
+        List<Reservation> allReservation = new ArrayList<>();
+        for (Reservation r: allReservation1) {
+            if(r.getCanceled() == false) {
+                allReservation.add(r);
+            }
+        }
+        System.out.print("duzina liste je" + allReservation.size());
+        List<ReservationnDTO> reservationns = new ArrayList<>();
+        for(Reservation r : allReservation ) {
+            System.out.print(dateStart);
+            System.out.print(dateEnd);
+
+            System.out.print(r.getTerm().getDateStart().toString());
+            System.out.print(r.getTerm().getDateEnd().toString());
+
+            int y1 = r.getTerm().getDateStart().getYear();
+            int m1 = r.getTerm().getDateStart().getMonth();
+            int d1 = r.getTerm().getDateStart().getDay();
+
+            int y2 = r.getTerm().getDateEnd().getYear();
+            int m2 = r.getTerm().getDateEnd().getMonth();
+            int d2 = r.getTerm().getDateEnd().getDay();
+
+            if (r.getTerm().getDateStart().after(dateStart) || (y1 == dateStart.getYear() && m1 == dateStart.getMonth() && d1 == dateStart.getDay())) {
+                if ((r.getTerm().getDateEnd().before(dateEnd)) || (y2 == dateEnd.getYear() && m2 == dateEnd.getMonth() && d2 == dateEnd.getDay())) {
+                    ReservationnDTO reservationDTO = new ReservationnDTO(r);
+                    EntityClass e = this.entityService.findById(r.getEntity().getId());
+                    EntityDTO entityDTO = new EntityDTO(e);
+                    reservationDTO.setEntity(entityDTO);
+                    reservationns.add(reservationDTO);
+                }
+            }
+
+        }
+
+        double totalEarnings = 0.0;
+        for (ReservationnDTO r : reservationns) {
+            totalEarnings = totalEarnings+ r.getPrice();
+        }
         return  new ResponseEntity<>(totalEarnings, HttpStatus.OK);
     }
 

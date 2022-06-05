@@ -69,4 +69,9 @@ public class EntityService {
     public EntityClass findEntityWithReservations(int id){
         return this.entityRepository.findEntityWithReservations(id);
     }
+
+    public void deleteById(int deleteId) {
+        EntityClass e = this.entityRepository.findById(deleteId);
+        this.entityRepository.delete(e);
+    }
 }

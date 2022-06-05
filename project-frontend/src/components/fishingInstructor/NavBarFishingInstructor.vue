@@ -3,23 +3,23 @@
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link"
-          ><router-link to="/fishingInstructor">Services</router-link></a
+          ><router-link to="/fishingInstructor">Avanture</router-link></a
         >
       </li>
       <li class="nav-item">
         <a class="nav-link"
           ><router-link to="/AvailablePeriod"
-            >Availability period</router-link
+            >Definisanje slobodnih termina</router-link
           ></a
         >
       </li>
       <li class="nav-item">
         <a class="nav-link"
-          ><router-link to="/MyAdventureReservations">Booking history</router-link></a
+          ><router-link to="/MyAdventureReservations">Rezervacije</router-link></a
         >
       </li>
       <li class="nav-item">
-        <a class="nav-link"><router-link to="">Fill in reports</router-link></a>
+        <a class="nav-link"><router-link to="/MyReportOfReservation">Izvestaj o zavrsenim rezervacijama</router-link></a>
       </li>
       <li class="nav-item">
         <a class="nav-link"

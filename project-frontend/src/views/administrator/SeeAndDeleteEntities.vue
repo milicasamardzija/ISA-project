@@ -193,12 +193,14 @@ export default {
         console.log(response);
         this.$router.push({ name: "SeeAndDeleteEntities" });
          this.$router.go(0); 
-      }) 
-      return new Swal({
-             title:"Uspesno",
-             type: "success",
-             text:'Obrisali ste entitet!!'
-           }); 
+      }).catch(function (error) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Ovaj entitet se koristi u sistemu! Nemoguce ga je obrisati!',
+           });
+                 
+        }); 
      
     },
         async deleteUser() {

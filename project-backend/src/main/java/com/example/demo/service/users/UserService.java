@@ -115,7 +115,7 @@ public class UserService {
         this.userRepository.delete(u);
     }
 
-    public void deleteEntityById(int id) {
+    public boolean deleteEntityById(int id) {
         System.out.print("VAP");
         List<Complaint> complaints = complaintService.findAll();
         System.out.print("izlistala complaints");
@@ -127,24 +127,27 @@ public class UserService {
         System.out.print("izlistala reservedTermList");
         for(Complaint c : complaints) {
             if (c.getEntity().getId() == id) {
-                System.out.print("Usla sam u complaints");
-                complaintService.deleteById(c.getId());
+                return false;
+//                System.out.print("Usla sam u complaints");
+//                complaintService.deleteById(c.getId());
 
             }
         }
         for(Evaluate e : evaluates) {
             if (e.getEntity().getId() == id) {
-                System.out.print("Usla sam u evaluate");
-                evaluateService.deleteById(e.getId());
+                return false;
+//                System.out.print("Usla sam u evaluate");
+//                evaluateService.deleteById(e.getId());
             }
         }
         for (Reservation r: reservations) {
             if (r.getEntity().getId() == id) {
-                System.out.print("Usla sam u reservations");
-                this.reservationService.delete(r);
+                return false;
+//                System.out.print("Usla sam u reservations");
+//                this.reservationService.delete(r);
             }
         }
-        entityRepository.deleteById(id);
+        return true;
     }
 
     public User save(UserRequest userRequest){
