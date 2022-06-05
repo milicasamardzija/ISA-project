@@ -77,4 +77,17 @@ public class UserServiceTest {
         //Boze pomozi
     }
 
+    @Test
+    public void testUpdate2(){
+        User userUpdate = new User("Mira",DB_SURNAME, DB_EMAIL, DB_PASSWORD, DB_TELEPHONE, new Address(), "ROLE_CLIENT");
+
+        when(userRepositoryMock.findById(0)).thenReturn(new User(DB_NAME,DB_SURNAME, DB_EMAIL, DB_PASSWORD, DB_TELEPHONE, new Address()));
+        User user = new User(DB_NAME,DB_SURNAME, DB_EMAIL, DB_PASSWORD, DB_TELEPHONE, new Address());
+        when(userRepositoryMock.save(user)).thenReturn(new User("Mira",DB_SURNAME, DB_EMAIL, DB_PASSWORD, DB_TELEPHONE, new Address()));
+        User userNew = userService.update(new UpdateUserDTO(userUpdate));
+        assertThat(userNew).isNull();
+        // assertEquals(userNew.getName(), "Mira");
+        //Boze pomozi
+    }
+
 }
