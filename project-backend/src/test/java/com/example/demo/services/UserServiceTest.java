@@ -72,7 +72,7 @@ public class UserServiceTest {
         User user = new User(DB_NAME,DB_SURNAME, DB_EMAIL, DB_PASSWORD, DB_TELEPHONE, new Address());
         when(userRepositoryMock.save(user)).thenReturn(new User("Mira",DB_SURNAME, DB_EMAIL, DB_PASSWORD, DB_TELEPHONE, new Address()));
         User userNew = userService.update(new UpdateUserDTO(userUpdate));
-        assertThat(userNew).isNull();
+        assertThat(userNew).isNotNull();
        // assertEquals(userNew.getName(), "Mira");
         //Boze pomozi
     }
