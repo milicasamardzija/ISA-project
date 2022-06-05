@@ -142,7 +142,7 @@ export default ({
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       axios.post("http://localhost:8081/api/adventures/newAdventure", this.adventure,  {headers}).then( response => response.json());
-  this.$router.push({name: "AddAdventure"});
+  this.$router.push({name: "MyService"});
 
         alert("Dodali ste avanturu!")
       this.$router.go(0);

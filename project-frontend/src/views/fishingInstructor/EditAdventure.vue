@@ -60,7 +60,23 @@
           <td> <input class="form-control" id="psw"  v-model="adventure.address.city"  placeholder="Grad"/></td>
           <td> <input class="form-control" id="psw"  v-model="adventure.address.country"  placeholder="Drzava"/></td>
           </tr>
-
+                  <tr>
+           Slike prethodnih druzenja:         
+        <div >
+        <div  v-for="im in adventure.images" :key="im"  >
+          <img :src="im" style="height: 70%; width: 80%" />
+        </div>
+      </div></tr>
+          <tr>
+                   <div class="upload-images">
+                    <input type="file"  @change="imageAdded"/>
+                </div> <br/>
+                <div v-if="imagesFrontend" class="images-preview">
+                        <div v-for="image in imagesFrontend" :key="image">
+                            <img :src="image" />
+                        </div>
+                </div>
+          </tr>
               <tr><td><button class="btn btn-success btn-block" style="width:100px;margin-top:20px" @click="GoBack()">
                 <span></span> Odustani
               </button></td><td><button type="submit" class="btn btn-success btn-block" style="width:100px;margin-top:20px" @click="Editt()">
@@ -93,9 +109,12 @@ export default ({
     },
     data() {
         return {
+          imagesFrontend:[],
             formData:null,
+            showImages:[],
             realName:"",
-            adventure:{     
+            adventure:{   
+                images:[],  
                 realName:"", 
                 nameOfAdventure:"",
                 maxNumberOfPeople:0,
@@ -114,27 +133,25 @@ export default ({
             }
     },
     methods: {
-      onImageUpload() {
-        let file = this.$refs.uploadImage.files[0];
-        this.formData= new FormData();
-        this.formData.append("file",file);
-      },
-      
-      startUpload() {
-        axios({
-            url: "http://localhost:8081/api/file/upload/",
-            method: "POST",
-            data: this.formData,
-            headers: {
-                Accept : "application/json",  
-                'Content-type': 'multipart/form-data'
+    
+                           imageAdded(e) {
+           
+                const file = e.target.files[0];  
+                console.log(file)        
+                this.createBase64Image(file);
+                this.imagesFrontend.push(URL.createObjectURL(file));
             },
-        }) .then(response => {
-              console.log(JSON.stringify(response.data));
-        });
-
-      }  
-       , async getAdventure() {
+            createBase64Image(file){
+                const reader= new FileReader();
+            
+                reader.onload = (e) =>{
+                    let img = e.target.result;
+                     console.log(img)  
+                    this.adventure.images.push(img);
+                }
+                reader.readAsDataURL(file);
+            }, 
+        async getAdventure() {
                 const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
@@ -155,7 +172,8 @@ export default ({
         fishingEquipment : this.adventure.fishingEquipment, 
         cancelationType : this.adventure.cancelationType,
         rules:this.adventure.rules,
-        address: this.adventure.address
+        address: this.adventure.address,
+        images: this.adventure.images
        },{
         headers
       })

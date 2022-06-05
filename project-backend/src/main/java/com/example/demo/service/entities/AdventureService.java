@@ -154,6 +154,7 @@ public class AdventureService {
         a.setPromoDescription(adventureDTO.getPromoDescription());
         a.setFishingEquipment(adventureDTO.getFishingEquipment());
         a.setRules(adventureDTO.getRules());
+        a.setImages(adventureDTO.getImages());
         a.setDescription(adventureDTO.getPromoDescription());
         Address address = new Address(adventureDTO.getAddress().getCountry(),adventureDTO.getAddress().getCity(),adventureDTO.getAddress().getStreet(),adventureDTO.getAddress().getNumber());
         this.addressService.save(address);
@@ -172,9 +173,12 @@ public class AdventureService {
         for (Reservation r : reservations) {
             EntityClass e = this.entityService.findById(r.getEntity().getId());
             System.out.print("NAZIVI SU"+ e.getName());
+            System.out.print("NAZIV je"+nameOfAdventure);
             if (e.getName().contains(nameOfAdventure)) {
                 System.out.print("HEJ TI");
                 return false;
+            }else {
+                return true;
             }
         }
         return true;
