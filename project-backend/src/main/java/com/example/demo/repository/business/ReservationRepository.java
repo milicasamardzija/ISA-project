@@ -32,8 +32,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query(value = "select e from EntityClass e left join fetch e.reservations r where r.id= ?1")
     EntityClass findEntityByReservation(int idReservation);
 
-    //@Lock(LockModeType.PESSIMISTIC_WRITE)
-    //@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "0")})
     Reservation findById(int id);
 
     @Query(value = "select r from Reservation r join fetch r.entity e where e.id = ?1 and r.action = true and r.client is null")

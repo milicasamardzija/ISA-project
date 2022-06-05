@@ -333,7 +333,6 @@ export default {
     return images('./' + img + ".jpg")
     },
     goToAdventure(name){
-      alert(name)
        localStorage.setItem("nameOfAdventure", name);
       this.$router.push({ name: "AdventureProfile" });
     },
