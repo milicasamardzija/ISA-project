@@ -7,6 +7,15 @@ public class ReportOwnerDTO {
     public int idOwner;
     public String comment;
     public RestrictionType restrictionType;
+    public String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public int getIdClient() {
         return idClient;

@@ -4,12 +4,15 @@ import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.enums.EntityType;
 import com.example.demo.model.business.Reservation;
 
+import java.util.Date;
+
 public class ReservationnDTO {
 
         private int id;
 
         private ReservedTermDTO term;
-
+    private Date dateStart1;
+    private Date dateEnd1;
         private double price;
 
         private EntityType entityType;
@@ -22,6 +25,22 @@ public class ReservationnDTO {
         private String dateStart;
         private String dateEnd;
         private String clientID;
+
+    public Date getDateStart1() {
+        return dateStart1;
+    }
+
+    public void setDateStart1(Date dateStart1) {
+        this.dateStart1 = dateStart1;
+    }
+
+    public Date getDateEnd1() {
+        return dateEnd1;
+    }
+
+    public void setDateEnd1(Date dateEnd1) {
+        this.dateEnd1 = dateEnd1;
+    }
 
     public String getClientID() {
         return clientID;

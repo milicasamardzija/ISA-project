@@ -19,9 +19,6 @@
         >
       </li>
       <li class="nav-item">
-        <a class="nav-link"><router-link to="/MyReportOfReservation">Izvestaj o zavrsenim rezervacijama</router-link></a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link"
           ><router-link to="">Create a reservation</router-link></a
         >

@@ -3,6 +3,7 @@ package com.example.demo.service.business;
 import com.example.demo.dto.business.DateReportDTO;
 import com.example.demo.dto.business.InformationsForChart;
 import com.example.demo.dto.business.ReportOwnerDTO;
+import com.example.demo.enums.RestrictionType;
 import com.example.demo.model.business.ReportForOwner;
 import com.example.demo.model.business.ReportOwner;
 import com.example.demo.model.business.Reservation;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ReportOwnerService {
@@ -61,8 +63,16 @@ public class ReportOwnerService {
 
         Client client = clientService.findClientById(dto.getIdClient());
 
-        ReportOwner reportOwner = new ReportOwner(client, cottageOwner, dto.getComment(),dto.restrictionType);
 
+        ReportOwner reportOwner = new ReportOwner(client, cottageOwner, dto.getComment(),dto.restrictionType);
+        if (dto.getType().equals("BEZ_PENALA")) {
+            reportOwner.setRestrictionType(RestrictionType.BEZ_PENALA);
+        }else if(dto.getType().equals("NEGATIVAN_KOMENTAR")) {
+            reportOwner.setRestrictionType(RestrictionType.NEGATIVAN_KOMENTAR);
+        }else {
+            reportOwner.setRestrictionType(RestrictionType.NIJE_SE_POJAVIO);
+        }
+        reportOwner.setRevise(false);
         this.save(reportOwner);
 
     }

@@ -273,4 +273,7 @@ public class AdventureService {
         return adventure.getMaxNumberOfPeople();
     }
 
+    public Adventure findById(int id) {
+        return this.adventureRepository.findById(id);
+    }
 }

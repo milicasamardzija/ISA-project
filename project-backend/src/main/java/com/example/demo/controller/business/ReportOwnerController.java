@@ -32,6 +32,17 @@ public class ReportOwnerController {
         return  new ResponseEntity<>( HttpStatus.OK);
     }
 
+    @PostMapping("/reportAdventure")
+    public ResponseEntity<HttpStatus> addReportForInstructor(@RequestBody ReportOwnerDTO dto){
+        System.out.print("ID KLIJENTA JE"+ dto.getIdClient());
+        System.out.print("ID INSTRUCTORA JE"+ dto.getIdOwner());
+        System.out.print("KOMENTAR JE"+ dto.getComment());
+        System.out.print("tip je"+ dto.getType());
+        this.reportOwnerService.addReportCottageOwner(dto);
+
+        return  new ResponseEntity<>( HttpStatus.OK);
+    }
+
 //    @PostMapping("/reportOwner")
 //    public ResponseEntity<ReportForOwner> addReportForBusiness(@RequestBody ReportForOwner dto){
 //        return  new ResponseEntity<>(this.reportOwnerService.createReportForBusiness(dto), HttpStatus.OK);

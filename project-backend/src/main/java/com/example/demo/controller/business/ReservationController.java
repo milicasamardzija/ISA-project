@@ -24,6 +24,7 @@ import com.example.demo.service.entities.AdditionalServicesService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.CottageOwnerService;
 import com.example.demo.service.users.ClientService;
+import com.example.demo.service.users.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -142,6 +143,8 @@ public class ReservationController {
             reservationDTO.setPrice(reservation.getPrice());
             reservationDTO.setDuration(reservation.getDuration());
             reservationDTO.setClientID(String.valueOf(reservation.getClient().getId()));
+            reservationDTO.setDateStart1(reservation.getTerm().getDateStart());
+            reservationDTO.setDateEnd1(reservation.getTerm().getDateEnd());
             System.out.print("PRVO:");
             ReservedTerm rt = this.reservedTermService.findById(reservation.getTerm().getId());
             ReservedTermDTO rtDTO = new ReservedTermDTO(rt);
@@ -181,6 +184,8 @@ public class ReservationController {
                 reservationDTO.setTerm(rtDTO);
                 reservationDTO.setDateEnd(rtDTO.getDateEnd().toString());
                 reservationDTO.setDateStart(rtDTO.getDateStart().toString());
+                reservationDTO.setDateEnd1(reservation.getTerm().getDateEnd());
+                reservationDTO.setDateStart1(reservation.getTerm().getDateStart());
                 EntityClass e = this.entityService.findById(reservation.getEntity().getId());
                 EntityDTO entityDTO = new EntityDTO(e);
                 reservationDTO.setEntity(entityDTO);

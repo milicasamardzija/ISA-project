@@ -1,13 +1,20 @@
 package com.example.demo.controller.users;
 
 import com.example.demo.dto.entities.ChangePasswordDTO;
+import com.example.demo.dto.users.ClientDTO;
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.dto.users.UserTokenState;
+import com.example.demo.model.business.Reservation;
+import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.EntityClass;
+import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
+import com.example.demo.service.business.ReservationService;
 import com.example.demo.service.email.EmailSenderService;
 import com.example.demo.service.email.EmailService;
+import com.example.demo.service.entities.AdventureService;
+import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.UserService;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +41,17 @@ public class UserController {
     private AuthenticationManager authenticationManager;
     private TokenUtils tokenUtils;
     private EmailService emailService;
+    private ReservationService reservationService;
+    private AdventureService adventureService;
+
     @Autowired
     private EmailSenderService service;
-    public UserController(UserService userService, AuthenticationManager authenticationManager, TokenUtils tokenUtils){
+    public UserController(AdventureService adventureService,ReservationService reservationService,UserService userService, AuthenticationManager authenticationManager, TokenUtils tokenUtils){
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.tokenUtils = tokenUtils;
+        this.reservationService = reservationService;
+        this.adventureService = adventureService;
     }
 
     @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'BOAT_OWNER', 'INSTRUCTOR','ADMIN','PREDEF_ADMIN')")
@@ -97,6 +109,24 @@ public class UserController {
         return  new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/getInstructor/{id}")
+    public ResponseEntity<UserDTO> getUserOfReservations(@PathVariable int id){
+        List<Reservation> reservations = this.reservationService.findAll();
+        UserDTO userDTO = new UserDTO();
+        for(Reservation r : reservations ) {
+                if (r.getId() == id) {
+                    System.out.print("USLA ZAMISLIIII");
+                    Adventure a = this.adventureService.findById(r.getEntity().getId());
+                    User user = this.userService.findById(a.getInstructor().getId());
+                    userDTO.setId(user.getId());
+                    userDTO.setFirstname(user.getName());
+                    userDTO.setLastname(user.getSurname());
+                    userDTO.setEmail(user.getEmail());
+                }
+        }
+        return  new ResponseEntity<>(userDTO, HttpStatus.OK);
+    }
+
     @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'BOAT_OWNER', 'INSTRUCTOR','ADMIN','PREDEF_ADMIN')")
    // @PutMapping(value="/changePassword/{password}")
     @PostMapping(value="/changePassword")
@@ -136,6 +166,14 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.OK);}
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("/getUser/{id}")
+    public ResponseEntity<UserDTO> getClient(@PathVariable String id)
+    {
+        User client = userService.findById(Integer.parseInt(id));
+        return new ResponseEntity<>(new UserDTO(client), HttpStatus.OK);
+    }
+
     @DeleteMapping(value = "/reject/{deleteID}/{reasonn}/{userEmail}")
     public ResponseEntity<Void> rejectRegistration(@PathVariable int deleteID,@PathVariable String reasonn,@PathVariable String userEmail) throws MessagingException {
         System.out.print(deleteID);

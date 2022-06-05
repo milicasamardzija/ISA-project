@@ -23,10 +23,21 @@ public class ReportOwner {
     @Column(name="comment",nullable=true)
     private String comment;
 
+    @Column(name="revise",nullable=true)
+    private Boolean revise;
+
     @Column(name="restriction_type",nullable=true)
     private RestrictionType restrictionType;
 
     public ReportOwner() {
+    }
+
+    public Boolean getRevise() {
+        return revise;
+    }
+
+    public void setRevise(Boolean revise) {
+        this.revise = revise;
     }
 
     public Client getClient() {
