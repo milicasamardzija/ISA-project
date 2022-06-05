@@ -9,13 +9,14 @@ jobs:
       - image: cimg/openjdk:11.0
     steps:
       - checkout
+      - store_test_results
       - run:
           name: Build
           command: mvn -B -DskipTests clean package -f ./project-backend
       - run:
           name: Test
           command: mvn test -f ./project-backend
-       - store_test_results
+      
 
 orbs:
   heroku: circleci/heroku@1.2.6
