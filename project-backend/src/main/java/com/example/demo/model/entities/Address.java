@@ -19,24 +19,42 @@ public class Address {
 	private String street;
 	@Column(name = "number", nullable = false)
 	private String number;
+
+	@Column(name = "longitude", nullable = true)
+	private double longitude;
+	@Column(name = "latitude", nullable = true)
+	private double latitude;
 	
 	public Address() {}
 	
-	public Address(int id, String country, String city, String street, String number) {
+	public Address( String country, String city, String street, String number, double longitude, double latitude) {
+		super();
+
+		this.country = country;
+		this.city = city;
+		this.street = street;
+		this.number = number;
+		this.longitude=longitude;
+		this.latitude = latitude;
+	}
+
+	public Address(int id, String country, String city, String street, String number, double longitude, double latitude) {
 		super();
 		this.id = id;
 		this.country = country;
 		this.city = city;
 		this.street = street;
 		this.number = number;
+		this.longitude=longitude;
+		this.latitude = latitude;
 	}
-	public Address( String country, String city, String street, String number) {
-
-		this.country = country;
-		this.city = city;
-		this.street = street;
-		this.number = number;
-	}
+//	public Address( String country, String city, String street, String number) {
+//
+//		this.country = country;
+//		this.city = city;
+//		this.street = street;
+//		this.number = number;
+//	}
 
 	public int getId() {
 		return id;
@@ -77,6 +95,20 @@ public class Address {
 	public void setNumber(String number) {
 		this.number = number;
 	}
-	
-	
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
 }

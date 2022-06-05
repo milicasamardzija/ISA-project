@@ -143,7 +143,7 @@ public class AdventureController {
         a.setFishingEquipment(adventureRequest.getFishingEquipment());
         a.setRules(adventureRequest.getRules());
         a.setDescription(adventureRequest.getPromoDescription());
-        Address address = new Address(adventureRequest.getCountry(),adventureRequest.getCity(),adventureRequest.getStreet(),adventureRequest.getNumber());
+        Address address = new Address(adventureRequest.getCountry(),adventureRequest.getCity(),adventureRequest.getStreet(),adventureRequest.getNumber(),0,0);
         this.addressService.save(address);
         a.setAddress(address);
         a.setInstructor(i);

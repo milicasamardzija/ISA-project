@@ -81,7 +81,7 @@ public class AdministratorService {
         a.setMust_change_password(true);
         a.setEmail(userRequest.getEmail());
         a.setTelephone(userRequest.getTelephone());
-        Address address = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber());
+        Address address = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber(),0,0);
 
         a.setAddress(addressService.save(address));
         a.setPassword(passwordEncoder.encode(userRequest.getPassword()));

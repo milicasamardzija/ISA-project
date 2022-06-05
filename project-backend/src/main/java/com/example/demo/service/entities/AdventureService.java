@@ -158,7 +158,7 @@ public class AdventureService {
         a.setFishingEquipment(adventureDTO.getFishingEquipment());
         a.setRules(adventureDTO.getRules());
         a.setDescription(adventureDTO.getPromoDescription());
-        Address address = new Address(adventureDTO.getAddress().getCountry(),adventureDTO.getAddress().getCity(),adventureDTO.getAddress().getStreet(),adventureDTO.getAddress().getNumber());
+        Address address = new Address(adventureDTO.getAddress().getCountry(),adventureDTO.getAddress().getCity(),adventureDTO.getAddress().getStreet(),adventureDTO.getAddress().getNumber(),0,0);
         this.addressService.save(address);
         a.setAddress(address);
         if (adventureDTO.getCancelationType().equals("BESPLATNO")) {

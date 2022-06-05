@@ -38,7 +38,6 @@ public class CottageController {
 
     public CottageController(CottageService cottageService, AdditionalServicesService additionalServicesService,  AddressService addressService, CottageOwnerService cottageOwner){
         this.cottageService = cottageService;
-
         this.cottageOwnerService = cottageOwner;
         this.addressService = addressService;
         this.additionalServicesService = additionalServicesService;

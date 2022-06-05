@@ -85,6 +85,111 @@
               </div>
             </div>
 
+    <!--Grid row-->
+            <div class="row" style="margin-bottom: 1%">
+              <!--Grid column-->
+              <div class="col-md-2">
+                <div class="md-form mb-0">
+                  <label for="name" class="">Koordinate</label>
+                </div>
+              </div>
+              <!--Grid column   id="input-b6"  name="input-b6[]"-->
+                  <div class="col-md-2">
+                <div class="md-form mb-0">
+                  <input
+                    type="number"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="Grad"
+                      v-model="boat.address.longitude"
+                  />
+                </div>
+              </div>
+         <div class="col-md-2">
+                <div class="md-form mb-0">
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="Grad"
+                      v-model="boat.address.latitude"
+                  />
+                </div>
+              </div>
+
+                   <div class="col-md-3">
+                <div class="md-form mb-0">
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="Drzava"
+                      v-model="boat.address.country"
+                  />
+                </div>
+              </div>
+
+            </div>
+
+            <!--Grid row-->
+            <div class="row" style="margin-bottom: 1%">
+              <!--Grid column-->
+             <div class="col-md-2">
+                <div class="md-form mb-0">
+                  <label for="name" class=""></label>
+                </div>
+              </div>
+        <!--mapa -->
+              <div class="col-md-9">
+                    <div style="width: 70%; height: 20%; margin-left: 2rem; margin-top: 1rem;">
+  <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:400px">
+
+    <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" 
+    :projection="projection" />
+
+           <ol-tile-layer>
+          <ol-source-osm />
+          </ol-tile-layer>
+
+           <ol-vector-layer>
+      
+        <ol-source-vector>
+            <ol-feature>
+                <ol-geom-multi-point :coordinates="[[this.boat.address.longitude,this.boat.address.latitude]]"></ol-geom-multi-point>
+                   <!-- <ol-geom-multi-point :coordinates="[[20,40]]"></ol-geom-multi-point> -->
+                <ol-style>
+                    <ol-style-circle :radius="radius">
+                        <ol-style-fill :color="fillColor"></ol-style-fill>
+                        <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
+                    </ol-style-circle>
+                </ol-style>
+            </ol-feature>
+
+        </ol-source-vector>
+    </ol-vector-layer>
+<!-- izbor pozicije novi -->
+  <ol-vector-layer>
+        <ol-source-vector ref="vectors" >
+           <ol-interaction-draw @drawstart="drawstart" :type="drawType"  >
+        </ol-interaction-draw>
+        </ol-source-vector>
+
+         <ol-style>
+        <ol-style-icon :src="markerIcon" :scale="0.2" ></ol-style-icon>
+      </ol-style>
+
+    </ol-vector-layer>
+
+    
+
+          </ol-map>
+
+        </div>
+                 </div>
+            </div>
             <!--Grid row-->
             <div class="row" style="margin-bottom: 1%">
               <!--Grid column-->
@@ -96,17 +201,14 @@
               <!--Grid column   id="input-b6"  name="input-b6[]"-->
               <div class="col-md-6">
                 <div class="md-form mb-0">
-                  <div class="file-loading">
-                    <input
-                    
-                   
-                      type="file" 
-                      v-bind="images"
-                      accept="image/jpg, image/png "
-                      multiple
-                       
-                    />
-                  </div>
+               <div class="upload-images">
+                    <input type="file"  @change="imageAdded"/>
+                </div> <br/>
+                <div v-if="imagesFrontend" class="images-preview">
+                        <div v-for="image in imagesFrontend" :key="image">
+                            <img :src="image" />
+                        </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -130,7 +232,7 @@
               <!--Grid column-->
               <div class="col-md-2">
                 <div class="md-form mb-0">
-                  <label for="name" class="">Opis smestaja</label>
+                  <label for="name" class="">Opis </label>
                 </div>
               </div>
               <!--Grid column-->
@@ -500,18 +602,64 @@ import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 import axios from 'axios';
 //import $ from "jquery";
+import {ref} from 'vue';
+import markerIcon from "../../assets/logo.png"
 
 export default {
   name: "EditBoat",
   data(){
+
+      const center = ref([20,44 ])
+        const projection = ref('EPSG:4326')
+        const zoom = ref(8)
+        const rotation = ref(0)
+       
+
+          const radius = ref(2)
+        const strokeWidth = ref(10)
+        const strokeColor = ref('red')
+        const fillColor = ref('white')
+
+          const markers = ref(null);
+    const drawType = ref("Point")
+const vectors = ref([]);
+     
+        const coordinate = ref([20,44 ])
+
+
+           const drawstart = (event) => {
+      
+     this.boat.address.longitude = event.feature.values_.geometry.flatCoordinates[0]; //ISPISUJE
+      this.boat.address.latitude= event.feature.values_.geometry.flatCoordinates[1];
+      console.log(event)
+           }
     return {
+        imagesFrontend: [],
         boatTypeString: "",
         boatCancelType: "",
         equipment: "",
       images: "", 
       adServ: {name:"", price: 0},
-      boat: {id: 0, name: "", address: { street: "", number: 0, city: "", country: "Srbija", id: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [], boatType: 0, lenght: 0, motorNumber: 0, power: 0, maxSpeed: 0, navigationEquipment: "", fishingEquipment: "", quantity: 0, cancelationType: 0 },
-    }
+      boat: {id: 0, name: "", address: { street: "", number: 0, city: "", country: "", id: 0, longitude: 0, latitude: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [], boatType: 0, lenght: 0, motorNumber: 0, power: 0, maxSpeed: 0, navigationEquipment: "", fishingEquipment: "", quantity: 0, cancelationType: 0 },
+   
+       //mapa
+      center,
+            projection,
+            zoom,
+            rotation,
+            radius,
+            strokeWidth,
+            strokeColor,
+            fillColor,
+
+            //za pin
+                markerIcon,
+        markers,
+      drawType,
+        vectors,
+         drawstart,
+          coordinate,
+   }
 
   },
   
@@ -560,7 +708,25 @@ export default {
     },
     remove(index){
       this.boat.additionalServices.splice(index, 1);
-    }
+    },
+    
+               imageAdded(e) {
+        
+                const file = e.target.files[0];  
+                console.log(file)        
+                this.createBase64Image(file);
+                this.imagesFrontend.push(URL.createObjectURL(file));
+            },
+            createBase64Image(file){
+                const reader= new FileReader();
+            
+                reader.onload = (e) =>{
+                    let img = e.target.result;
+                     console.log(img)  
+                    this.boat.images.push(img);
+                }
+                reader.readAsDataURL(file);
+            }, 
 
   },
   async created(){
@@ -592,4 +758,8 @@ table {
   max-width: 50%;
   background-color: rgb(241, 241, 241);
 }
+  .images-preview img{
+        width:20%;
+        height: 20%;
+    }
 </style>

@@ -63,7 +63,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/cottages").permitAll()
                 .antMatchers("/api/cottages/search").permitAll()
                 .antMatchers("/api/file").permitAll()
                 .antMatchers("/api/freeTerms").permitAll()
@@ -84,6 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/cottageOwner/*").permitAll()
                 .antMatchers("/api/cottages/**").permitAll()
                 .antMatchers("/api/additionalService/*").permitAll()
+                .antMatchers("/api/cottages/editCottage").permitAll()
                 .anyRequest().authenticated().and()
 
 

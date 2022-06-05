@@ -269,13 +269,25 @@ export default {
     getSelected(id){
       this.selectedId = id;
     },
-   //ne radi
+  
      deleteBoat(){
        console.log(this.selectedId)
            axios.get("http://localhost:8081/api/reservation/check/"+ this.selectedId).then( 
            response => { 
              console.log(response)
-              axios.get("http://localhost:8081/api/boats/delete/"+ this.selectedId);
+              axios.get("http://localhost:8081/api/boats/delete/"+ this.selectedId).then(
+              res => {
+                console.log(res);
+                this.$router.go(0);
+                  return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Brod je uspesno izbrisan!'
+           });
+           
+
+              }
+            );;
          }
             ).catch(error =>{
         console.log(error);

@@ -5,6 +5,9 @@
   </div>
   <div>
     <div class="tab-pane active containerInfo">
+
+      <div  class="row"> 
+        <div class="col" > 
       <div class="row">
         
           <div class="col-md-1">
@@ -13,7 +16,7 @@
                 </div>
            </div> 
           
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="md-form mb-0">
                   <input
                     type="text"
@@ -26,152 +29,148 @@
                 </div>
               </div>
 
+              <div class="col-md-6"> <button type="button" style=" margin-left: 90%; " class="btn btn-success" @click="saveCottage()">
+       Sacuvaj izmene
+          </button>  </div>
+<!--mapa -->
+              <div class="col-md-7">
+                    <div style="width: 50%; height: 20%; margin-left: 2rem; margin-top: 1rem;">
+  <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:400px">
 
-              <div class="col-md-1">
-                <div class="md-form mb-0">
-                  <label for="name" style="margin-left: 3rem; margin-top: 0.5rem">Adresa </label>
-                </div>
-           </div> 
-           <div class="col-md-2">
-                <div class="md-form mb-0">
-                 <input type="text" id="name" name="name" class="form-control" v-model="cottage.address.street"/>
-                </div>
-              </div>   
-               <div class="col-md-1">
-                <div class="md-form mb-0">
-                 <input type="number" id="name" name="name" class="form-control" v-model="cottage.address.number"/>
-                </div>
-              </div> 
+    <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" 
+    :projection="projection" />
 
-                <div class="col-md-2">
-                <div class="md-form mb-0">
-                 <input type="text" id="name" name="name" class="form-control" v-model="cottage.address.city"/>
-                </div>
-              </div> 
+           <ol-tile-layer>
+          <ol-source-osm />
+          </ol-tile-layer>
 
-              <div class="col-md-2">
-                <div class="md-form mb-0">
-                 <input type="text" id="name" name="name" class="form-control" v-model="cottage.address.country"/>
-                </div>
-              </div>
-        </div>
+           <ol-vector-layer>
+      
+        <ol-source-vector>
+            <ol-feature>
+                <ol-geom-multi-point :coordinates="[[this.cottage.address.longitude,this.cottage.address.latitude]]"></ol-geom-multi-point>
+                   <!-- <ol-geom-multi-point :coordinates="[[20,40]]"></ol-geom-multi-point> -->
+                <ol-style>
+                    <ol-style-circle :radius="radius">
+                        <ol-style-fill :color="fillColor"></ol-style-fill>
+                        <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
+                    </ol-style-circle>
+                </ol-style>
+            </ol-feature>
+
+        </ol-source-vector>
+    </ol-vector-layer>
+<!-- izbor pozicije novi -->
+  <ol-vector-layer>
+        <ol-source-vector ref="vectors" >
+           <ol-interaction-draw @drawstart="drawstart" :type="drawType" :v-bind="this.cottage.address.street" >
+        </ol-interaction-draw>
+        </ol-source-vector>
+
+         <ol-style>
+        <ol-style-icon :src="markerIcon" :scale="0.2" ></ol-style-icon>
+      </ol-style>
+
+    </ol-vector-layer>
 
     
-       
-    
 
-      <div class="row rowPic" style="width: 90rem">
-        <div class="column columnPic">
-          <!-- 1. red malih slika-->
-          <div class="column columnPic" style="width: 100rem; height: 14em">
-            <div class="images">
-              <figure>
-                <img
-                  src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                  alt="Photo"
-                  class="smallImages"
-                />
-                <input
-                  id="input-b6"
-                  name="input-b6[]"
-                  type="file"
-                  accept="image/jpg, image/png "
-                  multiple
-                />
-              </figure>
-            </div>
-            <div class="images">
-              <figure>
-                <img
-                  src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                  alt="Photo"
-                  class="smallImages"
-                />
-              </figure>
-            </div>
-            <div class="images">
-              <figure>
-                <img
-                  src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                  alt="Photo"
-                  class="smallImages"
-                />
-              </figure>
-            </div>
-            <div class="images">
-              <figure>
-                <img
-                  src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                  alt="Photo"
-                  class="smallImages"
-                />
-                <input
-                  id="input-b6"
-                  name="input-b6[]"
-                  type="file"
-                  accept="image/jpg, image/png "
-                  multiple
-                />
-              </figure>
-            </div>
-            <div class="images">
-              <figure>
-                <img
-                  src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                  alt="Photo"
-                  class="smallImages"
-                />
-                <input
-                  id="input-b6"
-                  name="input-b6[]"
-                  type="file"
-                  accept="image/jpg, image/png "
-                  multiple
-                />
-              </figure>
-            </div>
-            <div class="images">
-              <figure>
-                <img
-                  src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                  alt="Photo"
-                  class="smallImages"
-                />
-                <input
-                  id="input-b6"
-                  name="input-b6[]"
-                  type="file"
-                  accept="image/jpg, image/png "
-                  multiple
-                />
-              </figure>
-            </div>
-            <div class="clearfix"></div>
-          </div>
+          </ol-map>
+
         </div>
-      </div>
+                 </div>
 
-      <div class="row aboutCottage">
-        <div class="column columnAbout">
+                 <div class="col"> 
+
+                      <div style="margin-right: 40%; margin-left: -20rem;">
           <h4>Opis smestaja</h4>
           <textarea
             type="text"
             id="message"
             name="message"
-            rows="8"
+            rows="10"
             class="form-control md-textarea"
             v-model="cottage.promoDescription"
           ></textarea>
-            <h4>Pravila ponasanja</h4>
+            <h4  style="margin-top: 1rem;">Pravila ponasanja</h4>
           <textarea
             type="text"
             id="message"
             name="message"
-           
+            rows="5"
             class="form-control md-textarea"
             v-model="cottage.rules"
           ></textarea>
         </div>
+                 </div>
+
+ </div>
+
+<div class="row" style=" margin-top: 1rem;">
+  
+              <div class="col-md-1" style=" margin-top: -1rem">
+                <div class="md-form mb-0">
+                  <label for="name" style="margin-left: 2rem; ">Adresa </label>
+                </div>
+           </div> 
+           <div class="col-md-1">
+                <div class="md-form mb-0">
+                 <input type="text" id="name" name="name"  style="margin-top: -1rem" class="form-control" v-model="cottage.address.street"/>
+                </div>
+              </div>   
+               <div class="col-md-1">
+                <div class="md-form mb-0">
+                 <input type="number" id="name" name="name" class="form-control" style="margin-top: -1rem" v-model="cottage.address.number"/>
+                </div>
+              </div> 
+
+                <div class="col-md-1">
+                <div class="md-form mb-0">
+                 <input type="text" id="name" name="name" class="form-control" style="margin-top: -1rem" v-model="cottage.address.city"/>
+                </div>
+              </div> 
+
+              
+             
+             
+              
+        </div>
+  
+    <div class="row" style="height:1rem "> </div>
+    <div class="row">
+         <div class="col-md-1">
+                <div class="md-form mb-0">
+                  <label for="name" style="margin-right: 3rem; margin-left: 2rem; margin-top: 1rem">Koordinate </label>
+                </div>
+           </div> 
+
+ <div class="col-md-1">
+                <div class="md-form mb-0">
+                 <input type="text" id="name" name="name" class="form-control" v-model="cottage.address.longitude"/>
+                </div>
+              </div>
+
+               <div class="col-md-1">
+                <div class="md-form mb-0">
+                 <input type="text" id="name" name="name" class="form-control" v-model="cottage.address.latitude"/>
+                </div>
+              </div>
+
+              <div class="col-md-1">
+                <div class="md-form mb-0">
+                 <input type="text" id="name" name="name" class="form-control" v-model="cottage.address.country"/>
+                </div>
+              </div>
+
+       </div>
+       </div>
+
+       
+    </div>
+
+
+
+      <div class="row aboutCottage">
 
         <div class="column" style="padding-left: 5rem; width: 60em">
           <h4>Informacije</h4>
@@ -272,35 +271,27 @@
                    </table> 
                 </div>
               </div>
-
-              <!-- <table>
-                <tr>
-                  <td><p>WIFI:</p></td>
-                  <td><input class="smallInput" type="text" /></td>
-                  <td><button>ukloni</button></td>
-                </tr>
-                <tr>
-                  <td><p>PARKING:</p></td>
-                  <td><input class="smallInput" type="text" /></td>
-                  <td><button>ukloni</button></td>
-                </tr>
-                <tr>
-                  <td><input type="text" style="width: 150px" /></td>
-                  <td><input class="smallInput" type="text" /></td>
-                  <td>
-                    <button class="btn btn-outline-success">dodaj</button>
-                  </td>
-                </tr>
-              </table> -->
             </div>
           </div>
         </div>
+
+        <div class="col">
+              <div class="md-form mb-0">
+                <h4 style=" margin-left"> Dodajte slike: </h4>
+               <div class="upload-images" style="margin-top: 3rem;">
+                    <input type="file"  @change="imageAdded"/>
+                </div> <br/>
+                <div v-if="imagesFrontend" class="images-preview">
+                        <div v-for="image in imagesFrontend" :key="image">
+                            <img :src="image" />
+                        </div>
+                </div>
+                </div>
+         </div>
       </div>
-     
+      
     </div> 
-     <div class="column" style="width: 18rem; height: 3rem; margin-left: 80%; margin-top: -10%">
-          <button class="btn btn-success" type="button" @click="saveCottage()">Sacuvaj izmene</button>
-        </div>
+   
     
   </div>
 </template>
@@ -309,6 +300,8 @@
 import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import axios from 'axios';
+import {ref} from 'vue';
+import markerIcon from "../../assets/logo.png"
 export default {
   name: "EditCottage",
   components: {
@@ -316,11 +309,58 @@ export default {
     NavBarHomePage,
   },
   data(){
+
+     const center = ref([20,44 ])
+        const projection = ref('EPSG:4326')
+        const zoom = ref(8)
+        const rotation = ref(0)
+       
+
+          const radius = ref(2)
+        const strokeWidth = ref(10)
+        const strokeColor = ref('red')
+        const fillColor = ref('white')
+
+          const markers = ref(null);
+    const drawType = ref("Point")
+const vectors = ref([]);
+     
+        const coordinate = ref([20,44 ])
+
+
+           const drawstart = (event) => {  
+     this.cottage.address.longitude = event.feature.values_.geometry.flatCoordinates[0]; //ISPISUJE
+      this.cottage.address.latitude= event.feature.values_.geometry.flatCoordinates[1];
+      console.log(event)
+         }
+
     return{
+       imagesFrontend: [],
       cottage: "",
       id: 0,
        adServ: {name:"", price: 0},
+       
+       //mapa
+      center,
+            projection,
+            zoom,
+            rotation,
+            radius,
+            strokeWidth,
+            strokeColor,
+            fillColor,
+
+            //za pin
+                markerIcon,
+        markers,
+      drawType,
+        vectors,
+         drawstart,
+          coordinate,
     }
+
+
+     
   },
   methods:{
 
@@ -337,6 +377,7 @@ export default {
       return data;
     },
       saveCottage(){
+   
         const headers = {
        Authorization: "Bearer " + localStorage.getItem("token"),
          };
@@ -348,7 +389,25 @@ export default {
 
      remove(index){
       this.cottage.additionalServices.splice(index, 1);
-    }
+    },
+    
+               imageAdded(e) {
+        
+                const file = e.target.files[0];  
+                console.log(file)        
+                this.createBase64Image(file);
+                this.imagesFrontend.push(URL.createObjectURL(file));
+            },
+            createBase64Image(file){
+                const reader= new FileReader();
+            
+                reader.onload = (e) =>{
+                    let img = e.target.result;
+                     console.log(img)  
+                    this.cottage.images.push(img);
+                }
+                reader.readAsDataURL(file);
+            }, 
   },
   async created() {
 this.role = localStorage.getItem("role");
@@ -387,7 +446,7 @@ this.role = localStorage.getItem("role");
   float: left;
   width: 80em;
   padding: 10px;
-  height: 16em;
+  /* height: 16em; */
 }
 .columnAbout {
   float: left;
@@ -445,4 +504,8 @@ this.role = localStorage.getItem("role");
 .smallInput {
   width: 100px;
 }
+ .images-preview img{
+        width:10%;
+        height: 10%;
+    }
 </style>
