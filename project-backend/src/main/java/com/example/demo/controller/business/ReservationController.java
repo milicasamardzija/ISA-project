@@ -509,7 +509,6 @@ public class ReservationController {
         r.setTerm(rt);
         r.setPrice(actionRequestDTO.getPrice());
         r.setEntityType(EntityType.ADVENTURE);
-
         String[] parts3 = actionRequestDTO.getValidFrom().split("-");
         String year3 = parts3[0];
         String month3 = parts3[1];
@@ -528,6 +527,8 @@ public class ReservationController {
         r.setValidFrom(validFrom);
         r.setValidTo(validTo);
         r.setAction(true);
+        r.setSuccessful(true);
+        r.setCanceled(false);
         long diff = dateEnd.getTime() - dateStart.getTime();
         int duration = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
         r.setDuration(duration);
