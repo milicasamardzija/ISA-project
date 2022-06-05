@@ -4,9 +4,10 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/openjdk:11.0
-    working_directory: ~/project-backend
+    working_directory: ~/ISA-project/project-backend
     steps:
-      - checkout
+      - checkout:
+        path:  ~/ISA-project
       - run:
           name: Build
           command: mvn -B -DskipTests clean package
