@@ -31,13 +31,18 @@ public class EntityClass {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Address address;
 	
-	@Column(name="promoDescription", unique=false, nullable=false)
+	@Column(name="promoDescription", unique=false, nullable=false, length = 10485760)
 	private String promoDescription; //promotivni opis
 	
-	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("entity") //da ne pravi loop
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Set<Image> image;
+//	@OneToMany(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	@JsonIgnoreProperties("entity") //da ne pravi loop
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	private Set<Image> image;
+
+@ElementCollection(fetch = FetchType.EAGER)
+@CollectionTable(name = "entity_images", joinColumns = @JoinColumn(name = "entity_id"))
+	@Column(name="images", length = 10485760)
+	private Set<String> images = new HashSet<>();
 	
 	@Column(name="rules", unique=false, nullable=false)
 	private String rules;
@@ -70,14 +75,14 @@ public class EntityClass {
 		super();
 	}
 
-	public EntityClass(int id, String name, Address address, String promoDescription, Set<Image> image,
+	public EntityClass(int id, String name, Address address, String promoDescription, Set<String> image,
 			Set<AdditionalService> additionalServices, String rules, int price, double grade) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.promoDescription = promoDescription;
-		this.image = image;
+		this.images = image;
 		this.additionalServices = additionalServices;
 		this.rules = rules;
 		this.price = price;
@@ -116,12 +121,12 @@ public class EntityClass {
 		this.promoDescription = promoDescription;
 	}
 
-	public Set<Image> getImage() {
-		return image;
+	public Set<String> getImages() {
+		return images;
 	}
 
-	public void setImage(Set<Image> image) {
-		this.image = image;
+	public void setImages(Set<String> image) {
+		this.images = image;
 	}
 
 	public Set<AdditionalService> getAdditionalServices() {

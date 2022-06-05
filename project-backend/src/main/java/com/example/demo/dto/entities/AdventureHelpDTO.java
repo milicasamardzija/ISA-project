@@ -18,7 +18,7 @@ public class AdventureHelpDTO {
 
     private String promoDescription;
 
-    private Set<Image> images;
+    private Set<String> images;
 
     private String rules;
 
@@ -51,7 +51,7 @@ public class AdventureHelpDTO {
         this.name = adventure.getName();
         this.address = adventure.getAddress();
         this.promoDescription = adventure.getPromoDescription();
-        this.images = adventure.getImage();
+        this.images = adventure.getImages();
         this.rules = adventure.getRules();
         this.price = adventure.getPrice();
         this.grade = adventure.getGrade();
@@ -158,11 +158,11 @@ public class AdventureHelpDTO {
         this.cancelationType = cancelationType;
     }
 
-    public Set<Image> getImages() {
+    public Set<String> getImages() {
         return images;
     }
 
-    public void setImages(Set<Image> image) {
+    public void setImages(Set<String> image) {
         this.images = image;
     }
 }

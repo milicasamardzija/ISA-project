@@ -52,12 +52,12 @@
       <div class="row-boats"  v-for="cottage in cottages" :key="cottage" >
        
         <div class="col-with-picture" style="margin-right: 5%; margin-top: 1%">
-          <div>
+          <div style="height: 10rem; width: 19rem">
             <img
-              src="../../assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
+              :src="cottage.images[0]"
               class="rounded img-thumbnail img-fluid"
               alt="Responsive image"
-              style="max-height: 300px !important; max-width: 320px !important"
+              style="margin-top: 1rem; max-height: 300px !important; max-width: 320px !important"
             />
           </div>
         </div>
@@ -273,7 +273,7 @@ export default {
          )
    
       this.cottages = this.getMyCottages();
-     // this.$router.go(0);
+     this.$router.go(0);
 
        
    },
@@ -340,4 +340,5 @@ export default {
 .row-boats {
   display: flex;
 }
+
 </style>

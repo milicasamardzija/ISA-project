@@ -267,6 +267,8 @@ public class CottageService {
                         aditionalServicesService.deleteById(a.getId()); //oni su one to many, tako da se brisu odmah
                     }
                 }
+
+
                 cottageOwnerRepository.save(owner);
                 break;
             }
@@ -291,7 +293,7 @@ public class CottageService {
         newCottageState.setRules(editCottage.getRules());
         newCottageState.setRoomsNumber(editCottage.getRoomsNumber());
         newCottageState.setBedsByRoom(newCottageState.getBedsByRoom());
-        newCottageState.setImage(editCottage.getImages());
+        newCottageState.setImages(editCottage.getImages());
 
         if (editCottage.getAdditionalServices().size() != 0) {
             for (AdditionalService a :
