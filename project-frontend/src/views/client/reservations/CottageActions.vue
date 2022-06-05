@@ -2,6 +2,7 @@
   <div>
     <NavBarClient />
   </div>
+  <div v-if="this.role === 'ROLE_CLIENT'">
     <div class="container"  v-if="reservations.length != 0">
       <h2><i>Akcije:</i></h2>
       <div class="dropdown" style="margin-top: 40px ;margin-bottom:20px">
@@ -108,7 +109,7 @@
         </div>
       </div>
     </div>
-
+    </div>
 </template>
 
 <script>
@@ -203,6 +204,7 @@ export default {
     },
   },
   async created() {
+    this.role = localStorage.getItem("role");
     this.id = this.$route.params.id;
     this.reservations = await this.fetchScheduledReservations();
   },

@@ -1,5 +1,5 @@
 <template>
-  
+  <div v-if="this.role === 'ROLE_CLIENT'">
     <div>
       <NavBarClient />
     </div>
@@ -449,6 +449,7 @@
 
   
   </div>
+    </div>
 </template>
 
 <script>
@@ -690,6 +691,7 @@ export default {
     }
   },
   async created() {
+    this.role = localStorage.getItem("role");
     this.reservationsCottages = await this.fetchCottageReservations();
     this.reservationsBoats = await this.fetchBoatsReservations();
     this.reservationsAdventures = await this.fetchAdventuresReservations();

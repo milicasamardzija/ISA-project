@@ -1,4 +1,5 @@
 <template>
+<div v-if="this.role === 'ROLE_CLIENT'">
   <div>
     <NavBarClient />
   </div>
@@ -335,8 +336,7 @@
     </div>
   </div>
   </div>
-
-
+  </div>
 </template>
 
 <script>
@@ -665,6 +665,7 @@ export default {
     }
   },
   async created() {
+    this.role = localStorage.getItem("role");
     this.cottages = await this.fetchCottages();
     this.maxLength = this.cottages.length;
     this.today = this.dates();

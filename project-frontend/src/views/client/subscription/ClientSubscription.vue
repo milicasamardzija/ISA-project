@@ -1,4 +1,5 @@
 <template>
+<div v-if="this.role === 'ROLE_CLIENT'">
   <div>
     <NavBarClient />
   </div>
@@ -66,7 +67,7 @@
     <div v-if="subscriptions.length === 0">
       <p style="font-size: 20px; margin-top:60px; margin-left:80px">Nemate nijedan enitet na koji ste pretplaceni.</p>
     </div>
-
+  </div>
 </template>
 
 <script>
@@ -117,6 +118,7 @@ export default {
     }
   },
   async created() {
+    this.role = localStorage.getItem("role");
     this.subscriptions = await this.fetchSubscriptions();
   }
 };

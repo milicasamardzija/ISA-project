@@ -1,4 +1,5 @@
 <template>
+<div v-if="this.role === 'ROLE_CLIENT'">
   <div>
     <NavBarClient />
   </div>
@@ -283,7 +284,7 @@
     </div>
   </div>
   </div>
-
+</div>
 </template>
 
 <script>
@@ -600,6 +601,7 @@ async search() {
   },
 
   async created() {
+    this.role = localStorage.getItem("role");
     this.boats = await this.fetchBoats();
     this.maxLength = this.boats.length;
     this.today = this.dates();
