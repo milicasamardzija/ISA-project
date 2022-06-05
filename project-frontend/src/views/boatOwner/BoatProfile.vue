@@ -18,22 +18,24 @@
   
   <div>
     <div class="tab-pane active containerInfo">
-      <div class="row">
-        <div class="column" style="width: 22rem; height: 3rem">
+      <div class="row" >
+        <div class="column" style="width: 19rem; height: 3rem">
           <h4>{{this.boat.name}}</h4>
           
         </div>
         <div class="column" style="width: 35rem; height: 3rem">
-          <h4>{{boat.address.street}} {{boat.address.number}}, {{boat.address.city}}, {{boat.address.country}},</h4>
+          <h4>{{boat.address.street}} {{boat.address.number}}, {{boat.address.city}}, {{boat.address.country}}</h4>
         </div>
-        <div class="column" style="width: 18rem; height: 3rem; margin-left: 17rem">
-            <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; " data-target="#akcija" data-toggle="modal" >Dodaj akciju</button>
-          <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; margin-left:2rem" @click="editBoat()">Izmeni brod
-       
-          </button>  
-           <button type="button" class="btn btn-outline-success"  style="margin-left:2rem" v-if="this.role === 'ROLE_BOAT_OWNER'" data-target="#rezervacija" data-toggle="modal" @click="findCurrentClient()">
-       Rezervisi
-          </button>
+        <div class="column" style="width: 18rem; height: 3rem;">
+        
+            <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; margin-left: 3rem " data-target="#akcija" data-toggle="modal" >Dodaj akciju</button>
+        </div>
+           <div class="column" style="width: 18rem; height: 3rem;">
+         
+         <button class="btn btn-success" v-if="this.role === 'ROLE_BOAT_OWNER'" style=" height: 3rem; " @click="editBoat()">Izmeni brod</button> 
+       <button class="btn btn-outline-success"  v-if="this.role === 'ROLE_BOAT_OWNER'"  style=" height: 3rem; margin-left:2.5rem  " data-target="#rezervacija" data-toggle="modal" @click="findCurrentClient()">Rezervisi</button>
+           
+             
         </div>
         <div class="column" style="width: 28rem; height: 3rem" >
         
@@ -42,83 +44,11 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="column">
-          <img
-            class="mainImage"
-            src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-          />
+       <div class="row">
+        <div class="columnPic" v-for="im in boat.images" :key="im"  >
+          <img :src="im" style="height: 70%; width: 80%" />
         </div>
-
-        <div class="column" style="width: 50rem">
-          <div class="row">
-            <!-- 1. red malih slika-->
-            <div class="column columnSmall" style="width:60rem; height: 14em">
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="clearfix"></div>
-            </div>
-          </div>
-          <!-- drugi red malih slika-->
-          <div class="row" style="height: 14em">
-            <div class="column columnSmall2" style="width: 60rem; height: 18em">
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="images">
-                <figure>
-                  <img
-                    src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-                    alt="Photo"
-                    class="smallImages"
-                  />
-                </figure>
-              </div>
-              <div class="clearfix"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+</div>
 
       <div class="row aboutCottage">
         <div class="column columnAbout">
@@ -696,6 +626,12 @@ export default {
   width: 16em;
   overflow: hidden;
   text-align: center;
+}
+.columnPic {
+  float: left;
+  width: 30rem;
+  padding: 4px;
+  height: 25em;
 }
 
 .clearfix {

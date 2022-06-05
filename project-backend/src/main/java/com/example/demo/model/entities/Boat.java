@@ -68,7 +68,7 @@ public class Boat extends EntityClass{
 		this.setName(dto.getName());
 		this.setAddress(dto.getAddress());
 		this.setPromoDescription(dto.getPromoDescription());
-		this.setImage(dto.getImages());
+		this.setImages(dto.getImages());
 		this.setRules(dto.getRules());
 		this.setPrice(dto.getPrice());
 		this.setGrade(dto.getGrade());

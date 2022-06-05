@@ -45,16 +45,18 @@
       </div>
  
       <div class="row">
-        <div class="column" >
-          <img
-            class="mainImage"
-            src="../../../src/assets/cottageImages/galerija-vikendica-pustolov-uvac-20.jpg"
-          />
+        <div class="columnPic" v-for="im in cottage.images" :key="im"  >
+          <img :src="im" style="height: 70%; width: 80%" />
         </div>
 
+
+
+ 
+
+<!-- 
         <div class="column" style="width: 50rem">
           <div class="row">
-            <!-- 1. red malih slika-->
+           
             <div class="column columnSmall" style="width:60rem; height: 14em">
               <div class="images">
                 <figure>
@@ -86,7 +88,7 @@
               <div class="clearfix"></div>
             </div>
           </div>
-          <!-- drugi red malih slika-->
+          
           <div class="row" style="height: 14em">
             <div class="column columnSmall2" style="width: 60rem; height: 18em">
               <div class="images">
@@ -119,7 +121,7 @@
               <div class="clearfix"></div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="row aboutCottage">
@@ -625,7 +627,7 @@ export default {
   width: 43em;
 }
 .aboutCottage {
-  margin-top: 3.5em;
+  margin-top: 1.5rem;
   height: 35em;
 }
 .column {
@@ -633,6 +635,12 @@ export default {
   width: 43em;
   padding: 9px;
   height: 28em;
+}
+.columnPic {
+  float: left;
+  width: 30rem;
+  padding: 4px;
+  height: 25em;
 }
 .columnAbout {
   float: left;

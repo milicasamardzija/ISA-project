@@ -17,7 +17,7 @@ public class EntityDTO {
 
     private String promoDescription;
 
-    private Set<Image> images;
+    private Set<String> images;
 
     private String rules;
 
@@ -32,7 +32,7 @@ public class EntityDTO {
         this.name = entity.getName();
         this.address = entity.getAddress();
         this.promoDescription = entity.getPromoDescription();
-        this.images = entity.getImage();
+        this.images = entity.getImages();
         this.rules = entity.getRules();
         this.price = entity.getPrice();
         this.grade = entity.getGrade();
@@ -44,7 +44,7 @@ public class EntityDTO {
         this.name = entity.getName();
         this.address = entity.getAddress();
         this.promoDescription = entity.getPromoDescription();
-        this.images = entity.getImage();
+        this.images = entity.getImages();
         this.rules = entity.getRules();
         this.price = entity.getPrice();
         this.grade = entity.getGrade();
@@ -84,11 +84,11 @@ public class EntityDTO {
         this.promoDescription = promoDescription;
     }
 
-    public Set<Image> getImages() {
+    public Set<String> getImages() {
         return images;
     }
 
-    public void setImages(Set<Image> image) {
+    public void setImages(Set<String> image) {
         this.images = image;
     }
 
