@@ -181,7 +181,7 @@ public class BoatService {
         boatNewState.setFishingEquipment(updatedBoat.getFishingEquipment());
         boatNewState.setQuantity(boatNewState.getQuantity());
         boatNewState.setCancelationType(updatedBoat.getCancelationType());
-        boatNewState.setImage(updatedBoat.getImages());
+        boatNewState.setImages(updatedBoat.getImages());
         //List<AdditionalService> current = additionalServicesRepository.findAdditionalServicesForCottage(updatedBoat.getId());
      if(updatedBoat.getAdditionalServices().size() != 0) {
          for (AdditionalService a :

@@ -96,35 +96,21 @@
               <!--Grid column   id="input-b6"  name="input-b6[]"-->
               <div class="col-md-6">
                 <div class="md-form mb-0">
-                  <div class="file-loading">
-                    <input
-                    
-                   
-                      type="file" 
-                      v-bind="images"
-                      accept="image/jpg, image/png "
-                      multiple
-                       
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <div class="row" style="margin-bottom: 1%">
-              <!--Grid column-->
-              <div class="col-md-2">
-                <div class="md-form mb-0">
-                  <label for="name" class=""></label>
-                </div>
-              </div>
-              <!--Grid column  OVDE DA SE IZLISTAJU UPLOADOVANE SLIKE-->
-              <div class="col-md-6">
-                <div class="md-form mb-0">
-                  <div></div>
+
+                   <div class="upload-images">
+                    <input type="file"  @change="imageAdded"/>
+                </div> <br/>
+                <div v-if="imagesFrontend" class="images-preview">
+                        <div v-for="image in imagesFrontend" :key="image">
+                            <img :src="image" />
+                        </div>
+
                 </div>
               </div>
             </div>
+          </div>
+       
             <!--Grid row-->
             <div class="row" style="margin-bottom: 1%">
               <!--Grid column-->
@@ -486,6 +472,7 @@ export default {
     return {
         boatTypeString: "",
         equipment: "",
+          imagesFrontend: [],
       images: "", 
       adServ: {name:"", price: 0},
       boat: {id: 0, name: "", address: { street: "", number: 0, city: "", country: "Srbija", id: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [], boatType: 0, lenght: 0, motorNumber: 0, power: 0, maxSpeed: 0, navigationEquipment: "", fishingEquipment: "", quantity: 0, cancelationType: 0 },
@@ -514,7 +501,25 @@ export default {
       console.log(this.images);
       axios.post("http://localhost:8081/api/boats/newBoat", this.boat,  {headers}).then( response => response.json());
   this.$router.push({name: "MyBoats"});
-      }
+      },
+      
+               imageAdded(e) {
+           
+                const file = e.target.files[0];  
+                console.log(file)        
+                this.createBase64Image(file);
+                this.imagesFrontend.push(URL.createObjectURL(file));
+            },
+            createBase64Image(file){
+                const reader= new FileReader();
+            
+                reader.onload = (e) =>{
+                    let img = e.target.result;
+                     console.log(img)  
+                    this.boat.images.push(img);
+                }
+                reader.readAsDataURL(file);
+            }, 
 
   },
 
@@ -540,4 +545,8 @@ table {
   max-width: 50%;
   background-color: rgb(241, 241, 241);
 }
+  .images-preview img{
+        width:20%;
+        height: 15%;
+    }
 </style>

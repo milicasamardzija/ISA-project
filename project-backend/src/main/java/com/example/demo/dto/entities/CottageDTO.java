@@ -18,7 +18,7 @@ public class CottageDTO {
     private String promoDescription; //promotivni opis
     private String rules;
     private double grade;
-    private Set<Image> images;
+    private Set<String> images;
     private int price; //je l ovo dovoljno za cenovnik
     private List<AdditionalServiceDTO> additionalServices;
     //slobodni termini sa akcijama za rezervaciju OVO NEMAMO
@@ -45,7 +45,7 @@ public class CottageDTO {
         this.rules = cottage.getRules();
         this.price = cottage.getPrice();
         this.grade = cottage.getGrade();
-        this.images = cottage.getImage();
+        this.images = cottage.getImages();
        //this.additionalServices = cottage.getAdditionalServices();
     }
 
@@ -125,11 +125,11 @@ public class CottageDTO {
 
 
 
-    public Set<Image> getImages() {
+    public Set<String> getImages() {
         return images;
     }
 
-    public void setImages(Set<Image> images) {
+    public void setImages(Set<String> images) {
         this.images = images;
     }
 }

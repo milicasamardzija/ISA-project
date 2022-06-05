@@ -16,7 +16,7 @@ public class Cottage extends EntityClass {
 	@Column(name="bedsByRoom", unique=false, nullable=true)
 	private int bedsByRoom;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "owner_id") //ovako ce se zvati id polje u bazi
 	@JsonIgnoreProperties("cottageOwner")
 	public CottageOwner cottageOwner;
@@ -56,7 +56,7 @@ public class Cottage extends EntityClass {
 		this.setBedsByRoom(dto.getBedsByRoom());
 		this.setRoomsNumber(dto.getRoomsNumber());
 		this.setPromoDescription(dto.getPromoDescription());
-		this.setImage(dto.getImages());
+		this.setImages(dto.getImages());
 		this.setRules(dto.getRules());
 		this.setPrice(dto.getPrice());
 		this.setGrade(dto.getGrade());
