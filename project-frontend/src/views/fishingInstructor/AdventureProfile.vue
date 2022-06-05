@@ -4,12 +4,17 @@
     <HeaderStartPage />
     <NavBarFishingInstructor />
 </div>
-    <div v-if="this.role != 'ROLE_INSTRUCTOR'"> 
+<div v-if="this.role == ''">
+ <HeaderLogAndRegister />
+  <HeaderStartPage />
+  <NavBarStartPage />
+</div>
+   <!-- <div v-if="this.role != 'ROLE_INSTRUCTOR'"> 
       <HeaderLogAndRegister />
-      <!-- <HeaderStartPage /> -->
+       <HeaderStartPage />
       <NavBarStartPage />
       <button class="btn btn-success btn-block" @click="goBack()">Vrati se</button>
-    </div> 
+    </div>  -->
     <div v-if="this.role === 'ROLE_CLIENT'">
 <NavBarClient />
     </div>
@@ -91,15 +96,19 @@ import HeaderStartPage from "../../components/startPage/HeaderStartPage";
 import NavBarFishingInstructor from "../../components/fishingInstructor/NavBarFishingInstructor.vue";
 import NavBarLogOut from "../../components/fishingInstructor/NavbarLogOut.vue";
 import NavBarClient from "../../components/client/NavBarClient.vue";
+import NavBarStartPage from "../../components/startPage/NavBarStartPage.vue";
+import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
 import axios from "axios"
 
 export default ({
     name: "AdventureProfile",
-  components: {
+    components: {
     HeaderStartPage,
     NavBarFishingInstructor,
     NavBarLogOut,
-    NavBarClient
+    NavBarClient,
+    NavBarStartPage,
+    HeaderLogAndRegister,
     },
     data() {
         return {

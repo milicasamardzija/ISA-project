@@ -51,6 +51,7 @@
             {{ cottage.address.city }}, {{ cottage.address.country }}
           </h4>
           <h4 style="width: 600px" class="text">Ocena: {{ cottage.grade }}</h4>
+           <button  class="btn btn-success" @click="goToBoat(cottage)">Prikazi profil</button>
         </div>
       </div>
     </div>
@@ -84,6 +85,9 @@ export default {
       const res = await fetch("http://localhost:8081/api/cottages");
       const data = await res.json();
       return data;
+    },
+    async goToBoat(boat){
+        this.$router.push({ name: 'CottageProfile', params: { id: boat.id}})
     },
     async search() {
       const res = await fetch("http://localhost:8081/api/cottages/search", {

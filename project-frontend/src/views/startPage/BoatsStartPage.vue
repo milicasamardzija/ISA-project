@@ -52,6 +52,7 @@
           <h4 style="width: 600px" class="text">
             Prosecna ocena: {{ boat.grade }}
           </h4>
+          <button  class="btn btn-success" @click="goToBoat(boat)">Prikazi profil</button>
         </div>
       </div>
     </div>
@@ -84,6 +85,9 @@ export default {
       const res = await fetch("http://localhost:8081/api/boats");
       const data = await res.json();
       return data;
+    },
+    async goToBoat(boat){
+        this.$router.push({ name: 'BoatProfile', params: { id: boat.id}})
     },
     async search() {
       const res = await fetch("http://localhost:8081/api/boats/search", {

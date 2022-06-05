@@ -63,7 +63,7 @@
             <h4 style="width: 600px" class="text">
               Biografija instruktora: {{ adventure.instructorBiografy }}
             </h4>
-             <button  @click="goToAdventure(adventure.name)">Prikazi profil</button>
+             <button  class="btn btn-success"  @click="goToAdventure(adventure.name)">Prikazi profil</button>
           </div>
         </div>
       </div>
