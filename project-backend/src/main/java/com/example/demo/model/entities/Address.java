@@ -7,17 +7,18 @@ import javax.persistence.*;
 public class Address {
 	
 	@Id
-	@SequenceGenerator(name = "userSeqGen", sequenceName = "userSeqGen", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeqGen")
-	@Column(name="id", unique=true, nullable=false)
+//	@SequenceGenerator(name = "userSeqGen", sequenceName = "userSeqGen", initialValue = 1, allocationSize = 1)
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeqGen")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
-	@Column(name = "country", nullable = false)
+	@Column(name = "country")
 	private String country;
-	@Column(name = "city", nullable = false)
+	@Column(name = "city")
 	private String city;
-	@Column(name = "street", nullable = false)
+	@Column(name = "street")
 	private String street;
-	@Column(name = "number", nullable = false)
+	@Column(name = "number")
 	private String number;
 	
 	public Address() {}

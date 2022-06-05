@@ -60,9 +60,9 @@
        
     
 
-      <div class="row rowPic" style="width: 90rem">
+      <!-- <div class="row rowPic" style="width: 90rem">
         <div class="column columnPic">
-          <!-- 1. red malih slika-->
+      
           <div class="column columnPic" style="width: 100rem; height: 14em">
             <div class="images">
               <figure>
@@ -149,7 +149,7 @@
             <div class="clearfix"></div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="row aboutCottage">
         <div class="column columnAbout">

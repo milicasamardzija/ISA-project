@@ -39,7 +39,7 @@ public class Reservation {
     @Column(name="is_successful",nullable=false)
     private Boolean isSuccessful = false;
 
-    @Column(name="action",nullable=true)
+    @Column(name="in_action",nullable=true)
     private Boolean action = false;
 
     @Column(name="duration", nullable = true)
