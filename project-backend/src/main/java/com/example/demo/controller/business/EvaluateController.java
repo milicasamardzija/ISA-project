@@ -7,6 +7,7 @@ import com.example.demo.service.business.EvaluateService;
 import com.example.demo.service.email.EmailSenderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import java.util.List;
 public class EvaluateController {
     private EvaluateService evaluateService;
     private EmailSenderService service;
+
     public EvaluateController(EvaluateService evaluateService,EmailSenderService service){
         this.evaluateService = evaluateService;
         this.service = service;
@@ -68,6 +70,7 @@ public class EvaluateController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping()
     public ResponseEntity<Void> save(@RequestBody EvaluateDTO evalueteDTO){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

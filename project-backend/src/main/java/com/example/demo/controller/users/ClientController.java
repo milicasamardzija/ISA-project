@@ -9,6 +9,7 @@ import com.example.demo.service.users.ClientService;
 import com.example.demo.service.users.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class ClientController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/profileClient")
     public ResponseEntity<ClientDTO> getProfileInfo()
     {
@@ -51,6 +53,7 @@ public class ClientController {
             return new ResponseEntity<>(new ClientDTO(client), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/subscribedEntitites")
     public ResponseEntity<List<EntityDTO>> findSubscribedEnities(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -64,6 +67,7 @@ public class ClientController {
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> cancelSubscription(@PathVariable int id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -78,6 +82,7 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<Void> addSubscription(@PathVariable int id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

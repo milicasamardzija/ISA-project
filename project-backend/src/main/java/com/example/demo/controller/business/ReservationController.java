@@ -32,6 +32,7 @@ import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -75,6 +76,7 @@ public class ReservationController {
         this.reservationServicesService=reservationServicesService;
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/scheduledReservations")
     public ResponseEntity<List<ReservationDTO>> getAll(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -89,6 +91,7 @@ public class ReservationController {
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/historyReservationsAdventures")
     public ResponseEntity<List<ReservationDTO>> historyReservationsAdventures(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -103,6 +106,7 @@ public class ReservationController {
         return  new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/historyReservationsBoats")
     public ResponseEntity<List<ReservationDTO>> historyReservationsBoats(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -135,7 +139,7 @@ public class ReservationController {
         return  new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
-
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/historyReservationsCottages")
     public ResponseEntity<List<ReservationDTO>> historyReservationsCottages(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -316,6 +320,7 @@ public class ReservationController {
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/actionReservation/{id}")
     public ResponseEntity<HttpStatus> actionReservation(@PathVariable int id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -330,6 +335,7 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> save(@RequestBody ReservationNewDTO reservation){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -359,6 +365,7 @@ public class ReservationController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/cancel/{id}")
     public ResponseEntity<String> cancelReservation(@PathVariable int id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -366,6 +373,7 @@ public class ReservationController {
         return new ResponseEntity<>(reservationService.cancelReservation(id, user), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping("/totalPrice")
     public ResponseEntity<Double> getTotalPrice(@RequestBody PriceDTO price){
         return new ResponseEntity<>(this.reservationService.getTotalPrice(price), HttpStatus.OK);
@@ -393,6 +401,7 @@ public class ReservationController {
         return  new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping("/checkDate")
     public ResponseEntity<Boolean> checkDate(@RequestBody DateDTO date){
         if (this.reservationService.checkDate(date)){
@@ -402,6 +411,7 @@ public class ReservationController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping("/getDateEnd")
     public ResponseEntity<Date> getDateEnd(@RequestBody DateDTO date){
         return new ResponseEntity<>(this.reservationService.getDateEnd(date),HttpStatus.OK);
