@@ -173,6 +173,7 @@ export default {
         { headers }).then(
           response => {
             console.log(response);
+            this.reservations = this.fetchScheduledReservations();
              return new Swal({
              title:"Obavestenje",
              type: "warning",
@@ -180,21 +181,17 @@ export default {
            });
           }
         );
-        this.udpateReservations();
     },
-    async udpateReservations(){
-      this.reservations = await this.fetchScheduledReservations()
-    },
-    async fetchScheduledReservations() {
+    
+     fetchScheduledReservations() {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch(
-        "http://localhost:8081/api/reservation/scheduledReservations",
-        { headers }
-      );
-      const data = await res.json();
-      return data;
+      axios.get("http://localhost:8081/api/reservation/scheduledReservations" ,{headers})
+      .then (response => { 
+        console.log(response);
+        this.reservations = response.data;    
+      })
     },
     format_date(value){
       if (value) {
@@ -228,9 +225,9 @@ export default {
         });
     },
   },
-  async created() {
+   created() {
     this.role = localStorage.getItem("role");
-    this.reservations = await this.fetchScheduledReservations();
+    this.reservations =  this.fetchScheduledReservations();
   },
 };
 </script>

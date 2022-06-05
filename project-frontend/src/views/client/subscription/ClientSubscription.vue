@@ -91,12 +91,12 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch(
-        "http://localhost:8081/api/client/subscribedEntitites",
-        { headers }
-      );
-      const data = await res.json();
-      return data;
+     axios.get("http://localhost:8081/api/client/subscribedEntitites" ,{headers})
+      .then (response => { 
+        console.log(response);
+        this.subscriptions = response.data;
+          
+      })
     },
     getSelected(id){
       this.selectedId = id;
@@ -108,18 +108,18 @@ export default {
       axios.delete("http://localhost:8081/api/client/" + this.selectedId,{headers})
       .then (response => { 
         console.log(response);
+        this.subscriptions =  this.fetchSubscriptions();
           new Swal({
              title:"Obavestenje",
              type: "warning",
              text:'Uspesno ste se odjavili sa pretplate!'
            });
-        alert("Uspesno ste se odjavili sa pretplate!")
       })
     }
   },
-  async created() {
+   created() {
     this.role = localStorage.getItem("role");
-    this.subscriptions = await this.fetchSubscriptions();
+    this.subscriptions =  this.fetchSubscriptions();
   }
 };
 </script>
