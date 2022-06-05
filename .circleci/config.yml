@@ -1,10 +1,8 @@
 version: 2.1
 
-general:
-  build_dir: project-a
-
 jobs:
   build-and-test:
+  working_directory: ~/project-backend
     docker:
       - image: cimg/openjdk:11.0
     steps:
