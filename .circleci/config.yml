@@ -11,10 +11,10 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: mvn -B -DskipTests clean package -f ./project-backend
+          command: mvn -B -DskipTests clean package -f ./project-backend/pom.xml
       - run:
           name: Test
-          command: mvn test -f ./project-backend
+          command: mvn test -f ./project-backend/pom.xml
       
 
 orbs:

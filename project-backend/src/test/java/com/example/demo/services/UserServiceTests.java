@@ -1,6 +1,5 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.enums.Role;
 import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.users.User;
@@ -29,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserServiceTest {
+public class UserServiceTests {
 
     @Mock
     private UserRepository userRepositoryMock;
