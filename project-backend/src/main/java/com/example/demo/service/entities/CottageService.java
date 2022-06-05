@@ -258,25 +258,24 @@ public class CottageService {
     public void deleteById(int id) {
         Cottage cottage = this.cottageRepository.getCottageWithServices(id);
         CottageOwner owner = this.findCottageOwner(id);
+        List<Cottage> cottageList = cottage.getCottageOwner().getCottageList();
 
-        for(Cottage c: cottage.getCottageOwner().getCottageList()){
+        for(Cottage c: cottageList){
             if(c.getId() == id) {
                 c.getCottageOwner().getCottageList().remove(c);
-                if(c.getAdditionalServices().size() != 0) {
-                    for (AdditionalService a : c.getAdditionalServices()) {
-                        if (a.getEntities().getId() == id) {
-                            aditionalServicesService.deleteById(a.getId()); //oni su one to many, tako da se brisu odmah
-                        }
-                    }
-                }
-
                 cottageOwnerRepository.save(owner);
+                break;
             }
         }
+       if(cottage.getAdditionalServices().size() != 0) {
+           for (AdditionalService a : cottage.getAdditionalServices()) {
+               if (a.getEntities().getId() == id) {
+                   aditionalServicesService.deleteById(a.getId()); //oni su one to many, tako da se brisu odmah
+               }
+           }
+       }
 
         this.cottageRepository.delete(cottage);
-
-
     }
 
     public Cottage saveCottage(Cottage newCottage){

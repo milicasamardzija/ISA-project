@@ -185,7 +185,7 @@
                 >
               </div>
 
-              <button type="submit" class="btn btn-success btn-block" @click="deleteCottage()">
+              <button type="submit" class="btn btn-success btn-block">
                 <span></span> Potvrdi
               </button>
             </form>
@@ -260,7 +260,19 @@ export default {
         axios.get("http://localhost:8081/api/reservation/check/"+ this.selectedId).then( 
            response => { 
              console.log(response)
-            axios.get("http://localhost:8081/api/cottages/delete/"+ this.selectedId);
+            axios.get("http://localhost:8081/api/cottages/delete/"+ this.selectedId).then(
+              res => {
+                console.log(res);
+                this.$router.go(0);
+                  return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Vikendica je uspesno izbrisana!'
+           });
+           
+
+              }
+            );
          }
          ).catch(error =>{
            console.log(error);
