@@ -21,13 +21,13 @@ public class Instructor extends User{
     @JsonIgnore
     private Set<Adventure> adventuresList;
 
-    //public Set<Adventure> getAdventures() {
-     //   return adventuresList;
-    //}
+    public Set<Adventure> getAdventures() {
+        return adventuresList;
+    }
 
-    //public void setAdventures(Set<Adventure> adventuresList) {
-   //     this.adventuresList = adventuresList;
-   // }
+    public void setAdventures(Set<Adventure> adventuresList) {
+        this.adventuresList = adventuresList;
+    }
 
     public Instructor() {}
 

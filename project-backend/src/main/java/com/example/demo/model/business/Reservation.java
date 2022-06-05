@@ -15,7 +15,8 @@ import java.util.List;
 public class Reservation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "ReservationGen", sequenceName = "ReservationGen", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ReservationGen")
     @Column(name="id", unique=true, nullable=false)
     private int id;
 

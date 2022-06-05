@@ -10,7 +10,8 @@ import javax.persistence.*;
 public class Complaint {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "ComplaintGen", sequenceName = "ComplaintGen", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ComplaintGen")
     private int id;
 
     @Column

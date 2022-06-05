@@ -131,22 +131,27 @@ public class ReservationController {
         User user = (User)authentication.getPrincipal();
 
         List<Reservation> scheduledReservations = reservationService.findAllReservationsForInstructor(user.getId());
+        System.out.print("BROJ RESERVACIJA JE" + scheduledReservations.size());
         List<ReservationnDTO> ret = new ArrayList<>();
         for(Reservation reservation : scheduledReservations ) {
             if (!reservation.getAction()) {
+                System.out.print("USLA:");
             ReservationnDTO reservationDTO = new ReservationnDTO();
             reservationDTO.setId(reservation.getId());
             reservationDTO.setCanceled(reservation.getCanceled());
             reservationDTO.setPrice(reservation.getPrice());
             reservationDTO.setDuration(reservation.getDuration());
             reservationDTO.setClientID(String.valueOf(reservation.getClient().getId()));
-
+            System.out.print("PRVO:");
             ReservedTerm rt = this.reservedTermService.findById(reservation.getTerm().getId());
             ReservedTermDTO rtDTO = new ReservedTermDTO(rt);
+                System.out.print("DRUGO:");
             reservationDTO.setTerm(rtDTO);
             reservationDTO.setDateEnd(rtDTO.getDateEnd().toString());
             reservationDTO.setDateStart(rtDTO.getDateStart().toString());
+                System.out.print("TRECE:");
             EntityClass e = this.entityService.findById(reservation.getEntity().getId());
+                System.out.print("CETVRTO:");
             EntityDTO entityDTO = new EntityDTO(e);
             reservationDTO.setEntity(entityDTO);
             ret.add(reservationDTO);
@@ -206,7 +211,7 @@ public class ReservationController {
         List<Reservation> allReservation = reservationService.findAll();
         List<ReservationnDTO> reservations = new ArrayList<>();
         for(Reservation r : allReservation ) {
-            if (r.getSuccessful()) {
+            if (!r.getCanceled()) {
                 ReservationnDTO reservationDTO = new ReservationnDTO(r);
                 System.out.print("id je"+r.getEntity().getId());
                 EntityClass e = this.entityService.findById(r.getEntity().getId());
@@ -236,60 +241,16 @@ public class ReservationController {
         Date dateStart = format.parse(realDateFrom);
         Date dateEnd = format.parse(realDateTo);
 
-        List<Reservation> allReservation = reservationService.findAll();
+        List<Reservation> allReservation1 = reservationService.findAll();
+        List<Reservation> allReservation = new ArrayList<>();
+        for (Reservation r: allReservation1) {
+            if(r.getCanceled() == false) {
+                allReservation.add(r);
+            }
+        }
+        System.out.print("duzina liste je" + allReservation.size());
         List<ReservationnDTO> reservationns = new ArrayList<>();
         for(Reservation r : allReservation ) {
-            System.out.print(dateStart);
-            System.out.print(dateEnd);
-
-            System.out.print(r.getTerm().getDateStart().toString());
-            System.out.print(r.getTerm().getDateEnd().toString());
-
-            int y1 = r.getTerm().getDateStart().getYear();
-            int m1 = r.getTerm().getDateStart().getMonth();
-            int d1 = r.getTerm().getDateStart().getDay();
-
-            int y2 = r.getTerm().getDateEnd().getYear();
-            int m2 = r.getTerm().getDateEnd().getMonth();
-            int d2 = r.getTerm().getDateEnd().getDay();
-
-            if (r.getTerm().getDateStart().after(dateStart) || (y1 == dateStart.getYear() && m1 == dateStart.getMonth() && d1 == dateStart.getDay())) {
-                if ((r.getTerm().getDateEnd().before(dateEnd)) || (y2 == dateEnd.getYear() && m2 == dateEnd.getMonth() && d2 == dateEnd.getDay())) {
-                           ReservationnDTO reservationDTO = new ReservationnDTO(r);
-                           EntityClass e = this.entityService.findById(r.getEntity().getId());
-                           EntityDTO entityDTO = new EntityDTO(e);
-                           reservationDTO.setEntity(entityDTO);
-                           reservationns.add(reservationDTO);
-                }
-            }
-
-        }
-        return  new ResponseEntity<>(reservationns, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/getEarningsByDate/{dateFrom}/{dateTo}")
-    public ResponseEntity<Double> getEarningsByDate(@PathVariable String dateFrom, @PathVariable String dateTo) throws ParseException {
-        System.out.print("USLA SAMN U EARNINGS");
-        Double totalEarnings = 0.0;
-        String[] parts1 = dateFrom.split("-");
-        String year1 = parts1[0];
-        String month1 = parts1[1];
-        String day1 =parts1[2];
-        String realDateFrom = day1+"/"+month1+"/"+year1;
-
-        String[] parts2 = dateTo.split("-");
-        String year2 = parts2[0];
-        String month2 = parts2[1];
-        String day2 =parts2[2];
-        String realDateTo = day2+"/"+month2+"/"+year2;
-
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        Date dateStart = format.parse(realDateFrom);
-        Date dateEnd = format.parse(realDateTo);
-
-        List<Reservation> allReservations = reservationService.findAll();
-        List<ReservationnDTO> reservationns = new ArrayList<>();
-        for(Reservation r : allReservations ) {
             System.out.print(dateStart);
             System.out.print(dateEnd);
 
@@ -315,10 +276,13 @@ public class ReservationController {
             }
 
         }
-        for( ReservationnDTO reservationDTO: reservationns) {
-            totalEarnings += reservationDTO.getPrice();
-        }
-        System.out.print("Suma je"+totalEarnings);
+        return  new ResponseEntity<>(reservationns, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getEarningsByDate/{dateFrom}/{dateTo}")
+    public ResponseEntity<Double> getEarningsByDate(@PathVariable String dateFrom, @PathVariable String dateTo) throws ParseException {
+
+        Double totalEarnings = 0.0;
         return  new ResponseEntity<>(totalEarnings, HttpStatus.OK);
     }
 
@@ -330,7 +294,7 @@ public class ReservationController {
         List<Reservation> allReservation = reservationService.findAll();
         List<ReservationDTO> reservations = new ArrayList<>();
         for(Reservation r : allReservation ) {
-            if (r.getSuccessful()) {
+            if (!r.getCanceled()) {
                 ReservationDTO reservation = new ReservationDTO();
                 reservation.setId(r.getId());
                 //reservation.setDateStart(r.getTerm().getDateStart().toString());

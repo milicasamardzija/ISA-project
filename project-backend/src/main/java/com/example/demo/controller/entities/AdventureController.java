@@ -140,8 +140,11 @@ public class AdventureController {
         a.setFishingEquipment(adventureRequest.getFishingEquipment());
         a.setRules(adventureRequest.getRules());
         a.setDescription(adventureRequest.getPromoDescription());
+        System.out.print("CAOO tu sam1");
         Address address = new Address(adventureRequest.getCountry(),adventureRequest.getCity(),adventureRequest.getStreet(),adventureRequest.getNumber());
+        System.out.print("CAOO tu sam2 ");
         this.addressService.save(address);
+        System.out.print("CAOO tu sam3 ");
         a.setAddress(address);
         a.setInstructor(i);
         if (adventureRequest.getCancelationType().equalsIgnoreCase("BESPLATNO")) {

@@ -48,6 +48,7 @@ import EditAdventure from "../views/fishingInstructor/EditAdventure"
 import MyAdventureReservations from "../views/fishingInstructor/MyAdventureReservations"
 import AdventureProfile from "../views/fishingInstructor/AdventureProfile"
 import AddService from "../views/fishingInstructor/AddService"
+import MyReportOfReservation from "../views/fishingInstructor/MyReportOfReservation"
 const routes = [
   {
     path: "/",
@@ -119,6 +120,12 @@ const routes = [
     path: "/adventures",
     name: "AdventuresStartPage",
     component: AdventuresStartPage,
+  },
+  
+  {
+    path: "/MyReportOfReservation",
+    name: "MyReportOfReservation",
+    component: MyReportOfReservation,
   },
   {
     path: "/client",

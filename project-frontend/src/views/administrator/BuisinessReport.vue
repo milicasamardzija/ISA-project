@@ -96,7 +96,9 @@ export default {
      const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.get( "http://localhost:8081/api/reservation/getEarningsByDate/"+this.dateFrom+"/"+this.dateTo ,
+      axios.get( "http://localhost:8081/api/reservation/getEarningsByDate/"+this.dateFrom+"/"+this.dateTo ,{
+        reservations: this.reservations,
+      },
         { headers }).then(
           response => {
             this.totalEarnings = response.data
@@ -113,8 +115,9 @@ export default {
       this.totalEarnings = await this.getTotalEarnings();
   },
   async getSomeReservation() {
-    this.totalEarnings = await this.findEarnings(); 
     this.reservations = await this.findReservation();
+    this.totalEarnings = await this.findEarnings(); 
+
        
   }
   },

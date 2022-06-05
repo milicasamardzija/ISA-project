@@ -1,10 +1,12 @@
 package com.example.demo.controller.users;
 
 import com.example.demo.dto.users.UserRequest;
+import com.example.demo.enums.Role;
 import com.example.demo.model.users.Administrator;
 import com.example.demo.model.users.User;
 import com.example.demo.service.entities.AddressService;
 import com.example.demo.service.users.AdministratorService;
+import com.example.demo.service.users.RoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class AdministratorController {
     private AdministratorService administratorService;
     private AddressService addressService;
+    private RoleService roleService;
 
-    public AdministratorController(AdministratorService administratorService,AddressService addressService) {
+    public AdministratorController(RoleService roleService,AdministratorService administratorService,AddressService addressService) {
         this.administratorService = administratorService;
         this.addressService = addressService;
+        this.roleService = roleService;
     }
 
     @PostMapping(value = "/addAdministrator")
@@ -32,6 +36,15 @@ public class AdministratorController {
         a.setPassword(userRequest.getPassword());
         a.setTelephone(userRequest.getTelephone());
         a.setAddress(userRequest.getAddress());
+        Role r = this.roleService.findByName("ROLE_ADMIN");
+        if (r==null) {
+                Role newRole = new Role("ROLE_ADMIN");
+                this.roleService.saveRole(newRole);
+                a.setRole(newRole);
+        }else {
+            a.setRole(r);
+        }
+
         if (a != null){
             administratorService.save(a);
             return new ResponseEntity<>(HttpStatus.OK);

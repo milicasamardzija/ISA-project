@@ -11,7 +11,8 @@ import javax.persistence.*;
 public class ReportOwner {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "ReportOwnerGen", sequenceName = "ReportOwnerGen", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ReportOwnerGen")
     @Column(name="id", unique=true, nullable=false)
     private  int id;
 

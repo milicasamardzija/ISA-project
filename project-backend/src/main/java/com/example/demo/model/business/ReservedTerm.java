@@ -8,9 +8,9 @@ import java.util.Date;
 
 @Entity
 public class ReservedTerm {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "ReservedTermGen", sequenceName = "ReservedTermGen", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ReservedTermGen")
     private int id;
     @Column
     private Date dateStart;

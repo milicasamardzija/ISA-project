@@ -7,12 +7,14 @@ import com.example.demo.enums.Role;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.EntityClass;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Proxy;
 
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "client")
+@Proxy(lazy = true)
 @DiscriminatorValue("CC")
 public class Client extends User{
 	

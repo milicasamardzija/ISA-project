@@ -9,11 +9,13 @@ public class RoleService {
 
     private RoleRepository roleRepository;
 
+    public RoleService(RoleRepository roleRepository) {
+        this.roleRepository=roleRepository;
+    }
+
     public Role save(Role role) { return this.roleRepository.save(role);}
 
-    public RoleService(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
+    public void saveRole(Role role) {  this.roleRepository.save(role);}
 
     public void deleteById(int id) {
         this.roleRepository.deleteById(id);

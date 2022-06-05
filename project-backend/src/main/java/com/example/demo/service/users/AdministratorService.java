@@ -79,22 +79,21 @@ public class AdministratorService {
         a.setMust_change_password(true);
         a.setEmail(userRequest.getEmail());
         a.setTelephone(userRequest.getTelephone());
-        Address address = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber());
+        a.setAddress(addressService.save(userRequest.getAddress()));
 
-        a.setAddress(addressService.save(address));
         a.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-
         Role r = this.roleService.findByName("ROLE_ADMIN");
-        if (r==null) {
-            r = this.roleService.findByName("ROLE_PREDEF_ADMIN");
-            if (r==null) {
-                Role newRole = new Role(userRequest.getRole());
-                this.roleService.save(newRole);
-                a.setRole(newRole);
+            if (r == null) {
+                r = this.roleService.findByName("ROLE_PREDEF_ADMIN");
+                if (r == null) {
+                    Role newRole = new Role(userRequest.getRole());
+                    this.roleService.save(newRole);
+                    a.setRole(newRole);
+                }
+            } else {
+                a.setRole(r);
             }
-        }else {
-            a.setRole(r);
+            administratorRepository.save(a);
         }
-         administratorRepository.save(a);
-    }
+
 }

@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 public class FreeTerms {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "FreeTermsGen", sequenceName = "FreeTermsGen", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FreeTermsGen")
     private int id;
 
     @Column(nullable = true)
