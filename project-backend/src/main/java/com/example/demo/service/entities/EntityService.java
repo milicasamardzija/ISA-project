@@ -69,4 +69,9 @@ public class EntityService {
     public EntityClass findEntityWithReservations(int id){
         return this.entityRepository.findEntityWithReservations(id);
     }
+
+    @Transactional
+    public EntityClass getById(int entityId) {
+        return  this.entityRepository.getById(entityId);
+    }
 }

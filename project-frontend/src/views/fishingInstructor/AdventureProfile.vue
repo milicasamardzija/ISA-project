@@ -4,11 +4,14 @@
     <HeaderStartPage />
     <NavBarFishingInstructor />
 </div>
-    <div v-if="this.role != 'ROLE_INSTRUCTOR'">
+    <div v-if="this.role != 'ROLE_INSTRUCTOR'"> 
       <HeaderLogAndRegister />
-      <HeaderStartPage />
+      <!-- <HeaderStartPage /> -->
       <NavBarStartPage />
       <button class="btn btn-success btn-block" @click="goBack()">Vrati se</button>
+    </div> 
+    <div v-if="this.role === 'ROLE_CLIENT'">
+<NavBarClient />
     </div>
   <div>
         <div  style="width: 22rem; height: 3rem">
@@ -39,20 +42,64 @@
            </tr>
           <tr v-if="this.role === 'ROLE_INSTRUCTOR'"><td></td><td> <button class="btn btn-success btn-block" @click="AddService()">Dodaj uslugu</button></td></tr>
           <tr v-if="this.role === 'ROLE_INSTRUCTOR'"><td></td><td> <button class="btn btn-success btn-block" @click="AddAction()">Dodaj akciju</button></td></tr> 
+          <tr><td><button class="btn btn-success" data-target="#pretplata" data-toggle="modal" v-if="this.role === 'ROLE_CLIENT'">Pretplati se</button></td></tr>
+          <tr><td><button class="btn btn-success" v-if="this.role === 'ROLE_CLIENT'"  data-toggle="modal" style="margin-left:40px" @click="showActions()">Akcije</button></td></tr>
           </table>
+          
         </div>  
+
+
+<!-- Modal za pretplatu -->
+  <div class="modal fade" id="pretplata" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="color: #0b4025; padding: 5px 35px">
+              Rezervacija
+            </h5>
+          </div>
+          <div class="modal-body" style="padding: 15px 50px">
+            <form role="form" @submit.prevent="Cancel">
+              <div class="form-group">
+                <label for="name">Da li ste sigurni da zelite da se pretplatite ?</label>
+              </div>
+              <table>
+                <tr>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" @click="subscribe()" style="width:80px; margin-bottom:20px">
+                      Potvrdi
+                    </button>
+                  </td>
+                  <td>
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-left:230px; margin-bottom:20px">
+                      Otkazi
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </template>
 
 <script>
 import HeaderStartPage from "../../components/startPage/HeaderStartPage";
 import NavBarFishingInstructor from "../../components/fishingInstructor/NavBarFishingInstructor.vue";
 import NavBarLogOut from "../../components/fishingInstructor/NavbarLogOut.vue";
+import NavBarClient from "../../components/client/NavBarClient.vue";
+import axios from "axios"
+
 export default ({
-    name: "MyAdventureReservations",
+    name: "AdventureProfile",
   components: {
     HeaderStartPage,
     NavBarFishingInstructor,
-    NavBarLogOut
+    NavBarLogOut,
+    NavBarClient
     },
     data() {
         return {
@@ -66,6 +113,22 @@ export default ({
         }
     },
     methods: {
+      showActions(){
+      this.$router.push({ name: 'CottageActions', params: { id: this.adventure.id}})
+    },
+    subscribe(){
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.get( "http://localhost:8081/api/client/" + this.adventure.id ,
+        { headers }).then(
+          response => {
+            console.log(response);
+            alert("Uspesno ste se pretplatili!")
+            this.$router.go(0);
+          }
+        )
+    },
         async getAdventuree() {
                             const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -98,8 +161,8 @@ export default ({
     async created() {
         this.nameOfAdventure = localStorage.getItem("nameOfAdventure");
         this.adventure =  await this.getAdventuree();
-         this.additionalServices = await this.getAdditionalServices();
-         this.role = localStorage.getItem("role");
+        this.additionalServices = await this.getAdditionalServices();
+        this.role = localStorage.getItem("role");
         console.log(this.adventure.nameOfAdventure)
     } 
 })

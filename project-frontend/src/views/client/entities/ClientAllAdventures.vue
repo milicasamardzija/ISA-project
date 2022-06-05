@@ -147,7 +147,7 @@
             <button class="btn btn-success" type="submit" @click="openModal(adventure), getSelected(adventure)" v-if="this.s == true">
             Rezerviši 
             </button>
-            <button class="btn btn-success" @click="showAdventure(adventure)" style="margin-left:40px">Prikazi avanturu</button>
+            <button class="btn btn-success"  @click="goToAdventure(adventure.nameOfAdventure),getSelected(adventure)" style="margin-left:40px">Prikazi avanturu</button>
           </div>
         </div>
       </div>
@@ -332,8 +332,10 @@ export default {
       var images = require.context('../../../assets/adventureImages/', false, /.jpg$/)
     return images('./' + img + ".jpg")
     },
-    goToAdventure(){
-      this.$router.push({ name: "AdventurePage" });
+    goToAdventure(name){
+      alert(name)
+       localStorage.setItem("nameOfAdventure", name);
+      this.$router.push({ name: "AdventureProfile" });
     },
     sort(sortParam) {
       if (sortParam == "NazivRastuce")

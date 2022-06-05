@@ -44,11 +44,11 @@ public class ReservationService {
     private ReservationServicesService reservationServicesService;
     private UserRepository userRepository;
   //  private CottageService cottageService;
-   private ClientRepository clientRepository;
+
     @Autowired
     private EntityRepository repo;
 
-    public ReservationService (ClientRepository clientRepository,ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService, CottageService cottageService,UserRepository userRepo) {
+    public ReservationService (ReservationRepository reservationRepository, EmailService emailService, ClientService clientService, EntityService entityService, ReservedTermService reservedTermService, AdditionalServicesService additionalService, ReservationServicesService reservationServicesService, CottageService cottageService,UserRepository userRepo) {
         this.reservationRepository = reservationRepository;
         this.emailService = emailService;
         this.clientService = clientService;
@@ -158,7 +158,7 @@ public class ReservationService {
         EntityClass entity = new EntityClass();
 
        try{
-        entity = this.entityService.findById(reservation.getEntityId());
+        entity = this.entityService.getById(reservation.getEntityId());
         } catch (PessimisticLockingFailureException e){
             System.out.println("*************************************");
             System.out.println(e);
@@ -239,7 +239,7 @@ public class ReservationService {
         } catch (OptimisticLockingFailureException ex){
             System.out.print(ex);
         }
-        Client client = this.clientRepository.findByEmail(user.getEmail());
+        Client client = this.clientService.findById(user.getEmail());
 
         reservation.setClient(client);
         this.reservationRepository.save(reservation);
