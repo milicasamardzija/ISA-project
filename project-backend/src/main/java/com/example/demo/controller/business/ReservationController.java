@@ -123,11 +123,13 @@ public class ReservationController {
     public ResponseEntity<List<ReservationnDTO>> getMyReservations(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
-
+        System.out.print("OVDE SAM");
         List<Reservation> scheduledReservations = reservationService.findAllReservationsForInstructor(user.getId());
         List<ReservationnDTO> ret = new ArrayList<>();
+        System.out.print("OVDE SAM111");
         for(Reservation reservation : scheduledReservations ) {
             ReservationnDTO reservationDTO = new ReservationnDTO(reservation);
+            System.out.print("OVDE SAM2222");
             EntityClass e = this.entityService.findById(reservation.getEntity().getId());
             EntityDTO entityDTO = new EntityDTO(e);
             reservationDTO.setEntity(entityDTO);
@@ -136,6 +138,8 @@ public class ReservationController {
 
         return  new ResponseEntity<>(ret, HttpStatus.OK);
     }
+
+
 
     @GetMapping("/myRegularReservation")
     public ResponseEntity<List<ReservationnDTO>> getMyRegularReservation(){

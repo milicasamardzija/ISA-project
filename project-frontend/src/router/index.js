@@ -51,6 +51,7 @@ import AddService from "../views/fishingInstructor/AddService"
 import MyReportOfReservation from "../views/fishingInstructor/MyReportOfReservation"
 import Requests from "../views/administrator/Requests"
 import CreateReservation from "../views/fishingInstructor/CreateReservation"
+import Calendarr from "../views/fishingInstructor/Calendarr"
 const routes = [
   {
     path: "/",
@@ -61,6 +62,11 @@ const routes = [
     path: "/AdventureProfile",
     name: "AdventureProfile",
     component: AdventureProfile,
+  },
+  {
+    path: "/Calendarr",
+    name: "Calendarr",
+    component: Calendarr,
   },
   {
     path: "/AddService",

@@ -20,7 +20,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link"
-          ><router-link to="">Occupancy calendar</router-link></a
+          ><router-link to="/Calendarr">Kalendar</router-link></a
         >
       </li>
       <li class="nav-item">

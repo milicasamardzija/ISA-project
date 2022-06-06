@@ -154,7 +154,7 @@ export default ({
       })
       .then (response => { 
         console.log(response);
-       // this.$router.push({ name: "" });
+        this.$router.push({ name: "fishingInstructor" });
       })       .catch(function (error) {
          console.log(error.response.status)
          console.log(error.response.status)
@@ -170,11 +170,16 @@ export default ({
              title:"Nije uspesno",
              type: "warning",
              text:'Nemoguce je rezervisati ovaj entitet u ovom periodu! Pokusajte druge datume',
+           }); 
+          }else {
+            new Swal({
+             title:"Uspesno",
+             type: "warning",
+             text:'Vasa reservacija je prihvacena',
            });
           }
         });
-
-     // this.$router.go(0);
+        this.$router.go(0);
     }
     },
     async created() {
