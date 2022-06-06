@@ -2,7 +2,7 @@ version: 2.1
 
 on:
   push:
-    branches: [feat_sonar_and_heroku_fixes]
+    branches: [master]
 jobs:
   build-and-test:
     docker:

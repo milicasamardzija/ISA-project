@@ -118,7 +118,7 @@
         <div class="col-with-picture">
           <div v-if="boat.images.length != 0">
             <img
-              :src="cottage.images[0]"
+              :src="boat.images[0]"
               class="rounded img-thumbnail img-fluid"
               alt="Responsive image"
               style="margin-top: 1rem; max-height: 300px !important; max-width: 320px !important"
