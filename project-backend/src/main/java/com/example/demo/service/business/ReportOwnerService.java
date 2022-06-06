@@ -62,7 +62,7 @@ public class ReportOwnerService {
 
         Client client = clientService.findClientById(dto.getIdClient());
 
-        ReportOwner reportOwner = new ReportOwner(client, cottageOwner, dto.getComment(),dto.restrictionType);
+        ReportOwner reportOwner = new ReportOwner(client, cottageOwner, dto.getComment(),dto.restrictionType, false);
 
         this.save(reportOwner);
 

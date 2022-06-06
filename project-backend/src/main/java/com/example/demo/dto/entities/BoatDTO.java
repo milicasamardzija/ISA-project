@@ -43,6 +43,7 @@ public class BoatDTO {
     private CancelationType cancelationType;
 
     private Set<String> images;
+
     private Set<AdditionalServiceDTO> additionalServices;
     public  BoatDTO(){}
     public BoatDTO(Boat boat){

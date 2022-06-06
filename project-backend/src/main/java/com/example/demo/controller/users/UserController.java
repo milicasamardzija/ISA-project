@@ -68,6 +68,7 @@ public class UserController {
         }
         return  new ResponseEntity<>(users, HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER', 'BOAT_OWNER', 'INSTRUCTOR','ADMIN','PREDEF_ADMIN')")
     @DeleteMapping(value = "/deleteUser/{deleteId}")
     public ResponseEntity<Void> deleteUser (@PathVariable int deleteId) {
         List<User> users = userService.findAll();

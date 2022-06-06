@@ -84,6 +84,82 @@
                 </div>
               </div>
             </div>
+    <div class="row" style="margin-bottom: 1%">
+              <!--Grid column-->
+              <div class="col-md-2">
+                <div class="md-form mb-0">
+                  <label for="name" class="">Koordinate</label>
+                </div>
+              </div>
+              <!--Grid column-->
+              <div class="col-md-2">
+                <div class="md-form mb-0">
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="Ulica"
+                      v-model="boat.address.longitude"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="md-form mb-2">
+                  <input
+                    type="number"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="broj"
+                      v-model="boat.address.latitude"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="md-form mb-0">
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="Drzava"
+                      v-model="boat.address.country"
+                  />
+                </div>
+              </div>
+            </div>
+
+    <div class="row" style="margin-bottom: 1%">
+            <div class="col-md-9">
+  <div class="map-style">
+
+    <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:400px">
+
+    <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" 
+    :projection="projection" />
+
+           <ol-tile-layer>
+          <ol-source-osm />
+          </ol-tile-layer>
+
+           <ol-vector-layer>
+        <ol-source-vector ref="vectors" >
+           <ol-interaction-draw @drawstart="drawstart" :type="drawType" >
+        </ol-interaction-draw>
+        </ol-source-vector>
+
+         <ol-style>
+        <ol-style-icon :src="markerIcon" :scale="0.2" ></ol-style-icon>
+      </ol-style>
+
+    </ol-vector-layer>
+    
+
+          </ol-map>
+        </div>
+        </div>
+            </div>
 
             <!--Grid row-->
             <div class="row" style="margin-bottom: 1%">
@@ -465,18 +541,65 @@ import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 import axios from 'axios';
 //import $ from "jquery";
-
+import Swal from "sweetalert2"
+import markerIcon from "../../assets/logo.png"
+import {ref} from 'vue'
 export default {
   name: "NewBoat",
   data(){
+
+
+
+   const center = ref([20,44 ])
+        const projection = ref('EPSG:4326')
+        const zoom = ref(8)
+        const rotation = ref(0)
+
+         const markers = ref(null);
+    const drawType = ref("Point")
+   //const drawedMarker = ref()
+    const vectors = ref([]);
+          const radius = ref(2)
+        const strokeWidth = ref(10)
+        const strokeColor = ref('red')
+        const fillColor = ref('white')
+        const coordinate = ref([20,44 ])
+
+
+
+  
+
+         const drawstart = (event) => { 
+     this.boat.address.longitude = event.feature.values_.geometry.flatCoordinates[0]; //ISPISUJE
+      this.boat.address.latitude= event.feature.values_.geometry.flatCoordinates[1];
+      console.log(event)
+         }
+
     return {
         boatTypeString: "",
         equipment: "",
           imagesFrontend: [],
       images: "", 
       adServ: {name:"", price: 0},
-      boat: {id: 0, name: "", address: { street: "", number: 0, city: "", country: "Srbija", id: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [], boatType: 0, lenght: 0, motorNumber: 0, power: 0, maxSpeed: 0, navigationEquipment: "", fishingEquipment: "", quantity: 0, cancelationType: 0 },
-    }
+      boat: {id: 0, name: "", address: { street: "", number: 0, city: "", country: "", id: 0, longitude: 0, latitude: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [], boatType: 0, lenght: 0, motorNumber: 0, power: 0, maxSpeed: 0, navigationEquipment: "", fishingEquipment: "", quantity: 0, cancelationType: 0 },
+   
+        markerIcon,
+        markers,
+      drawType,
+        vectors,
+      drawstart,
+   
+     center,
+       projection,
+        zoom,
+       rotation,
+              radius,
+            strokeWidth,
+            strokeColor,
+            fillColor,
+            coordinate,
+
+   }
 
   },
   
@@ -499,8 +622,16 @@ export default {
     this.boat.navigationEquipment = this.equipment
     console.log(this.boat.navigationEquipment)
       console.log(this.images);
-      axios.post("http://localhost:8081/api/boats/newBoat", this.boat,  {headers}).then( response => response.json());
-  this.$router.push({name: "MyBoats"});
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/boats/newBoat", this.boat,  {headers}).then( response =>{
+console.log(response);
+
+                  return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Brod je uspesno dodat!'
+           })
+      } );
+    this.$router.push({name: "MyBoats"});
       },
       
                imageAdded(e) {

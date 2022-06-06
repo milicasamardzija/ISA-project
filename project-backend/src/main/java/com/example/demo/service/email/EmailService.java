@@ -57,13 +57,13 @@ public class EmailService {
             System.out.println(e);
         }
 
-        Properties javaMailProperties = new Properties();
-        javaMailProperties.put("mail.smtp.starttls.enable", "true");
-        javaMailProperties.put("mail.smtp.auth", "true");
-        javaMailProperties.put("mail.transport.protocol", "smtp");
-        javaMailProperties.put("mail.debug", "true");
-
-        javaMailSender.send(mail);
+//        Properties javaMailProperties = new Properties();
+//        javaMailProperties.put("mail.smtp.starttls.enable", "true");
+//        javaMailProperties.put("mail.smtp.auth", "true");
+//        javaMailProperties.put("mail.transport.protocol", "smtp");
+//        javaMailProperties.put("mail.debug", "true");
+//
+//       // javaMailSender.send(mail);
 
         System.out.println("Email poslat!");
     }

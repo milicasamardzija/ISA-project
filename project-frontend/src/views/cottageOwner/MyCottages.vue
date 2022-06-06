@@ -69,7 +69,7 @@
               {{ cottage.address.country }}</h4>
           <h4 style="width: 600px" class="text">Prosecna ocena: {{cottage.grade}}</h4>
            <h4 style="width: 600px" class="text">Cena: {{cottage.price}} din</h4> 
-           <h6 style="width: 600px" class="text">Promotivni opis:   {{cottage.promoDescription}}</h6>
+           <!-- <h6 style="width: 600px" class="text">Promotivni opis:   {{cottage.promoDescription}}</h6> -->
         </div>
         <div class="col-info" style="margin-left: 10%; margin-top: 4%">
           <div class="row" style="margin-bottom: 15%">
@@ -236,14 +236,18 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/cottageOwner/profileCottageOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/cottageOwner/profileCottageOwner", {headers});
       const data = await res.json();
 
       return data;
     },
    
     async getMyCottages(){
-    fetch("http://localhost:8081/api/cottages/myCottages/"+ this.cottageOwner.id).then( response => response.json()).then(data => this.cottages = data );
+        
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+    fetch(process.env.VUE_APP_BACKEND_URL+"/api/cottages/myCottages/"+ this.cottageOwner.id, {headers}).then( response => response.json()).then(data => this.cottages = data );
 
    },
 
@@ -257,10 +261,10 @@ export default {
  
      deleteCottage(){
        console.log(this.selectedId)
-        axios.get("http://localhost:8081/api/reservation/check/"+ this.selectedId).then( 
+        axios.get(process.env.VUE_APP_BACKEND_URL+"/api/reservation/check/"+ this.selectedId).then( 
            response => { 
              console.log(response)
-            axios.get("http://localhost:8081/api/cottages/delete/"+ this.selectedId).then(
+            axios.get(process.env.VUE_APP_BACKEND_URL+"/api/cottages/delete/"+ this.selectedId).then(
               res => {
                 console.log(res);
                 this.$router.go(0);
@@ -293,7 +297,7 @@ export default {
        const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.post("http://localhost:8081/api/cottages/searchCottageOwner", this.search, {headers}).then( response=> {
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/cottages/searchCottageOwner", this.search, {headers}).then( response=> {
          console.log(response);
          this.cottages = response.data
       }
@@ -301,10 +305,10 @@ export default {
    },
       unavailablePeriodDefine() {
      this.unavailablePeriod.entityId =this.selectedId;
-       axios.post("http://localhost:8081/api/reservation/checkIfReservationExist", this.unavailablePeriod).then( 
+       axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkIfReservationExist", this.unavailablePeriod).then( 
            response => { 
              console.log(response)
-              axios.post("http://localhost:8081/api/reservation/unavailablePeriodBoatOwner", this.unavailablePeriod).then(
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/unavailablePeriodBoatOwner", this.unavailablePeriod).then(
                  response => { 
              console.log(response)
               return new Swal({

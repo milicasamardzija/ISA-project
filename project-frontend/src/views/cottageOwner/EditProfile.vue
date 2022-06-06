@@ -96,7 +96,7 @@ NavBarFishingInstructor
   },
   methods: {
     async edit() {
-      await fetch("http://localhost:8081/api/user/update", {
+      await fetch(process.env.VUE_APP_BACKEND_URL+"/api/user/update", {
         method: "POST",
         headers: {
            Authorization: "Bearer " + localStorage.getItem("token"),
@@ -115,7 +115,7 @@ NavBarFishingInstructor
         Authorization: "Bearer " + localStorage.getItem("token"),
         "Access-Control-Allow-Origin": "*"
       };
-      const res = await fetch("http://localhost:8081/api/user/userInfo", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/user/userInfo", {headers});
       const data = await res.json();
       console.log(data)
       return data;

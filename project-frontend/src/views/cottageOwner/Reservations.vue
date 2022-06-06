@@ -86,7 +86,7 @@
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-secondary" data-dismiss="modal">Odustani</button>
-        <button type="button" class="btn btn-success" @click="makeReport()">Kreiraj izvestaj</button>
+        <button type="button" class="btn btn-success" @click="makeReport()" >Kreiraj izvestaj</button>
       </div>
     </div>
   </div>
@@ -101,7 +101,7 @@ import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import NavBarBoatOwner from "../../components/boatOwner/NavBarBoatOwner.vue";
 // import axios from 'axios'
 import moment from "moment";
-// import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 export default {
@@ -133,7 +133,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/cottageOwner/profileCottageOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/cottageOwner/profileCottageOwner", {headers});
       const data = await res.json();
 
       return data;
@@ -142,7 +142,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/boatOwner/profileBoatOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/boatOwner/profileBoatOwner", {headers});
       const data = await res.json();
 
       return data;
@@ -151,7 +151,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/reservation/allReservationsCottageOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/reservation/allReservationsCottageOwner", {headers});
       const data = await res.json();
  this.reservations = data;
       return data;
@@ -162,7 +162,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/reservation/allReservationsBoatOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/reservation/allReservationsBoatOwner", {headers});
       const data = await res.json();
  this.reservations = data;
       return data;
@@ -170,7 +170,7 @@ export default {
     },
     async getMyCottages(){
    
-    fetch("http://localhost:8081/api/cottages/myCottages/"+ this.cottageOwner.id).then( response => response.json()).then(data => this.cottages = data );
+    fetch(process.env.VUE_APP_BACKEND_URL+"/api/cottages/myCottages/"+ this.cottageOwner.id).then( response => response.json()).then(data => this.cottages = data );
  
    },
          
@@ -193,7 +193,18 @@ export default {
 
 console.log(this.report)
 
-   axios.post("http://localhost:8081/api/reportOwner/reportCottage", this.report, {headers}).then( response => response.json());
+   axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reportOwner/reportCottage", this.report, {headers})
+   .then( response => {
+  console.log(response);
+ 
+              return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Izvestaj je poslat!'
+           })
+           
+           }
+   );
 
 
 

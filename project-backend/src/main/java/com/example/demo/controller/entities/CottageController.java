@@ -15,6 +15,7 @@ import com.example.demo.service.users.CottageOwnerService;
 import com.example.demo.service.users.CustomUserDetailsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -63,6 +64,7 @@ public class CottageController {
         }
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @PostMapping("/searchCottageOwner")
     public ResponseEntity<List<CottageDTO>> searchCottageOwner(@RequestBody SearchDTO searchParam) {
         List<CottageDTO> ret = new ArrayList<>();
@@ -89,15 +91,16 @@ public class CottageController {
         return new ResponseEntity<>(this.cottageService.getMaxPeople(id),HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @GetMapping("/myCottages/{id}")
     public ResponseEntity<List<CottageDTO>> getOwnersCottages(@PathVariable int id){
-        System.out.print("Usla sam u metodu za get vikendica");
-        List<Cottage> allOwnerCottages = cottageService.findAllOwnerCottages(id); //dobila sve vikendice
+
+        List<Cottage> allOwnerCottages = cottageService.findAllOwnerCottages(id);
         List<CottageDTO> ret = new ArrayList<>();
         List<AdditionalServiceDTO> services = new ArrayList<>();
          if(allOwnerCottages.size() != 0){
                 for(Cottage c : allOwnerCottages){
-                    List<AdditionalService> allServices= this.additionalServicesService.getServicesForCottage(c.getId()); //uzmem servise
+                    List<AdditionalService> allServices= this.additionalServicesService.getServicesForCottage(c.getId());
                     if( allServices.size() != 0) {
                         for (AdditionalService a : allServices) {
                             services.add(new AdditionalServiceDTO(a));
@@ -118,6 +121,7 @@ public class CottageController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @GetMapping("/ownerCottages")
     public ResponseEntity<List<CottageDTO>> getMyCottages(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -147,7 +151,7 @@ public class CottageController {
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @GetMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable int id){
         cottageService.deleteById(id);
@@ -171,7 +175,7 @@ public class CottageController {
         }
         return  new ResponseEntity<>(cottage, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @PostMapping("/newCottage")
     public ResponseEntity<Void> saveCottage(@RequestBody CottageDTO newCottage){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -192,7 +196,7 @@ public class CottageController {
         return  new ResponseEntity<>( HttpStatus.OK);
 
     }
-
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @PostMapping("/editCottage")
     public ResponseEntity<Void> editCottage(@RequestBody CottageDTO editCottage){
         Set<AdditionalService> newServices = new HashSet<>();

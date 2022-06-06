@@ -64,26 +64,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/cottages/search").permitAll()
+                .antMatchers("/api/boats/search").permitAll()
+                .antMatchers("/api/boats").permitAll()
+                .antMatchers("/api/reservation/check/{id}").permitAll()
+                .antMatchers("/api/cottages").permitAll()
+                .antMatchers("/api/cottages/cottage/{id}").permitAll()
+                .antMatchers("/api/boats/boat/{id}").permitAll()
+
+
                 .antMatchers("/api/file").permitAll()
                 .antMatchers("/api/freeTerms").permitAll()
                 .antMatchers("/api/adventures").permitAll()
                 .antMatchers("/api/adventures/search").permitAll()
                 .antMatchers("/api/adventures/addAdventure").permitAll()
                 .antMatchers("/api/adventures/deleteAdventure/{namee}").permitAll()
-                .antMatchers("/api/boats/**").permitAll()
-                .antMatchers("/api/boats/search").permitAll()
-                .antMatchers("/api/cottageOwner").permitAll()
+
+
 
                 //.antMatchers("/api/**").permitAll()
 
                 .antMatchers("/api/user/**").permitAll()
                 .antMatchers("/api/user/userInfo").permitAll()
                 .antMatchers("/api/client/**").permitAll()
-                .antMatchers("/api/boatOwner/**").permitAll()
-                .antMatchers("/api/cottageOwner/*").permitAll()
-                .antMatchers("/api/cottages/**").permitAll()
+
                 .antMatchers("/api/additionalService/*").permitAll()
-                .antMatchers("/api/cottages/editCottage").permitAll()
                 .anyRequest().authenticated().and()
 
 

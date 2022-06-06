@@ -167,6 +167,7 @@ public class BoatService {
 
     public void update(BoatDTO updatedBoat, Set<AdditionalService> services){
         Boat boatNewState = this.boatRepository.findBoatWithServices(updatedBoat.getId());
+        BoatOwner owner = this.findOwnerForBoat(boatNewState.getId());
         boatNewState.setName(updatedBoat.getName());
         boatNewState.setAddress(updatedBoat.getAddress());
         boatNewState.setPromoDescription(updatedBoat.getPromoDescription());
@@ -182,6 +183,7 @@ public class BoatService {
         boatNewState.setQuantity(boatNewState.getQuantity());
         boatNewState.setCancelationType(updatedBoat.getCancelationType());
         boatNewState.setImages(updatedBoat.getImages());
+        boatNewState.setBoatOwner(owner);
         //List<AdditionalService> current = additionalServicesRepository.findAdditionalServicesForCottage(updatedBoat.getId());
      if(updatedBoat.getAdditionalServices().size() != 0) {
          for (AdditionalService a :

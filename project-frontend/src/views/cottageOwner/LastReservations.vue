@@ -75,7 +75,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/cottageOwner/profileCottageOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/cottageOwner/profileCottageOwner", {headers});
       const data = await res.json();
 
       return data;
@@ -84,7 +84,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/boatOwner/profileBoatOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/boatOwner/profileBoatOwner", {headers});
       const data = await res.json();
 
       return data;
@@ -93,7 +93,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/reservation/allReservationsBoatOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/reservation/allReservationsBoatOwner", {headers});
       const data = await res.json();
  this.reservations = data;
       return data;
@@ -103,7 +103,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/reservation/allReservationsCottageOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/reservation/allReservationsCottageOwner", {headers});
       const data = await res.json();
  this.reservations = data;
       return data;
@@ -111,7 +111,7 @@ export default {
     },
     async getMyCottages(){
    
-    fetch("http://localhost:8081/api/cottages/myCottages/"+ this.cottageOwner.id).then( response => response.json()).then(data => this.cottages = data );
+    fetch(process.env.VUE_APP_BACKEND_URL+"/api/cottages/myCottages/"+ this.cottageOwner.id).then( response => response.json()).then(data => this.cottages = data );
  
    },
          
