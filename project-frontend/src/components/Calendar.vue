@@ -60,31 +60,32 @@ export default {
         selectMirror: true,
         dayMaxEvents: true,
         initialView: "dayGridMonth",
-        vents: [
+        events: [
         ],
       },
     };
   },
   methods: {
-      async getReservations() {
-      console.log("caoo");
+
+  },
+  async created() {
            const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-              axios.get( "http://localhost:8081/api/reservations/myRegularReservation",
-         { headers })  
-                       .then((res) => {
-                                   console.log(res.data)
-                for (let newData of res.data) {
+      axios.get( "http://localhost:8081/api/reservation/myRegularReservation",
+        { headers }).then(
+          response => {
+                      for (let newData of response.data) {
                       newData.title = "Availability";
-//
+                      //newData.url = "dateRange";
+                      //newData.defId = newData.id;
+                      //newData.serviceId =newData.id;
+                      newData.start = new Date(newData.term.dateStart);
+                      newData.end = new Date(newData.dateEnd);
                       this.calendarOptions.events.push(newData);
                     }
-              });
-      }
-  },
-  async created() {
-      this.ret = await this.getReservations();
+          }
+        )
   }
   
   
