@@ -311,7 +311,7 @@ export default {
        axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkIfReservationExist", this.unavailablePeriod, {headers}).then( 
            response => { 
              console.log(response)
-              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/unavailablePeriodBoatOwner", this.unavailablePeriod, {headers}).then(
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/unavailablePeriodCottageOwner", this.unavailablePeriod, {headers}).then(
                  response => { 
              console.log(response)
               return new Swal({
