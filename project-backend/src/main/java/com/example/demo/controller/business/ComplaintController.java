@@ -68,7 +68,6 @@ public class ComplaintController {
                 service.sendEmailWithAttachment(emailWhoReceive,
                 content2,
                 "Odgovor na zalbu");
-                System.out.print("Id zalbe je "+id+"CCC");
                 this.complaintService.changeComplaint(id);
             return new ResponseEntity<>(HttpStatus.OK);}
     }
