@@ -36,7 +36,7 @@ public class AdministratorController {
         a.setEmail(userRequest.getEmail());
         a.setPassword(userRequest.getPassword());
         a.setTelephone(userRequest.getTelephone());
-        Address address = new Address(userRequest.getCountry(),userRequest.getCity(),userRequest.getStreet(),userRequest.getNumber());
+        Address address = new Address(userRequest.getCountry(),userRequest.getCity(),userRequest.getStreet(),userRequest.getNumber(), 0, 0);
         this.addressService.save(address);
         a.setAddress(address);
         Role r = this.roleService.findByName("ROLE_ADMIN");

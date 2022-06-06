@@ -29,8 +29,7 @@ public class ReportOwner {
     @Column(name="restriction_type",nullable=true)
     private RestrictionType restrictionType;
 
-    @Column(name="approved", nullable = true)
-    private Boolean approved;
+
 
     public ReportOwner() {
     }
@@ -49,13 +48,9 @@ public class ReportOwner {
 
     public void setRevise(Boolean revise) {
         this.revise = revise;
-    public Boolean getApproved() {
-        return approved;
     }
 
-    public void setApproved(Boolean approved) {
-        this.approved = approved;
-    }
+
 
     public Client getClient() {
         return client;
@@ -94,6 +89,6 @@ public class ReportOwner {
         this.owner = owner;
         this.comment = comment;
         this.restrictionType = restrictionType;
-    this.approved = approved;
+    this.revise = approved;
     }
 }

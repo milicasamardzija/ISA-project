@@ -288,16 +288,6 @@ public class ReservationService {
 
     }
 
-//    public List<Reservation> getAllReservationsForCottageOwnerActions(int id_owner) {
-//        List<Reservation> ret = new ArrayList<>();
-//        for (Reservation r: this.reservationRepository.findAllReservationsForCottageOwner(id_owner) ) {
-//            if(r.getAction()){
-//                ret.add(r);
-//            }
-//        }
-//        return  ret;
-//
-//    }
 
     public List<Reservation> getAllReservationsForBoatOwner(int id_owner) {
         return   this.reservationRepository.findAllReservationsForBoatOwner(id_owner);
@@ -475,7 +465,7 @@ public class ReservationService {
         calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calEnd.setTime(unavailable.getDateTo());
 
-        EntityClass entity = entityService.findById(unavailable.getEntityId()); //eager je, ovako je okej
+        EntityClass entity = entityService.findById(unavailable.getEntityId()); //eager je, ovako je okej, DA SE POZ ONA
         ReservedTerm newTerm = reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false));
         entity.getReservedTerms().add(newTerm);
         entityService.save(entity);

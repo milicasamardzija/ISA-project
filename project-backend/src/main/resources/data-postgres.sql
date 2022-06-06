@@ -9,26 +9,26 @@ INSERT INTO role( name) VALUES ( 'ROLE_INSTRUCTOR');
 INSERT INTO role(name) VALUES ('ROLE_PREDEF_ADMIN');
 
 -- address
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Novi Sad', 'Srbija', '11','Bulevar Kralja Petra I', 0,0);
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Sabac', 'Srbija', '13','Karadjordjeva I',0,0);
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Nis', 'Srbija', '10','Sutjeska I',0,0);
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Stara Pazova', 'Srbija', '81','Popa Karana ',0,0);
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Uvac', 'Srbija', '5','Zlatiborska ulica', 19.58, 43.20);
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Bar', 'Crna Gora', '5','Luka', 19.58, 43.20);
+INSERT INTO address(id, city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Novi Sad', 'Srbija', '11','Bulevar Kralja Petra I', 0,0);
+INSERT INTO address(id, city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Sabac', 'Srbija', '13','Karadjordjeva I',0,0);
+INSERT INTO address(id, city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Nis', 'Srbija', '10','Sutjeska I',0,0);
+INSERT INTO address(id, city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Stara Pazova', 'Srbija', '81','Popa Karana ',0,0);
+INSERT INTO address(id, city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Uvac', 'Srbija', '5','Zlatiborska ulica', 19.58, 43.20);
+INSERT INTO address(id,city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Bar', 'Crna Gora', '5','Luka', 19.58, 43.20);
 
 --user
 --password nevena
-INSERT INTO users(id, type, email, enabled, last_password_reset_date, must_change_password,name,password, reason_for_registration, surname, telephone, penals, poents, address_id, role_id, grade )
-values  (nextval('user_seq_gen'),'CC', 'nevena.atic@hotmail.com', true, null, false,'Nevena','$2a$10$S6VHCehpPiJgV3NStRbB7OkqE3U4QjfxdFbVw2dSmTPTUkykY1rjy','Zelim da se ubijem na nekom lepom mestu', 'Atic','58114815', 0,0,1, 1, 1);
+INSERT INTO users(id, type, email, enabled, last_password_reset_date, must_change_password,name,password, reason_for_registration, surname, telephone, penals, poents, address_id, role_id, grade, income )
+values  (nextval('user_seq_gen'),'CC', 'nevena.atic@hotmail.com', true, null, false,'Nevena','$2a$10$S6VHCehpPiJgV3NStRbB7OkqE3U4QjfxdFbVw2dSmTPTUkykY1rjy','Zelim da se ubijem na nekom lepom mestu', 'Atic','58114815', 0,0,1, 1, 1, 0);
 
-INSERT INTO users(id, type, email, enabled, last_password_reset_date, must_change_password,name,password, reason_for_registration, surname, telephone, loyality_type, penals, poents, address_id, role_id, grade )
-values  (nextval('user_seq_gen'),'CO', 'milica.sam@gmail.com', true, null, false,'Milica','$2a$10$S6VHCehpPiJgV3NStRbB7OkqE3U4QjfxdFbVw2dSmTPTUkykY1rjy','Zelim da se ubijem na nekom lepom mestu', 'Spasic','58114815',0, 0,0,2, 2, 1);
+INSERT INTO users(id, type, email, enabled, last_password_reset_date, must_change_password,name,password, reason_for_registration, surname, telephone, loyality_type, penals, poents, address_id, role_id, grade, income )
+values  (nextval('user_seq_gen'),'CO', 'milica.sam@gmail.com', true, null, false,'Milica','$2a$10$S6VHCehpPiJgV3NStRbB7OkqE3U4QjfxdFbVw2dSmTPTUkykY1rjy','Zelim da se ubijem na nekom lepom mestu', 'Spasic','58114815',0, 0,0,2, 2, 1, 0);
 
-INSERT INTO users(id, type, email, enabled, last_password_reset_date, must_change_password,name,password, reason_for_registration, surname, telephone, penals, poents, address_id, role_id, grade )
-values  (nextval('user_seq_gen'),'BO', 'brodic@hotmail.com', true, null, false,'Boris','$2a$10$S6VHCehpPiJgV3NStRbB7OkqE3U4QjfxdFbVw2dSmTPTUkykY1rjy','Zelim da se ubijem na nekom lepom mestu', 'Jakovljevic','58114815', 0,0,3, 4, 3);
+INSERT INTO users(id, type, email, enabled, last_password_reset_date, must_change_password,name,password, reason_for_registration, surname, telephone, penals, poents, address_id, role_id, grade, income )
+values  (nextval('user_seq_gen'),'BO', 'brodic@hotmail.com', true, null, false,'Boris','$2a$10$S6VHCehpPiJgV3NStRbB7OkqE3U4QjfxdFbVw2dSmTPTUkykY1rjy','Zelim da se ubijem na nekom lepom mestu', 'Jakovljevic','58114815', 0,0,3, 4, 3, 0);
 
-INSERT INTO users(id, type, email, enabled, last_password_reset_date, must_change_password,name,password, reason_for_registration, surname, telephone, penals, poents, address_id, role_id, grade )
-values  (nextval('user_seq_gen'),'II', 'instruktor@hotmail.com', true, null, false,'Isidora','$2a$10$S6VHCehpPiJgV3NStRbB7OkqE3U4QjfxdFbVw2dSmTPTUkykY1rjy','Zelim da se ubijem na nekom lepom mestu', 'Ostojic','58114815', 0,0,4, 5, 4);
+INSERT INTO users(id, type, email, enabled, last_password_reset_date, must_change_password,name,password, reason_for_registration, surname, telephone, penals, poents, address_id, role_id, grade, income )
+values  (nextval('user_seq_gen'),'II', 'instruktor@hotmail.com', true, null, false,'Isidora','$2a$10$S6VHCehpPiJgV3NStRbB7OkqE3U4QjfxdFbVw2dSmTPTUkykY1rjy','Zelim da se ubijem na nekom lepom mestu', 'Ostojic','58114815', 0,0,4, 5, 4, 0);
 
 
 INSERT INTO entities(id, grade, name, price, promo_description, rules, address_id) values (nextval('entity_seq_gen'), 5, 'Pustolov vikendica', 2500, 'Vikendica Pustolov na Uvcu nalazi se uz obalu Sjeničkog (Uvačkog jezera), na Zlatar planini. Udaljena je od grada Sjenice 40 km, a od Nove Varoši 17 km. Vikendica poseduje sopstveno ogradjeno dvorište, slobodno za parking gostiju. Na ulazu u vikendicu nalazi se terasa pogodna za sedenje i sunčanje, odakle se pruža i direktan pogled na jezero kao i šume u okolini. U prizemlju vikendice su dnevni boravak sa TV-om i free WiFi-om, kaučima za uživanje ili spavanje, kuhinja sa frižiderom i komplet opremljena za spremanje hrane kao i kanister sa pijaćom vodom. Kupatilo je takodje opremljeno kozmetičkim i higijenskim preparatima i fenom za kosu. Na spratu su dve spavaće sobe sa krevetima, čivilucima i prozorima sa pogledom na jezero/šumu. Svaki gost dobija svoju posteljinu i po dva peškira (veliki i mali) i papuče. Moguće je poručiti domaću hranu koja se donosi u vikendicu. Kapacitet je 6 osoba. Vikendica je petfriendly i  pušenje je dozvoljeno. U okolini je moguće iznajmiti čamce kao i zakupiti dnevne ture krstarenja jezerom i meandrima reke Uvac. Pored vodenih aktivnosti teren je pogodan i za planinarenje do prelepih vidikovaca koji gledaju na meandre idealne za fotografisanje.', 'sve je dozvoljeno osim unistavanja inventara', 5);
