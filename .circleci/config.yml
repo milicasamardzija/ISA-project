@@ -2,7 +2,7 @@ version: 2.1
 
 on:
   push:
-    branches: [feat_tests]
+    branches: [feat_sonar]
 jobs:
   build-and-test:
     docker:
