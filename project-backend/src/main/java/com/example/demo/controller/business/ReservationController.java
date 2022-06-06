@@ -859,13 +859,12 @@ public class ReservationController {
         }
     }
 
-    @PreAuthorize("hasAnyRole( 'COTTAGE_OWNER')")
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @PostMapping("/unavailablePeriodCottageOwner")
     public ResponseEntity<HttpStatus> unavailablePeriodDefineCO(@RequestBody UnavailablePeriodDTO action){
 
         try {
             this.reservationService.saveUnavailablePeriod(action, 1);
-
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
