@@ -1,0 +1,32 @@
+version: 2.1
+
+on:
+  push:
+    branches: [feat_tests]
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/openjdk:11.0
+    steps:
+      - checkout
+      - run:
+          name: Analyze on SonarCloud
+          command: mvn verify sonar:sonar -Dsonar.projectKey=milicasamardzija_ISA-project
+      - run:
+          name: Build
+          command: mvn -B -DskipTests clean package -f ./project-backend/pom.xml
+      - run:
+          name: Test
+          command: mvn test -f ./project-backend/pom.xml
+      
+
+orbs:
+  heroku: circleci/heroku@1.2.6
+workflows:
+  heroku_deploy:
+    jobs:
+      - build-and-test:
+          context: SonarCloud
+      - heroku/deploy-via-git:
+          requires:
+            - build-and-test
