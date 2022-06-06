@@ -33,23 +33,19 @@
        Sacuvaj izmene
           </button>  </div>
 <!--mapa -->
-              <div class="col-md-7">
-                    <div style="width: 50%; height: 20%; margin-left: 2rem; margin-top: 1rem;">
+             <div class="col-md-7">
+             <div style="width: 50%; height: 20%; margin-left: 2rem; margin-top: 1rem;">
   <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:400px">
-
     <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" 
     :projection="projection" />
 
            <ol-tile-layer>
           <ol-source-osm />
           </ol-tile-layer>
-
            <ol-vector-layer>
-      
         <ol-source-vector>
             <ol-feature>
                 <ol-geom-multi-point :coordinates="[[this.cottage.address.longitude,this.cottage.address.latitude]]"></ol-geom-multi-point>
-                   <!-- <ol-geom-multi-point :coordinates="[[20,40]]"></ol-geom-multi-point> -->
                 <ol-style>
                     <ol-style-circle :radius="radius">
                         <ol-style-fill :color="fillColor"></ol-style-fill>
@@ -72,17 +68,12 @@
       </ol-style>
 
     </ol-vector-layer>
-
-    
-
           </ol-map>
-
         </div>
-                 </div>
+           </div>
 
-                 <div class="col"> 
-
-                      <div style="margin-right: 40%; margin-left: -20rem;">
+           <div class="col"> 
+          <div style="margin-right: 40%; margin-left: -20rem;">
           <h4>Opis smestaja</h4>
           <textarea
             type="text"
@@ -102,12 +93,10 @@
             v-model="cottage.rules"
           ></textarea>
         </div>
-                 </div>
-
+          </div>
  </div>
 
 <div class="row" style=" margin-top: 1rem;">
-  
               <div class="col-md-1" style=" margin-top: -1rem">
                 <div class="md-form mb-0">
                   <label for="name" style="margin-left: 2rem; ">Adresa </label>
@@ -123,17 +112,11 @@
                  <input type="number" id="name" name="name" class="form-control" style="margin-top: -1rem" v-model="cottage.address.number"/>
                 </div>
               </div> 
-
                 <div class="col-md-1">
                 <div class="md-form mb-0">
                  <input type="text" id="name" name="name" class="form-control" style="margin-top: -1rem" v-model="cottage.address.city"/>
                 </div>
-              </div> 
-
-              
-             
-             
-              
+              </div>       
         </div>
   
     <div class="row" style="height:1rem "> </div>
@@ -175,10 +158,6 @@
         <div class="column" style="padding-left: 5rem; width: 60em">
           <h4>Informacije</h4>
           <div class="row" style="height: 20rem; background: whitesmoke">
-
-              
-        
-          
             <div class="column" style="width: 23rem">
               <table>
                 <tr>
@@ -187,9 +166,7 @@
                      <td> <div class="input-group-append">
                     <span class="input-group-text">RSD</span>
                   </div></td>
-                </tr>
-              
-                
+                </tr>    
                 <tr>
                   <td><p>Broj soba:</p></td>
                   <td><input type="number"     class="form-control"  v-model="cottage.roomsNumber" /></td>
@@ -199,7 +176,6 @@
                   <td><p>Broj kreveta po sobi:</p></td>
                   <td><input type="number"     class="form-control"  v-model="cottage.bedsByRoom" /></td>
                 </tr>
-            
               </table>
             </div>
 
@@ -213,12 +189,8 @@
               "
             >
               <p class="pStyle">dodatne usluge:</p>
-
-
                  <div class="row" style="margin-bottom: 1%; width: 40rem" >
               <!--Grid column-->
-             
-                     <!--Grid column-->
               <div class="col-md-3">
                 <div class="md-form">
                   <input
@@ -232,7 +204,7 @@
                  /> 
                 </div>
               </div>
-                         <!--Grid column-->
+                  <!--Grid column-->
                  <!--Grid column-->
             <div class="col-md-3">
               <div class="md-form mb-5">

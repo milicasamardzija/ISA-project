@@ -23,8 +23,9 @@ import java.util.List;
 public class User implements UserDetails {
 	
 	@Id
-	@SequenceGenerator(name = "userSeqGen", sequenceName = "userSeqGen", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeqGen")
+	//@SequenceGenerator(name = "userSeqGen", sequenceName = "userSeqGen", initialValue = 1, allocationSize = 1)
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeqGen")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id", unique=true, nullable=false)
 	private int id;
 	@Column(name = "name", nullable = false)
@@ -93,7 +94,6 @@ public class User implements UserDetails {
 		this.enabled = true;
 		this.address = address;
 	}
-
 	public boolean isMust_change_password() {
 		return must_change_password;
 	}

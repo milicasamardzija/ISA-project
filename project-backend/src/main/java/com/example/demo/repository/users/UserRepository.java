@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User save(UserRequest userRequest);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    //@Lock(LockModeType.PESSIMISTIC_WRITE)
     //@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "0")})
     User save(User user);
 

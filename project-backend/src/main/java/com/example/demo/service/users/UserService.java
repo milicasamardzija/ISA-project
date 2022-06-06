@@ -59,13 +59,13 @@ public class UserService {
         return this.userRepository.findByEmail(email);
     }
 
-    public void update(UpdateUserDTO updatedUser) {
+    public User update(UpdateUserDTO updatedUser) {
         User userToUpdate = userRepository.findById(updatedUser.getId());
         userToUpdate.setName(updatedUser.getFirstname());
         userToUpdate.setSurname(updatedUser.getLastname());
         userToUpdate.setAddress(updatedUser.getAddress());
         userToUpdate.setTelephone(updatedUser.getTelephone());
-        userRepository.save(userToUpdate);
+        return userRepository.save(userToUpdate);
     }
 
     public void updatePassword(User user, String password) {
