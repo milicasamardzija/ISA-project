@@ -151,6 +151,7 @@ public class CottageController {
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
     @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @GetMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable int id){
@@ -175,6 +176,8 @@ public class CottageController {
         }
         return  new ResponseEntity<>(cottage, HttpStatus.OK);
     }
+
+
     @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @PostMapping("/newCottage")
     public ResponseEntity<Void> saveCottage(@RequestBody CottageDTO newCottage){
@@ -196,9 +199,11 @@ public class CottageController {
         return  new ResponseEntity<>( HttpStatus.OK);
 
     }
+
+
     @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @PostMapping("/editCottage")
-    public ResponseEntity<Void> editCottage(@RequestBody CottageDTO editCottage){
+    public ResponseEntity<Void> editCottage(@RequestBody CottageDTO editCottage) throws Exception {
         Set<AdditionalService> newServices = new HashSet<>();
         Cottage cottage = cottageService.findOne(editCottage.getId());
         if(editCottage.getAdditionalServices().size() != 0){
@@ -210,7 +215,13 @@ public class CottageController {
 
             }
         }
-        this.cottageService.update(editCottage, newServices);
+        try{
+            this.cottageService.update(editCottage, newServices);
+        }catch (Exception e ){
+            System.out.print(e);
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         return  new ResponseEntity<>( HttpStatus.OK);
 
     }

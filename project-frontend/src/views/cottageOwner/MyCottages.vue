@@ -260,11 +260,14 @@ export default {
     },
  
      deleteCottage(){
+          const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
        console.log(this.selectedId)
-        axios.get(process.env.VUE_APP_BACKEND_URL+"/api/reservation/check/"+ this.selectedId).then( 
+        axios.get(process.env.VUE_APP_BACKEND_URL+"/api/reservation/check/"+ this.selectedId, {headers}).then( 
            response => { 
              console.log(response)
-            axios.get(process.env.VUE_APP_BACKEND_URL+"/api/cottages/delete/"+ this.selectedId).then(
+            axios.get(process.env.VUE_APP_BACKEND_URL+"/api/cottages/delete/"+ this.selectedId, {headers}).then(
               res => {
                 console.log(res);
                 this.$router.go(0);
@@ -304,11 +307,16 @@ export default {
       )
    },
       unavailablePeriodDefine() {
+           const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
      this.unavailablePeriod.entityId =this.selectedId;
-       axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkIfReservationExist", this.unavailablePeriod).then( 
+ 
+       axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkIfReservationExist", this.unavailablePeriod, {headers}).then( 
            response => { 
-             console.log(response)
-              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/unavailablePeriodBoatOwner", this.unavailablePeriod).then(
+             console.log(response);
+
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/unavailablePeriodCottageOwner", this.unavailablePeriod, {headers}).then(
                  response => { 
              console.log(response)
               return new Swal({

@@ -15,11 +15,13 @@ import com.example.demo.model.entities.EntityClass;
 import com.example.demo.repository.entities.CottageRepository;
 import com.example.demo.repository.users.CottageOwnerRepository;
 import com.example.demo.service.users.CottageOwnerService;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -282,8 +284,18 @@ public class CottageService {
         return this.cottageRepository.save(newCottage);
     }
 
+
+    @Transactional
     public void update(CottageDTO editCottage, Set<AdditionalService> newServices) {
-        Cottage newCottageState = this.cottageRepository.getCottageWithServices(editCottage.getId());
+        Cottage newCottageState= new Cottage();
+
+         try {
+             newCottageState = this.cottageRepository.findWithAdditionalServices(editCottage.getId());
+        } catch (PessimisticLockingFailureException e){
+        System.out.println("*************************************");
+        System.out.println(e);
+        System.out.println("*************************************");
+    }
 
         newCottageState.setAddress(editCottage.getAddress());
         newCottageState.setName(editCottage.getName());
@@ -304,7 +316,6 @@ public class CottageService {
 
         if (newServices.size() != 0) {
             for (AdditionalService newA : newServices) {
-                //newA.setEntities(boatNewState);
                 newCottageState.getAdditionalServices().add(newA);
             }
         }
