@@ -376,7 +376,7 @@
               <table>
                 <tr>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block"  style="width:80px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-bottom:20px">
                       Potvrdi
                     </button>
                   </td>
@@ -569,8 +569,21 @@ export default {
         { headers }).then(
           response => {
             console.log(response);
-            alert("Uspesno ste se pretplatili!")
+             new Swal({
+             title:"Uspesno",
+             type: "warning",
+             text:'Uspesno ste se pretplatili!'
+           });
             this.$router.go(0);
+          }
+        ).catch(
+          error => {
+            console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Vec ste pretplaceni na ovaj entitet!'
+           });
           }
         )
     },

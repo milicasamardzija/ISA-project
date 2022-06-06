@@ -106,6 +106,7 @@ import NavBarClient from "../../components/client/NavBarClient.vue";
 import NavBarStartPage from "../../components/startPage/NavBarStartPage.vue";
 import HeaderLogAndRegister from "../../components/startPage/HeaderLogAndRegister.vue";
 import axios from "axios"
+import Swal from "sweetalert2"
 
 export default ({
     name: "AdventureProfile",
@@ -139,8 +140,21 @@ export default ({
         { headers }).then(
           response => {
             console.log(response);
-            alert("Uspesno ste se pretplatili!")
+            new Swal({
+             title:"Uspesno",
+             type: "warning",
+             text:'Uspesno ste se pretplatili!'
+           });
             this.$router.go(0);
+          }
+        ).catch(
+          error => {
+            console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Vec ste pretplaceni na ovaj entitet!'
+           });
           }
         )
     },

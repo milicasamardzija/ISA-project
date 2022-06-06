@@ -118,8 +118,11 @@
         <div class="col-with-picture">
           <div v-if="boat.images.length != 0">
             <img
-              :src="getImgUrl(boat.images[0].filePath)"
-              style="height: 250px !important; width: 300px !important"
+              :src="cottage.images[0]"
+              class="rounded img-thumbnail img-fluid"
+              alt="Responsive image"
+              style="margin-top: 1rem; max-height: 300px !important; max-width: 320px !important"
+               @click="showBoat(boat)"
             />
           </div>
         </div>
@@ -323,7 +326,7 @@ export default {
 
   methods: {
     async fetchBoats() {
-      const res = await fetch("http://localhost:8081/api/boats");
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+ "/api/boats");
       const data = await res.json();
       return data;
     },
@@ -393,7 +396,7 @@ export default {
        const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
-        axios.post("http://localhost:8081/api/reservation/getDateEnd" ,{
+        axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/reservation/getDateEnd" ,{
          date: this.date,
          time: this.time,
          number: this.number,
@@ -408,7 +411,7 @@ export default {
        const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
-        axios.get("http://localhost:8081/api/boat/getMaxPeople/" + this.selectedEntity.id ,{headers})
+        axios.get(process.env.VUE_APP_BACKEND_URL+ "/api/boat/getMaxPeople/" + this.selectedEntity.id ,{headers})
         .then (response => { 
           console.log(response.data);
           this.maxPeople = response.data;
@@ -435,7 +438,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
-        axios.post("http://localhost:8081/api/reservation/checkDate" ,{
+        axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/reservation/checkDate" ,{
          date: this.date,
          time: this.time,
          number: this.number,
@@ -460,7 +463,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
-        axios.post("http://localhost:8081/api/reservation/totalPrice" ,{
+        axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/reservation/totalPrice" ,{
           entityPrice: this.selectedEntity.price,
           services: this.additionalServicesReservation,
         },{headers})
@@ -493,7 +496,7 @@ async search() {
         const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.post("http://localhost:8081/api/boats/reservationSearch" ,{
+      axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/boats/reservationSearch" ,{
           date: this.date,
           time: this.time,
           city: this.city,
@@ -523,7 +526,7 @@ async search() {
         const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
-        axios.post("http://localhost:8081/api/reservation" ,{
+        axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/reservation" ,{
           dateStart: this.date,
           timeStart: this.time,
           price: this.price,
@@ -591,7 +594,7 @@ async search() {
         "Content-type": "application/json",
         "Authorization": "Bearer " + localStorage.getItem("token"),
       };
-      axios.get("http://localhost:8081/api/additionalService/services/" + this.selectedEntity.id ,{headers})
+      axios.get(process.env.VUE_APP_BACKEND_URL+ "/api/additionalService/services/" + this.selectedEntity.id ,{headers})
       .then (response => { 
         console.log(response.data);
         this.additionalServices = response.data;

@@ -33,20 +33,15 @@ public class EmailService {
         System.out.println("Slanje emaila...");
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
-        //String path = env.getProperty("application.url");
         SimpleMailMessage mail = new SimpleMailMessage();
-        /*mail.setTo(user.getEmail());
-        mail.setFrom("spring.mail.username");
-        mail.setSubject("Confirm your account");
-        mail.setText("To confirm your account, please click here :" + "https://fishingb.herokuapp.com" + "/api/auth/confirm-account?email=" + user.getEmail());*/
-
         try {
             System.out.println("OVDE SAM 1");
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setSubject("Confirm your account");
             mimeMessageHelper.setFrom(new InternetAddress("pera08085@gmail.com", "Fishing booker"));
             mimeMessageHelper.setTo(user.getEmail());
-            mimeMessageHelper.setText("To confirm your account, please click here :" + "https://fishingb.herokuapp.com" + "/api/auth/confirm-account?email=" + user.getEmail());
+            mimeMessageHelper.setText("To confirm your account, please click here :" + "http://localhost:8081" + "/api/auth/confirm-account?email=" + user.getEmail()+".\n"
+             + "If this link does not work, please click here :" + "http://fishingb.herokuapp.com" + "/api/auth/confirm-account?email=" + user.getEmail());
 
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
             System.out.println("OVDE SAM 2");
@@ -57,14 +52,6 @@ public class EmailService {
             e.printStackTrace();
             System.out.println(e);
         }
-
-//        Properties javaMailProperties = new Properties();
-//        javaMailProperties.put("mail.smtp.starttls.enable", "true");
-//        javaMailProperties.put("mail.smtp.auth", "true");
-//        javaMailProperties.put("mail.transport.protocol", "smtp");
-//        javaMailProperties.put("mail.debug", "true");
-//
-//       // javaMailSender.send(mail);
 
         System.out.println("Email poslat!");
     }

@@ -89,30 +89,32 @@ public class AuthentificationController {
         User user = null;
         Client client = null;
        if (existUser != null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        try {
-            if (userRequest.getRole().equals("ROLE_CLIENT")) {
-                System.out.print("HHHA");
-                this.clientService.saveClient(userRequest);
-                System.out.print("HHHAqqq");
-                //emailService.sendEmailForUserAuthentication(client);
-            }
-            if (userRequest.getRole().equals("ROLE_ADMIN") || userRequest.getRole().equals("ROLE_PREDEF_ADMIN")) {
-                //user = this.userService.saveAdmin(userRequest);
-                administratorService.saveAdmin(userRequest);
-            }
-            if (userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
-               // user = this.userService.save(userRequest);
-                this.cottageOwnerService.saveCottageOwner(userRequest);
-            }
-            if (userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
-                this.instructorService.saveInstructor(userRequest);
-            }
-            if (userRequest.getRole().equals("ROLE_BOAT_OWNER")) {
-                //user = this.userService.save(userRequest);
-                this.boatOwnerService.saveBoatOwner(userRequest);
-            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+            try {
+                if (userRequest.getRole().equals("ROLE_CLIENT")) {
+                    try {
+                        user = this.userService.saveClient(userRequest);
+                        emailService.sendEmailForUserAuthentication(user);
+                    }catch (Exception e){
+                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    }
+                }
+                if (userRequest.getRole().equals("ROLE_ADMIN") || userRequest.getRole().equals("ROLE_PREDEF_ADMIN")) {
+                    //user = this.userService.saveAdmin(userRequest);
+                    administratorService.saveAdmin(userRequest);
+                }
+                if (userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
+                   // user = this.userService.save(userRequest);
+                    this.cottageOwnerService.saveCottageOwner(userRequest);
+                }
+                if (userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
+                    this.instructorService.saveInstructor(userRequest);
+                }
+                if (userRequest.getRole().equals("ROLE_BOAT_OWNER")) {
+                    //user = this.userService.save(userRequest);
+                    this.boatOwnerService.saveBoatOwner(userRequest);
+                }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -125,8 +127,7 @@ public class AuthentificationController {
 
         Client client = this.clientService.save(user);
         this.userService.deleteById(user);
-        String path = env.getProperty("frontent.url");
-        URI frontend = new URI(path);
+        URI frontend = new URI("http://localhost:8082/");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(frontend);
 

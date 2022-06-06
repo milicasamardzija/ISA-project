@@ -13,8 +13,10 @@
         <div class="col-with-picture">
           <div>
             <img
-              src="../../../assets/fishingStart.jpg"
-              style="height: 250px !important; width: 300px !important"
+              :src="subscription.images[0]"
+              class="rounded img-thumbnail img-fluid"
+              alt="Responsive image"
+              style="margin-top: 1rem; max-height: 300px !important; max-width: 320px !important"
             />
           </div>
         </div>
@@ -91,7 +93,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-     axios.get("http://localhost:8081/api/client/subscribedEntitites" ,{headers})
+     axios.get(process.env.VUE_APP_BACKEND_URL+ "/api/client/subscribedEntitites" ,{headers})
       .then (response => { 
         console.log(response);
         this.subscriptions = response.data;
@@ -105,7 +107,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.delete("http://localhost:8081/api/client/" + this.selectedId,{headers})
+      axios.delete(process.env.VUE_APP_BACKEND_URL+ "/api/client/" + this.selectedId,{headers})
       .then (response => { 
         console.log(response);
         this.subscriptions =  this.fetchSubscriptions();

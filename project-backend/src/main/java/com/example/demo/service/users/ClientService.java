@@ -83,18 +83,22 @@ public class ClientService {
                 }
             }
         }
-
     }
 
     public List<Client> findClientWithSubscribedEntities(int id) {
         return this.clientRepository.findClientWithSubscribedEntities(id);
     }
 
-
-    public void addSubsrciptions(int idEntity, Client client){
+    public Boolean addSubsrciptions(int idEntity, Client client){
         EntityClass entity = this.entityRepository.findById(idEntity);
-        System.out.print("ajajaj"+entity.getName());
+
         List<EntityClass> entities = this.findSubscribedEnities(client.getId());
+        for (EntityClass e : entities){
+            if (e.getId() == idEntity){
+                return false;
+            }
+        }
+
         if (entities == null) {
             entities = new ArrayList<>();
         }
@@ -109,6 +113,7 @@ public class ClientService {
         clients.add(client);
         entity.setSubscribedClients(clients);
         this.entityRepository.save(entity);
+        return true;
     }
 
     public Client save(User user) {

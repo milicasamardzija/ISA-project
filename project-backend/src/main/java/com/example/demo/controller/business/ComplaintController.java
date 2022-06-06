@@ -67,6 +67,7 @@ public class ComplaintController {
             System.out.print("da li je ?"+com.getIsAnswered());
             complaints.add(com);
         }
+
         return  new ResponseEntity<>(complaints, HttpStatus.OK);
     }
 
@@ -75,11 +76,9 @@ public class ComplaintController {
                  service.sendEmailWithAttachment(emailWhoSent,
                     content1,
                     "Odgovor na zalbu");
-
                 service.sendEmailWithAttachment(emailWhoReceive,
                 content2,
                 "Odgovor na zalbu");
-                System.out.print("Id zalbe je "+id+"CCC");
                 this.complaintService.changeComplaint(id);
             return new ResponseEntity<>(HttpStatus.OK);}
     }
