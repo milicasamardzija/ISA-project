@@ -49,6 +49,7 @@ import MyAdventureReservations from "../views/fishingInstructor/MyAdventureReser
 import AdventureProfile from "../views/fishingInstructor/AdventureProfile"
 import AddService from "../views/fishingInstructor/AddService"
 import MyReportOfReservation from "../views/fishingInstructor/MyReportOfReservation"
+import Requests from "../views/administrator/Requests"
 const routes = [
   {
     path: "/",
@@ -80,6 +81,11 @@ const routes = [
     path: "/EditAdventure",
     name: "EditAdventure",
     component: EditAdventure,
+  },
+  {
+    path: "/Requests",
+    name: "Requests",
+    component: Requests,
   },
   {
     path: "/buisinessReport",

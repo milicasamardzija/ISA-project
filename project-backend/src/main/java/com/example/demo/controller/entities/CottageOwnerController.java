@@ -38,6 +38,7 @@ public class CottageOwnerController {
 
     public CottageOwner findByEmail(String id) { return cottageOwnerService.findByEmail(id); }
 
+
     @GetMapping("/profileCottageOwner")
     public ResponseEntity<CottageOwnerDTO> getProfileCottageOwner(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

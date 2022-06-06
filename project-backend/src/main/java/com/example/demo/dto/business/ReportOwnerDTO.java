@@ -1,15 +1,72 @@
 package com.example.demo.dto.business;
 
 import com.example.demo.enums.RestrictionType;
+import com.example.demo.model.users.User;
 
 public class ReportOwnerDTO {
+    public int id;
     public  int idClient;
     public int idOwner;
     public String comment;
     public RestrictionType restrictionType;
     public String type;
+    public String clientName;
+    public String clientLastname;
+    public String ownerName;
+    public String ownerLastname;
+    private Boolean revise;
 
-    public String getType() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Boolean getRevise() {
+        return revise;
+    }
+
+    public void setRevise(Boolean revise) {
+        this.revise = revise;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getClientLastname() {
+        return clientLastname;
+    }
+
+    public void setClientLastname(String clientLastname) {
+        this.clientLastname = clientLastname;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getOwnerLastname() {
+        return ownerLastname;
+    }
+
+    public void setOwnerLastname(String ownerLastname) {
+        this.ownerLastname = ownerLastname;
+    }
+
+    public String getType()
+
+    {
         return type;
     }
 

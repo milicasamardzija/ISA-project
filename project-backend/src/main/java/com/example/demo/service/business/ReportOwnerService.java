@@ -15,14 +15,17 @@ import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ReportOwnerRepository;
 import com.example.demo.repository.users.BoatOwnerRepository;
 import com.example.demo.repository.users.CottageOwnerRepository;
+import com.example.demo.service.email.EmailSenderService;
 import com.example.demo.service.entities.BoatService;
 import com.example.demo.service.entities.CottageService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -41,7 +44,8 @@ public class ReportOwnerService {
 
     private ReservationService reservationService;
 
-
+    @Autowired
+    private EmailSenderService service;
     public ReportOwnerService(ReportOwnerRepository reportOwnerRepository,EntityService entityService, ClientService clientService, ReservationService reservationService,BoatService boatService, CottageService cottageService, CottageOwnerRepository coRepo, BoatOwnerRepository boRepo){
         this.reportOwnerRepository = reportOwnerRepository;
        this.entityService = entityService;
@@ -202,4 +206,47 @@ public class ReportOwnerService {
         return  new InformationsForChart(names, number, grade, earning);
     }
 
+    public List<ReportOwner> findAll() {
+        return this.reportOwnerRepository.findAll();
+    }
+
+    public void delete(int id) {
+        ReportOwner r = this.reportOwnerRepository.findById(id);
+        this.reportOwnerRepository.delete(r);
+    }
+
+    public ReportOwner findById(int id) {
+        return this.reportOwnerRepository.findById(id);
+    }
+
+    public void acceptRequestRegularly(ReportOwner du) throws MessagingException {
+        ReportOwner r = this.reportOwnerRepository.findById(du.getId());
+        String email =r.getOwner().getEmail();
+        service.sendEmailWithAttachment(email,
+                "Postovani/a,vas zahtev je prihvacen! Korisnik nije dobio penal!",
+                "Prihvatanje zahteva za izvestaj o korisniku!");
+        Client c = r.getClient();
+        r.setRevise(true);
+
+        this.reportOwnerRepository.save(r);
+    }
+
+    public void acceptRequestWithPenals(ReportOwner du) throws MessagingException {
+        ReportOwner r = this.reportOwnerRepository.findById(du.getId());
+        r.setRevise(true);
+        System.out.print("ID KOJI SE TRAZI JE" + r.getClient().getId());
+        Client c = r.getClient();
+        System.out.print("KLijentovo ime je"+c.getName());
+        c.setPenals(c.getPenals()+1);
+        String email =r.getOwner().getEmail();
+        service.sendEmailWithAttachment(email,
+                "Postovani/a,vas zahtev je prihvacen! Korisnik je dobio penal!",
+                "Prihvatanje zahteva za izvestaj o korisniku!");
+
+        service.sendEmailWithAttachment(c.getEmail(),
+                "Postovani/a,dobili ste penal jer niste ispostovali vlasnika entiteta   !",
+                "Prihvatanje zahteva za izvestaj o korisniku!");
+        this.clientService.save(c);
+        this.reportOwnerRepository.save(r);
+    }
 }
