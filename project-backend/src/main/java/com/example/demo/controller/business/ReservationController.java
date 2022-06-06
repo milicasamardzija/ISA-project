@@ -10,6 +10,7 @@ import com.example.demo.dto.entities.AdditionalServiceDTO;
 import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.enums.EntityType;
 import com.example.demo.dto.users.ClientProfileDTO;
+import com.example.demo.enums.LoyalityType;
 import com.example.demo.model.business.FreeTerms;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.business.ReservationServices;
@@ -17,6 +18,7 @@ import com.example.demo.model.business.ReservedTerm;
 import com.example.demo.model.entities.AdditionalService;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
+import com.example.demo.model.users.Instructor;
 import com.example.demo.model.users.User;
 import com.example.demo.service.business.FreeTermsService;
 import com.example.demo.service.business.ReservationService;
@@ -26,6 +28,7 @@ import com.example.demo.service.entities.AdditionalServicesService;
 import com.example.demo.service.entities.EntityService;
 import com.example.demo.service.users.CottageOwnerService;
 import com.example.demo.service.users.ClientService;
+import com.example.demo.service.users.InstructorService;
 import com.example.demo.service.users.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,8 +64,9 @@ public class ReservationController {
     private AdditionalServicesService additionalServicesService;
     private ReservationServicesService reservationServicesService;
     private FreeTermsService freeTermsService;
+    private InstructorService instructorService;
 
-    public ReservationController(FreeTermsService freeTermsService,ReservationServicesService reservationServicesService,AdditionalServicesService additionalServicesService,ReservationService reservationService,EntityService entityService, CottageOwnerService cottageOwnerService,ClientService clientService, ReservedTermService reservedTermService){
+    public ReservationController(InstructorService instructorService,FreeTermsService freeTermsService,ReservationServicesService reservationServicesService,AdditionalServicesService additionalServicesService,ReservationService reservationService,EntityService entityService, CottageOwnerService cottageOwnerService,ClientService clientService, ReservedTermService reservedTermService){
         this.reservationService = reservationService;
         this.entityService = entityService;
         this.clientService = clientService;
@@ -70,6 +74,7 @@ public class ReservationController {
         this.additionalServicesService = additionalServicesService;
         this.reservationServicesService=reservationServicesService;
         this.freeTermsService =  freeTermsService;
+        this.instructorService=instructorService;
     }
 
     @GetMapping("/scheduledReservations")
@@ -581,6 +586,9 @@ public class ReservationController {
 
     @PostMapping("/addReservationOfInstructor")
     public ResponseEntity<HttpStatus> addReservationOfInstructor(@RequestBody ActionRequestDTO actionRequestDTO) throws ParseException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+        Instructor i = this.instructorService.findByEmail(user.getEmail());
 
         ReservedTerm rt = new ReservedTerm();
         EntityClass e = this.entityService.findByName(actionRequestDTO.getName());
@@ -623,9 +631,35 @@ public class ReservationController {
 
         System.out.print("String je "+ actionRequestDTO.getSelectedClient());
         String string = actionRequestDTO.getSelectedClient();
+
+        //CLIENT i INSTRUCTOR- LOYALTy
+
         Client c = this.clientService.findById(string);
         System.out.print("NASAO SAM KLIJENTA"+c.getName());
         r.setClient(c);
+        double discount= 0;             //ZA REGULAR SNIZENJE NE POSTOJI KAO NI POVECANI PRIHODI
+        double upIncomes = 0.0;
+        if (c.getPoents() > 30) {                   //AKO IMA VISE OD 30 POENA,POSRAJE SILVER
+            c.setLoyalityType(LoyalityType.SLIVER);  //ZA SILVER SNIZENJE I POVECANJE PRIHODA IZNOSI 15%
+            discount = 0.15;
+        }else if (c.getPoents() > 70) {                  //AKO IMA VISE OD 70 POENA,POSRAJE GOLD
+            c.setLoyalityType(LoyalityType.GOLD);       //ZA GOLD SNIZENJE I POVECANJE PRIHODA IZNOSI 30%
+            discount = 0.3;
+            upIncomes= 0.3;
+        }
+        if(i.getPoents() >30) {
+            i.setLoyalityType(LoyalityType.SLIVER);
+            upIncomes = 0.15;
+        }else if(i.getPoents() >70) {
+            i.setLoyalityType(LoyalityType.GOLD);
+            upIncomes = 0.3;
+        }
+
+
+
+        double price = r.getPrice();
+        double priceWithDiscount = price - price*discount;
+        r.setPrice(priceWithDiscount);
 
         List<AdditionalServiceDTO> additionalServices = actionRequestDTO.getAdditionalServices();
         for (AdditionalServiceDTO a: additionalServices) {
@@ -706,6 +740,31 @@ public class ReservationController {
             }
             }
         }
+
+
+        i.setPoents(i.getPoents()+10);
+        c.setPoents(c.getPoents()+10);
+
+        if (c.getPoents() > 30) {                   //AKO IMA VISE OD 30 POENA,POSRAJE SILVER
+            c.setLoyalityType(LoyalityType.SLIVER);  //ZA SILVER SNIZENJE I POVECANJE PRIHODA IZNOSI 15%
+            discount = 0.15;
+        }else if (c.getPoents() >70) {                  //AKO IMA VISE OD 70 POENA,POSRAJE GOLD
+            c.setLoyalityType(LoyalityType.GOLD);       //ZA GOLD SNIZENJE I POVECANJE PRIHODA IZNOSI 30%
+            discount = 0.3;
+            upIncomes= 0.3;
+        }
+        if(i.getPoents() >30) {
+            i.setLoyalityType(LoyalityType.SLIVER);
+            upIncomes = 0.15;
+            i.setIncome(i.getIncome()+r.getPrice()*upIncomes);
+        }else if(i.getPoents() >70) {
+            c.setLoyalityType(LoyalityType.GOLD);
+            upIncomes = 0.3;
+            i.setIncome(i.getIncome()+r.getPrice()*upIncomes);
+        }
+
+        this.instructorService.save(i);
+        this.clientService.save(c);
 
         this.reservedTermService.saveNewTerm(rt);
         this.reservationService.saveReservation(r);

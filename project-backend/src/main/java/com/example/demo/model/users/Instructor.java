@@ -1,6 +1,7 @@
 package com.example.demo.model.users;
 
 import com.example.demo.dto.users.UserRequest;
+import com.example.demo.enums.LoyalityType;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Adventure;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,6 +21,17 @@ public class Instructor extends User{
     @OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnore
     private Set<Adventure> adventuresList;
+
+
+
+
+    public Set<Adventure> getAdventuresList() {
+        return adventuresList;
+    }
+
+    public void setAdventuresList(Set<Adventure> adventuresList) {
+        this.adventuresList = adventuresList;
+    }
 
     public Set<Adventure> getAdventures() {
         return adventuresList;

@@ -18,11 +18,7 @@ import java.util.Set;
 @DiscriminatorValue("CC")
 public class Client extends User{
 	
-	@Column(name = "poents", nullable = true)
-	private int poents;
-	
-	@Column(name = "loyalityType", nullable = true)
-	private LoyalityType loyalityType;
+
 
 	@Column(name = "penals", nullable = true)
 	private int penals;
@@ -40,21 +36,7 @@ public class Client extends User{
 		super();
 	}
 
-	public int getPoents() {
-		return poents;
-	}
 
-	public void setPoents(int poents) {
-		this.poents = poents;
-	}
-
-	public LoyalityType getLoyalityType() {
-		return loyalityType;
-	}
-
-	public void setLoyalityType(LoyalityType loyalityType) {
-		this.loyalityType = loyalityType;
-	}
 
 	public int getPenals() {
 		return penals;
@@ -89,8 +71,6 @@ public class Client extends User{
 		this.setRole(new Role(user.getRole().getName()));
 		this.setPassword(user.getPassword());
 		this.setEnabled(true);
-		this.setPoents(0);
-		this.setLoyalityType(LoyalityType.BRONZE);
 		this.setPenals(0);
 		this.setTelephone(user.getTelephone());
 		this.setAddress(user.getAddress());

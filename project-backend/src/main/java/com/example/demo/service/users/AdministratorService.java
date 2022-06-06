@@ -1,5 +1,6 @@
 package com.example.demo.service.users;
 
+import com.example.demo.enums.LoyalityType;
 import com.example.demo.enums.Role;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.entities.Address;
@@ -80,7 +81,9 @@ public class AdministratorService {
         a.setEmail(userRequest.getEmail());
         a.setTelephone(userRequest.getTelephone());
         a.setAddress(addressService.save(userRequest.getAddress()));
-
+        a.setLoyalityType(LoyalityType.REGULAR);
+        a.setPoents(0);
+        a.setIncome(0.0);
         a.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         Role r = this.roleService.findByName("ROLE_ADMIN");
             if (r == null) {

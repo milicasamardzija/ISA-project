@@ -1,6 +1,7 @@
 package com.example.demo.service.users;
 
 import com.example.demo.dto.users.UserRequest;
+import com.example.demo.enums.LoyalityType;
 import com.example.demo.enums.Role;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
@@ -135,16 +136,28 @@ public class ClientService {
         u.setName(userRequest.getFirstname());
         u.setSurname(userRequest.getLastname());
         u.setTelephone(userRequest.getTelephone());
+        u.setLoyalityType(LoyalityType.REGULAR);
+        u.setPoents(0);
+        u.setIncome(0.0);
         System.out.print("burek2");
         //Role r = this.roleService.findByName("ROLE_CLIENT");
        // System.out.print("rola je"+r.getName());
         //if (r==null) {
-            Role newRole = new Role(userRequest.getRole());
-            this.roleService.save(newRole);
-            u.setRole(newRole);
+//            Role newRole = new Role(userRequest.getRole());
+//            this.roleService.save(newRole);
+//            u.setRole(newRole);
         //}else {
         //    u.setRole(r);
        // }
+        Role r = this.roleService.findByName("ROLE_CLIENT");
+        if (r==null) {
+            Role newRole = new Role(userRequest.getRole());
+            this.roleService.save(newRole);
+            u.setRole(newRole);
+        }else {
+            u.setRole(r);
+        }
+
         System.out.print("burek3");
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);

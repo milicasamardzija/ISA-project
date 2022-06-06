@@ -1,6 +1,7 @@
 package com.example.demo.model.users;
 
 import com.example.demo.dto.users.UserRequest;
+import com.example.demo.enums.LoyalityType;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Cottage;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -18,6 +19,8 @@ public class CottageOwner extends User{
     @OneToMany(mappedBy = "cottageOwner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties("cottageOwner")
     private List<Cottage> cottageList;
+
+
 
     public List<Cottage> getCottageList() {
         return cottageList;

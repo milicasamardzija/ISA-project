@@ -1,5 +1,6 @@
 package com.example.demo.service.users;
 
+import com.example.demo.enums.LoyalityType;
 import com.example.demo.enums.Role;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.entities.Address;
@@ -74,7 +75,9 @@ public class CottageOwnerService {
         u.setReasonForRegistration(userRequest.getReasonForRegistration());
         u.setSurname(userRequest.getLastname());
         u.setTelephone(userRequest.getTelephone());
-
+        u.setLoyalityType(LoyalityType.REGULAR);
+        u.setPoents(0);
+        u.setIncome(0.0);
         Role r = this.roleService.findByName("ROLE_COTTAGE_OWNER");
         if (r==null) {
             Role newRole = new Role(userRequest.getRole());

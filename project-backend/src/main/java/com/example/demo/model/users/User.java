@@ -1,5 +1,6 @@
 package com.example.demo.model.users;
 
+import com.example.demo.enums.LoyalityType;
 import com.example.demo.enums.Role;
 import com.example.demo.model.entities.Address;
 import org.hibernate.annotations.OnDelete;
@@ -40,10 +41,16 @@ public class User implements UserDetails {
 	private double grade;
 	@Column(name = "telephone")
 	private String telephone;
+	@Column(name = "income")
+	private double income;
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE ) //PRILIKOM REGISTRACIJE NIJE CUVAO USERA, PA SAM PROMENILA CASCADETYPE
 	private Address address;
 	@Column(name = "reasonForRegistration")
 	private String reasonForRegistration;
+	@Column(name = "poents")
+	private int poents;
+	@Column(name = "loyalityType")
+	private LoyalityType loyalityType;
 	@Column(name = "enabled")
 	private boolean enabled;
 	@Column(name = "must_change_password")
@@ -56,6 +63,7 @@ public class User implements UserDetails {
 	private Timestamp lastPasswordResetDate;
 	
 	public User() {}
+
 
 	//koristim pri registraciji
 	public User(String name, String surname, String email, String password, String telephone, Address address,boolean enabled, Role role, Timestamp lastPasswordResetDate) {
@@ -99,6 +107,29 @@ public class User implements UserDetails {
 		return must_change_password;
 	}
 
+	public int getPoents() {
+		return poents;
+	}
+
+	public void setPoents(int poents) {
+		this.poents = poents;
+	}
+
+	public double getIncome() {
+		return income;
+	}
+
+	public void setIncome(double income) {
+		this.income = income;
+	}
+
+	public LoyalityType getLoyalityType() {
+		return loyalityType;
+	}
+
+	public void setLoyalityType(LoyalityType loyalityType) {
+		this.loyalityType = loyalityType;
+	}
 	public void setMust_change_password(boolean must_change_password) {
 		this.must_change_password = must_change_password;
 	}
