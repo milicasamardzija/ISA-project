@@ -342,19 +342,7 @@
                 </div>
                 
               </div>
-              <!--Grid column
-              <div class="col-md-6">
-                <div class="md-form">
-                  <textarea
-                    type="text"
-                    id="message"
-                    name="message"
-                    rows="2"
-                    class="form-control md-textarea"
-                      v-model="cottage.additionalServices"
-                  ></textarea>
-                </div>
-              </div>-->
+     
             </div>
 
 
@@ -380,26 +368,11 @@
               </div>
          
                
-              <!--Grid column
-              <div class="col-md-6">
-                <div class="md-form">
-                  <textarea
-                    type="text"
-                    id="message"
-                    name="message"
-                    rows="2"
-                    class="form-control md-textarea"
-                      v-model="cottage.additionalServices"
-                  ></textarea>
-                </div>
-              </div>-->
+           
             </div>
           </form>
         </div>
-        <!--Button inspo   <div class="text-center text-md-left">
-                <a class="btn btn-primary" onclick="document.getElementById('contact-form').submit();">Send</a>
-            </div>
-            <div class="status"></div>      -->
+
 
         <!--Grid column-->
         <div class="col-md-5">
@@ -683,14 +656,13 @@ const vectors = ref([]);
       console.log( this.boat.boatType )
       this.boat.navigationEquipment = this.equipment
       console.log(this.boat.navigationEquipment)
-
-      console.log(this.images);
-      axios.post("http://localhost:8081/api/boats/editBoat", this.boat,  {headers}).then( response => response.json());
+this.boat.images = this.imagesFrontend;
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/boats/editBoat", this.boat,  {headers}).then( response => response.json());
        this.$router.push({name: "MyBoats"});
       },
 
       async getBoat(id) {
-      const res = await fetch("http://localhost:8081/api/boats/boat/" + id);
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/boats/boat/" + id);
       const data = await res.json();  
        console.log(data) ;
        this.boat= data;  //samo u created nije radilo
@@ -738,14 +710,6 @@ const vectors = ref([]);
 
 };
 
-// $(document).ready(function () {
-//   $("#input-b6").fileinput({
-//     showUpload: true,
-//     dropZoneEnabled: false,
-//     maxFileCount: 7,
-//     mainClass: "input-group-lg",
-//   });
-// });
 </script>
 
 <style scoped>

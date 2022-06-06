@@ -5,12 +5,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "address")
 public class Address {
-	
+
 	@Id
-//	@SequenceGenerator(name = "userSeqGen", sequenceName = "userSeqGen", initialValue = 1, allocationSize = 1)
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeqGen")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@SequenceGenerator(name = "addressSeqGen", sequenceName = "addressSeqGen", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressSeqGen")
+	@Column(name="id", unique=true, nullable=false)
 	private int id;
 	@Column(name = "country")
 	private String country;

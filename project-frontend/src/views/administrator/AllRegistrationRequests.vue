@@ -150,10 +150,11 @@ export default {
       this.$router.go(0);     
       
    },
-   SaveIdAndEmail(id,email) {
+   async SaveIdAndEmail(id,email) {
      this.counter = 1;
      this.deleteID=id;
      this.userEmail=email;
+     console.log(this.counter)
    },
 
   },

@@ -162,6 +162,7 @@ export default {
         email: "",
         password: "",
         telephone: "",
+        role:"ROLE_ADMIN",
         address: { country: "",  city: "", street: "",number:"" },
       }
       }
@@ -180,7 +181,8 @@ async AddAdmin() {
         city: this.newUser.address.city,
         street: this.newUser.address.street,
         number: this.newUser.address.number,
-        telephone: this.newUser.telephone
+        telephone: this.newUser.telephone,
+        role:this.role
        },{
         headers
       })

@@ -14,6 +14,60 @@ public class EvaluateDTO {
     private EntityClass entity;
     private User userWhoSendsComplaint;
     private Boolean accepted;
+    private String nameOfuserWhoSendsComplaint;
+    private String lastnameOfuserWhoSendsComplaint;
+    private String name;
+    private String lastname;
+    private String mailOfuserWhoSendsComplaint;
+    private String mail;
+
+    public String getNameOfuserWhoSendsComplaint() {
+        return nameOfuserWhoSendsComplaint;
+    }
+
+    public void setNameOfuserWhoSendsComplaint(String nameOfuserWhoSendsComplaint) {
+        this.nameOfuserWhoSendsComplaint = nameOfuserWhoSendsComplaint;
+    }
+
+    public String getLastnameOfuserWhoSendsComplaint() {
+        return lastnameOfuserWhoSendsComplaint;
+    }
+
+    public void setLastnameOfuserWhoSendsComplaint(String lastnameOfuserWhoSendsComplaint) {
+        this.lastnameOfuserWhoSendsComplaint = lastnameOfuserWhoSendsComplaint;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getMailOfuserWhoSendsComplaint() {
+        return mailOfuserWhoSendsComplaint;
+    }
+
+    public void setMailOfuserWhoSendsComplaint(String mailOfuserWhoSendsComplaint) {
+        this.mailOfuserWhoSendsComplaint = mailOfuserWhoSendsComplaint;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 
     public EvaluateDTO() {}
 

@@ -1,6 +1,6 @@
 package com.example.demo.model.business;
 
-import com.example.demo.dto.enums.ComplaintType;
+import com.example.demo.enums.ComplaintType;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
 

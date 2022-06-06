@@ -72,6 +72,10 @@ public class EntityService {
 
     @Transactional
     public EntityClass getById(int entityId) {
-        return  this.entityRepository.getById(entityId);
+        return this.entityRepository.getById(entityId);
+    }
+    public void deleteById(int deleteId) {
+        EntityClass e = this.entityRepository.findById(deleteId);
+        this.entityRepository.delete(e);
     }
 }

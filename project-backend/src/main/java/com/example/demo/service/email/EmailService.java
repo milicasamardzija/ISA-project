@@ -1,5 +1,6 @@
 package com.example.demo.service.email;
 
+import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -28,17 +29,11 @@ public class EmailService {
     }
 
     @Async
-    public void sendEmailForUserAuthentication(User user) throws MailException, InterruptedException {
+    public void sendEmailForUserAuthentication(Client user) throws MailException, InterruptedException {
         System.out.println("Slanje emaila...");
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
-        //String path = env.getProperty("application.url");
         SimpleMailMessage mail = new SimpleMailMessage();
-        /*mail.setTo(user.getEmail());
-        mail.setFrom("spring.mail.username");
-        mail.setSubject("Confirm your account");
-        mail.setText("To confirm your account, please click here :" + "https://fishingb.herokuapp.com" + "/api/auth/confirm-account?email=" + user.getEmail());*/
-
         try {
             System.out.println("OVDE SAM 1");
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
@@ -57,14 +52,6 @@ public class EmailService {
             e.printStackTrace();
             System.out.println(e);
         }
-
-//        Properties javaMailProperties = new Properties();
-//        javaMailProperties.put("mail.smtp.starttls.enable", "true");
-//        javaMailProperties.put("mail.smtp.auth", "true");
-//        javaMailProperties.put("mail.transport.protocol", "smtp")"
-//        javaMailProperties.put("mail.debug", "true");
-//
-//        javaMailSender.send(mail);
 
         System.out.println("Email poslat!");
     }

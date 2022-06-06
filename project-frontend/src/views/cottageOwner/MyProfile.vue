@@ -322,7 +322,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/client/profileClient", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/client/profileClient", {headers});
       const data = await res.json();
       return data;
     },
@@ -338,7 +338,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/cottageOwner/profileCottageOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/cottageOwner/profileCottageOwner", {headers});
       const data = await res.json();
       return data;
     },
@@ -346,7 +346,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/boatOwner/profileBoatOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/boatOwner/profileBoatOwner", {headers});
       const data = await res.json();
       return data;
     },
@@ -361,7 +361,7 @@ export default {
        // alert("");
         return new Swal('Niste dobro uneli ponovljenu sifru!Probajte ponovo!');
       } else {
-        const res = await fetch("http://localhost:8081/api/user/changePassword" , {
+        const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/user/changePassword" , {
           method: "POST",
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -383,7 +383,7 @@ export default {
         }
     },
     async sendDeleteRequest(){
-      const res = await fetch("http://localhost:8081/api/userDeleteReq" , {
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/userDeleteReq" , {
         method: "POST",
         headers: {
           "Content-type": "application/json",

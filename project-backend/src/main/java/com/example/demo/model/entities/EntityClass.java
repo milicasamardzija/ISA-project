@@ -27,8 +27,8 @@ public class EntityClass {
 	
 	@Column(name="name", nullable=false)
 	private String name;
-	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE )
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Address address;
 	

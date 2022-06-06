@@ -139,7 +139,7 @@ export default {
        const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.get( "http://localhost:8081/api/reservation/actionReservation/" + this.idSelected ,
+      axios.get(process.env.VUE_APP_BACKEND_URL+ "/api/reservation/actionReservation/" + this.idSelected ,
         { headers }).then(
           response => {
             console.log(response);
@@ -164,7 +164,7 @@ export default {
      const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.get( "http://localhost:8081/api/reservation/actions/" + this.id ,
+      axios.get( process.env.VUE_APP_BACKEND_URL+ "/api/reservation/actions/" + this.id ,
         { headers }).then(
           response => {
             this.reservations = response.data

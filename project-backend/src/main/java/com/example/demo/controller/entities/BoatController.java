@@ -14,6 +14,7 @@ import com.example.demo.service.entities.BoatService;
 import com.example.demo.service.users.BoatOwnerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -69,7 +70,7 @@ public class BoatController {
 
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('BOAT_OWNER')")
     @PostMapping("/searchBoatOwner")
     public ResponseEntity<List<BoatDTO>> searchBoatOwner(@RequestBody SearchDTO searchParam) {
         List<BoatDTO> ret = new ArrayList<>();
@@ -80,6 +81,7 @@ public class BoatController {
         }
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('BOAT_OWNER')")
     @GetMapping("/myBoats/{id}")
     public ResponseEntity<List<BoatDTO>> getOwnersBoats(@PathVariable int id) {
 
@@ -109,7 +111,7 @@ public class BoatController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-
+    @PreAuthorize("hasAnyRole('BOAT_OWNER')")
     @PostMapping("/newBoat")
     public ResponseEntity<Void> saveBoat(@RequestBody BoatDTO newBoat){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -147,7 +149,7 @@ public class BoatController {
         }
         return  new ResponseEntity<>(boat, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('BOAT_OWNER')")
     @PostMapping("/editBoat")
     public ResponseEntity<Void> editBoat(@RequestBody BoatDTO editBoat){
         Set<AdditionalService> newServices = new HashSet<>();
@@ -165,7 +167,7 @@ public class BoatController {
         return  new ResponseEntity<>( HttpStatus.OK);
 
     }
-
+    @PreAuthorize("hasAnyRole('BOAT_OWNER')")
     @GetMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable int id){
         boatService.deleteById(id);
@@ -173,7 +175,7 @@ public class BoatController {
         return  new ResponseEntity<>( HttpStatus.OK);
 
     }
-    
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/getMaxPeople/{id}")
     public ResponseEntity<Integer> getMaxPeople( @PathVariable int id){
         return new ResponseEntity<>(this.boatService.getMaxPeople(id),HttpStatus.OK);

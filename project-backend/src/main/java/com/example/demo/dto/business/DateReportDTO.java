@@ -1,7 +1,5 @@
 package com.example.demo.dto.business;
 
-import com.example.demo.dto.enums.EntityType;
-
 import java.util.Date;
 
 public class DateReportDTO {

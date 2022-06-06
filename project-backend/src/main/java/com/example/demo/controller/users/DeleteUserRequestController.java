@@ -51,12 +51,18 @@ public class DeleteUserRequestController {
     @GetMapping(value = "/getRequests")
     public ResponseEntity<List<DeleteUserRequestDTO>> getRequests(){
         List<DeleteUserRequest> allRequests = deleteUserRequestService.findAll();
+        System.out.print("Broj requestova je"+ allRequests.size());
         List<DeleteUserRequestDTO> requests = new ArrayList<>();
         for(DeleteUserRequest u : allRequests ) {
             int id = u.getUser().getId();
             User user = this.userService.findById(id);
+            System.out.print("Pronasla sam usera"+ user.getName());
             DeleteUserRequestDTO du = new DeleteUserRequestDTO(u);
-            du.setUser(user);
+            System.out.print("OVO");
+            du.setName(user.getName());
+            du.setSurname(user.getSurname());
+            du.setMail(user.getEmail());
+            System.out.print("OVO1");
             if (du.getAccepted()==null && du.getRejected()==null) {
                 requests.add(du);
             }
@@ -68,12 +74,13 @@ public class DeleteUserRequestController {
         DeleteUserRequest du = this.deleteUserRequestService.findById(selectID);
         if (du != null){
             this.deleteUserRequestService.acceptRequest(du);
+            this.userService.deleteUserById(du.getUser().getId());
             service.sendEmailWithAttachment(userEmail,
                     "Razlog prihvatanja:"+reason,
                     "Prihvatanje zahteva za brisanje naloga!");
             this.deleteUserRequestService.deleteRequest(du);
             System.out.print("ID je" + du.getUser().getId());
-            this.userService.deleteUserById(du.getUser().getId());
+
             return new ResponseEntity<>(HttpStatus.OK);}
         else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

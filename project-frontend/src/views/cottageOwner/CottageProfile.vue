@@ -357,7 +357,7 @@
               <table>
                 <tr>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block"  style="width:80px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal"  style="width:80px; margin-bottom:20px">
                       Potvrdi
                     </button>
                   </td>
@@ -455,17 +455,30 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.get( "http://localhost:8081/api/client/" + this.id ,
+      axios.get( process.env.VUE_APP_BACKEND_URL+"/api/client/" + this.id ,
         { headers }).then(
           response => {
             console.log(response);
-            alert("Uspesno ste se pretplatili!")
+            new Swal({
+             title:"Uspesno",
+             type: "warning",
+             text:'Uspesno ste se pretplatili!'
+           });
             this.$router.go(0);
+          }
+        ).catch(
+          error => {
+            console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Vec ste pretplaceni na ovaj entitet!'
+           });
           }
         )
     },
     async getCottage(id) {
-      const res = await fetch("http://localhost:8081/api/cottages/cottage/" + id);
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/cottages/cottage/" + id);
       const data = await res.json();  
        console.log(data) ;
        this.cottage= data;  //samo u created nije radilo
@@ -476,7 +489,11 @@ export default {
     },
     
       async editCottage(cottage){
-                axios.get("http://localhost:8081/api/reservation/check/"+ this.cottage.id).then( 
+    const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+
+                axios.get(process.env.VUE_APP_BACKEND_URL+"/api/reservation/check/"+ this.cottage.id, {headers}).then( 
            response => { 
              console.log(response)
         this.$router.push({ name: 'EditCottage', params: { id: cottage.id}})
@@ -493,15 +510,19 @@ export default {
       
    },
   async saveAction(){
+    const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+
      this.action.entityId =this.cottage.id;
       console.log(this.action.entityId);
      this.action.additionalServices = this.cottage.additionalServices;
        console.log(this.action.additionalServices);
 
-      axios.post("http://localhost:8081/api/reservation/checkAvailability", this.action).then( 
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkAvailability", this.action, {headers}).then( 
            response => { 
              console.log(response)
-              axios.post("http://localhost:8081/api/reservation/actionCottage", this.action)
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/actionCottage", this.action, {headers})
          }
          ).catch(error =>{
            console.log(error);
@@ -530,7 +551,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch(
-        "http://localhost:8081/api/cottageOwner/cottageOwnerUser/" + id,
+        process.env.VUE_APP_BACKEND_URL+"/api/cottageOwner/cottageOwnerUser/" + id,
         { headers }
       );
       const data = await res.json();
@@ -539,7 +560,9 @@ export default {
       return data;
    }, 
    makeReservation(){
-
+   const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
       if(this.client.name== null){
         return new Swal({
              title:"Nije uspesno",
@@ -551,11 +574,11 @@ export default {
      this.reservation.entityId = this.id;
      this.reservation.additionalServices = this.cottage.additionalServices;
 
-      axios.post("http://localhost:8081/api/reservation/checkAvailability",  
-      { dateStart: this.reservation.dateStart, timeStart: this.reservation.timeStart, price: this.reservation.price, duration: this.reservation.duration, entityId: this.id, dateEndAction: "", additionalServices:[] }).then( 
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkAvailability",  
+      { dateStart: this.reservation.dateStart, timeStart: this.reservation.timeStart, price: this.reservation.price, duration: this.reservation.duration, entityId: this.id, dateEndAction: "", additionalServices:[] }, {headers}).then( 
            response => { 
              console.log(response)
-              axios.post("http://localhost:8081/api/reservation/makeReservationOwner", this.reservation).then(
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/makeReservationOwner", this.reservation, {headers}).then(
                 res=> {
                   console.log(res);
                return new Swal({
@@ -577,7 +600,7 @@ export default {
          )}
    }, 
    findCurrentClient(){
-      axios.get("http://localhost:8081/api/reservation/currentClient/"+ this.cottage.id).then( 
+      axios.get(process.env.VUE_APP_BACKEND_URL+"/api/reservation/currentClient/"+ this.cottage.id).then( 
            response => { 
              console.log(response)
              this.client = response.data;

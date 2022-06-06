@@ -2,6 +2,8 @@ package com.example.demo.dto.entities;
 
 import com.example.demo.model.entities.Address;
 
+import java.util.Set;
+
 public class AdventureRequestDTO {
     private String nameOfAdventure;
     private int maxNumberOfPeople;
@@ -14,6 +16,15 @@ public class AdventureRequestDTO {
     private String number;
     private String city;
     private String country;
+    private Set<String> images;
+
+    public Set<String> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<String> images) {
+        this.images = images;
+    }
 
     public String getStreet() {
         return street;

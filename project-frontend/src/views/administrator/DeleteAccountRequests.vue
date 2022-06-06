@@ -27,12 +27,12 @@
     <tbody>
           <tr v-for="(request, index) in requests" :key="index" >
                   <td>{{request.id}}</td>
-                  <td>{{request.user.name}}</td>
-                  <td>{{request.user.surname}}</td>
-                  <td>{{request.user.email}}</td>
+                  <td>{{request.name}}</td>
+                  <td>{{request.surname}}</td>
+                  <td>{{request.mail}}</td>
                   <td>{{request.explanation}}</td>
-                  <td><button class="btn btn-success btn-block" data-target="#prihvatanje" data-toggle="modal" @click="SaveIDAndEmail(request.id,request.user.email)">Prihvati zahtev</button></td>
-                  <td><button class="btn btn-success btn-block" data-target="#odbijanje" data-toggle="modal" @click="SaveIDAndEmail(request.id,request.user.email)">Odbij zahtev</button></td> 
+                  <td><button class="btn btn-success btn-block" data-target="#prihvatanje" data-toggle="modal" @click="SaveIDAndEmail(request.id,request.mail)">Prihvati zahtev</button></td>
+                  <td><button class="btn btn-success btn-block" data-target="#odbijanje" data-toggle="modal" @click="SaveIDAndEmail(request.id,request.mail)">Odbij zahtev</button></td> 
                   </tr>
     </tbody>
 </table>
@@ -135,7 +135,7 @@ name: "DeleteAccountRequests",
       userEmail: "",
       reason:"",
       reasonn: "",
-      request: { explanation: "",user: { id: 0, name: "", surname: "",email: ""}, id: 0},
+      request: { explanation: "",name:"",surname:"",mail:"", id: 0},
    
     }
   },
@@ -158,15 +158,19 @@ name: "DeleteAccountRequests",
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       axios.post("http://localhost:8081/api/userDeleteReq/confirm/" + this.selectID+"/"+this.reason+"/"+this.userEmail ,{headers})
-      .then (response => { 
+              .then (response => { 
         console.log(response);
         this.$router.push({ name: "DeleteAccountRequests" });
-      })  
-      return new Swal({
-             title:"Uspesno",
-             type: "success",
-             text:'Prihvatili ste zahtev za brisanje profila!'
+         this.$router.go(0); 
+      }).catch(function (error) {
+        console.log(error)
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Ovaj entitet se koristi u sistemu! Nemoguce ga je obrisati!',
            });
+                 
+        }); 
    },
       Reject(reason) {
       this.reasonn = reason;

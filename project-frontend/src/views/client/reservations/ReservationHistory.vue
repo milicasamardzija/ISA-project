@@ -505,7 +505,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch(
-        "http://localhost:8081/api/reservation/historyReservationsCottages",
+        process.env.VUE_APP_BACKEND_URL+ "/api/reservation/historyReservationsCottages",
         { headers }
       );
       const data = await res.json();
@@ -516,7 +516,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch(
-        "http://localhost:8081/api/reservation/historyReservationsBoats",
+       process.env.VUE_APP_BACKEND_URL+ "/api/reservation/historyReservationsBoats",
         { headers }
       );
       const data = await res.json();
@@ -527,7 +527,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch(
-        "http://localhost:8081/api/reservation/historyReservationsAdventures",
+        process.env.VUE_APP_BACKEND_URL+ "/api/reservation/historyReservationsAdventures",
         { headers }
       );
       const data = await res.json();
@@ -613,7 +613,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch(
-        "http://localhost:8081/api/reservation/entity/" + this.selectedReservationId,
+        process.env.VUE_APP_BACKEND_URL+ "/api/reservation/entity/" + this.selectedReservationId,
         { headers }
       );
       const data = await res.json();
@@ -625,7 +625,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch(
-        "http://localhost:8081/api/cottageOwner/cottageOwnerUser/" + id,
+        process.env.VUE_APP_BACKEND_URL+ "/api/cottageOwner/cottageOwnerUser/" + id,
         { headers }
       );
       const data = await res.json();
@@ -636,7 +636,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch(
-        "http://localhost:8081/api/boatOwner/boatOwnerUser/" + id,
+        process.env.VUE_APP_BACKEND_URL+ "/api/boatOwner/boatOwnerUser/" + id,
         { headers }
       );
       const data = await res.json();
@@ -647,7 +647,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch(
-        "http://localhost:8081/api/adventures/instructorUser/" + id,
+        process.env.VUE_APP_BACKEND_URL+ "/api/adventures/instructorUser/" + id,
         { headers }
       );
       const data = await res.json();
@@ -663,7 +663,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.post("http://localhost:8081/api/complaint" ,{contentUser: this.contentUser, contentEntity: this.contentEntity, user: this.user, entity: this.entity},{headers})
+      axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/complaint" ,{contentUser: this.contentUser, contentEntity: this.contentEntity, user: this.user, entity: this.entity},{headers})
       .then (response => { 
         console.log(response);
        return new Swal({
@@ -678,7 +678,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.post("http://localhost:8081/api/evaluate" ,{contentUser: this.reviewContentUser, contentEntity: this.reviewContentEntity, user: this.user, entity: this.entity, gradeForUser : this.reviewGradeForUser, gradeForEntity: this.reviewGradeForEntity},{headers})
+      axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/evaluate" ,{contentUser: this.reviewContentUser, contentEntity: this.reviewContentEntity, user: this.user, entity: this.entity, gradeForUser : this.reviewGradeForUser, gradeForEntity: this.reviewGradeForEntity},{headers})
       .then (response => { 
         console.log(response);
        return new Swal({

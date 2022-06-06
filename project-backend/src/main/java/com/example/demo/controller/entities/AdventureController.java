@@ -1,18 +1,14 @@
 package com.example.demo.controller.entities;
 import com.example.demo.dto.entities.*;
 
-import com.example.demo.dto.users.UpdateUserDTO;
 import com.example.demo.dto.business.ReservationSearchDTO;
 import com.example.demo.dto.entities.AdventureDTO;
-import com.example.demo.dto.entities.BoatDTO;
 import com.example.demo.dto.entities.EntityDTO;
 import com.example.demo.dto.entities.SearchDTO;
 import com.example.demo.dto.users.UserDTO;
-import com.example.demo.dto.enums.CancelationType;
-import com.example.demo.model.entities.Address;
-import com.example.demo.model.entities.Adventure;
-import com.example.demo.model.entities.Boat;
-import com.example.demo.model.entities.EntityClass;
+import com.example.demo.enums.CancelationType;
+import com.example.demo.model.entities.*;
+import com.example.demo.model.users.BoatOwner;
 import com.example.demo.model.users.Instructor;
 import com.example.demo.model.users.User;
 import com.example.demo.service.entities.AddressService;
@@ -125,41 +121,27 @@ public class AdventureController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);}
     }
 
-
-    @PostMapping("/addAdventure")
-    public ResponseEntity<Adventure> addAdventure(@RequestBody AdventureRequestDTO adventureRequest){
-        System.out.print("OVDE SAM");
+    @PostMapping("/newAdventure")
+    public ResponseEntity<Void> saveAdventure(@RequestBody AdventureRequestDTO newAdventure){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
-        System.out.print("OVDE SAM1"+user.getId());
         Instructor i = this.instructorService.findByEmail(user.getEmail());
         System.out.print("OVDE SAM2 "+i.getId());
-        Adventure a = new Adventure();
-        a.setNameOfAdventure(adventureRequest.getNameOfAdventure());
-        a.setName(adventureRequest.getNameOfAdventure());
-        a.setMaxNumberOfPeople(adventureRequest.getMaxNumberOfPeople());
-        a.setInstructorBiografy(adventureRequest.getInstructorBiografy());
-        a.setPromoDescription(adventureRequest.getPromoDescription());
-        a.setFishingEquipment(adventureRequest.getFishingEquipment());
-        a.setRules(adventureRequest.getRules());
-        a.setDescription(adventureRequest.getPromoDescription());
-        Address address = new Address(adventureRequest.getCountry(),adventureRequest.getCity(),adventureRequest.getStreet(),adventureRequest.getNumber(),0,0);
-        this.addressService.save(address);
-        a.setAddress(address);
-        a.setInstructor(i);
-        if (adventureRequest.getCancelationType().equalsIgnoreCase("BESPLATNO")) {
-            a.setCancelationType(CancelationType.BESPLATNO);
+        Adventure adventure = new Adventure(newAdventure);
+        adventure.setInstructor(i);
+
+        Address address = new Address(newAdventure.getCountry(),newAdventure.getCity(),newAdventure.getStreet(),newAdventure.getNumber(), 0, 0);
+        adventure.setAddress(this.addressService.save(address));
+        if (newAdventure.getCancelationType().equalsIgnoreCase("BESPLATNO")) {
+            adventure.setCancelationType(CancelationType.BESPLATNO);
         }else {
-            a.setCancelationType(CancelationType.SA_PROCENTOM);
+            adventure.setCancelationType(CancelationType.SA_PROCENTOM);
         }
-        if (a != null){
-            adventureService.save(a);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        else
-            System.out.print("NULL je");
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        this.adventureService.save(adventure);
+        return  new ResponseEntity<>( HttpStatus.OK);
+
     }
+
 
     @DeleteMapping(value = "/deleteAdventure/{name}")
     public ResponseEntity<HttpStatus> deleteAdventure (@PathVariable String name) {

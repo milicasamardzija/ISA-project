@@ -10,7 +10,7 @@
     <NavBarHomePage />
 
   </div>
-  <div class="divStyle">
+  <div class="divStyle" v-if="this.role ==='ROLE_COTTAGE_OWNER' || this.role ==='ROLE_BOAT_OWNER'">
 
     <div class="row" >
       <div class="column" style="width: 22rem; margin-top:1rem"> 
@@ -123,7 +123,7 @@ this.report.type = 1;
      const headers = {
        Authorization: "Bearer " + localStorage.getItem("token"),
       };
-   axios.post("http://localhost:8081/api/reportOwner/reportOwner", this.report, {headers})
+   axios.post(process.env.VUE_APP_BACKEND_URL + "/api/reportOwner/reportOwner", this.report, {headers})
    .then(response => {
    this.dates = response.data,
 
@@ -141,7 +141,7 @@ else {
   const headers = {
        Authorization: "Bearer " + localStorage.getItem("token"),
       };
-   axios.post("http://localhost:8081/api/reportOwner/reportOwner", this.report, {headers})
+   axios.post(process.env.VUE_APP_BACKEND_URL + "/api/reportOwner/reportOwner", this.report, {headers})
    .then(response => {
    this.dates = response.data,
    this.names = this.dates.names ,
@@ -306,7 +306,7 @@ ocena;
            const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-   axios.get("http://localhost:8081/api/cottages/ownerCottages", {headers}).then(response => this.cottages = response.data );
+   axios.get(process.env.VUE_APP_BACKEND_URL + "/api/cottages/ownerCottages", {headers}).then(response => this.cottages = response.data );
  console.log(this.cottages);
  
    },

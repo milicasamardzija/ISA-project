@@ -2,12 +2,11 @@ package com.example.demo.service.business;
 
 import com.example.demo.dto.business.*;
 import com.example.demo.dto.entities.AdditionalServiceDTO;
-import com.example.demo.dto.enums.EntityType;
+import com.example.demo.enums.EntityType;
 import com.example.demo.dto.users.ClientProfileDTO;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.business.ReservationServices;
 import com.example.demo.model.business.ReservedTerm;
-import com.example.demo.model.entities.Cottage;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
@@ -23,13 +22,9 @@ import com.example.demo.service.users.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.dao.PessimisticLockingFailureException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.InvocationTargetException;
-import java.time.DateTimeException;
 import java.util.*;
 
 @Service
@@ -287,24 +282,12 @@ public class ReservationService {
         List<Reservation> ret = new ArrayList<>();
 
         for (Reservation r: this.reservationRepository.findAllReservationsForCottageOwner(id_owner) ) {
-            if(r.getAction() ){
-                ret.add(r);
-            }
+         ret.add(r);
         }
         return  ret;
 
     }
 
-    public List<Reservation> getAllReservationsForCottageOwnerActions(int id_owner) {
-        List<Reservation> ret = new ArrayList<>();
-        for (Reservation r: this.reservationRepository.findAllReservationsForCottageOwner(id_owner) ) {
-            if(r.getAction()){
-                ret.add(r);
-            }
-        }
-        return  ret;
-
-    }
 
     public List<Reservation> getAllReservationsForBoatOwner(int id_owner) {
         return   this.reservationRepository.findAllReservationsForBoatOwner(id_owner);
@@ -482,7 +465,7 @@ public class ReservationService {
         calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calEnd.setTime(unavailable.getDateTo());
 
-        EntityClass entity = entityService.findById(unavailable.getEntityId()); //eager je, ovako je okej
+        EntityClass entity = entityService.findById(unavailable.getEntityId()); //eager je, ovako je okej, DA SE POZ ONA
         ReservedTerm newTerm = reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false));
         entity.getReservedTerms().add(newTerm);
         entityService.save(entity);
@@ -693,6 +676,11 @@ public class ReservationService {
         reservationRepository.save(newReservation);
 
         this.emailService.sendEmailForReservation(user);
+
+
+    }
+
+    public void addReservationOfInstructor(ActionRequestDTO actionRequestDTO) {
 
 
     }

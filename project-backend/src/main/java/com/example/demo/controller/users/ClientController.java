@@ -54,6 +54,24 @@ public class ClientController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT')")
+    @GetMapping("/getAllCLients")
+    public ResponseEntity<List<ClientDTO>> getAllClient()
+    {
+        List<Client> clients = this.clientService.getAll();
+        List<ClientDTO> clientDTOS = new ArrayList<>();
+        for (Client c : clients) {
+            ClientDTO clientDTO = new ClientDTO();
+            clientDTO.setId(c.getId());
+            clientDTO.setEmail(c.getEmail());
+            clientDTO.setFirstname(c.getName());
+            clientDTO.setLastname(c.getSurname());
+            clientDTOS.add(clientDTO);
+        }
+        return new ResponseEntity<>(clientDTOS, HttpStatus.OK);
+    }
+
+
+
     @GetMapping("/subscribedEntitites")
     public ResponseEntity<List<EntityDTO>> findSubscribedEnities(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -90,10 +108,14 @@ public class ClientController {
         Client client = this.clientService.findById(user.getEmail());
 
         if (user != null){
-            clientService.addSubsrciptions(id, client);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
 
+            if (clientService.addSubsrciptions(id, client)){
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+        }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 

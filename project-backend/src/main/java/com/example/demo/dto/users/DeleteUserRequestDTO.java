@@ -9,7 +9,34 @@ public class DeleteUserRequestDTO {
     private String explanation;
     private Boolean rejected;
     private Boolean accepted;
-    private User user;
+    private UserDTO user;
+    private String name;
+    private String surname;
+    private String mail;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 
     public DeleteUserRequestDTO(){}
     public int getId() {
@@ -19,11 +46,11 @@ public class DeleteUserRequestDTO {
     public void setId(int id) {
         this.id = id;
     }
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
     public String getExplanation() {
@@ -42,11 +69,11 @@ public class DeleteUserRequestDTO {
     public void setAccepted(Boolean accepted) {
         this.accepted = accepted;
     }
-    public DeleteUserRequestDTO(String explanation, User user) {
+    public DeleteUserRequestDTO(String explanation, UserDTO user) {
         this.explanation = explanation;
         this.user = user;
     }
-    public DeleteUserRequestDTO(String explanation, User user, int id) {
+    public DeleteUserRequestDTO(String explanation, UserDTO user, int id) {
         this.explanation = explanation;
         this.user= user;
         this.id = id;
@@ -64,7 +91,6 @@ public class DeleteUserRequestDTO {
     public DeleteUserRequestDTO(DeleteUserRequest request){
         this.id = request.getId();
         this.explanation = request.getExplanation();
-        this.user= request.getUser();
         this.accepted = request.getAccepted();
         this.rejected = request.getRejected();
     }

@@ -376,7 +376,7 @@
               <table>
                 <tr>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block"  style="width:80px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" style="width:80px; margin-bottom:20px">
                       Potvrdi
                     </button>
                   </td>
@@ -466,7 +466,10 @@ export default {
        this.$router.push({ name: 'CottageActions', params: { id: this.id}})
      },
     async getBoat(id) {
-      const res = await fetch("http://localhost:8081/api/boats/boat/" + id);
+          const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/boats/boat/" + id, {headers});
       const data = await res.json();  
        console.log(data) ;
        this.boat= data;  //samo u created nije radilo
@@ -474,7 +477,10 @@ export default {
       return data;
     },
        async editBoat(){
-                axios.get("http://localhost:8081/api/reservation/check/"+ this.boat.id).then( 
+             const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+                axios.get(process.env.VUE_APP_BACKEND_URL+"/api/reservation/check/"+ this.boat.id, {headers}).then( 
            response => { 
              console.log(response)
        this.$router.push({ name: 'EditBoat', params: { id: this.id}})
@@ -491,15 +497,19 @@ export default {
       
    },
   async saveAction(){
+    const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+
      this.action.entityId =this.boat.id;
       console.log(this.action.entityId);
      this.action.additionalServices = this.boat.additionalServices;
        console.log(this.action.additionalServices);
 
-      axios.post("http://localhost:8081/api/reservation/checkAvailability", this.action).then( 
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkAvailability", this.action, {headers}).then( 
            response => { 
              console.log(response)
-              axios.post("http://localhost:8081/api/reservation/actionBoat", this.action).then(
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/actionBoat", this.action, {headers}).then(
                  response => { 
                    console.log(response);
                  return new Swal({
@@ -542,7 +552,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const res = await fetch(
-        "http://localhost:8081/api/boatOwner/boatOwnerUser/" + id,
+        process.env.VUE_APP_BACKEND_URL+"/api/boatOwner/boatOwnerUser/" + id,
         { headers }
       );
       const data = await res.json();
@@ -555,12 +565,25 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.get( "http://localhost:8081/api/client/" + this.id ,
+      axios.get( process.env.VUE_APP_BACKEND_URL+"/api/client/" + this.id ,
         { headers }).then(
           response => {
             console.log(response);
-            alert("Uspesno ste se pretplatili!")
+             new Swal({
+             title:"Uspesno",
+             type: "warning",
+             text:'Uspesno ste se pretplatili!'
+           });
             this.$router.go(0);
+          }
+        ).catch(
+          error => {
+            console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Vec ste pretplaceni na ovaj entitet!'
+           });
           }
         )
     },
@@ -578,11 +601,11 @@ export default {
            });
      } else {
 
-      axios.post("http://localhost:8081/api/reservation/checkAvailability",  
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkAvailability",  
       { dateStart: this.reservation.dateStart, timeStart: this.reservation.timeStart, price: this.reservation.price, duration: this.reservation.duration, entityId: this.id, dateEndAction: "", additionalServices:[] }).then( 
            response => { 
              console.log(response)
-              axios.post("http://localhost:8081/api/reservation/makeReservationOwner", this.reservation).then(
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/makeReservationOwner", this.reservation).then(
                 res=> {
                   console.log(res);
                return new Swal({
@@ -604,7 +627,7 @@ export default {
          )}
    }, 
    findCurrentClient(){
-      axios.get("http://localhost:8081/api/reservation/currentClient/"+ this.boat.id).then( 
+      axios.get(process.env.VUE_APP_BACKEND_URL+"/api/reservation/currentClient/"+ this.boat.id).then( 
            response => { 
              console.log(response)
              this.client = response.data;

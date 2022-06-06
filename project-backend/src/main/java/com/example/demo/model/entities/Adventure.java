@@ -2,17 +2,10 @@ package com.example.demo.model.entities;
 
 import javax.persistence.*;
 
-import com.example.demo.dto.enums.CancelationType;
-import com.example.demo.model.business.ReservationServices;
-import com.example.demo.model.users.CottageOwner;
+import com.example.demo.dto.entities.AdventureRequestDTO;
+import com.example.demo.enums.CancelationType;
 import com.example.demo.model.users.Instructor;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name="adventure")
@@ -47,9 +40,7 @@ public class Adventure extends EntityClass{
 	@JsonIgnoreProperties("instructor")
 	public Instructor instructor;
 
-	public Adventure() {
-		super();
-	}
+
 
 	public Adventure(String nameOfAdventure, Address adrress, String description, String instructorBiografy, String rules, int maxNumberOfPeople, String fishingEquipment, CancelationType cancelationType) {
 		this.nameOfAdventure = nameOfAdventure;
@@ -72,6 +63,26 @@ public class Adventure extends EntityClass{
 		this.cancelationType = cancelationType;
 	}
 
+	public Adventure() {
+
+	}
+
+
+	public Adventure(AdventureRequestDTO newAdventure) {
+		this.setNameOfAdventure(newAdventure.getNameOfAdventure());
+		this.setName(newAdventure.getNameOfAdventure());
+		this.setMaxNumberOfPeople(newAdventure.getMaxNumberOfPeople());
+		this.setInstructorBiografy(newAdventure.getInstructorBiografy());
+		this.setPromoDescription(newAdventure.getPromoDescription());
+		this.setFishingEquipment(newAdventure.getFishingEquipment());
+		this.setRules(newAdventure.getRules());
+		this.setDescription(newAdventure.getPromoDescription());
+		this.setImages(newAdventure.getImages());
+		System.out.print("CAOO tu sam1"+ "broj slika ej"+newAdventure.getImages().size());
+		Address address = new Address(newAdventure.getCountry(),newAdventure.getCity(),newAdventure.getStreet(),newAdventure.getNumber(), 0, 0);
+		System.out.print("CAOO tu sam2 ");
+
+	}
 	public String getInstructorBiografy() {
 		return instructorBiografy;
 	}
@@ -147,4 +158,7 @@ public class Adventure extends EntityClass{
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+
+
 }
+

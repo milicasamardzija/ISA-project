@@ -11,6 +11,7 @@ import com.example.demo.service.entities.CottageService;
 import com.example.demo.service.users.CottageOwnerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,7 @@ public class CottageOwnerController {
 
     public CottageOwner findByEmail(String id) { return cottageOwnerService.findByEmail(id); }
 
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @GetMapping("/profileCottageOwner")
     public ResponseEntity<CottageOwnerDTO> getProfileCottageOwner(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -53,7 +55,7 @@ public class CottageOwnerController {
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @GetMapping
     public ResponseEntity<List<CottageOwnerDTO>> getAll(){
         List<CottageOwner> allOwners = cottageOwnerService.findAll();
@@ -63,7 +65,7 @@ public class CottageOwnerController {
         }
         return  new ResponseEntity<>(cottages, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @GetMapping("/cottageOwnerUser/{id}")
     public  ResponseEntity<UserDTO> fetchCottageOwnerByCottage(@PathVariable int id){
         User user = this.cottageOwnerService.fetchCottageOwnerByCottage(id);

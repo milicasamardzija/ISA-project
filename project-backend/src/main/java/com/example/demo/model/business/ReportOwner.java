@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Entity
 @Table(name="report_owner")
 public class ReportOwner {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", unique=true, nullable=false)
@@ -24,11 +23,34 @@ public class ReportOwner {
     @Column(name="comment",nullable=true)
     private String comment;
 
+    @Column(name="revise",nullable=true)
+    private Boolean revise;
+
     @Column(name="restriction_type",nullable=true)
     private RestrictionType restrictionType;
 
+
+
     public ReportOwner() {
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Boolean getRevise() {
+        return revise;
+    }
+
+    public void setRevise(Boolean revise) {
+        this.revise = revise;
+    }
+
+
 
     public Client getClient() {
         return client;
@@ -62,11 +84,11 @@ public class ReportOwner {
         this.restrictionType = restrictionType;
     }
 
-    public ReportOwner(Client client, User owner, String comment, RestrictionType restrictionType) {
+    public ReportOwner(Client client, User owner, String comment, RestrictionType restrictionType, boolean approved) {
         this.client = client;
         this.owner = owner;
         this.comment = comment;
         this.restrictionType = restrictionType;
-
+    this.revise = approved;
     }
 }

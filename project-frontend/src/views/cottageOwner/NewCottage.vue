@@ -1,4 +1,5 @@
 <template>
+<div v-if="this.role ==='ROLE_COTTAGE_OWNER'"> 
   <div>
     <NavBarLogOut />
     <NavBarHomePage />
@@ -413,7 +414,7 @@
       </div>
     </section>
   </div>
-
+</div>
 </template>
 
 <script>
@@ -471,6 +472,7 @@ export default {
         vectors,
       drawstart,
        imagesFrontend: [],
+       role: "",
       adServ: {name:"", price: 0},
       cottage: {id: 0, name: "",roomsNumber: 0, bedsByRoom: 0, address: { street: "", number: 0, city: "", country: "", longitude: 0, latitude: 0,  id: 0}, promoDescription:"", rules: "", grade: 1.0 , images: [], price: 0, additionalServices: [] },
      center,
@@ -505,7 +507,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       console.log(this.images);
-      axios.post("http://localhost:8081/api/cottages/newCottage/", this.cottage,  {headers}).then( response => response.json());
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/cottages/newCottage/", this.cottage,  {headers}).then( response => response.json());
    this.$router.push({name: "MyCottages"});
       },
                imageAdded(e) {
@@ -528,6 +530,9 @@ export default {
 
 
   },
+  async created(){
+this.role= localStorage.getItem("role");
+  }
     
 
 };
