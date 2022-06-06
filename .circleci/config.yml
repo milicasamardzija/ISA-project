@@ -2,7 +2,7 @@ version: 2.1
 
 on:
   push:
-    branches: [feat_tests]
+    branches: [feat_sonar_and_heroku_fixes]
 jobs:
   build-and-test:
     docker:
@@ -17,7 +17,7 @@ jobs:
           command: mvn test -f ./project-backend/pom.xml
       - run:
           name: Analyze on SonarCloud
-          command: mvn verify sonar:sonar -Dsonar.projectKey=milicasamardzija_ISA-project 
+          command: mvn verify sonar:sonar -Dsonar.projectKey=milicasamardzija_ISA-project -f ./project-backend/pom.xml
       
 
 orbs:
