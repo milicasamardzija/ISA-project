@@ -27,7 +27,7 @@ public class EntityService {
         this.entityRepository = entityRepository;
     }
 
-    @Transactional
+
     public EntityClass findById(int id) { return entityRepository.findById(id);}
 
     public List<EntityClass> findAll() {

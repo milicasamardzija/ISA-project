@@ -509,7 +509,16 @@ export default {
       axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkAvailability", this.action, {headers}).then( 
            response => { 
              console.log(response)
-              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/actionCottage", this.action, {headers})
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/actionCottage", this.action, {headers}).catch(
+                error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce kreirati akciju u navedenom periodu jer je rezervacija u toku!'
+           });
+         }
+              );
          }
          ).catch(error =>{
            console.log(error);
@@ -574,7 +583,15 @@ export default {
              text:'Uspesno ste rezervisali vikendicu!'
            });
                 }
-              )
+              ).catch(error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce kreirati rezervaciju jer je rezervacija u toku. Pokusajte ponovo!'
+           });
+         }
+         )
          }
          ).catch(error =>{
            console.log(error);
@@ -587,7 +604,10 @@ export default {
          )}
    }, 
    findCurrentClient(){
-      axios.get(process.env.VUE_APP_BACKEND_URL+"/api/reservation/currentClient/"+ this.cottage.id).then( 
+        const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      axios.get(process.env.VUE_APP_BACKEND_URL+"/api/reservation/currentClient/"+ this.cottage.id, {headers}).then( 
            response => { 
              console.log(response)
              this.client = response.data;

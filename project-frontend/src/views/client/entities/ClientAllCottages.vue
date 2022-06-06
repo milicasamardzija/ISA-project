@@ -118,7 +118,7 @@
         <div class="col-with-picture" >
           <div v-if="cottage.images.length != 0">
             <img
-              :src="getImgUrl(cottage.images[0].filePath)"
+              :src="cottage.images[0]"
               style="height: 250px !important; width: 300px !important"  @click="goToCottage()"
             />
           </div>
