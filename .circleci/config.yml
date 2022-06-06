@@ -17,7 +17,7 @@ jobs:
           command: mvn test -f ./project-backend/pom.xml
       - run:
           name: Analyze on SonarCloud
-          command: mvn verify sonar:sonar -Dsonar.projectKey=milicasamardzija_ISA-project ./project-backend/pom.xml
+          command: mvn verify sonar:sonar -Dsonar.projectKey=milicasamardzija_ISA-project 
       
 
 orbs:
