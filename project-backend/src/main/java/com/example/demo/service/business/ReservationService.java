@@ -465,7 +465,7 @@ public class ReservationService {
         calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calEnd.setTime(unavailable.getDateTo());
 
-        EntityClass entity = entityService.findById(unavailable.getEntityId()); //eager je, ovako je okej
+        EntityClass entity = entityService.findById(unavailable.getEntityId()); //eager je, ovako je okej, DA SE POZ ONA
         ReservedTerm newTerm = reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false));
         entity.getReservedTerms().add(newTerm);
         entityService.save(entity);

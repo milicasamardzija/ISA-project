@@ -21,7 +21,7 @@ public interface EntityRepository extends JpaRepository<EntityClass, Integer> {
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "0")})
     EntityClass findByIdTrans(int id);
 
-   // @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select e from EntityClass e where e.id = ?1 ")
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "0")})
     EntityClass getById(int id);

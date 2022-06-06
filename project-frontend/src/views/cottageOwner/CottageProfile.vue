@@ -547,7 +547,9 @@ export default {
       return data;
    }, 
    makeReservation(){
-
+   const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
       if(this.client.name== null){
         return new Swal({
              title:"Nije uspesno",
@@ -560,10 +562,10 @@ export default {
      this.reservation.additionalServices = this.cottage.additionalServices;
 
       axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkAvailability",  
-      { dateStart: this.reservation.dateStart, timeStart: this.reservation.timeStart, price: this.reservation.price, duration: this.reservation.duration, entityId: this.id, dateEndAction: "", additionalServices:[] }).then( 
+      { dateStart: this.reservation.dateStart, timeStart: this.reservation.timeStart, price: this.reservation.price, duration: this.reservation.duration, entityId: this.id, dateEndAction: "", additionalServices:[] }, {headers}).then( 
            response => { 
              console.log(response)
-              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/makeReservationOwner", this.reservation).then(
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/makeReservationOwner", this.reservation, {headers}).then(
                 res=> {
                   console.log(res);
                return new Swal({
