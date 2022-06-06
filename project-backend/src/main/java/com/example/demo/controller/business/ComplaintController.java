@@ -64,7 +64,6 @@ public class ComplaintController {
                  service.sendEmailWithAttachment(emailWhoSent,
                     content1,
                     "Odgovor na zalbu");
-
                 service.sendEmailWithAttachment(emailWhoReceive,
                 content2,
                 "Odgovor na zalbu");
