@@ -12,9 +12,9 @@ jobs:
       - run:
           name: Build
           command: mvn -B -DskipTests clean package -f ./project-backend/pom.xml
-      - run:
-          name: Test
-          command: mvn test -f ./project-backend/pom.xml
+      #- run:
+      #    name: Test
+      #    command: mvn test -f ./project-backend/pom.xml
       - run:
           name: Analyze on SonarCloud
           command: mvn verify sonar:sonar -Dsonar.projectKey=milicasamardzija_ISA-project -f ./project-backend/pom.xml
