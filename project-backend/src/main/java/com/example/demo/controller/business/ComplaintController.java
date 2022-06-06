@@ -56,6 +56,7 @@ public class ComplaintController {
             System.out.print("da li je ?"+com.getIsAnswered());
             complaints.add(com);
         }
+        
         return  new ResponseEntity<>(complaints, HttpStatus.OK);
     }
 
