@@ -22,6 +22,7 @@ jobs:
 
 orbs:
   heroku: circleci/heroku@1.2.6
+  sonarcloud: sonarsource/sonarcloud@1.1.0
 workflows:
   heroku_deploy:
     jobs:
