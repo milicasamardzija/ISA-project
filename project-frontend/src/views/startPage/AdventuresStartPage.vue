@@ -96,12 +96,12 @@ export default {
 
   methods: {
     async fetchAdventures() {
-      const res = await fetch("http://localhost:8081/api/adventures");
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL + "/api/adventures");
       const data = await res.json();
       return data;
     },
     async search() {
-      const res = await fetch("http://localhost:8081/api/adventures/search", {
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/adventures/search", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

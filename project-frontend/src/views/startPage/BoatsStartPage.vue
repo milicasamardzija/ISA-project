@@ -85,7 +85,7 @@ export default {
 
   methods: {
     async fetchBoats() {
-      const res = await fetch("http://localhost:8081/api/boats");
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/boats");
       const data = await res.json();
       return data;
     },
@@ -93,7 +93,7 @@ export default {
         this.$router.push({ name: 'BoatProfile', params: { id: boat.id}})
     },
     async search() {
-      const res = await fetch("http://localhost:8081/api/boats/search", {
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/boats/search", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

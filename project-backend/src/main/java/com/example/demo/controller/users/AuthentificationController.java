@@ -7,6 +7,8 @@ import com.example.demo.model.users.*;
 import com.example.demo.service.email.EmailService;
 import com.example.demo.service.users.*;
 import com.example.demo.utils.TokenUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,9 @@ public class AuthentificationController {
     private AdministratorService administratorService;
     private InstructorService instructorService;
     private BoatOwnerService boatOwnerService;
+
+    @Autowired
+    Environment env;
 
     public AuthentificationController (AuthenticationManager authenticationManager, UserService userService, TokenUtils tokenUtils, EmailService emailService, ClientRegistrationTokenService clientRegistrationTokenService, ClientService clientService, CottageOwnerService cottageOwnerService, AdministratorService administratorService, InstructorService instructorService,BoatOwnerService boatOwnerService) {
         this.authenticationManager = authenticationManager;
@@ -83,28 +88,33 @@ public class AuthentificationController {
         User existUser = this.userService.findByEmail(userRequest.getEmail());
         User user = null;
        if (existUser != null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        try {
-            if (userRequest.getRole().equals("ROLE_CLIENT")) {
-                user = this.userService.saveClient(userRequest);
-                emailService.sendEmailForUserAuthentication(user);
-            }
-            if (userRequest.getRole().equals("ROLE_ADMIN") || userRequest.getRole().equals("ROLE_PREDEF_ADMIN")) {
-                //user = this.userService.saveAdmin(userRequest);
-                administratorService.saveAdmin(userRequest);
-            }
-            if (userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
-               // user = this.userService.save(userRequest);
-                this.cottageOwnerService.saveCottageOwner(userRequest);
-            }
-            if (userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
-                this.instructorService.saveInstructor(userRequest);
-            }
-            if (userRequest.getRole().equals("ROLE_BOAT_OWNER")) {
-                //user = this.userService.save(userRequest);
-                this.boatOwnerService.saveBoatOwner(userRequest);
-            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+            try {
+                if (userRequest.getRole().equals("ROLE_CLIENT")) {
+                    try {
+                        user = this.userService.saveClient(userRequest);
+                        emailService.sendEmailForUserAuthentication(user);
+                    }catch (Exception e){
+                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    }
+
+                }
+                if (userRequest.getRole().equals("ROLE_ADMIN") || userRequest.getRole().equals("ROLE_PREDEF_ADMIN")) {
+                    //user = this.userService.saveAdmin(userRequest);
+                    administratorService.saveAdmin(userRequest);
+                }
+                if (userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
+                   // user = this.userService.save(userRequest);
+                    this.cottageOwnerService.saveCottageOwner(userRequest);
+                }
+                if (userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
+                    this.instructorService.saveInstructor(userRequest);
+                }
+                if (userRequest.getRole().equals("ROLE_BOAT_OWNER")) {
+                    //user = this.userService.save(userRequest);
+                    this.boatOwnerService.saveBoatOwner(userRequest);
+                }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -117,7 +127,8 @@ public class AuthentificationController {
 
         Client client = this.clientService.save(user);
         this.userService.deleteById(user);
-        URI frontend = new URI("http://localhost:8082/");
+        String path = env.getProperty("frontent.url");
+        URI frontend = new URI(path);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(frontend);
 

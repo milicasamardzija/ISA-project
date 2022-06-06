@@ -5,8 +5,15 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
 
 @Service
 public class EmailService {
@@ -23,12 +30,39 @@ public class EmailService {
     @Async
     public void sendEmailForUserAuthentication(User user) throws MailException, InterruptedException {
         System.out.println("Slanje emaila...");
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
+        //String path = env.getProperty("application.url");
         SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setTo(user.getEmail());
+        /*mail.setTo(user.getEmail());
         mail.setFrom("spring.mail.username");
         mail.setSubject("Confirm your account");
-        mail.setText("To confirm your account, please click here :" + "http://localhost:8081/api/auth/confirm-account?email=" + user.getEmail());
+        mail.setText("To confirm your account, please click here :" + "https://fishingb.herokuapp.com" + "/api/auth/confirm-account?email=" + user.getEmail());*/
+
+        try {
+            System.out.println("OVDE SAM 1");
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setSubject("Confirm your account");
+            mimeMessageHelper.setFrom(new InternetAddress("pera08085@gmail.com", "Fishing booker"));
+            mimeMessageHelper.setTo(user.getEmail());
+            mimeMessageHelper.setText("To confirm your account, please click here :" + "https://fishingb.herokuapp.com" + "/api/auth/confirm-account?email=" + user.getEmail());
+
+            javaMailSender.send(mimeMessageHelper.getMimeMessage());
+            System.out.println("OVDE SAM 2");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            System.out.println(e);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+
+        Properties javaMailProperties = new Properties();
+        javaMailProperties.put("mail.smtp.starttls.enable", "true");
+        javaMailProperties.put("mail.smtp.auth", "true");
+        javaMailProperties.put("mail.transport.protocol", "smtp");
+        javaMailProperties.put("mail.debug", "true");
+
         javaMailSender.send(mail);
 
         System.out.println("Email poslat!");
