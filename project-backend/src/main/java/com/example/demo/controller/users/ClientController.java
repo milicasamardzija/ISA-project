@@ -91,7 +91,7 @@ public class ClientController {
 
         if (user != null){
 
-            if (clientService.addSubsrciptions(id, client) == true){
+            if (clientService.addSubsrciptions(id, client)){
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

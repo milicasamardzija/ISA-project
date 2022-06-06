@@ -72,13 +72,11 @@ public class ClientService {
                 }
             }
         }
-
     }
 
     public List<Client> findClientWithSubscribedEntities(int id) {
         return this.clientRepository.findClientWithSubscribedEntities(id);
     }
-
 
     public Boolean addSubsrciptions(int idEntity, Client client){
         EntityClass entity = this.entityRepository.findById(idEntity);
@@ -123,6 +121,4 @@ public class ClientService {
             this.clientRepository.save(c);
         }
     }
-
-
 }
