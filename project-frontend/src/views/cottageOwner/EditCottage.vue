@@ -274,6 +274,7 @@ import NavBarLogOut from "../../components/cottageOwner/NavBarLogOut.vue";
 import NavBarHomePage from "../../components/cottageOwner/NavBarHomePage.vue";
 import axios from 'axios';
 import {ref} from 'vue';
+import Swal from "sweetalert2";
 import markerIcon from "../../assets/logo.png"
 export default {
   name: "EditCottage",
@@ -356,7 +357,16 @@ const vectors = ref([]);
          };
 
   
-      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/cottages/editCottage", this.cottage,  {headers}).then( response => response.json());
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/cottages/editCottage", this.cottage,  {headers}).then( response => {response.json()}).catch(
+        error =>{
+           console.log(error);
+            return new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nije moguce izmeniti vikendicu jer je rezervacija u toku!'
+           });
+         }
+      );
       this.$router.push({name: "MyCottages"});
       },
 

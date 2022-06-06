@@ -457,6 +457,7 @@ public class ReservationService {
         return isNotReserved;
     }
 
+    @Transactional
     public void saveUnavailablePeriod(UnavailablePeriodDTO unavailable, int type){
         Calendar calStart = Calendar.getInstance();
         calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
@@ -465,16 +466,31 @@ public class ReservationService {
         calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calEnd.setTime(unavailable.getDateTo());
 
-        EntityClass entity = entityService.findById(unavailable.getEntityId()); //eager je, ovako je okej, DA SE POZ ONA
+        EntityClass entity = new EntityClass();
+        try {
+            entity = entityService.getById(unavailable.getEntityId());
+        } catch (PessimisticLockingFailureException e){
+            System.out.println("*************************************");
+            System.out.println(e);
+            System.out.println("*************************************");
+        }
+
         ReservedTerm newTerm = reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false));
         entity.getReservedTerms().add(newTerm);
         entityService.save(entity);
     }
 
+    @Transactional
     public void saveActionBoat(ActionReservationDTO reservation)  {
+        EntityClass entity = new EntityClass();
+        try{
+            entity = this.entityService.getById(reservation.getEntityId()); //koji je entitet, bila je findById
+        } catch (PessimisticLockingFailureException e){
+            System.out.println("*************************************");
+            System.out.println(e);
+            System.out.println("*************************************");
+        }
 
-        EntityClass entity = this.entityService.findById(reservation.getEntityId()); //koji je entitet
-        //getting start and end date, end action date nije ishendlan
         String[] time = reservation.getTimeStart().split(":");
         String hour = time[0];
         String minutes = time[1];
@@ -532,9 +548,18 @@ public class ReservationService {
 
 
     }
-
+    @Transactional
     public void saveActionCottage(ActionReservationDTO reservation)  {
-        EntityClass entity = this.entityService.findById(reservation.getEntityId());
+
+        EntityClass entity = new EntityClass();
+        try{
+            entity = this.entityService.getById(reservation.getEntityId()); //koji je entitet, bila je findById
+        } catch (PessimisticLockingFailureException e){
+            System.out.println("*************************************");
+            System.out.println(e);
+            System.out.println("*************************************");
+        }
+//        EntityClass entity = this.entityService.findById(reservation.getEntityId());
         String[] time = reservation.getTimeStart().split(":");
         String hour = time[0];
         String minutes = time[1];
@@ -614,7 +639,7 @@ public class ReservationService {
                 Calendar calREnd = Calendar.getInstance();
                 calREnd.setTime(r.getTerm().getDateEnd());
                 if( today.getTime().after(calRStart.getTime()) && today.getTime().before(calREnd.getTime()) ){
-                    Client c = findClientForReservation(r.getId());
+                    Client c = reservationRepository.findClientFromReservation(r.getId());
                     client.setEmail(c.getEmail());
                     client.setName(c.getName());
                     client.setId(c.getId());
@@ -626,8 +651,18 @@ public class ReservationService {
     }
 
 
+    @Transactional
     public  void saveReservationOwner(ReservationNewOwnerDTO reservation) throws Exception {
-        EntityClass entity = this.entityService.findOne(reservation.getEntityId()); //koji je entitet
+
+        EntityClass entity = new EntityClass();
+        try{
+            entity = this.entityService.getById(reservation.getEntityId()); //koji je entitet
+        } catch (PessimisticLockingFailureException e){
+            System.out.println("*************************************");
+            System.out.println(e);
+            System.out.println("*************************************");
+        }
+
         Client client = this.clientService.find(reservation.getClientId());
         User user = this.userRepository.findById(reservation.getClientId());
 

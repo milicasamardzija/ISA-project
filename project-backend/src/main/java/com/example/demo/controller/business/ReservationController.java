@@ -141,8 +141,8 @@ public class ReservationController {
         return  new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('CLIENT')")
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/myRegularReservation")
     public ResponseEntity<List<ReservationnDTO>> getMyRegularReservation(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -838,17 +838,30 @@ public class ReservationController {
     @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @PostMapping("/actionCottage")
     public ResponseEntity<HttpStatus> createActionReservationCottage(@RequestBody ActionReservationDTO action)  {
-        this.reservationService.saveActionCottage(action);
+       try{
+           this.reservationService.saveActionCottage(action);
+       }catch(Exception e){
+           System.out.print(e);
+           return  new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+       }
 
         return  new ResponseEntity<>( HttpStatus.OK);
     }
+
     @PreAuthorize("hasAnyRole( 'BOAT_OWNER')")
     @PostMapping("/actionBoat")
     public ResponseEntity<HttpStatus> createActionReservationBoat(@RequestBody ActionReservationDTO action)  {
-        this.reservationService.saveActionBoat(action);
-
-        return  new ResponseEntity<>( HttpStatus.OK);
+        try{
+            this.reservationService.saveActionBoat(action);
+        }
+      catch (Exception e){
+            System.out.print(e);
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      }
+          return  new ResponseEntity<>( HttpStatus.OK);
     }
+
+
     @PreAuthorize("hasAnyRole( 'BOAT_OWNER','COTTAGE_OWNER')")
     @PostMapping("/checkIfReservationExist")
     public ResponseEntity<HttpStatus> checkIfReservationExist(@RequestBody UnavailablePeriodDTO action){
@@ -858,14 +871,19 @@ public class ReservationController {
             return  new ResponseEntity<>( HttpStatus.NOT_FOUND);
         }
     }
-    @PreAuthorize("hasAnyRole( 'COTTAGE_OWNER')")
+
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @PostMapping("/unavailablePeriodCottageOwner")
     public ResponseEntity<HttpStatus> unavailablePeriodDefineCO(@RequestBody UnavailablePeriodDTO action){
 
-        this.reservationService.saveUnavailablePeriod(action, 1);
-            return  new ResponseEntity<>( HttpStatus.OK);
-
+        try {
+            this.reservationService.saveUnavailablePeriod(action, 1);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @PreAuthorize("hasAnyRole( 'BOAT_OWNER')")
     @PostMapping("/unavailablePeriodBoatOwner")
     public ResponseEntity<HttpStatus> unavailablePeriodDefineBO(@RequestBody UnavailablePeriodDTO action){
@@ -884,8 +902,17 @@ public class ReservationController {
     @PreAuthorize("hasAnyRole('COTTAGE_OWNER','BOAT_OWNER')")
     @PostMapping("/makeReservationOwner")
     public  ResponseEntity<HttpStatus> makeReservationOwner(@RequestBody ReservationNewOwnerDTO res) throws Exception {
-        this.reservationService.saveReservationOwner(res);
+
+        try{
+            this.reservationService.saveReservationOwner(res);
+        }
+        catch (Exception e){
+            System.out.print(e);
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return  new ResponseEntity<>( HttpStatus.OK);
+
+
     }
 
 

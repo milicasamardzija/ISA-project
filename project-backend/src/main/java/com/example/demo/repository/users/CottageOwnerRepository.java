@@ -11,6 +11,7 @@ public  interface CottageOwnerRepository extends JpaRepository<CottageOwner, Int
 
 
     CottageOwner findByEmail(String email);
+
     @Query("select co from Cottage co left join fetch co.cottageOwner where co.id = ?1")
     Cottage fetchCottageOwnerByCottage(int id);
 
