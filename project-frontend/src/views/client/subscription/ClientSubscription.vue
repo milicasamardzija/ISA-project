@@ -13,8 +13,10 @@
         <div class="col-with-picture">
           <div>
             <img
-              src="../../../assets/fishingStart.jpg"
-              style="height: 250px !important; width: 300px !important"
+              :src="subscription.images[0]"
+              class="rounded img-thumbnail img-fluid"
+              alt="Responsive image"
+              style="margin-top: 1rem; max-height: 300px !important; max-width: 320px !important"
             />
           </div>
         </div>

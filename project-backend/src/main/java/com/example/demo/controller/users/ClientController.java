@@ -90,10 +90,14 @@ public class ClientController {
         Client client = this.clientService.findById(user.getEmail());
 
         if (user != null){
-            clientService.addSubsrciptions(id, client);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
 
+            if (clientService.addSubsrciptions(id, client) == true){
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+        }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
