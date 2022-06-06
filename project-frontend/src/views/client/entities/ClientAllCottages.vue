@@ -117,9 +117,12 @@
       <div class="row-boats" v-for="(cottage, index) in cottages" :key="index">
         <div class="col-with-picture" >
           <div v-if="cottage.images.length != 0">
-            <img
-              :src="getImgUrl(cottage.images[0].filePath)"
-              style="height: 250px !important; width: 300px !important"  @click="goToCottage()"
+             <img
+              :src="cottage.images[0]"
+              class="rounded img-thumbnail img-fluid"
+              alt="Responsive image"
+              style="margin-top: 1rem; max-height: 300px !important; max-width: 320px !important"
+               @click="showCottage(cottage)"
             />
           </div>
         </div>

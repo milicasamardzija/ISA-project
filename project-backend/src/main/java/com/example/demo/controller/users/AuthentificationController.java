@@ -98,7 +98,6 @@ public class AuthentificationController {
                     }catch (Exception e){
                         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                     }
-
                 }
                 if (userRequest.getRole().equals("ROLE_ADMIN") || userRequest.getRole().equals("ROLE_PREDEF_ADMIN")) {
                     //user = this.userService.saveAdmin(userRequest);
@@ -127,8 +126,7 @@ public class AuthentificationController {
 
         Client client = this.clientService.save(user);
         this.userService.deleteById(user);
-        String path = env.getProperty("frontent.url");
-        URI frontend = new URI(path);
+        URI frontend = new URI("http://localhost:8082/");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(frontend);
 
