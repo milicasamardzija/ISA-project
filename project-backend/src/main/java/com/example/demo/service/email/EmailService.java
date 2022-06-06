@@ -29,7 +29,7 @@ public class EmailService {
     }
 
     @Async
-    public void sendEmailForUserAuthentication(Client user) throws MailException, InterruptedException {
+    public void sendEmailForUserAuthentication(User user) throws MailException, InterruptedException {
         System.out.println("Slanje emaila...");
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 

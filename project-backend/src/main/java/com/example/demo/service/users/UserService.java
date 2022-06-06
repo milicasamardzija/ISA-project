@@ -217,29 +217,21 @@ public class UserService {
         return  users;
     }
 
-    @Transactional(readOnly = false)
-    public Client saveClient(UserRequest userRequest){
-        Client u = new Client();
+    public User saveClient(UserRequest userRequest){
+        User u = new User();
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         u.setName(userRequest.getFirstname());
         u.setSurname(userRequest.getLastname());
         u.setTelephone(userRequest.getTelephone());
-        Role r = this.roleService.findByName("ROLE_CLIENT");
-        if (r==null) {
-            Role newRole = new Role(userRequest.getRole());
-            this.roleService.save(newRole);
-            u.setRole(newRole);
-        }else {
-            u.setRole(r);
-        }
+        Role r = new Role(userRequest.getRole());
+        this.roleService.save(r);
+        u.setRole(r);
         u.setEmail(userRequest.getEmail());
         u.setEnabled(false);
         u.setGrade(0);
-        u.setPenals(0);
         u.setPoents(0);
         u.setAddress(addressService.save(userRequest.getAddress()));
-        System.out.print("burek");
-        this.clientRepository.save(u);
+        this.userRepository.save(u);
         return u;
     }
 

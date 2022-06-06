@@ -304,11 +304,14 @@ export default {
       )
    },
       unavailablePeriodDefine() {
+        const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
      this.unavailablePeriod.entityId =this.selectedId;
-       axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkIfReservationExist", this.unavailablePeriod).then( 
+       axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkIfReservationExist", this.unavailablePeriod, {headers}).then( 
            response => { 
              console.log(response)
-              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/unavailablePeriodBoatOwner", this.unavailablePeriod).then(
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/unavailablePeriodBoatOwner", this.unavailablePeriod, {headers}).then(
                  response => { 
              console.log(response)
               return new Swal({
@@ -323,7 +326,7 @@ export default {
             return new Swal({
              title:"Nije uspesno",
              type: "warning",
-             text:'Greska pri cuvanju!'
+             text:'Vrsi se rezervacije u ovom trenutku!Pokusajte ponovo za par minuta!'
            });
          }
               );
