@@ -91,7 +91,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-     axios.get("http://localhost:8081/api/client/subscribedEntitites" ,{headers})
+     axios.get(process.env.VUE_APP_BACKEND_URL+ "/api/client/subscribedEntitites" ,{headers})
       .then (response => { 
         console.log(response);
         this.subscriptions = response.data;
@@ -105,7 +105,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.delete("http://localhost:8081/api/client/" + this.selectedId,{headers})
+      axios.delete(process.env.VUE_APP_BACKEND_URL+ "/api/client/" + this.selectedId,{headers})
       .then (response => { 
         console.log(response);
         this.subscriptions =  this.fetchSubscriptions();

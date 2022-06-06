@@ -397,7 +397,7 @@ export default {
        const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
-        axios.post("http://localhost:8081/api/reservation/getDateEnd" ,{
+        axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/reservation/getDateEnd" ,{
          date: this.date,
          time: this.time,
          number: this.number,
@@ -412,7 +412,7 @@ export default {
        const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
-        axios.get("http://localhost:8081/api/cottages/getMaxPeople/" + this.selectedEntity.id ,{headers})
+        axios.get(process.env.VUE_APP_BACKEND_URL+ "/api/cottages/getMaxPeople/" + this.selectedEntity.id ,{headers})
         .then (response => { 
           console.log(response.data);
           this.maxPeople = response.data;
@@ -439,7 +439,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
-        axios.post("http://localhost:8081/api/reservation/checkDate" ,{
+        axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/reservation/checkDate" ,{
          date: this.date,
          time: this.time,
          number: this.number,
@@ -464,7 +464,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
-        axios.post("http://localhost:8081/api/reservation/totalPrice" ,{
+        axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/reservation/totalPrice" ,{
           entityPrice: this.selectedEntity.price,
           services: this.additionalServicesReservation,
         },{headers})
@@ -477,7 +477,7 @@ export default {
       this.selectedEntity = entity;
     },
     async fetchCottages() {
-      const res = await fetch("http://localhost:8081/api/cottages");
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+ "/api/cottages");
       const data = await res.json();
       return data;
     },
@@ -505,7 +505,7 @@ export default {
         const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.post("http://localhost:8081/api/cottages/reservationSearch" ,{
+      axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/cottages/reservationSearch" ,{
           date: this.date,
           time: this.time,
           city: this.city,
@@ -535,7 +535,7 @@ export default {
         const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
         };
-        axios.post("http://localhost:8081/api/reservation" ,{
+        axios.post(process.env.VUE_APP_BACKEND_URL+ "/api/reservation" ,{
           dateStart: this.date,
           timeStart: this.time,
           price: this.price,
@@ -660,7 +660,7 @@ export default {
         "Content-type": "application/json",
         "Authorization": "Bearer " + localStorage.getItem("token"),
       };
-      axios.get("http://localhost:8081/api/additionalService/services/" + this.selectedEntity.id ,{headers})
+      axios.get(process.env.VUE_APP_BACKEND_URL+ "/api/additionalService/services/" + this.selectedEntity.id ,{headers})
       .then (response => { 
         console.log(response.data);
         this.additionalServices = response.data;
