@@ -94,8 +94,8 @@ public class AuthentificationController {
             try {
                 if (userRequest.getRole().equals("ROLE_CLIENT")) {
                     try {
-                        user = this.userService.saveClient(userRequest);
-                        emailService.sendEmailForUserAuthentication(user);
+                        client = this.userService.saveClient(userRequest);
+                        emailService.sendEmailForUserAuthentication(client);
                     }catch (Exception e){
                         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                     }
