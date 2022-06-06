@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "api/freeTerms")
@@ -82,4 +83,5 @@ public class FreeTermsController {
             System.out.print("NULL je");
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

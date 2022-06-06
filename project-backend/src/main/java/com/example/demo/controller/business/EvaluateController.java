@@ -34,9 +34,21 @@ public class EvaluateController {
         System.out.print("Here i am");
         List<Evaluate> allEvaluates = evaluateService.findAll();
         List<EvaluateDTO> evaluates = new ArrayList<>();
-        for(Evaluate e : allEvaluates ) {
-            if (e.getAccepted() == null) {
-                EvaluateDTO evaluateDTO = new EvaluateDTO(e);
+        for(Evaluate c : allEvaluates ) {
+            if (c.getAccepted() == null) {
+                EvaluateDTO evaluateDTO = new EvaluateDTO();
+                evaluateDTO.setId(c.getId());
+                evaluateDTO.setContentEntity(c.getContentEntity());
+                evaluateDTO.setContentUser(c.getContentUser());
+                evaluateDTO.setGradeForUser(c.getGradeForUser());
+                evaluateDTO.setGradeForEntity(c.getGradeForEntity());
+                evaluateDTO.setLastnameOfuserWhoSendsComplaint(c.getUserWhoSendsComplaint().getSurname());
+                evaluateDTO.setNameOfuserWhoSendsComplaint(c.getUserWhoSendsComplaint().getName());
+                evaluateDTO.setName(c.getUser().getName());
+                evaluateDTO.setLastname(c.getUser().getSurname());
+                evaluateDTO.setMail(c.getUser().getEmail());
+                evaluateDTO.setMailOfuserWhoSendsComplaint(c.getUserWhoSendsComplaint().getEmail());
+                evaluateDTO.setAccepted(c.getAccepted());
                 evaluates.add(evaluateDTO);
             }
         }

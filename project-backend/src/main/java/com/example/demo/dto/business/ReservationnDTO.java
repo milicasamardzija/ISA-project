@@ -1,15 +1,18 @@
 package com.example.demo.dto.business;
 
 import com.example.demo.dto.entities.EntityDTO;
-import com.example.demo.dto.enums.EntityType;
+import com.example.demo.enums.EntityType;
 import com.example.demo.model.business.Reservation;
+
+import java.util.Date;
 
 public class ReservationnDTO {
 
         private int id;
 
         private ReservedTermDTO term;
-
+    private Date dateStart1;
+    private Date dateEnd1;
         private double price;
 
         private EntityType entityType;
@@ -22,6 +25,22 @@ public class ReservationnDTO {
         private String dateStart;
         private String dateEnd;
         private String clientID;
+
+    public Date getDateStart1() {
+        return dateStart1;
+    }
+
+    public void setDateStart1(Date dateStart1) {
+        this.dateStart1 = dateStart1;
+    }
+
+    public Date getDateEnd1() {
+        return dateEnd1;
+    }
+
+    public void setDateEnd1(Date dateEnd1) {
+        this.dateEnd1 = dateEnd1;
+    }
 
     public String getClientID() {
         return clientID;
@@ -103,6 +122,7 @@ public class ReservationnDTO {
             this.term = term;
         }
 
+        public ReservationnDTO() {}
         public ReservationnDTO(Reservation reservation) {
             this.id = reservation.getId();
             this.term = new ReservedTermDTO(reservation.getTerm().getDateStart(), reservation.getTerm().getDateEnd() );
@@ -112,10 +132,9 @@ public class ReservationnDTO {
             this.duration = reservation.getDuration();
             this.dateStart = reservation.getTerm().getDateStart().toString();
             this.dateEnd = reservation.getTerm().getDateEnd().toString();
-            this.clientID = String.valueOf(reservation.getClient().getId());
-        }
-        public ReservationnDTO() {
-
+            if (reservation.getClient() !=null) {
+                this.clientID = String.valueOf(reservation.getClient().getId());
+            }
         }
 
 

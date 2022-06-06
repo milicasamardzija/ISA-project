@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Entity
 public class ReservedTerm {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

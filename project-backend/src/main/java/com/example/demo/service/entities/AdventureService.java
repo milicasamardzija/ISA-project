@@ -1,16 +1,13 @@
 package com.example.demo.service.entities;
 
-import com.example.demo.dto.entities.AdventureDTO;
 import com.example.demo.dto.entities.AdventureHelpDTO;
 import com.example.demo.dto.entities.SearchDTO;
-import com.example.demo.dto.enums.CancelationType;
+import com.example.demo.enums.CancelationType;
 import com.example.demo.model.business.Reservation;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.dto.business.ReservationSearchDTO;
 import com.example.demo.model.business.ReservedTerm;
-import com.example.demo.model.entities.Adventure;
-import com.example.demo.model.entities.Boat;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.business.ReservationRepository;
@@ -157,6 +154,7 @@ public class AdventureService {
         a.setPromoDescription(adventureDTO.getPromoDescription());
         a.setFishingEquipment(adventureDTO.getFishingEquipment());
         a.setRules(adventureDTO.getRules());
+        a.setImages(adventureDTO.getImages());
         a.setDescription(adventureDTO.getPromoDescription());
         Address address = new Address(adventureDTO.getAddress().getCountry(),adventureDTO.getAddress().getCity(),adventureDTO.getAddress().getStreet(),adventureDTO.getAddress().getNumber(),0,0);
         this.addressService.save(address);
@@ -175,9 +173,12 @@ public class AdventureService {
         for (Reservation r : reservations) {
             EntityClass e = this.entityService.findById(r.getEntity().getId());
             System.out.print("NAZIVI SU"+ e.getName());
+            System.out.print("NAZIV je"+nameOfAdventure);
             if (e.getName().contains(nameOfAdventure)) {
                 System.out.print("HEJ TI");
                 return false;
+            }else {
+                return true;
             }
         }
         return true;
@@ -272,4 +273,7 @@ public class AdventureService {
         return adventure.getMaxNumberOfPeople();
     }
 
+    public Adventure findById(int id) {
+        return this.adventureRepository.findById(id);
+    }
 }

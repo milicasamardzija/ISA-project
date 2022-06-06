@@ -48,6 +48,11 @@
       </li>
       <li class="nav-item">
         <button type="button" class="btn btn-success">
+          <router-link to="/Requests">Zahtevi za izvestaj/komentar</router-link>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button type="button" class="btn btn-success">
           <router-link to="/myProfile">Profile</router-link>
         </button>
       </li>

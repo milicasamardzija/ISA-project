@@ -12,4 +12,7 @@ public interface AdventureRepository extends JpaRepository<Adventure,Integer> {
     Adventure fetchInstructor(int id);
 
     Adventure findByNameOfAdventure(String namee);
+
+
+    Adventure findById(int id);
 }

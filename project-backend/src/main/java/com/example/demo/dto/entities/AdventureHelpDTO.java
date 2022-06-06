@@ -1,6 +1,6 @@
 package com.example.demo.dto.entities;
 
-import com.example.demo.dto.enums.CancelationType;
+import com.example.demo.enums.CancelationType;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.entities.Adventure;
 import com.example.demo.model.entities.Image;

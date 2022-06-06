@@ -17,10 +17,10 @@
 
             <th>Sadrzaj zalbe za entitet</th>
             <th>Sadrzaj zalbe za osobu</th>
+            <th>Ocena za entitet</th>
+            <th>Ocena za osobu</th>
             <th>Korisnik koji salje reviziju</th>
             <th>Korisnik za koga je revizija</th>
-            <th></th>
-            <th></th>     
             <th></th>
             <th></th>
             <th></th>    
@@ -33,10 +33,10 @@
                   <td> {{evaluate.contentUser}}</td>
                   <td> {{evaluate.gradeForUser}}</td>
                   <td> {{evaluate.gradeForEntity}}</td> 
-                  <td>{{evaluate.userWhoSendsComplaint.name}} {{evaluate.userWhoSendsComplaint.surname}}</td>
-                  <td>{{evaluate.user.name}} {{evaluate.user.surname}}</td>
-                  <td v-if="evaluate.accepted === null"><button class="btn btn-success btn-block" @click="Accept(evaluate.id,evaluate.user.email)">Odobri</button></td>
-                  <td v-if="evaluate.accepted === null"><button class="btn btn-success btn-block" @click="Reject(evaluate.id,evaluate.user.email)">Odbij</button></td>
+                  <td>{{evaluate.nameOfuserWhoSendsComplaint}} {{evaluate.lastnameOfuserWhoSendsComplaint}}</td>
+                  <td>{{evaluate.name}} {{evaluate.lastname}}</td>
+                  <td v-if="evaluate.accepted === null"><button class="btn btn-success btn-block" @click="Accept(evaluate.id,evaluate.mail)">Odobri</button></td>
+                  <td v-if="evaluate.accepted === null"><button class="btn btn-success btn-block" @click="Reject(evaluate.id,evaluate.mail)">Odbij</button></td>
                   <td ></td>
            </tr> 
 
@@ -72,7 +72,7 @@ export default ({
             content1: "",
             content2: "",
             evaluates: "",
-            evaluate: {id:0, accepted: null, contentEntity:"",contentUser:"", gradeForUser: 0, gradeForEntity:0,      
+            evaluate: {id:0,mailOfuserWhoSendsComplaint:"", nameOfuserWhoSendsComplaint:"",lastnameOfuserWhoSendsComplaint:"",mail:"",name:"",lastname:"", accepted: null, contentEntity:"",contentUser:"", gradeForUser: 0, gradeForEntity:0,      
             user: { id: 0, name: "", surname: "",email:"", address: { id: "", street:"", number: 0, city: "", country: ""}, reasonForRegistration:"", telephone: ""},
             userWhoSendsComplaint: { id: 0, name: "",email:"", surname: "", address: { id: "", street:"", number: 0, city: "", country: ""}, reasonForRegistration:"", telephone: ""}}
         }

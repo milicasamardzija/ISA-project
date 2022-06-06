@@ -20,6 +20,8 @@
             <th>Korisnik koji salje prijavu</th>
             <th>Korisnik za koga je prijava</th>
             <th></th>
+            <th></th>    
+                        <th></th>
             <th></th>          
         </tr>
     </thead>
@@ -29,9 +31,9 @@
                   <td>{{complaint.complaintType}} </td>
                   <td> {{complaint.contentEntity}}</td>
                   <td> {{complaint.contentUser}}</td>
-                  <td>{{complaint.userWhoSendsComplaint.name}} {{complaint.userWhoSendsComplaint.surname}}</td>
-                  <td>{{complaint.user.name}} {{complaint.user.surname}}</td>
-                  <td  v-if="complaint.isAnswered === false"><button class="btn btn-success btn-block" @click="SaveEmails(complaint.userWhoSendsComplaint.email,complaint.user.email,complaint.id)">Odgovori na zalbu</button></td>
+                  <td>{{complaint.nameOfuserWhoSendsComplaint}} {{complaint.lastnameOfuserWhoSendsComplaint}}</td>
+                  <td>{{complaint.name}} {{complaint.surname}}</td>
+                  <td  v-if="complaint.isAnswered === false"><button class="btn btn-success btn-block" @click="SaveEmails(complaint.mailOfuserWhoSendsComplaint,complaint.mail,complaint.id)">Odgovori na zalbu</button></td>
                   <td ></td>
            </tr> 
 
@@ -94,10 +96,10 @@ export default ({
             content1: "",
             content2: "",
             complaints: "",
-            complaint: {id:0, isAnswered: true, contentEntity:"",contentUser:"", complaintType: "",      
+            complaint: {id:0,mailOfuserWhoSendsComplaint:"", nameOfuserWhoSendsComplaint:"",lastnameOfuserWhoSendsComplaint:"",mail:"",name:"",lastname:"",isAnswered: true, contentEntity:"",contentUser:"", complaintType: "",      
             user: { id: 0, name: "", surname: "",email:"", address: { id: "", street:"", number: 0, city: "", country: ""}, reasonForRegistration:"", telephone: ""},
             userWhoSendsComplaint: { id: 0, name: "",email:"", surname: "", address: { id: "", street:"", number: 0, city: "", country: ""}, reasonForRegistration:"", telephone: ""}}
-        }
+    }
     },
     methods: {
         async getComplaints() {

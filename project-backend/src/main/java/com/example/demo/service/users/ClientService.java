@@ -1,11 +1,16 @@
 package com.example.demo.service.users;
 
+import com.example.demo.dto.users.UserRequest;
+import com.example.demo.enums.LoyalityType;
+import com.example.demo.enums.Role;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import com.example.demo.repository.entities.EntityRepository;
 import com.example.demo.repository.users.ClientRepository;
+import com.example.demo.service.entities.AddressService;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +23,16 @@ public class ClientService {
 
     private ClientRepository clientRepository;
     private EntityRepository entityRepository;
+    private PasswordEncoder passwordEncoder;
+    private RoleService roleService;
+    private AddressService addressService;
 
-    public ClientService (ClientRepository clientRepository, EntityRepository entityRepository){
+    public ClientService (RoleService roleService,AddressService addressService, PasswordEncoder passwordEncoder,ClientRepository clientRepository, EntityRepository entityRepository){
+        this.addressService=addressService;
+        this.roleService = roleService;
         this.clientRepository = clientRepository;
         this.entityRepository = entityRepository;
+        this.passwordEncoder =passwordEncoder;
     }
 
     @Transactional
@@ -118,4 +129,49 @@ public class ClientService {
     }
 
 
+    public void saveClient(UserRequest userRequest) {
+        System.out.print("burek1");
+        Client u = new Client();
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        u.setName(userRequest.getFirstname());
+        u.setSurname(userRequest.getLastname());
+        u.setTelephone(userRequest.getTelephone());
+        u.setLoyalityType(LoyalityType.REGULAR);
+        u.setPoents(0);
+        u.setIncome(0.0);
+        System.out.print("burek2");
+        //Role r = this.roleService.findByName("ROLE_CLIENT");
+       // System.out.print("rola je"+r.getName());
+        //if (r==null) {
+//            Role newRole = new Role(userRequest.getRole());
+//            this.roleService.save(newRole);
+//            u.setRole(newRole);
+        //}else {
+        //    u.setRole(r);
+       // }
+        Role r = this.roleService.findByName("ROLE_CLIENT");
+        if (r==null) {
+            Role newRole = new Role(userRequest.getRole());
+            this.roleService.save(newRole);
+            u.setRole(newRole);
+        }else {
+            u.setRole(r);
+        }
+
+        System.out.print("burek3");
+        u.setEmail(userRequest.getEmail());
+        u.setEnabled(false);
+        u.setGrade(0);
+        u.setPenals(0);
+        u.setPoents(0);
+        System.out.print("burek4");
+        u.setAddress(addressService.save(userRequest.getAddress()));
+        System.out.print("burek5");
+        this.clientRepository.save(u);
+
+    }
+
+    public List<Client> getAll() {
+        return this.clientRepository.findAll();
+    }
 }

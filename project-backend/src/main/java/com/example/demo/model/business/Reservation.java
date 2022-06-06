@@ -1,6 +1,6 @@
 package com.example.demo.model.business;
 
-import com.example.demo.dto.enums.EntityType;
+import com.example.demo.enums.EntityType;
 import com.example.demo.model.entities.EntityClass;
 import com.example.demo.model.users.Client;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,7 +15,7 @@ import java.util.List;
 public class Reservation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
     @Column(name="id", unique=true, nullable=false)
     private int id;
 

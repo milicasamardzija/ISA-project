@@ -5,7 +5,7 @@
     <NavBarFishingInstructor />
 </div>
 <div>
-    <h1>Dodavanje akcije</h1>
+    <h1>Dodavanje reservacije</h1>
           <table>
         <tr>
             <td><label ><span class="glyphicon glyphicon-eye-open"></span>Datum pocetka</label></td>
@@ -16,17 +16,23 @@
         <tr>
             <td><label for="psw"><span class="glyphicon glyphicon-eye-open"></span>Vreme kraja </label></td>
             <td> <input class="form-control" id="psw" type="time" v-model="timeEnd"/></td></tr>
+ 
+ 
   
+          <tr>
+            <td><label for="psw"><span class="glyphicon glyphicon-eye-open"></span>Izaberi klijenta </label></td>
+            <td>   <select class="form-control" name="template" v-model="selectedClient">
+                      <option v-for="(client , index) in clients" v-bind:key="index"  >
+                            {{client.email}}
+                      </option>
+                  </select>
+                  </td></tr>
+
         <tr>
           <td><label ><span class="glyphicon glyphicon-eye-open"></span>Cena</label></td>
           <td> <input class="form-control" id="psw" type="number" v-model="price"/></td></tr>
-        <tr>
-            <td><label ><span class="glyphicon glyphicon-eye-open"></span>Validno od</label></td>
-            <td> <input class="form-control" id="psw" type="date" v-model="validFrom"/></td></tr>
-        <tr>
-            <td><label for="psw"><span class="glyphicon glyphicon-eye-open"></span>Validno do </label></td>
-            <td> <input class="form-control" id="psw" type="date" v-model="validTo"/></td></tr>
-        <tr><td><button type="submit" class="btn btn-success btn-block" style="width:100px;margin-top:20px" @click="AddAction()">
+
+        <tr><td><button type="submit" class="btn btn-success btn-block" style="width:100px;margin-top:20px" @click="CreateReservation()">
                 <span></span> Potvrdi
               </button></td></tr>
           </table>
@@ -53,6 +59,8 @@
                 </div>
               </div> 
 </div>
+
+
 </template>
 
 <script>
@@ -61,6 +69,7 @@ import HeaderStartPage from "../../components/startPage/HeaderStartPage";
 import NavBarFishingInstructor from "../../components/fishingInstructor/NavBarFishingInstructor.vue";
 import NavBarLogOut from "../../components/fishingInstructor/NavbarLogOut.vue";
 import axios from "axios";
+import Swal from 'sweetalert2';
 export default ({
     name: "CreateAction",
   components: {
@@ -85,10 +94,10 @@ export default ({
             dateStart:"",
             dateEnd:"",
             price:0,
-            validFrom:"",
-            validTo:"",
             additionalServices:"",
-            additionalService: {name:"", price:0.0}
+            additionalService: {name:"", price:0.0},
+            selectedClient:"",
+            selected:""
             }
     },
     methods: {
@@ -124,30 +133,47 @@ export default ({
       return data;
 
     },
-    async AddAction() {
+
+    async CreateReservation() {
+      console.log(this.selectedClient.name)
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      axios.post("http://localhost:8081/api/reservation/addAction",{ 
+      axios.post("http://localhost:8081/api/reservation/addReservationOfInstructor",{ 
         dateStart : this.dateStart, 
         dateEnd : this.dateStart,
         timeStart : this.timeStart, 
         timeEnd : this.timeEnd,
         price : this.price,
         name: this.nameOfAdventure,
-        validFrom: this.validFrom,
-        validTo: this.validTo,
         additionalServices: this.List,
-        adventure: this.adventure
+        adventure: this.adventure,
+        selectedClient: this.selectedClient
        },{
         headers
       })
       .then (response => { 
         console.log(response);
        // this.$router.push({ name: "" });
-      }) 
+      })       .catch(function (error) {
+         console.log(error.response.status)
+         console.log(error.response.status)
+          if (error.response.status == 400) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nemoguce je rezervisati ovaj entitet u ovom periodu! Pokusajte druge datume',
+           });
+          }
+          else if (error.response.status == 500) {
+            new Swal({
+             title:"Nije uspesno",
+             type: "warning",
+             text:'Nemoguce je rezervisati ovaj entitet u ovom periodu! Pokusajte druge datume',
+           });
+          }
+        });
 
-        alert("Dodali ste admina!")
      // this.$router.go(0);
     }
     },

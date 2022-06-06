@@ -87,34 +87,32 @@ public class AuthentificationController {
     public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) throws InterruptedException {
         User existUser = this.userService.findByEmail(userRequest.getEmail());
         User user = null;
+        Client client = null;
        if (existUser != null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-       }
-            try {
-                if (userRequest.getRole().equals("ROLE_CLIENT")) {
-                    try {
-                        user = this.userService.saveClient(userRequest);
-                        emailService.sendEmailForUserAuthentication(user);
-                    }catch (Exception e){
-                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-                    }
-
-                }
-                if (userRequest.getRole().equals("ROLE_ADMIN") || userRequest.getRole().equals("ROLE_PREDEF_ADMIN")) {
-                    //user = this.userService.saveAdmin(userRequest);
-                    administratorService.saveAdmin(userRequest);
-                }
-                if (userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
-                   // user = this.userService.save(userRequest);
-                    this.cottageOwnerService.saveCottageOwner(userRequest);
-                }
-                if (userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
-                    this.instructorService.saveInstructor(userRequest);
-                }
-                if (userRequest.getRole().equals("ROLE_BOAT_OWNER")) {
-                    //user = this.userService.save(userRequest);
-                    this.boatOwnerService.saveBoatOwner(userRequest);
-                }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            if (userRequest.getRole().equals("ROLE_CLIENT")) {
+                System.out.print("HHHA");
+                this.clientService.saveClient(userRequest);
+                System.out.print("HHHAqqq");
+                //emailService.sendEmailForUserAuthentication(client);
+            }
+            if (userRequest.getRole().equals("ROLE_ADMIN") || userRequest.getRole().equals("ROLE_PREDEF_ADMIN")) {
+                //user = this.userService.saveAdmin(userRequest);
+                administratorService.saveAdmin(userRequest);
+            }
+            if (userRequest.getRole().equals("ROLE_COTTAGE_OWNER")) {
+               // user = this.userService.save(userRequest);
+                this.cottageOwnerService.saveCottageOwner(userRequest);
+            }
+            if (userRequest.getRole().equals("ROLE_INSTRUCTOR")) {
+                this.instructorService.saveInstructor(userRequest);
+            }
+            if (userRequest.getRole().equals("ROLE_BOAT_OWNER")) {
+                //user = this.userService.save(userRequest);
+                this.boatOwnerService.saveBoatOwner(userRequest);
+            }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

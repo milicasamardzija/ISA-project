@@ -8,12 +8,48 @@ import java.util.List;
 public class ActionRequestDTO {
     private String dateStart;
     private String dateEnd;
+    private String timeStart;
+    private String timeEnd;
     private int price;
+    private double duration;
     private String name;
     private String validFrom;
     private String validTo;
     private List<AdditionalServiceDTO> additionalServices;
+    private String selectedClient;
 
+    public String getSelectedClient() {
+        return selectedClient;
+    }
+
+    public void setSelectedClient(String selectedClient) {
+        this.selectedClient = selectedClient;
+    }
+
+    public double getDuration() {
+        return duration;
+    }
+
+    public String getTimeStart() {
+
+        return timeStart;
+    }
+
+    public void setTimeStart(String timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public String getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(String timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
 
     public List<AdditionalServiceDTO> getAdditionalServices() {
         return additionalServices;

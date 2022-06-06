@@ -1,12 +1,11 @@
 package com.example.demo.service.users;
 
-import com.example.demo.dto.enums.Role;
+import com.example.demo.enums.LoyalityType;
+import com.example.demo.enums.Role;
 import com.example.demo.dto.users.UserRequest;
 import com.example.demo.model.entities.Address;
 import com.example.demo.model.users.Administrator;
-import com.example.demo.model.users.CottageOwner;
 import com.example.demo.repository.users.AdministratorRepository;
-import com.example.demo.repository.users.CottageOwnerRepository;
 import com.example.demo.service.entities.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -81,22 +80,23 @@ public class AdministratorService {
         a.setMust_change_password(true);
         a.setEmail(userRequest.getEmail());
         a.setTelephone(userRequest.getTelephone());
-        Address address = new Address(userRequest.getAddress().getCountry(),userRequest.getAddress().getCity(),userRequest.getAddress().getStreet(),userRequest.getAddress().getNumber(),0,0);
-
-        a.setAddress(addressService.save(address));
+        a.setAddress(addressService.save(userRequest.getAddress()));
+        a.setLoyalityType(LoyalityType.REGULAR);
+        a.setPoents(0);
+        a.setIncome(0.0);
         a.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-
         Role r = this.roleService.findByName("ROLE_ADMIN");
-        if (r==null) {
-            r = this.roleService.findByName("ROLE_PREDEF_ADMIN");
-            if (r==null) {
-                Role newRole = new Role(userRequest.getRole());
-                this.roleService.save(newRole);
-                a.setRole(newRole);
+            if (r == null) {
+                r = this.roleService.findByName("ROLE_PREDEF_ADMIN");
+                if (r == null) {
+                    Role newRole = new Role(userRequest.getRole());
+                    this.roleService.save(newRole);
+                    a.setRole(newRole);
+                }
+            } else {
+                a.setRole(r);
             }
-        }else {
-            a.setRole(r);
+            administratorRepository.save(a);
         }
-         administratorRepository.save(a);
-    }
+
 }

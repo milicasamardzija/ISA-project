@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReportOwnerRepository extends JpaRepository<ReportOwner, Integer> {
 
-
+ReportOwner findById(int id);
 }

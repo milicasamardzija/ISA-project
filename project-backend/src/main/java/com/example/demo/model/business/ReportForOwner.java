@@ -1,6 +1,6 @@
 package com.example.demo.model.business;
 
-import com.example.demo.dto.enums.EntityType;
+import com.example.demo.enums.EntityType;
 
 import java.util.Date;
 

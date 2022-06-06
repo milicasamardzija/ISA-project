@@ -64,8 +64,8 @@ public class EntityController {
         for(EntityClass e : entities) {
             if (e.getId()== deleteId) {
                 System.out.print("Usla sam heeeereee");
-                this.userService.deleteEntityById(e.getId());
-                return new ResponseEntity<>(HttpStatus.OK);
+                this.entityService.deleteById(deleteId);
+
             }
 
         }

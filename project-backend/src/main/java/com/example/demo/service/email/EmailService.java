@@ -1,5 +1,6 @@
 package com.example.demo.service.email;
 
+import com.example.demo.model.users.Client;
 import com.example.demo.model.users.User;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -28,7 +29,7 @@ public class EmailService {
     }
 
     @Async
-    public void sendEmailForUserAuthentication(User user) throws MailException, InterruptedException {
+    public void sendEmailForUserAuthentication(Client user) throws MailException, InterruptedException {
         System.out.println("Slanje emaila...");
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 

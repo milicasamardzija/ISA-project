@@ -52,7 +52,18 @@ public class ComplaintController {
         List<Complaint> allComplaints = complaintService.findAll();
         List<ComplaintClientDTO> complaints = new ArrayList<>();
         for(Complaint c : allComplaints ) {
-            ComplaintClientDTO com = new ComplaintClientDTO(c);
+            ComplaintClientDTO com = new ComplaintClientDTO();
+            com.setId(c.getId());
+            com.setComplaintType(c.getComplaintType().toString());
+            com.setContentEntity(c.getContentEntity());
+            com.setContentUser(c.getContentUser());
+            com.setLastnameOfuserWhoSendsComplaint(c.getUserWhoSendsComplaint().getSurname());
+            com.setNameOfuserWhoSendsComplaint(c.getUserWhoSendsComplaint().getName());
+            com.setName(c.getUser().getName());
+            com.setLastname(c.getUser().getSurname());
+            com.setMail(c.getUser().getEmail());
+            com.setMailOfuserWhoSendsComplaint(c.getUserWhoSendsComplaint().getEmail());
+            com.setAnswered(c.getIsAnswered());
             System.out.print("da li je ?"+com.getIsAnswered());
             complaints.add(com);
         }

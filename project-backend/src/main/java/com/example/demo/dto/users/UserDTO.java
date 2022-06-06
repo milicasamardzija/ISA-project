@@ -41,6 +41,10 @@ public class UserDTO {
         this.grade = user.getGrade();
     }
 
+    public UserDTO(){
+
+    }
+
     public int getId() {
         return id;
     }
