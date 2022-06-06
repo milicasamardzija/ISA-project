@@ -871,14 +871,19 @@ public class ReservationController {
             return  new ResponseEntity<>( HttpStatus.NOT_FOUND);
         }
     }
-    @PreAuthorize("hasAnyRole( 'COTTAGE_OWNER')")
+
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @PostMapping("/unavailablePeriodCottageOwner")
     public ResponseEntity<HttpStatus> unavailablePeriodDefineCO(@RequestBody UnavailablePeriodDTO action){
 
-        this.reservationService.saveUnavailablePeriod(action, 1);
-            return  new ResponseEntity<>( HttpStatus.OK);
-
+        try {
+            this.reservationService.saveUnavailablePeriod(action, 1);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @PreAuthorize("hasAnyRole( 'BOAT_OWNER')")
     @PostMapping("/unavailablePeriodBoatOwner")
     public ResponseEntity<HttpStatus> unavailablePeriodDefineBO(@RequestBody UnavailablePeriodDTO action){

@@ -15,7 +15,6 @@ import java.util.List;
 @Repository
 public interface ClientRepository extends JpaRepository<Client,Integer> {
 
-
     Client findByEmail(String email);
 
     Client findById(int id);
@@ -26,8 +25,5 @@ public interface ClientRepository extends JpaRepository<Client,Integer> {
 
     @Query("select c from Client c left join fetch c.subscribedEntities e where e.id=?1")
     List<Client> findClientWithSubscribedEntities(int id);
-
-//    @Query("select c from Client c left join fetch Reservations r where r.client.id = c.id and  r.id=?1")
-//    Client findClientFromReservation( int id_reservation);
 
 }

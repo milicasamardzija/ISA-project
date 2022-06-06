@@ -457,6 +457,7 @@ public class ReservationService {
         return isNotReserved;
     }
 
+    @Transactional
     public void saveUnavailablePeriod(UnavailablePeriodDTO unavailable, int type){
         Calendar calStart = Calendar.getInstance();
         calStart.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
@@ -465,7 +466,15 @@ public class ReservationService {
         calEnd.setTimeZone(TimeZone.getTimeZone("Europe/Belgrade"));
         calEnd.setTime(unavailable.getDateTo());
 
-        EntityClass entity = entityService.findById(unavailable.getEntityId()); //eager je, ovako je okej, DA SE POZ ONA
+        EntityClass entity = new EntityClass();
+        try {
+            entity = entityService.getById(unavailable.getEntityId());
+        } catch (PessimisticLockingFailureException e){
+            System.out.println("*************************************");
+            System.out.println(e);
+            System.out.println("*************************************");
+        }
+
         ReservedTerm newTerm = reservedTermService.saveNewTerm(new ReservedTerm(calStart.getTime(), calEnd.getTime(), entity, false));
         entity.getReservedTerms().add(newTerm);
         entityService.save(entity);
