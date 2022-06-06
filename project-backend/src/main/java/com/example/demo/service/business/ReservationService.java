@@ -288,16 +288,6 @@ public class ReservationService {
 
     }
 
-//    public List<Reservation> getAllReservationsForCottageOwnerActions(int id_owner) {
-//        List<Reservation> ret = new ArrayList<>();
-//        for (Reservation r: this.reservationRepository.findAllReservationsForCottageOwner(id_owner) ) {
-//            if(r.getAction()){
-//                ret.add(r);
-//            }
-//        }
-//        return  ret;
-//
-//    }
 
     public List<Reservation> getAllReservationsForBoatOwner(int id_owner) {
         return   this.reservationRepository.findAllReservationsForBoatOwner(id_owner);

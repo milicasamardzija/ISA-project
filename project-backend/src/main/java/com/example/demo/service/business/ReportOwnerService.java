@@ -69,7 +69,7 @@ public class ReportOwnerService {
 
        // ReportOwner reportOwner = new ReportOwner(client, cottageOwner, dto.getComment(),dto.restrictionType, false);
 
-        ReportOwner reportOwner = new ReportOwner(client, cottageOwner, dto.getComment(),dto.restrictionType);
+        ReportOwner reportOwner = new ReportOwner(client, cottageOwner, dto.getComment(),dto.restrictionType, false);
         if (dto.getType().equals("BEZ_PENALA")) {
             reportOwner.setRestrictionType(RestrictionType.BEZ_PENALA);
         }else if(dto.getType().equals("NEGATIVAN_KOMENTAR")) {
