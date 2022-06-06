@@ -67,6 +67,7 @@ public class ReportOwnerService {
 
         Client client = clientService.findClientById(dto.getIdClient());
 
+       // ReportOwner reportOwner = new ReportOwner(client, cottageOwner, dto.getComment(),dto.restrictionType, false);
 
         ReportOwner reportOwner = new ReportOwner(client, cottageOwner, dto.getComment(),dto.restrictionType);
         if (dto.getType().equals("BEZ_PENALA")) {

@@ -14,6 +14,9 @@ import java.util.Set;
 public class AdditionalService {
 
     @Id
+    //@SequenceGenerator(name = "AddSerGen", sequenceName = "AddSerGen", initialValue = 1, allocationSize = 1)
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AddSerGen")
+    @Column(name="id", unique=true, nullable=false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 

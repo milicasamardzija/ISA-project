@@ -15,6 +15,7 @@ import com.example.demo.service.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,6 +73,8 @@ public class ReportOwnerController {
         return  new ResponseEntity<>(report, HttpStatus.OK);
     }
 
+
+    @PreAuthorize("hasAnyRole('BOAT_OWNER','COTTAGE_OWNER')")
     @PostMapping("/reportCottage")
     public ResponseEntity<HttpStatus> addReportForCottageOwner(@RequestBody ReportOwnerDTO dto){
         this.reportOwnerService.addReportCottageOwner(dto);
@@ -136,11 +139,8 @@ public class ReportOwnerController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @PostMapping("/reportOwner")
-//    public ResponseEntity<ReportForOwner> addReportForBusiness(@RequestBody ReportForOwner dto){
-//        return  new ResponseEntity<>(this.reportOwnerService.createReportForBusiness(dto), HttpStatus.OK);
-//    }
 
+@PreAuthorize("hasAnyRole('BOAT_OWNER','COTTAGE_OWNER')")
     @PostMapping("/reportOwner")
     public ResponseEntity<InformationsForChart> addReportForBusiness(@RequestBody DateReportDTO dto){
         return  new ResponseEntity<>(this.reportOwnerService.getReportForChart(dto), HttpStatus.OK);

@@ -15,7 +15,8 @@
    <div class="containerInfo" >
    <div v-if="reservations.length == 0"> <h5> Nemate rezervacije </h5> </div>
       <div class="card-group">
-  <div class="card"  v-for="reservation in this.reservations" :key="reservation" >
+        <div v-for="reservation in this.reservations" :key="reservation" > 
+  <div class="card" v-if="reservation.action"  >
     <!-- <img class="card-img-top"  alt="Card image cap"> -->
      <div class="card-header bg-transparent border-success"> {{reservation.entity.name}}</div>
     <div class="card-body">
@@ -32,7 +33,7 @@
       </div>
     </div>
   </div>
-
+</div>
 </div>
 </div>
 </div>
@@ -133,7 +134,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/cottageOwner/profileCottageOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/cottageOwner/profileCottageOwner", {headers});
       const data = await res.json();
 
       return data;
@@ -142,7 +143,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/boatOwner/profileBoatOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/boatOwner/profileBoatOwner", {headers});
       const data = await res.json();
 
       return data;
@@ -151,7 +152,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/reservation/allReservationsCottageOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/reservation/allReservationsCottageOwner", {headers});
       const data = await res.json();
  this.reservations = data;
       return data;
@@ -162,7 +163,7 @@ export default {
       const headers = {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
-      const res = await fetch("http://localhost:8081/api/reservation/allReservationsBoatOwner", {headers});
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/reservation/allReservationsBoatOwner", {headers});
       const data = await res.json();
  this.reservations = data;
       return data;
@@ -170,7 +171,7 @@ export default {
     },
     async getMyCottages(){
    
-    fetch("http://localhost:8081/api/cottages/myCottages/"+ this.cottageOwner.id).then( response => response.json()).then(data => this.cottages = data );
+    fetch(process.env.VUE_APP_BACKEND_URL+"/api/cottages/myCottages/"+ this.cottageOwner.id).then( response => response.json()).then(data => this.cottages = data );
  
    },
          
@@ -193,7 +194,7 @@ export default {
 
 console.log(this.report)
 
-   axios.post("http://localhost:8081/api/reportOwner/reportCottage", this.report, {headers}).then( response => response.json());
+   axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reportOwner/reportCottage", this.report, {headers}).then( response => response.json());
 
 
 

@@ -1,5 +1,6 @@
-<template>
-  <div>
+<template> 
+<div v-if="this.role==='ROLE_COTTAGE_OWNER'"> 
+  <div >
     <NavBarLogOut />
     <NavBarHomePage />
   </div>
@@ -264,7 +265,7 @@
       
     </div> 
    
-    
+    </div>
   </div>
 </template>
 
@@ -341,7 +342,7 @@ const vectors = ref([]);
       console.log(this.cottage.additionalServices)
         },
    async getCottage(id) {
-      const res = await fetch("http://localhost:8081/api/cottages/cottage/" + id);
+      const res = await fetch(process.env.VUE_APP_BACKEND_URL+"/api/cottages/cottage/" + id);
       const data = await res.json();  
        console.log(data) ;
        this.cottage= data;  //samo u created nije radilo
@@ -355,7 +356,7 @@ const vectors = ref([]);
          };
 
   
-      axios.post("http://localhost:8081/api/cottages/editCottage", this.cottage,  {headers}).then( response => response.json());
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/cottages/editCottage", this.cottage,  {headers}).then( response => response.json());
       this.$router.push({name: "MyCottages"});
       },
 
