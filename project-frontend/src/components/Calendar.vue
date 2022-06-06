@@ -4,9 +4,12 @@
       <FullCalendar :options="calendarOptions" class="calendar" />
 
       <div class="info">
-        <h2>Availability</h2>
+        <h2>Reservation</h2>
         <div style="margin: 2rem 0">
           <div class="element">
+            <tr>Ime :</tr><input  v-model="this.user.firstname"/>
+            <tr>Prezime :</tr><input  v-model="user.lastname"/>
+            <tr>Email :</tr><input  v-model="user.email"/>
           </div>
         </div>
       </div>
@@ -41,7 +44,13 @@ export default {
   },
   data() {
     return {
+      id:0,
         ret:"",
+        user: {
+          firstname:"",
+          lastname:"",
+          email:""
+        },
       disabledPickers: false,
       selectDisabled: false,
       currentEvent: "",
@@ -66,6 +75,19 @@ export default {
     };
   },
   methods: {
+    event: function (info) {
+      console.log(info.event._def.extendedProps.clientID);
+      this.id = info.event._def.extendedProps.clientID;
+      this.getUser(this.id);
+      console.log(this.user.firstname)
+    },
+    async getUser(id) {
+      this.id = id;
+      const res = await fetch("http://localhost:8081/api/reservation/getUserFromReservation/"+this.id);
+      this.user  = await res.json();
+      return this.user;
+    }
+
 
   },
   async created() {
@@ -77,7 +99,6 @@ export default {
           response => {
                       for (let newData of response.data) {
                       newData.title = "Availability";
-                      //newData.url = "dateRange";
                       //newData.defId = newData.id;
                       //newData.serviceId =newData.id;
                       newData.start = new Date(newData.term.dateStart);

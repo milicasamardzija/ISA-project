@@ -8,6 +8,7 @@ import com.example.demo.dto.business.ReservationnDTO;
 
 import com.example.demo.dto.entities.AdditionalServiceDTO;
 import com.example.demo.dto.entities.EntityDTO;
+import com.example.demo.dto.users.UserDTO;
 import com.example.demo.enums.EntityType;
 import com.example.demo.dto.users.ClientProfileDTO;
 import com.example.demo.enums.LoyalityType;
@@ -65,8 +66,9 @@ public class ReservationController {
     private ReservationServicesService reservationServicesService;
     private FreeTermsService freeTermsService;
     private InstructorService instructorService;
+    private UserService userService;
 
-    public ReservationController(InstructorService instructorService,FreeTermsService freeTermsService,ReservationServicesService reservationServicesService,AdditionalServicesService additionalServicesService,ReservationService reservationService,EntityService entityService, CottageOwnerService cottageOwnerService,ClientService clientService, ReservedTermService reservedTermService){
+    public ReservationController(UserService userService,InstructorService instructorService,FreeTermsService freeTermsService,ReservationServicesService reservationServicesService,AdditionalServicesService additionalServicesService,ReservationService reservationService,EntityService entityService, CottageOwnerService cottageOwnerService,ClientService clientService, ReservedTermService reservedTermService){
         this.reservationService = reservationService;
         this.entityService = entityService;
         this.clientService = clientService;
@@ -75,6 +77,7 @@ public class ReservationController {
         this.reservationServicesService=reservationServicesService;
         this.freeTermsService =  freeTermsService;
         this.instructorService=instructorService;
+        this.userService=userService;
     }
 
     @GetMapping("/scheduledReservations")
@@ -118,6 +121,29 @@ public class ReservationController {
 
         return  new ResponseEntity<>(ret, HttpStatus.OK);
     }
+
+
+    @GetMapping("/getUserFromReservation/{id}")
+    public ResponseEntity<UserDTO> historyReservationsBoats(@PathVariable int id){
+        System.out.print("id je"+id);
+
+        List<Reservation> reservations = this.reservationService.findAll();
+        System.out.print("duzina niza je" + reservations.size());
+        UserDTO userDTO = new UserDTO();
+        for(Reservation reservation : reservations ) {
+            if(reservation.getId() == id) {
+                System.out.print("USLA SAM OVDE");
+                User user1 = this.userService.findById(reservation.getClient().getId());
+                userDTO.setFirstname(user1.getName());
+                userDTO.setLastname(user1.getSurname());
+                userDTO.setEmail(user1.getEmail());
+                System.out.print("first name je"+userDTO.getFirstname());
+            }
+        }
+
+        return  new ResponseEntity<>(userDTO, HttpStatus.OK);
+    }
+
 
     @GetMapping("/getMyReservations")
     public ResponseEntity<List<ReservationnDTO>> getMyReservations(){
