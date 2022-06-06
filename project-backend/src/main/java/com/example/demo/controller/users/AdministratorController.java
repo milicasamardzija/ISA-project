@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping(value = "api/administrator")
 public class AdministratorController {
-    private AdministratorService administratorService;
+    private AdministratorService  administratorService;
     private AddressService addressService;
 
     public AdministratorController(AdministratorService administratorService,AddressService addressService) {
