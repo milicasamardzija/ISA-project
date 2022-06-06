@@ -9,12 +9,12 @@ INSERT INTO role( name) VALUES ( 'ROLE_INSTRUCTOR');
 INSERT INTO role(name) VALUES ('ROLE_PREDEF_ADMIN');
 
 -- address
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Novi Sad', 'Srbija', '11','Bulevar Kralja Petra I', 0,0);
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Sabac', 'Srbija', '13','Karadjordjeva I',0,0);
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Nis', 'Srbija', '10','Sutjeska I',0,0);
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Stara Pazova', 'Srbija', '81','Popa Karana ',0,0);
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Uvac', 'Srbija', '5','Zlatiborska ulica', 19.58, 43.20);
-INSERT INTO address(city,country, number,street, longitude, latitude ) VALUES ('Bar', 'Crna Gora', '5','Luka', 19.58, 43.20);
+INSERT INTO address(id, city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Novi Sad', 'Srbija', '11','Bulevar Kralja Petra I', 0,0);
+INSERT INTO address(id, city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Sabac', 'Srbija', '13','Karadjordjeva I',0,0);
+INSERT INTO address(id, city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Nis', 'Srbija', '10','Sutjeska I',0,0);
+INSERT INTO address(id, city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Stara Pazova', 'Srbija', '81','Popa Karana ',0,0);
+INSERT INTO address(id, city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Uvac', 'Srbija', '5','Zlatiborska ulica', 19.58, 43.20);
+INSERT INTO address(id,city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Bar', 'Crna Gora', '5','Luka', 19.58, 43.20);
 
 --user
 --password nevena

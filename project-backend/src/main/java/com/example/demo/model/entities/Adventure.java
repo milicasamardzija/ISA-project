@@ -79,7 +79,7 @@ public class Adventure extends EntityClass{
 		this.setDescription(newAdventure.getPromoDescription());
 		this.setImages(newAdventure.getImages());
 		System.out.print("CAOO tu sam1"+ "broj slika ej"+newAdventure.getImages().size());
-		Address address = new Address(newAdventure.getCountry(),newAdventure.getCity(),newAdventure.getStreet(),newAdventure.getNumber());
+		Address address = new Address(newAdventure.getCountry(),newAdventure.getCity(),newAdventure.getStreet(),newAdventure.getNumber(), 0, 0);
 		System.out.print("CAOO tu sam2 ");
 
 	}

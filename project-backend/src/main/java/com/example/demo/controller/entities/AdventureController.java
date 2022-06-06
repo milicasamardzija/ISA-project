@@ -130,7 +130,7 @@ public class AdventureController {
         Adventure adventure = new Adventure(newAdventure);
         adventure.setInstructor(i);
 
-        Address address = new Address(newAdventure.getCountry(),newAdventure.getCity(),newAdventure.getStreet(),newAdventure.getNumber());
+        Address address = new Address(newAdventure.getCountry(),newAdventure.getCity(),newAdventure.getStreet(),newAdventure.getNumber(), 0, 0);
         adventure.setAddress(this.addressService.save(address));
         if (newAdventure.getCancelationType().equalsIgnoreCase("BESPLATNO")) {
             adventure.setCancelationType(CancelationType.BESPLATNO);
