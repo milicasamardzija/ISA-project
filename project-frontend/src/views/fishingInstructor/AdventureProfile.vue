@@ -40,6 +40,7 @@
       </div></tr>
           <tr v-if="this.role === 'ROLE_INSTRUCTOR'"><td></td><td> <button class="btn btn-success btn-block" @click="AddService()">Dodaj uslugu</button></td></tr>
           <tr v-if="this.role === 'ROLE_INSTRUCTOR'"><td></td><td> <button class="btn btn-success btn-block" @click="AddAction()">Dodaj akciju</button></td></tr> 
+                    <tr v-if="this.role === 'ROLE_INSTRUCTOR'"><td></td><td> <button class="btn btn-success btn-block" @click="AddReservation()">Dodaj rezervaciju</button></td></tr> 
           </table>
 
         </tr>
@@ -91,6 +92,10 @@ export default ({
           localStorage.setItem("nameOfAdventure",this.nameOfAdventure);
           this.$router.push({ name: "CreateAction" });
 
+        },
+        async AddReservation() {
+          localStorage.setItem("nameOfAdventure",this.nameOfAdventure);
+          this.$router.push({ name: "CreateReservation" });
         },
             async getAdditionalServices() {
               const headers = {

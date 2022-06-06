@@ -691,4 +691,9 @@ public class ReservationService {
 
 
     }
+
+    public void addReservationOfInstructor(ActionRequestDTO actionRequestDTO) {
+
+
+    }
 }

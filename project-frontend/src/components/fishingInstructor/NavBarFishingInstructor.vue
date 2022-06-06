@@ -20,11 +20,6 @@
       </li>
       <li class="nav-item">
         <a class="nav-link"
-          ><router-link to="">Create a reservation</router-link></a
-        >
-      </li>
-      <li class="nav-item">
-        <a class="nav-link"
           ><router-link to="">Occupancy calendar</router-link></a
         >
       </li>
@@ -46,9 +41,7 @@
   </nav>
 </template>
 <style scoped>
-button {
+a {
   background-color: #4caf50; /* Green */
-  font-size: 14px;
-  margin: 0px 5px;
 }
 </style>

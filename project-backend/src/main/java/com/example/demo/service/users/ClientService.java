@@ -157,4 +157,8 @@ public class ClientService {
         this.clientRepository.save(u);
 
     }
+
+    public List<Client> getAll() {
+        return this.clientRepository.findAll();
+    }
 }

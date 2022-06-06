@@ -46,4 +46,7 @@ public class ReservedTermService {
     }
 
 
+    public List<ReservedTerm> findAll() {
+        return this.reservedTermRepository.findAll();
+    }
 }
