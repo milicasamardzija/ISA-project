@@ -61,9 +61,9 @@ public class EvaluateController {
         System.out.print("email je "+ email);
         if (e != null){
             this.evaluateService.acceptEvaluate(e);
-            service.sendEmailWithAttachment(email,
-                    "Postovani,pisana je revizija za vas entitet. Upravo je odobrena. ",
-                    "Prihvatanje revizije za vas i vas entitet!");
+   //         service.sendEmailWithAttachment(email,
+   //                 "Postovani,pisana je revizija za vas entitet. Upravo je odobrena. ",
+   //                 "Prihvatanje revizije za vas i vas entitet!");
             return new ResponseEntity<>(HttpStatus.OK);}
         else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

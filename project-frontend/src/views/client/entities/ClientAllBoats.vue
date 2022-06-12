@@ -83,13 +83,13 @@
         >Ulica - rastuce</a
       >
       <a class="dropdown-item" href="#" @click="sort('UlicaOpadajuce')"
-        >Ulica - rastuce</a
+        >Ulica - opadajuce</a
       >
       <a class="dropdown-item" href="#" @click="sort('GradRastuce')"
         >Grad - rastuce</a
       >
       <a class="dropdown-item" href="#" @click="sort('GradOpadajuce')"
-        >Grad - rastuce</a
+        >Grad - opadajuce</a
       >
     </div>
   </div>
@@ -338,11 +338,11 @@ export default {
     return images('./' + img + ".jpg")
     },
     sort(sortParam) {
-      if (sortParam == "NazivRastuce")
+      if (sortParam === "NazivRastuce")
         this.boats.sort(function (a, b) {
           return a.name - b.name;
         });
-      if (sortParam == "NazivOpadajuce")
+      if (sortParam === "NazivOpadajuce")
         this.boats.sort(function (a, b) {
           return b.name - a.name;
         });
@@ -506,7 +506,7 @@ async search() {
         },{headers})
       .then (response => { 
         console.log(response.data);
-        this.cottages = response.data
+        this.boats = response.data
         this.s = true;
       }) }
       }

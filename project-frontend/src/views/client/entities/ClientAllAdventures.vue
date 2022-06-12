@@ -512,7 +512,7 @@ export default {
         },{headers})
       .then (response => { 
         console.log(response.data);
-        this.cottages = response.data
+        this.adventures = response.data
         this.s = true;
       }) }
       }

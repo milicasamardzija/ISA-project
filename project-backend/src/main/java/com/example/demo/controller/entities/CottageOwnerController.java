@@ -65,7 +65,7 @@ public class CottageOwnerController {
         }
         return  new ResponseEntity<>(cottages, HttpStatus.OK);
     }
-    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
+    //@PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     @GetMapping("/cottageOwnerUser/{id}")
     public  ResponseEntity<UserDTO> fetchCottageOwnerByCottage(@PathVariable int id){
         User user = this.cottageOwnerService.fetchCottageOwnerByCottage(id);

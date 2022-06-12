@@ -82,13 +82,13 @@
         >Ulica - rastuce</a
       >
       <a class="dropdown-item" href="#" @click="sort('UlicaOpadajuce')"
-        >Ulica - rastuce</a
+        >Ulica - opadajuce</a
       >
       <a class="dropdown-item" href="#" @click="sort('GradRastuce')"
         >Grad - rastuce</a
       >
       <a class="dropdown-item" href="#" @click="sort('GradOpadajuce')"
-        >Grad - rastuce</a
+        >Grad - opadajuce</a
       >
     </div>
   </div>
