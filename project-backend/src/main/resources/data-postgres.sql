@@ -17,6 +17,7 @@ INSERT INTO address(id, city,country, number,street, longitude, latitude ) VALUE
 INSERT INTO address(id,city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Bar', 'Crna Gora', '5','Luka', 19.58, 43.20);
 INSERT INTO address(id,city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Bar', 'CG', '5','Plaza', 19.58, 43.20);
 
+INSERT INTO address(id,city,country, number,street, longitude, latitude ) VALUES (nextval('address_seq_gen'),'Ulcinj', 'CG', '6','Veliki pjesak', 19.58, 43.20);
 
 --user
 --password nevena
@@ -39,9 +40,15 @@ INSERT INTO entities(id, grade, name, price, promo_description, rules, address_i
 
 INSERT INTO entities(id, grade, name, price, promo_description, rules, address_id) values (nextval('entity_seq_gen'), 5, 'Jahta Jety', 2500, 'Za najlepse odmore na moru, ovo ce biti idealan nacin.', 'sve je dozvoljeno osim unistavanja inventara', 6);
 
+INSERT INTO entities(id, grade, name, price, promo_description, rules, address_id) values (nextval('entity_seq_gen'), 5, 'Vikendica na kraj sveta', 3000, 'Za vase najlepse odmore, ovo je idealan izbor.', 'sve je dozvoljeno osim unistavanja inventara', 8);
+
 insert INTO cottage(id, beds_by_room, rooms_number, owner_id) values (1, 2, 3, 2);
+insert INTO cottage(id, beds_by_room, rooms_number, owner_id) values (3, 2, 3, 2);
+
+insert into subscription(client_id, entity_id) values (1,1);
 
 insert INTO boat(boat_type, cancelation_type, fishing_equipment, lenght, max_speed, motor_number, navigation_equipment, power, quantity, id,owner_id) values (1,1,'nema', 10, 120,3,'fishfinder', 50, 10, 2,3);
+insert into subscription(client_id, entity_id) values (1,2);
 
 insert into additional_service(name, price, entity_id) values ('parking', 0, 1);
 insert into additional_service(name, price, entity_id) values ('oprema za kampovanje', 600, 1);

@@ -268,7 +268,7 @@ export default {
    
     getSelected(id){
       this.selectedId = id;
-      alert(id)
+     // alert(id)
     },
   
      deleteBoat(){
@@ -310,11 +310,15 @@ export default {
        
    }, 
    unavailablePeriodDefine() {
+   const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+
      this.unavailablePeriod.entityId =this.selectedId;
-       axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkIfReservationExist", this.unavailablePeriod).then( 
+       axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkIfReservationExist", this.unavailablePeriod, {headers}).then( 
            response => { 
              console.log(response)
-              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/unavailablePeriodCottageOwner", this.unavailablePeriod).then(
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/unavailablePeriodBoatOwner", this.unavailablePeriod , {headers}).then(
                  response => { 
              console.log(response)
               return new Swal({

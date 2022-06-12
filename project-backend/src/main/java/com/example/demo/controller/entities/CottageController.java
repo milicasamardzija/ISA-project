@@ -217,12 +217,13 @@ public class CottageController {
         }
         try{
             this.cottageService.update(editCottage, newServices);
+            return  new ResponseEntity<>( HttpStatus.OK);
         }catch (Exception e ){
             System.out.print(e);
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return  new ResponseEntity<>( HttpStatus.OK);
+
 
     }
 }

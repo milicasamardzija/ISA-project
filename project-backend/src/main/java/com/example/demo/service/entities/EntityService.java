@@ -58,6 +58,7 @@ public class EntityService {
     public EntityClass findByName(String name) {
         return this.entityRepository.findByName(name);
     }
+
     public List<Client> findSubscribedClients(int id){
         return this.entityRepository.findSubscribedClients(id);
     }

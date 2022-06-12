@@ -74,7 +74,7 @@ public class BoatController {
     @PostMapping("/searchBoatOwner")
     public ResponseEntity<List<BoatDTO>> searchBoatOwner(@RequestBody SearchDTO searchParam) {
         List<BoatDTO> ret = new ArrayList<>();
-        if( boatService.searchBoatsStartPage(searchParam).size() != 0) {
+        if( boatService.searchBoatsOwner(searchParam).size() != 0) {
             for (Boat c : boatService.searchBoatsOwner(searchParam)) {
                 ret.add(new BoatDTO(c));
             }

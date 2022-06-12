@@ -410,6 +410,14 @@ export default {
        })
        .then(response => { 
        console.log(response.status);
+        
+         return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Poslali ste zahtev za registraciju!'
+
+           })
+      
      //  this.$router.push({ name: "BoatsStartPage" });
       }) 
             .catch( error => {

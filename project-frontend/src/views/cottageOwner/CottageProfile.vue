@@ -357,7 +357,7 @@
               <table>
                 <tr>
                   <td>
-                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal"  style="width:80px; margin-bottom:20px">
+                    <button type="submit" class="btn btn-success btn-block" data-dismiss="modal"  style="width:80px; margin-bottom:20px" @click="makeReservation()">
                       Potvrdi
                     </button>
                   </td>
@@ -522,7 +522,18 @@ export default {
       axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/checkAvailability", this.action, {headers}).then( 
            response => { 
              console.log(response)
-              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/actionCottage", this.action, {headers}).catch(
+              axios.post(process.env.VUE_APP_BACKEND_URL+"/api/reservation/actionCottage", this.action, {headers})
+              .then(
+                res=> {
+                  console.log(res);
+                      return new Swal({
+             title:"Uspesno",
+             type: "success",
+             text:'Uspesno ste kreirali akciju!!'
+           });
+                }
+              )
+              .catch(
                 error =>{
            console.log(error);
             return new Swal({

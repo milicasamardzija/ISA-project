@@ -472,7 +472,7 @@ public class ReservationService {
     }
 
     @Transactional
-    public void saveActionBoat(ActionReservationDTO reservation)  {
+    public void saveActionBoat(ActionReservationDTO reservation) throws InterruptedException {
         EntityClass entity = new EntityClass();
         try{
             entity = this.entityService.getById(reservation.getEntityId()); //koji je entitet, bila je findById
@@ -533,10 +533,11 @@ public class ReservationService {
 
         List<Client> subscribedClients = entityService.findSubscribedClients(entity.getId());
 
+        if(subscribedClients.size() != 0){
         for (Client c: subscribedClients ) {
-            this.emailService.sendEmailForCreatedAction(c.getName(), entity.getName());
+            this.emailService.sendEmailForCreatedAction(c.getEmail(), entity.getName());
         }
-
+    }
 
     }
     @Transactional
@@ -599,8 +600,10 @@ public class ReservationService {
 
         List<Client> subscribedClients = entityService.findSubscribedClients(entity.getId());
 
-        for (Client c: subscribedClients ) {
-            this.emailService.sendEmailForCreatedAction(c.getName(), entity.getName());
+        if(subscribedClients.size() != 0) {
+            for (Client c : subscribedClients) {
+                this.emailService.sendEmailForCreatedAction(c.getEmail(), entity.getName());
+            }
         }
     }
 
@@ -608,7 +611,7 @@ public class ReservationService {
         return this.reservationRepository.findAllReservationsForInstructor(id);
     }
 
-    public void sendMailToSubscribedClients(EntityClass e) {
+    public void sendMailToSubscribedClients(EntityClass e) throws InterruptedException {
         List<Client> clients = this.clientService.findClientWithSubscribedEntities(e.getId());
         System.out.print("brojj klijenata je"+clients.size());
         for (Client c: clients) {

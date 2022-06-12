@@ -357,7 +357,15 @@ const vectors = ref([]);
          };
 
   
-      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/cottages/editCottage", this.cottage,  {headers}).then( response => {response.json()}).catch(
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/cottages/editCottage", this.cottage,  {headers}).then( response => 
+      {
+console.log(response);
+ return new Swal({
+             title:"Uspesno",
+             type: "Success",
+             text:'Uspesno ste izmenili vikendicu!'
+           });
+      }).catch(
         error =>{
            console.log(error);
             return new Swal({
@@ -368,6 +376,7 @@ const vectors = ref([]);
          }
       );
       this.$router.push({name: "MyCottages"});
+   
       },
 
      remove(index){

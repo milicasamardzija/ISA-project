@@ -2,6 +2,7 @@ package com.example.demo.service.business;
 
 import com.example.demo.dto.business.DateReportDTO;
 import com.example.demo.dto.business.InformationsForChart;
+import com.example.demo.dto.business.ReportForOwnerDTO;
 import com.example.demo.dto.business.ReportOwnerDTO;
 import com.example.demo.enums.RestrictionType;
 import com.example.demo.model.business.ReportForOwner;
@@ -61,18 +62,18 @@ public class ReportOwnerService {
     this.reportOwnerRepository.save(report);
     }
 
-    public void addReportCottageOwner(ReportOwnerDTO dto) {
+    public void addReportCottageOwner(ReportForOwnerDTO dto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User cottageOwner = (User)authentication.getPrincipal();
 
-        Client client = clientService.findClientById(dto.getIdClient());
+        Client client = clientService.find(dto.getIdClient());
 
        // ReportOwner reportOwner = new ReportOwner(client, cottageOwner, dto.getComment(),dto.restrictionType, false);
 
         ReportOwner reportOwner = new ReportOwner(client, cottageOwner, dto.getComment(),dto.restrictionType, false);
-        if (dto.getType().equals("BEZ_PENALA")) {
+        if (dto.getRestrictionType().equals("BEZ_PENALA")) {
             reportOwner.setRestrictionType(RestrictionType.BEZ_PENALA);
-        }else if(dto.getType().equals("NEGATIVAN_KOMENTAR")) {
+        }else if(dto.getRestrictionType().equals("NEGATIVAN_KOMENTAR")) {
             reportOwner.setRestrictionType(RestrictionType.NEGATIVAN_KOMENTAR);
         }else {
             reportOwner.setRestrictionType(RestrictionType.NIJE_SE_POJAVIO);

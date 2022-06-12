@@ -504,7 +504,7 @@ public class ReservationController {
     }
 
     @PostMapping("/addAction")
-    public ResponseEntity<HttpStatus> addAction(@RequestBody ActionRequestDTO actionRequestDTO) throws ParseException {
+    public ResponseEntity<HttpStatus> addAction(@RequestBody ActionRequestDTO actionRequestDTO) throws ParseException, InterruptedException {
         System.out.print("naziv entiteta je"+actionRequestDTO.getName());
         System.out.print("vreme pocetka je" +actionRequestDTO.getTimeStart());
         ReservedTerm rt = new ReservedTerm();

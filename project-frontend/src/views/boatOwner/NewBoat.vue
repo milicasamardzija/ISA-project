@@ -630,8 +630,8 @@ console.log(response);
              type: "success",
              text:'Brod je uspesno dodat!'
            })
-      } );
-    this.$router.push({name: "MyBoats"});
+      } ).then(this.$router.push({name: "MyBoats"}));
+    
       },
       
                imageAdded(e) {

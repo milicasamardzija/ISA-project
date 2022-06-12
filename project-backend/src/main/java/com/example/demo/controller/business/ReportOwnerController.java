@@ -2,6 +2,7 @@ package com.example.demo.controller.business;
 
 import com.example.demo.dto.business.DateReportDTO;
 import com.example.demo.dto.business.InformationsForChart;
+import com.example.demo.dto.business.ReportForOwnerDTO;
 import com.example.demo.dto.business.ReportOwnerDTO;
 import com.example.demo.dto.users.UserDTO;
 import com.example.demo.model.business.ReportForOwner;
@@ -76,7 +77,7 @@ public class ReportOwnerController {
 
     @PreAuthorize("hasAnyRole('BOAT_OWNER','COTTAGE_OWNER')")
     @PostMapping("/reportCottage")
-    public ResponseEntity<HttpStatus> addReportForCottageOwner(@RequestBody ReportOwnerDTO dto){
+    public ResponseEntity<HttpStatus> addReportForCottageOwner(@RequestBody ReportForOwnerDTO dto){
         this.reportOwnerService.addReportCottageOwner(dto);
 
         return  new ResponseEntity<>( HttpStatus.OK);
@@ -88,7 +89,7 @@ public class ReportOwnerController {
         System.out.print("ID INSTRUCTORA JE"+ dto.getIdOwner());
         System.out.print("KOMENTAR JE"+ dto.getComment());
         System.out.print("tip je"+ dto.getType());
-        this.reportOwnerService.addReportCottageOwner(dto);
+      //  this.reportOwnerService.addReportCottageOwner(dto);
 
         return  new ResponseEntity<>( HttpStatus.OK);
     }

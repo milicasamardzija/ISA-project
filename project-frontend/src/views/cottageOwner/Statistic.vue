@@ -49,14 +49,14 @@
 
       <div class="row"> 
           <div class="col">
-             <canvas id="ljudi" width="400" height="400" style="width: 50%, height: 10%" > </canvas>
+             <canvas id="ljudi" width="400" height="400" style="width: 30%, height: 10%" > </canvas>
              </div>  
               <div  class="col">
-                 <canvas id="zarada" width="400" height="400" style="width: 50%, height: 10%" > </canvas>
+                 <canvas id="zarada" width="400" height="400" style="width: 30%, height: 10%" > </canvas>
                 </div>
                  
                   <div  class="col">
-                    <canvas id="ocena" width="400" height="400" style="width: 50%, height: 10%" > </canvas>
+                    <canvas id="ocena" width="400" height="400" style="width: 30%, height: 10%" > </canvas>
                 </div>
                 </div>
      

@@ -290,7 +290,8 @@ public class CottageService {
         Cottage newCottageState= new Cottage();
 
          try {
-             newCottageState = this.cottageRepository.findWithAdditionalServices(editCottage.getId());
+              newCottageState = this.cottageRepository.findWithAdditionalServices(editCottage.getId());
+             //  newCottageState = this.cottageRepository.getCottageWithServices(editCottage.getId());
         } catch (PessimisticLockingFailureException e){
         System.out.println("*************************************");
         System.out.println(e);

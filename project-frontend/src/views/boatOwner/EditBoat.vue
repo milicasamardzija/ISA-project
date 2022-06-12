@@ -657,8 +657,8 @@ const vectors = ref([]);
       this.boat.navigationEquipment = this.equipment
       console.log(this.boat.navigationEquipment)
 this.boat.images = this.imagesFrontend;
-      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/boats/editBoat", this.boat,  {headers}).then( response => response.json());
-       this.$router.push({name: "MyBoats"});
+      axios.post(process.env.VUE_APP_BACKEND_URL+"/api/boats/editBoat", this.boat,  {headers}).then( response => response.json(), this.$router.push({name: "MyBoats"}) );
+      
       },
 
       async getBoat(id) {
